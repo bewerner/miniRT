@@ -2,7 +2,7 @@ NAME				=	miniRT
 LIBFT				=	libft/libft.a
 MLX42				=	MLX42/build/libmlx42.a
 VPATH				=	src
-SRC					=	main.c cleanup.c hooks.c
+SRC					=	main.c cleanup.c hooks.c render.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 CFLAGS				=	-Wall -Wextra -Werror #-Ofast -flto
 LDFLAGS				=	-lm -ldl -lglfw #-flto
@@ -25,9 +25,9 @@ $(NAME): $(OBJ)
 	echo "$(COL_GREEN)Successfully built $(NAME).$(COL_DEFAULT)"
 
 $(LIBFT):
-	echo "$(COL_YELLOW)Building $(LIBFT)...$(COL_DEFAULT)"
-	$(MAKE) -C libft
-	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
+#	echo "$(COL_YELLOW)Building $(LIBFT)...$(COL_DEFAULT)"
+#	$(MAKE) -C libft
+#	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
 
 mlx42:
 	git clone https://github.com/codam-coding-college/MLX42.git
@@ -38,13 +38,13 @@ mlx42:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(MAKE) -C libft clean > /dev/null
+#	$(MAKE) -C libft clean > /dev/null
 	rm -rf obj
 	echo "$(COL_GREEN)Object files have been removed.$(COL_DEFAULT)"
 
 fclean: clean
-	$(MAKE) -C libft fclean > /dev/null
-	echo "$(COL_GREEN)$(LIBFT) has been removed.$(COL_DEFAULT)"
+#	$(MAKE) -C libft fclean > /dev/null
+#	echo "$(COL_GREEN)$(LIBFT) has been removed.$(COL_DEFAULT)"
 	rm -f $(NAME)
 	echo "$(COL_GREEN)$(NAME) has been removed.$(COL_DEFAULT)"
 
