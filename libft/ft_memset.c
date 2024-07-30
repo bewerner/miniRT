@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 15:15:52 by bwerner          ###   ########.fr       */
+/*   Created: 2023/10/06 15:12:46 by bwerner           #+#    #+#             */
+/*   Updated: 2024/01/18 19:51:28 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
-#include "../libft/libft.h"
+#include "libft.h"
 
-int	main(void)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	printf("Hello miniRT\n");
+	size_t	i;
+	char	*b_ptr;
 
-	return (0);
+	i = 0;
+	b_ptr = b;
+	while (i < len)
+	{
+		b_ptr[i] = c;
+		i++;
+	}
+	return (b);
 }

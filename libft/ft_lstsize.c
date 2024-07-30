@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 15:15:52 by bwerner          ###   ########.fr       */
+/*   Created: 2023/10/17 20:17:18 by bwerner           #+#    #+#             */
+/*   Updated: 2023/10/17 20:27:09 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
-#include "../libft/libft.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_lstsize(t_list *lst)
 {
-	printf("Hello miniRT\n");
+	int	count;
 
-	return (0);
+	if (lst == NULL)
+		return (0);
+	count = 1;
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+		count++;
+	}
+	return (count);
 }

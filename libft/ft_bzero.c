@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 15:15:52 by bwerner          ###   ########.fr       */
+/*   Created: 2023/10/09 15:42:59 by bwerner           #+#    #+#             */
+/*   Updated: 2023/10/12 14:14:57 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
-#include "../libft/libft.h"
+#include "libft.h"
 
-int	main(void)
+void	ft_bzero(void *s, size_t len)
 {
-	printf("Hello miniRT\n");
+	size_t	i;
+	char	*s_ptr;
 
-	return (0);
+	i = 0;
+	s_ptr = s;
+	while (i < len)
+	{
+		s_ptr[i] = 0;
+		i++;
+	}
 }

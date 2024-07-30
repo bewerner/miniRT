@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 15:15:52 by bwerner          ###   ########.fr       */
+/*   Created: 2023/10/12 16:31:48 by bwerner           #+#    #+#             */
+/*   Updated: 2024/03/14 15:11:28 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
-#include "../libft/libft.h"
+#include "libft.h"
 
-int	main(void)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	printf("Hello miniRT\n");
+	char	*jstr;
 
-	return (0);
+	jstr = (char *)ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
+	if (jstr == 0)
+		return (0);
+	ft_strlcpy(jstr, s1, ft_strlen(s1) + 1);
+	ft_strlcat(jstr, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
+	return (jstr);
 }
