@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 22:09:55 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/30 22:12:17 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void	validate_input(int argc, char **argv, t_rt *rt)
 {
 	if (argc != 2)
 		terminate("usage: ./miniRt scene_file.rt", 1, rt);
-	if (!ft_strrchr(argv[1], '.')
-		|| ft_strncmp(ft_strrchr(argv[1], '.'), ".rt\0", 4))
+	if (ft_strlen(argv[1]) <= 3
+		|| !ft_strrchr(argv[1], '.')
+		|| ft_strncasecmp(ft_strrchr(argv[1], '.'), ".rt\0", 4))
 	{
 		terminate("error: wrong file format. (needs to be .rt)", 1, rt);
 	}
@@ -62,7 +63,6 @@ void	parse_scene(char *file, t_rt *rt)
 	rt->objects[0].origin = (t_vec3){5, 0, 0};
 	rt->objects[0].radius = 1;
 	rt->camera.direction = (t_vec3){1, 0, 0};
-	rt->camera.focal_lenth = 1000;
 }
 
 int	main(int argc, char **argv)
