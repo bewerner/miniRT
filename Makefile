@@ -1,4 +1,5 @@
 NAME				=	miniRT
+LIBFT				=	libft/libft.a
 VPATH				=	src
 SRC					=	main.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
@@ -15,24 +16,31 @@ COL_DEFAULT			= 	\033[0m
 
 .SILENT:
 
-all: $(NAME)
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ)
 	echo "$(COL_YELLOW)Building $(NAME)...$(COL_DEFAULT)"
-	$(CC) $(OBJ) -o $(NAME) $(LDFLAGS)
+	$(CC) $(OBJ) $(LIBFT) -o $(NAME) $(LDFLAGS)
 	echo "$(COL_GREEN)Successfully built $(NAME).$(COL_DEFAULT)"
+
+$(LIBFT):
+	echo "$(COL_YELLOW)Building $(LIBFT)...$(COL_DEFAULT)"
+	$(MAKE) -C libft
+	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
 
 ./obj/%.o: %.c
 	mkdir -p obj
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
+	$(MAKE) -C libft clean > /dev/null
 	rm -rf obj
 	echo "$(COL_GREEN)Object files have been removed.$(COL_DEFAULT)"
 
 fclean: clean
+	$(MAKE) -C libft fclean > /dev/null
+	echo "$(COL_GREEN)$(LIBFT) has been removed.$(COL_DEFAULT)"
 	rm -f $(NAME)
-	rm -rf obj
 	echo "$(COL_GREEN)$(NAME) has been removed.$(COL_DEFAULT)"
 
 re: fclean all

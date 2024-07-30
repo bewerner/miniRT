@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 15:15:52 by bwerner          ###   ########.fr       */
+/*   Created: 2023/10/09 16:17:13 by bwerner           #+#    #+#             */
+/*   Updated: 2023/10/12 14:15:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
-#include "../libft/libft.h"
+#include "libft.h"
 
-int	main(void)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	printf("Hello miniRT\n");
+	size_t		i;
+	char		*dst_ptr;
+	char		*src_ptr;
 
-	return (0);
+	i = 0;
+	dst_ptr = (char *)dst;
+	src_ptr = (char *)src;
+	if (dst_ptr == 0 && src_ptr == 0)
+		return (0);
+	while (i < n)
+	{
+		dst_ptr[i] = src_ptr[i];
+		i++;
+	}
+	return (dst);
 }

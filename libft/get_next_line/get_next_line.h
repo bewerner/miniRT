@@ -1,21 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 15:15:52 by bwerner          ###   ########.fr       */
+/*   Created: 2023/11/12 17:18:22 by bwerner           #+#    #+#             */
+/*   Updated: 2024/06/10 00:49:22 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
-#include "../libft/libft.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int	main(void)
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 256
+# endif
+
+# include <unistd.h>
+# include <stdlib.h>
+
+typedef struct s_gnl
 {
-	printf("Hello miniRT\n");
+	char	*line;
+	char	*jstr;
+	int		nl_found;
+	int		read;
+	size_t	i;
+	size_t	j;
+}			t_gnl;
 
-	return (0);
-}
+char	*get_next_line(int fd);
+
+#endif
