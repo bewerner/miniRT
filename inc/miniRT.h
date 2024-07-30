@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 16:36:23 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/07/30 17:29:10 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,7 @@ typedef struct		s_rt
 void	error(char *message);
 void	terminate(char* message, uint8_t exit_code, t_rt *rt);
 
+// hooks.c
+void	init_hooks(t_rt *rt);
 
 #endif
