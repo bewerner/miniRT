@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 19:38:52 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/07/30 19:41:31 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,8 @@ void	terminate(char* message, uint8_t exit_code, t_rt *rt);
 
 // hooks.c
 void	init_hooks(t_rt *rt);
+
+// render.c
+void	render(t_rt *rt);
 
 #endif
