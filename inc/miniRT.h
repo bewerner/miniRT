@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 17:29:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:48:02 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <unistd.h>
 # include <sys/errno.h>
 
-# define WINDOW_WIDTH	1024
-# define WINDOW_HEIGHT	1024
+# define WINDOW_WIDTH	1280 / 2
+# define WINDOW_HEIGHT	720 / 2
 
 typedef union		u_color
 {
@@ -66,5 +66,8 @@ void	terminate(char* message, uint8_t exit_code, t_rt *rt);
 
 // hooks.c
 void	init_hooks(t_rt *rt);
+
+// render.c
+void	render(t_rt *rt);
 
 #endif
