@@ -1,10 +1,11 @@
 NAME				=	miniRT
 LIBFT				=	libft/libft.a
+MLX42				=	MLX42/build/libmlx42.a
 VPATH				=	src
-SRC					=	main.c
+SRC					=	main.c cleanup.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
-CFLAGS				=	-Wall -Wextra -Werror
-LDFLAGS				=
+CFLAGS				=	-Wall -Wextra -Werror #-Ofast -flto
+LDFLAGS				=	-lm -ldl -lglfw #-flto
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
 CC					=	cc
@@ -20,7 +21,7 @@ all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ)
 	echo "$(COL_YELLOW)Building $(NAME)...$(COL_DEFAULT)"
-	$(CC) $(OBJ) $(LIBFT) -o $(NAME) $(LDFLAGS)
+	$(CC) $(OBJ) $(LIBFT) $(MLX42) -o $(NAME) $(LDFLAGS)
 	echo "$(COL_GREEN)Successfully built $(NAME).$(COL_DEFAULT)"
 
 $(LIBFT):
