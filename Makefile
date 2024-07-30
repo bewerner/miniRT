@@ -28,6 +28,10 @@ $(LIBFT):
 	$(MAKE) -C libft
 	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
 
+mlx42:
+	git clone https://github.com/codam-coding-college/MLX42.git
+	cd MLX42 && cmake -B build && cmake --build build -j4
+
 ./obj/%.o: %.c
 	mkdir -p obj
 	$(CC) $(CFLAGS) -c $< -o $@
