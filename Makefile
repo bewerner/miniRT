@@ -2,7 +2,7 @@ NAME				=	miniRT
 LIBFT				=	libft/libft.a
 MLX42				=	MLX42/build/libmlx42.a
 VPATH				=	src
-SRC					=	main.c cleanup.c
+SRC					=	main.c cleanup.c hooks.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 CFLAGS				=	-Wall -Wextra -Werror #-Ofast -flto
 LDFLAGS				=	-lm -ldl -lglfw #-flto
