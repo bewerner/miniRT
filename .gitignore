@@ -1,0 +1,18 @@
+# blacklist
+
+*
+
+# whitelist
+
+!libft
+!libft/**
+!src
+!src/**
+!Makefile
+!.gitignore
+
+#blacklist
+
+*.o
+*.a
+.DS_Store
