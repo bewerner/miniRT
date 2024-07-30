@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 19:41:12 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/07/30 22:09:55 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ void	parse_scene(char *file, t_rt *rt)
 	rt->objects = (t_object *)ft_calloc(1, sizeof(t_object));
 	rt->objects[0].type = OBJ_SPHERE;
 	rt->objects[0].origin = (t_vec3){5, 0, 0};
+	rt->objects[0].radius = 1;
 	rt->camera.direction = (t_vec3){1, 0, 0};
+	rt->camera.focal_lenth = 1000;
 }
 
 int	main(int argc, char **argv)
