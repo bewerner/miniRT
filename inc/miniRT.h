@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 15:12:16 by nmihaile         ###   ########.fr       */
+/*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
+/*   Updated: 2024/07/30 15:11:25 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
+#ifndef MINI_RT_H
+#define MINI_RT_H
 
-int	main(void)
-{
-	printf("Hello miniRT\n");
+#include <stdio.h>
 
-	return (0);
-}
+#endif
