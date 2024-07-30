@@ -8,6 +8,8 @@
 !libft/**
 !src
 !src/**
+!inc
+!inc/**
 !Makefile
 !.gitignore
 
