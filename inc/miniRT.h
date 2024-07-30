@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 17:29:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/30 19:38:52 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <unistd.h>
 # include <sys/errno.h>
 
-# define WINDOW_WIDTH	1024
-# define WINDOW_HEIGHT	1024
+# define WINDOW_WIDTH	1280
+# define WINDOW_HEIGHT	720
 
 typedef union		u_color
 {
@@ -49,15 +49,35 @@ typedef struct 		s_vec3
 	double			z;
 }					t_vec3;
 
+typedef enum e_obj_type
+{
+	OBJ_SPHERE,
+	OBJ_PLANE,
+	OBJ_CYLINDER
+}	t_obj_type;
+
 typedef struct		s_object
 {
-	
+	t_obj_type		type;
+	t_vec3			origin;
+	t_vec3			normal;
+	double			radius;
+	double			height;
 }					t_object;
+
+typedef struct		s_camera
+{
+	t_vec3			position;
+	t_vec3			direction;
+	double			fov;
+}					t_camera;
 
 typedef struct		s_rt
 {
 	mlx_t			*mlx;
 	mlx_image_t		*canvas;
+	t_camera		camera;
+	t_object		*objects;
 }					t_rt;
 
 // cleanup.c
