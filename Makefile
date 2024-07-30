@@ -25,9 +25,9 @@ $(NAME): $(OBJ)
 	echo "$(COL_GREEN)Successfully built $(NAME).$(COL_DEFAULT)"
 
 $(LIBFT):
-	echo "$(COL_YELLOW)Building $(LIBFT)...$(COL_DEFAULT)"
-	$(MAKE) -C libft
-	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
+	# echo "$(COL_YELLOW)Building $(LIBFT)...$(COL_DEFAULT)"					#TEMP
+	# $(MAKE) -C libft														    #TEMP
+	# echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"				#TEMP
 
 mlx42:
 	git clone https://github.com/codam-coding-college/MLX42.git
@@ -38,13 +38,13 @@ mlx42:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(MAKE) -C libft clean > /dev/null
+	# $(MAKE) -C libft clean > /dev/null										#TEMP
 	rm -rf obj
 	echo "$(COL_GREEN)Object files have been removed.$(COL_DEFAULT)"
 
 fclean: clean
-	$(MAKE) -C libft fclean > /dev/null
-	echo "$(COL_GREEN)$(LIBFT) has been removed.$(COL_DEFAULT)"
+	# $(MAKE) -C libft fclean > /dev/null										#TEMP
+	# echo "$(COL_GREEN)$(LIBFT) has been removed.$(COL_DEFAULT)"				#TEMP
 	rm -f $(NAME)
 	echo "$(COL_GREEN)$(NAME) has been removed.$(COL_DEFAULT)"
 
