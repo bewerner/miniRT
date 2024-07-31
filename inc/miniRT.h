@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 15:55:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:24:59 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,9 @@ t_vec3	vec3_sub(const t_vec3 a, const t_vec3 b);
 t_vec3	vec3_mul(const t_vec3 a, const t_vec3 b);
 t_vec3	vec3_scale(const double s, const t_vec3 a);
 double	vec3_dot(const t_vec3 a, const t_vec3 b);
+
+// utils/vec3_utils2.c
+double	vec3_mag(const t_vec3 a);
+t_vec3	vec3_unit(const t_vec3 a);
 
 #endif

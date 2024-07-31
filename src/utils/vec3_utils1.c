@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 12:56:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 15:55:35 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:46:50 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_vec3	vec3_add(const t_vec3 a, const t_vec3 b)
 	t_vec3	v;
 
 	v.x = a.x + b.x;
-	v.x = a.y + b.y;
-	v.x = a.z + b.z;
+	v.y = a.y + b.y;
+	v.z = a.z + b.z;
 	return (v);
 }
 
@@ -27,8 +27,8 @@ t_vec3	vec3_sub(const t_vec3 a, const t_vec3 b)
 	t_vec3	v;
 
 	v.x = a.x - b.x;
-	v.x = a.y - b.y;
-	v.x = a.z - b.z;
+	v.y = a.y - b.y;
+	v.z = a.z - b.z;
 	return (v);
 }
 
