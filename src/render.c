@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 22:10:01 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:12:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ void	render(t_rt *rt)
 	t_vec3	b;
 	// double	t;
 	double	discriminant;
+	double	rr;
 
 	y = 0;
 	a = rt->camera.position;
+	rr = rt->objects[0].radius * rt->objects[0].radius;
+	t_vec3	AP = vec3_sub(a, rt->objects[0].origin);
 	while (y < rt->canvas->height)
 	{
 		x = 0;
@@ -38,13 +41,19 @@ void	render(t_rt *rt)
 			b.z = (rt->camera.direction.z * rt->camera.focal_lenth) + (rt->canvas->height / 2) - y;
 			// b = rt->camera.direction;
 
-			discriminant = pow(2 * a.x * b.x + 2 * a.y * b.y, 2) - 4 * (b.x * b.x + b.y * b.y) * (a.x * a.x + a.y * a.y - rt->objects[0].radius * rt->objects[0].radius);
+			double	A = vec3_dot(b, b);
+			double	B = 2 * vec3_dot(AP, b);
+			double	C = vec3_dot(AP, AP) - rr;
 
-			if (discriminant >= 0)
+			discriminant = B * B - 4 * A * C;
+			// discriminant = pow(2 * a.x * b.x + 2 * a.y * b.y, 2) - 4 * (b.x * b.x + b.y * b.y) * (a.x * a.x + a.y * a.y - rr);
+			printf("%f\n", discriminant);
+
+			if (discriminant >= 4300000)
 				mlx_put_pixel(rt->canvas, x++, y, get_color(255, 0, 0, 255));
 			else
 				mlx_put_pixel(rt->canvas, x++, y, get_color(0, 0, 0, 255));
 		}
-		y++;		
+		y++;
 	}
 }

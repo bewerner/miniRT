@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 21:33:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:55:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,12 @@ void	init_hooks(t_rt *rt);
 
 // render.c
 void	render(t_rt *rt);
+
+// utils/vec3_utils1.c
+t_vec3	vec3_add(const t_vec3 a, const t_vec3 b);
+t_vec3	vec3_sub(const t_vec3 a, const t_vec3 b);
+t_vec3	vec3_mul(const t_vec3 a, const t_vec3 b);
+t_vec3	vec3_scale(const double s, const t_vec3 a);
+double	vec3_dot(const t_vec3 a, const t_vec3 b);
 
 #endif

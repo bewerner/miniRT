@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/30 22:12:17 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:14:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ void	parse_scene(char *file, t_rt *rt)
 	rt->objects[0].type = OBJ_SPHERE;
 	rt->objects[0].origin = (t_vec3){5, 0, 0};
 	rt->objects[0].radius = 1;
+	rt->camera.position = (t_vec3){-5, 0, 0};
 	rt->camera.direction = (t_vec3){1, 0, 0};
+	rt->camera.focal_lenth = 1020;
 }
 
 int	main(int argc, char **argv)
