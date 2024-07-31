@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 16:12:24 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:47:25 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	render(t_rt *rt)
 
 			discriminant = B * B - 4 * A * C;
 			// discriminant = pow(2 * a.x * b.x + 2 * a.y * b.y, 2) - 4 * (b.x * b.x + b.y * b.y) * (a.x * a.x + a.y * a.y - rr);
-			printf("%f\n", discriminant);
+			// printf("%f\n", discriminant);
 
-			if (discriminant >= 4300000)
+			if (discriminant >= 0)
 				mlx_put_pixel(rt->canvas, x++, y, get_color(255, 0, 0, 255));
 			else
 				mlx_put_pixel(rt->canvas, x++, y, get_color(0, 0, 0, 255));
