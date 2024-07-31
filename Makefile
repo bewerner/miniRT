@@ -1,14 +1,19 @@
+
 NAME				=	miniRT
 LIBFT				=	libft/libft.a
 MLX42				=	MLX42/build/libmlx42.a
-VPATH				=	src
-SRC					=	main.c cleanup.c hooks.c render.c
+
+VPATH				=	src src/utils
+
+SRC					=	main.c cleanup.c hooks.c render.c vec3_utils1.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
+
 CFLAGS				=	-Wall -Wextra -Werror #-Ofast -flto
 LDFLAGS				=	-lm -ldl -lglfw #-flto
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
 CC					=	cc
+
 COL_GREEN			= 	\033[32m
 COL_RED				=	\033[31m
 COL_YELLOW			= 	\033[38;2;214;189;28m
