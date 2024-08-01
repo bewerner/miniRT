@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 17:15:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/01 02:55:18 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ typedef struct		s_camera
 {
 	t_vec3			position;
 	t_vec3			direction;
+	double			yaw;
+	double			pitch;
 	double			focal_lenth;
 }					t_camera;
 
@@ -89,6 +91,10 @@ void	init_hooks(t_rt *rt);
 
 // render.c
 void	render(t_rt *rt);
+
+// utils/vec3_rotate.c
+t_vec3	vec3_rotate_y(t_vec3 p, double rad);
+t_vec3	vec3_rotate_z(t_vec3 p, double rad);
 
 // utils/vec3_utils1.c
 t_vec3	vec3_add(const t_vec3 a, const t_vec3 b);
