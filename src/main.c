@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 17:44:48 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/01 03:02:35 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,24 @@ void	parse_scene(char *file, t_rt *rt)
 	(void)file;
 	rt->objects = (t_object *)ft_calloc(1, sizeof(t_object));
 	rt->objects[0].type = OBJ_SPHERE;
-	rt->objects[0].origin = (t_vec3){5, 0, 0};
+	rt->objects[0].origin = (t_vec3){5, 0, -5};
 	rt->objects[0].radius = 1;
-	rt->camera.position = (t_vec3){-5, 2, 2};
-	rt->camera.direction = (t_vec3){1, 0, 0};
-	rt->camera.focal_lenth = 1020;
+	// rt->camera.position = (t_vec3){-5, 0, 10};
+	rt->camera.position = (t_vec3){0, 0, 0};
+	// rt->camera.direction = (t_vec3){1, 0, 0};
+	rt->camera.direction = (t_vec3){1, 0, -1};
+	// rt->camera.direction = (t_vec3){0.709195, 0.616493, 0.34202};
+	rt->camera.focal_lenth = 1000;
+}
+
+void	init_camera(t_camera* camera)
+{
+	camera->direction = vec3_normalize(camera->direction);
+	t_vec3	dir;
+	dir = camera->direction;
+	// get camera.pitch and camera.yaw from camera.direction
+	camera->pitch = atan(dir.z / sqrt(dir.x * dir.x + dir.y * dir.y)) * -1;
+	camera->yaw = atan(dir.y / dir.x);
 }
 
 int	main(int argc, char **argv)
@@ -76,6 +89,7 @@ int	main(int argc, char **argv)
 	validate_input(argc, argv, &rt);
 	parse_scene(argv[1], &rt);
 	init_mlx(&rt);
+	init_camera(&rt.camera);
 	init_hooks(&rt);
 	mlx_loop(rt.mlx);
 	terminate(NULL, 0, &rt);
