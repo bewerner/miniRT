@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 17:15:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/02 22:21:32 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@
 
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
+
+# define VEC2_INT_ZERO	(t_vec2_32int){0, 0}
+# define VEC2_ZERO		(t_vec2){0, 0}
+# define VEC3_ZERO		(t_vec3){0, 0, 0}
+# define VEC4_ZERO		(t_vec4){{0, 0, 0, 0}}
+# define VEC4_BLACK		(t_vec4){{0, 0, 0, 1}}
+
+typedef enum e_rttime
+{
+	TIME_START,
+	TIME_STOP
+}	t_rttime;
 
 typedef union		u_color
 {
@@ -48,6 +60,24 @@ typedef struct 		s_vec3
 	double			y;
 	double			z;
 }					t_vec3;
+
+typedef union		s_vec4
+{
+	struct
+	{
+		double		r;
+		double		g;
+		double		b;
+		double		a;
+	};
+	struct
+	{
+		double		x;
+		double		y;
+		double		z;
+		double		w;
+	};
+}					t_vec4;
 
 typedef enum e_obj_type
 {

@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 21:29:30 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/02 22:29:29 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-uint32_t	get_color(int r, int g, int b, int a)
-{
-	return (0 | (r << 24) | (g << 16) | (b << 8) | a);
-}
 
 // void	set_directions(t_FdF *s)
 // {
@@ -100,7 +95,7 @@ void	render(t_rt *rt)
 			// b.y = f.y + half_w - x;
 			// b.z = f.z + half_h - y;
 
-			b = get_pixel_ray(rt->camera, x, y);
+			b = get_pixel_ray(&rt->camera, x, y);
 
 			double	A = vec3_dot(b, b);
 			double	B = 2 * vec3_dot(AP, b);
