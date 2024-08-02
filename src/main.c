@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 20:07:07 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/02 23:32:57 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,15 @@ void	parse_scene(char *file, t_rt *rt)
 	rt->objects[0].type = OBJ_SPHERE;
 	rt->objects[0].origin = (t_vec3){5, 0, 0};
 	rt->objects[0].radius = 1;
-	// rt->camera.position = (t_vec3){-5, 0, 10};
-	rt->camera.position = (t_vec3){0, 0, 0};
+
+	rt->lights = (t_light *)ft_calloc(1, sizeof(t_light));
+	rt->lights[0].origin = (t_vec3){0, 0, 5};
+	rt->lights[0].radius = 1;
+	rt->lights[0].intensity = 100;
+	rt->lights[0].color = VEC4_WHITE;
+
+	// rt->camera.origin = (t_vec3){-5, 0, 10};
+	rt->camera.origin = (t_vec3){0, 0, 0};
 	rt->camera.direction = (t_vec3){1, 0, 0};
 	// rt->camera.direction = (t_vec3){0.509037, 0.293894, -0.809017};
 	// rt->camera.direction = (t_vec3){0.709195, 0.616493, 0.34202};

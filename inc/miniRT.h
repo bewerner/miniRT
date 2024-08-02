@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 22:48:47 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/02 23:31:18 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define VEC2_ZERO		(t_vec2){0, 0}
 # define VEC3_ZERO		(t_vec3){0, 0, 0}
 # define VEC4_ZERO		(t_vec4){{0, 0, 0, 0}}
+# define VEC4_WHITE		(t_vec4){{1, 1, 1, 1}}
 # define VEC4_BLACK		(t_vec4){{0, 0, 0, 1}}
 
 typedef enum e_timeraction
@@ -101,9 +102,19 @@ typedef struct		s_object
 	double			height;
 }					t_object;
 
+typedef struct		s_light
+{
+	// t_light_type	type;
+	// t_vec3		dir;
+	t_vec3			origin;
+	double			radius;
+	double			intensity;
+	t_vec4			color;
+}					t_light;
+
 typedef struct		s_camera
 {
-	t_vec3			position;
+	t_vec3			origin;
 	t_vec3			direction;
 	double			yaw;
 	double			pitch;
@@ -125,6 +136,7 @@ typedef struct		s_rt
 	t_camera		camera;
 	t_screen		screen;
 	t_object		*objects;
+	t_light			*lights;
 	double			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_ivec2			initial_cursor_pos;
@@ -140,6 +152,10 @@ void	init_hooks(t_rt *rt);
 
 // render.c
 void	render(t_rt *rt);
+
+// color_convert.c
+uint32_t	combine_rgba(int r, int g, int b, int a);
+uint32_t	vec4_to_rgba(t_vec4	col);
 
 // utils/vec3_rotate.c
 t_vec3	vec3_rotate_x(t_vec3 p, double rad);
