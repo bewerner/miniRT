@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 23:31:18 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 00:09:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,9 @@ double	vec3_dot(const t_vec3 a, const t_vec3 b);
 // utils/vec3_utils2.c
 double	vec3_len(const t_vec3 a);
 t_vec3	vec3_normalize(const t_vec3 a);
+
+// utils/vec4_utils1.c
+t_vec4	vec4_add(const t_vec4 a, const t_vec4 b);
+
 
 #endif
