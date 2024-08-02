@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 21:42:37 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/02 23:32:57 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(rt->mlx);
 	if (keydata.key == MLX_KEY_W && keydata.action)
-		rt->camera.position = vec3_add(rt->camera.position, vec3_scale(0.1, rt->camera.direction));
+		rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(0.1, rt->camera.direction));
 	if (keydata.key == MLX_KEY_S && keydata.action)
-		rt->camera.position = vec3_sub(rt->camera.position, vec3_scale(0.1, rt->camera.direction));
+		rt->camera.origin = vec3_sub(rt->camera.origin, vec3_scale(0.1, rt->camera.direction));
 	if (keydata.key == MLX_KEY_A && keydata.action)
-		rt->camera.position = vec3_sub(rt->camera.position, vec3_scale(0.1, rt->screen.x));
+		rt->camera.origin = vec3_sub(rt->camera.origin, vec3_scale(0.1, rt->screen.x));
 	if (keydata.key == MLX_KEY_D && keydata.action)
-		rt->camera.position = vec3_add(rt->camera.position, vec3_scale(0.1, rt->screen.x));
+		rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(0.1, rt->screen.x));
 	if (keydata.key == MLX_KEY_SPACE && keydata.action)
-		rt->camera.position = vec3_add(rt->camera.position, vec3_scale(0.1, (t_vec3){0, 0, 1}));
+		rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(0.1, (t_vec3){0, 0, 1}));
 	if (keydata.key == MLX_KEY_LEFT_CONTROL && keydata.action)
-		rt->camera.position = vec3_sub(rt->camera.position, vec3_scale(0.1, (t_vec3){0, 0, 1}));
+		rt->camera.origin = vec3_sub(rt->camera.origin, vec3_scale(0.1, (t_vec3){0, 0, 1}));
 }
 
 void	update_screen(t_rt *rt)

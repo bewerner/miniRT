@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 22:47:22 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/02 23:32:57 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-uint32_t	get_color(int r, int g, int b, int a)
-{
-	return (0 | (r << 24) | (g << 16) | (b << 8) | a);
-}
 
 t_vec3	get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt)
 {
@@ -26,44 +21,58 @@ t_vec3	get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt)
 	return (v);
 }
 
+t_vec4	per_pixel(t_ivec2 pixel, t_vec3 AP, double rr, t_rt *rt)
+{
+	double	discriminant;
+	t_vec3	rayDir;
+	t_vec4	col;
+
+	rayDir = get_pixel_ray(pixel.x, pixel.y, rt);
+
+	double	A = vec3_dot(rayDir, rayDir);
+	double	B = 2 * vec3_dot(AP, rayDir);
+	double	C = vec3_dot(AP, AP) - rr;
+
+	discriminant = B * B - 4 * A * C;
+
+	if (discriminant < 0)
+		return (VEC4_BLACK);
+
+	// double	t0 = (-B  sqrt(discriminant)) / (2 * A)		// DO WE NEED THIS LATER ?? 
+	double	t1 = (-B - sqrt(discriminant)) / (2 * A);
+
+	// rayOrigin
+	t_vec3	hp = vec3_add(rt->camera.origin, vec3_scale(t1, rayDir));
+
+	// NORMALS
+	t_vec3	nor = vec3_normalize(vec3_sub(rt->objects[0].origin, hp));
+	col = (t_vec4){{nor.x * 0.5f + 0.5f, nor.y * 0.5f + 0.5f, nor.z * 0.5f + 0.5f, 1.0f}};
+
+	return (col);
+
+}
+
 void	render(t_rt *rt)
 {
-	uint32_t	x;
-	uint32_t	y;
-	t_vec3	a = rt->camera.position;
+	t_ivec2	pixel;
+	t_vec3	a = rt->camera.origin;
 	t_vec3	b;
-	// t_vec3	f = vec3_scale(rt->camera.focal_lenth, vec3_normalize(rt->camera.direction));
-	// f = vec3_add(a, f);
-	
-	// double	t;
-	double	discriminant;
 	double	rr;
-	// uint32_t	half_w = rt->canvas->width / 2;
-	// uint32_t	half_h = rt->canvas->height / 2;
+	t_vec4	col;
 
-	y = 0;
 	rr = rt->objects[0].radius * rt->objects[0].radius;
 	t_vec3	AP = vec3_sub(a, rt->objects[0].origin);
-	while (y < rt->canvas->height)
+	
+	pixel.y = 0;
+	while (pixel.y < rt->canvas->height)
 	{
-		x = 0;
-		while (x < rt->canvas->width)
+		pixel.x = 0;
+		while (pixel.x < rt->canvas->width)
 		{
-			b = get_pixel_ray(x, y, rt);
-			// printf("%f, %f, %f\n", b.x, b.y, b.z);
-
-			double	A = vec3_dot(b, b);
-			double	B = 2 * vec3_dot(AP, b);
-			double	C = vec3_dot(AP, AP) - rr;
-
-			discriminant = B * B - 4 * A * C;
-			// printf("%f\n", discriminant);
-
-			if (discriminant >= 0)
-				mlx_put_pixel(rt->canvas, x++, y, get_color(255, 0, 0, 255));
-			else
-				mlx_put_pixel(rt->canvas, x++, y, get_color(0, 0, 0, 255));
+			col = per_pixel(pixel, AP, rr, rt);
+			mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col));
+			pixel.x++;
 		}
-		y++;
+		pixel.y++;
 	}
 }
