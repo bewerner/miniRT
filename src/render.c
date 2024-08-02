@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 23:32:57 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 00:21:38 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,23 @@ t_vec4	per_pixel(t_ivec2 pixel, t_vec3 AP, double rr, t_rt *rt)
 	// double	t0 = (-B  sqrt(discriminant)) / (2 * A)		// DO WE NEED THIS LATER ?? 
 	double	t1 = (-B - sqrt(discriminant)) / (2 * A);
 
-	// rayOrigin
-	t_vec3	hp = vec3_add(rt->camera.origin, vec3_scale(t1, rayDir));
+	// HitPoint
+	t_vec3	hitpoint = vec3_add(rt->camera.origin, vec3_scale(t1, rayDir));
 
 	// NORMALS
-	t_vec3	nor = vec3_normalize(vec3_sub(rt->objects[0].origin, hp));
-	col = (t_vec4){{nor.x * 0.5f + 0.5f, nor.y * 0.5f + 0.5f, nor.z * 0.5f + 0.5f, 1.0f}};
+	t_vec3	nor = vec3_normalize(vec3_sub(rt->objects[0].origin, hitpoint));
+
+	t_vec3	hpl = vec3_normalize(vec3_sub(hitpoint, rt->lights[0].origin));
+
+	double	light = vec3_dot(nor, hpl);
+
+	// col = (t_vec4){{nor.x * 0.5f + 0.5f, nor.y * 0.5f + 0.5f, nor.z * 0.5f + 0.5f, 1.0f}};
+	if (light < 0)
+		col = VEC4_BLACK;
+	else
+		col = (t_vec4){{light, light, light, 1.0f}};
+
+	col = vec4_add(col, (t_vec4){.005, .005, .05, 1});
 
 	return (col);
 
