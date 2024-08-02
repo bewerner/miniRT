@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 00:09:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 00:28:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,7 @@ t_vec3	vec3_normalize(const t_vec3 a);
 // utils/vec4_utils1.c
 t_vec4	vec4_add(const t_vec4 a, const t_vec4 b);
 
+// utils/time.c
+void	ft_timer(t_timeraction action, char *msg);
 
 #endif
