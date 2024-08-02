@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:20:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 16:47:01 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:14:59 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
