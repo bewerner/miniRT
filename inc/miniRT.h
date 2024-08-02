@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 22:21:32 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/02 22:38:28 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@
 # define VEC4_ZERO		(t_vec4){{0, 0, 0, 0}}
 # define VEC4_BLACK		(t_vec4){{0, 0, 0, 1}}
 
-typedef enum e_rttime
+typedef enum e_timeraction
 {
-	TIME_START,
-	TIME_STOP
-}	t_rttime;
+	TIMER_START,
+	TIMER_STOP
+}	t_timeraction;
 
 typedef union		u_color
 {
