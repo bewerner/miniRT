@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 00:21:38 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 00:39:06 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_vec4	per_pixel(t_ivec2 pixel, t_vec3 AP, double rr, t_rt *rt)
 	else
 		col = (t_vec4){{light, light, light, 1.0f}};
 
-	col = vec4_add(col, (t_vec4){.005, .005, .05, 1});
+	col = vec4_add(col, (t_vec4){.025, .025, .1, 1});
 
 	return (col);
 

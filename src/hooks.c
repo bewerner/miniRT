@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 23:32:57 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 00:27:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	update(void *param)
 
 	rt = (t_rt*)param;
 	update_screen(rt);
+
+	ft_timer(TIMER_START, NULL);
 	render(rt);
+	ft_timer(TIMER_STOP, NULL);
 }
 
 void	mouse_hook(	enum mouse_key button,		enum action action,

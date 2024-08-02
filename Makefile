@@ -8,7 +8,7 @@ VPATH				=	src src/utils
 SRC					=	main.c cleanup.c hooks.c render.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotate.c color_convert.c time.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
-CFLAGS				=	#-Wall -Wextra -Werror #-Ofast -flto
+CFLAGS				=	#-Wall -Wextra -Werror -Ofast -flto
 LDFLAGS				=	-lm -ldl -lglfw #-flto
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
