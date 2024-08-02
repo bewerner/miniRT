@@ -5,7 +5,7 @@ MLX42				=	MLX42/build/libmlx42.a
 
 VPATH				=	src src/utils
 
-SRC					=	main.c cleanup.c hooks.c render.c vec3_utils1.c vec3_utils2.c
+SRC					=	main.c cleanup.c hooks.c render.c color_convert.c vec3_utils1.c vec3_utils2.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
 CFLAGS				=	-Wall -Wextra -Werror #-Ofast -flto
