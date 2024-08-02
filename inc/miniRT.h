@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/02 22:38:28 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/02 22:48:47 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ typedef union		u_color
 		uint8_t		r;
 	};
 }					t_color;
+
+typedef struct s_ivec2
+{
+	int32_t		x;
+	int32_t		y;
+}				t_ivec2;
 
 typedef struct 		s_vec2
 {
@@ -99,15 +105,30 @@ typedef struct		s_camera
 {
 	t_vec3			position;
 	t_vec3			direction;
+	double			yaw;
+	double			pitch;
 	double			focal_lenth;
 }					t_camera;
+
+typedef struct		s_screen
+{
+	t_vec3			origin;
+	t_vec3			pos_null;
+	t_vec3			x;
+	t_vec3			y;
+}					t_screen;
 
 typedef struct		s_rt
 {
 	mlx_t			*mlx;
 	mlx_image_t		*canvas;
 	t_camera		camera;
+	t_screen		screen;
 	t_object		*objects;
+	double			clicked;
+	int8_t			mouse_buttons_pressed;
+	t_ivec2			initial_cursor_pos;
+
 }					t_rt;
 
 // cleanup.c
@@ -119,6 +140,11 @@ void	init_hooks(t_rt *rt);
 
 // render.c
 void	render(t_rt *rt);
+
+// utils/vec3_rotate.c
+t_vec3	vec3_rotate_x(t_vec3 p, double rad);
+t_vec3	vec3_rotate_y(t_vec3 p, double rad);
+t_vec3	vec3_rotate_z(t_vec3 p, double rad);
 
 // utils/vec3_utils1.c
 t_vec3	vec3_add(const t_vec3 a, const t_vec3 b);
