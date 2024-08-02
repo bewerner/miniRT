@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/01 02:55:18 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/02 21:48:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ typedef union		u_color
 		uint8_t		r;
 	};
 }					t_color;
+
+typedef struct s_ivec2
+{
+	int32_t		x;
+	int32_t		y;
+}				t_ivec2;
 
 typedef struct 		s_vec2
 {
@@ -74,12 +80,25 @@ typedef struct		s_camera
 	double			focal_lenth;
 }					t_camera;
 
+typedef struct		s_screen
+{
+	t_vec3			origin;
+	t_vec3			pos_null;
+	t_vec3			x;
+	t_vec3			y;
+}					t_screen;
+
 typedef struct		s_rt
 {
 	mlx_t			*mlx;
 	mlx_image_t		*canvas;
 	t_camera		camera;
+	t_screen		screen;
 	t_object		*objects;
+	double			clicked;
+	int8_t			mouse_buttons_pressed;
+	t_ivec2			initial_cursor_pos;
+
 }					t_rt;
 
 // cleanup.c
@@ -93,6 +112,7 @@ void	init_hooks(t_rt *rt);
 void	render(t_rt *rt);
 
 // utils/vec3_rotate.c
+t_vec3	vec3_rotate_x(t_vec3 p, double rad);
 t_vec3	vec3_rotate_y(t_vec3 p, double rad);
 t_vec3	vec3_rotate_z(t_vec3 p, double rad);
 
