@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 20:58:53 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/03 21:50:56 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ typedef struct		s_object
 
 typedef struct		s_hitpoint
 {
+	t_vec3			ray;
 	t_vec3			pos;
 	t_object		*object;
 }					t_hitpoint;
@@ -183,6 +184,10 @@ void	move_camera(t_rt *rt);
 
 // render.c
 void	render(t_rt *rt);
+
+// primitives/sphere.c
+t_hitpoint	get_hitpoint_sphere(t_vec3 rayDir, t_object *object, t_rt *rt);
+t_vec4	get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt);
 
 // color_convert.c
 uint32_t	combine_rgba(int r, int g, int b, int a);
