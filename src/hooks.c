@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 19:41:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:22:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 	t_rt	*rt;
 
 	rt = (t_rt*)param;
-	if ((keydata.key == MLX_KEY_ESCAPE) && keydata.action == MLX_PRESS)
+	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
 		mlx_close_window(rt->mlx);
 }
 
@@ -47,6 +47,7 @@ void	update(void *param)
 	update_screen(rt);
 
 	ft_timer(TIMER_START, NULL);
+	ft_memset_int(rt->canvas->pixels, 0xFF000000, rt->mlx->width * rt->mlx->height);
 	render(rt);
 	ft_timer(TIMER_STOP, NULL);
 }
