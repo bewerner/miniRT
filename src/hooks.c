@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 00:27:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:45:29 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,8 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 	t_rt	*rt;
 
 	rt = (t_rt*)param;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+	if ((keydata.key == MLX_KEY_ESCAPE) && keydata.action == MLX_PRESS)
 		mlx_close_window(rt->mlx);
-	if (keydata.key == MLX_KEY_W && keydata.action)
-		rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(0.1, rt->camera.direction));
-	if (keydata.key == MLX_KEY_S && keydata.action)
-		rt->camera.origin = vec3_sub(rt->camera.origin, vec3_scale(0.1, rt->camera.direction));
-	if (keydata.key == MLX_KEY_A && keydata.action)
-		rt->camera.origin = vec3_sub(rt->camera.origin, vec3_scale(0.1, rt->screen.x));
-	if (keydata.key == MLX_KEY_D && keydata.action)
-		rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(0.1, rt->screen.x));
-	if (keydata.key == MLX_KEY_SPACE && keydata.action)
-		rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(0.1, (t_vec3){0, 0, 1}));
-	if (keydata.key == MLX_KEY_LEFT_CONTROL && keydata.action)
-		rt->camera.origin = vec3_sub(rt->camera.origin, vec3_scale(0.1, (t_vec3){0, 0, 1}));
 }
 
 void	update_screen(t_rt *rt)
@@ -48,12 +36,12 @@ void	update_screen(t_rt *rt)
 	forward = vec3_rotate_x(forward, rt->camera.pitch);
 	forward = vec3_rotate_z(forward, rt->camera.yaw);
 	rt->camera.direction = forward;
+
 	// printf("yaw: %f = %f\npitch: %f = %f\n", yaw, yaw * 180 / 3.14159, pitch, pitch * 180 / 3.14159);
 	// printf("rt->camera.direction: %f, %f, %f\n", rt->camera.direction.x, rt->camera.direction.y, rt->camera.direction.z);
 	// printf("forward: %f, %f, %f\n", forward.x, forward.y, forward.z);
 	// printf("rt->screen.x:   %f, %f, %f\n", rt->screen.x.x, rt->screen.x.y, rt->screen.x.z);
 	// printf("rt->screen.y:    %f, %f, %f\n", rt->screen.y.x, rt->screen.y.y, rt->screen.y.z);
-	// exit(0);
 	// printf("\n");
 	rt->screen.origin = vec3_scale(rt->camera.focal_lenth, forward);
 	rt->screen.pos_null = rt->screen.origin;
@@ -66,6 +54,10 @@ void	update(void *param)
 	t_rt	*rt;
 
 	rt = (t_rt*)param;
+
+	handle_move_input(rt);
+	move_camera(rt);
+
 	update_screen(rt);
 
 	ft_timer(TIMER_START, NULL);
@@ -102,12 +94,12 @@ void	mouse_hook(	enum mouse_key button,		enum action action,
 
 void	set_rotation(t_vec2 distance, t_rt *rt)
 {
-	rt->camera.yaw -= (double)distance.x / 300;
+	rt->camera.yaw -= (double)distance.x / 700;
 	if (rt->camera.yaw > 2 * M_PI)
 		rt->camera.yaw -= 2 * M_PI;
 	if (rt->camera.yaw < 0)
 		rt->camera.yaw += 2 * M_PI;
-	rt->camera.pitch -= (double)distance.y / 300;
+	rt->camera.pitch -= (double)distance.y / 700;
 	rt->camera.pitch = fmax(fmin(rt->camera.pitch, M_PI), 0);
 	// printf("yaw:   %10f = %4.1f, pitch: %10f = %4.1f\n", rt->camera.yaw, rt->camera.yaw * 180 / M_PI, rt->camera.pitch, rt->camera.pitch * 180 / M_PI);
 	// printf("yaw: %f, pitch: %f\n", rt->camera.yaw, rt->camera.pitch);
