@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 19:42:43 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:58:53 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define IVEC2_ZERO			(t_ivec2){0, 0}
 # define VEC2_ZERO			(t_vec2){0, 0}
 # define VEC3_ZERO			(t_vec3){0, 0, 0}
+# define VEC3_INF			(t_vec3){INFINITY, INFINITY, INFINITY}
 # define VEC4_ZERO			(t_vec4){{0, 0, 0, 0}}
 # define VEC4_WHITE			(t_vec4){{1, 1, 1, 1}}
 # define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
@@ -99,6 +100,7 @@ typedef union		s_vec4
 
 typedef enum e_obj_type
 {
+	OBJ_NONE,
 	OBJ_SPHERE,
 	OBJ_PLANE,
 	OBJ_CYLINDER
@@ -112,6 +114,12 @@ typedef struct		s_object
 	double			radius;
 	double			height;
 }					t_object;
+
+typedef struct		s_hitpoint
+{
+	t_vec3			pos;
+	t_object		*object;
+}					t_hitpoint;
 
 typedef struct		s_light
 {
