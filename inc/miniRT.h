@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 16:37:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 19:42:43 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,26 @@
 # include <unistd.h>
 # include <sys/errno.h>
 
+# define LIGHTGRAY		"\033[97m"
+# define DARKGRAY		"\033[90m"
+# define LIGHTRED		"\033[91m"
+# define LIGHTGREEN		"\033[92m"
+# define LIGHTYELLOW	"\033[93m"
+# define LIGHTBLUE		"\033[94m"
+# define LIGHTMAGENTA	"\033[95m"
+# define LIGHTCYAN		"\033[96m"
+# define RESET			"\033[0m"
+
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
 
-# define IVEC2_ZERO		(t_ivec2){0, 0}
-# define VEC2_ZERO		(t_vec2){0, 0}
-# define VEC3_ZERO		(t_vec3){0, 0, 0}
-# define VEC4_ZERO		(t_vec4){{0, 0, 0, 0}}
-# define VEC4_WHITE		(t_vec4){{1, 1, 1, 1}}
-# define VEC4_BLACK		(t_vec4){{0, 0, 0, 1}}
+# define IVEC2_ZERO			(t_ivec2){0, 0}
+# define VEC2_ZERO			(t_vec2){0, 0}
+# define VEC3_ZERO			(t_vec3){0, 0, 0}
+# define VEC4_ZERO			(t_vec4){{0, 0, 0, 0}}
+# define VEC4_WHITE			(t_vec4){{1, 1, 1, 1}}
+# define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
+# define VEC4_TRANSPARENT	(t_vec4){{0, 0, 0, 0}}
 
 typedef enum e_timeraction
 {
@@ -116,13 +127,13 @@ typedef struct		s_movement
 {
 	t_vec3			acc;
 	t_vec3			vel;
-	bool			mbr_down;
 }					t_movement;
 
 typedef struct		s_camera
 {
 	t_vec3			origin;
 	t_vec3			direction;
+	t_vec3			right;
 	double			yaw;
 	double			pitch;
 	double			focal_lenth;
@@ -132,8 +143,8 @@ typedef struct		s_screen
 {
 	t_vec3			origin;
 	t_vec3			pos_null;
-	t_vec3			x;
-	t_vec3			y;
+	t_vec3			x_dir;
+	t_vec3			y_dir;
 }					t_screen;
 
 typedef struct		s_rt
@@ -184,6 +195,7 @@ double	vec3_dot(const t_vec3 a, const t_vec3 b);
 // utils/vec3_utils2.c
 double	vec3_len(const t_vec3 a);
 t_vec3	vec3_normalize(const t_vec3 a);
+t_vec3	vec3_cross(const t_vec3 a, const t_vec3 b);
 
 // utils/vec4_utils1.c
 t_vec4	vec4_add(const t_vec4 a, const t_vec4 b);

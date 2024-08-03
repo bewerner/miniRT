@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 17:03:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:50:35 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_vec3	get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt)
 {
 	t_vec3	v;
 
-	v = vec3_add(rt->screen.pos_null, vec3_scale(x, rt->screen.x));
-	v = vec3_add(v, vec3_scale(y, rt->screen.y));
+	v = vec3_add(rt->screen.pos_null, vec3_scale(x, rt->screen.x_dir));
+	v = vec3_add(v, vec3_scale(y, rt->screen.y_dir));
 	return (v);
 }
 
@@ -41,15 +41,18 @@ t_vec4	per_pixel(t_ivec2 pixel, t_vec3 AP, double rr, t_rt *rt)
 	// double	t0 = (-B  sqrt(discriminant)) / (2 * A)		// DO WE NEED THIS LATER ?? 
 	double	t1 = (-B - sqrt(discriminant)) / (2 * A);
 
+	if (t1 < 0)
+		return (VEC4_BLACK);
+
 	// HitPoint
 	t_vec3	hitpoint = vec3_add(rt->camera.origin, vec3_scale(t1, rayDir));
 
 	// NORMALS
 	t_vec3	nor = vec3_normalize(vec3_sub(rt->objects[0].origin, hitpoint));
 
-	t_vec3	hpl = vec3_normalize(vec3_sub(hitpoint, rt->lights[0].origin));
+	t_vec3	hitpoint_light = vec3_normalize(vec3_sub(hitpoint, rt->lights[0].origin));
 
-	double	light = vec3_dot(nor, hpl);
+	double	light = vec3_dot(nor, hitpoint_light);
 
 	// col = (t_vec4){{nor.x * 0.5f + 0.5f, nor.y * 0.5f + 0.5f, nor.z * 0.5f + 0.5f, 1.0f}};
 	if (light < 0)
