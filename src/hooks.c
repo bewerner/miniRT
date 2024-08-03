@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 17:45:29 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 19:41:10 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,16 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 
 void	update_screen(t_rt *rt)
 {
-	t_vec3	forward;
 	double	half_w = (rt->canvas->width - 1) / 2;
 	double	half_h = (rt->canvas->height - 1) / 2;
 
-	forward = (t_vec3){0, 0, -1};
-	rt->screen.x = (t_vec3){1, 0, 0};
-	rt->screen.y = (t_vec3){0, -1, 0};
-	rt->screen.x = vec3_rotate_z(rt->screen.x, rt->camera.yaw);
-	rt->screen.y = vec3_rotate_x(rt->screen.y, rt->camera.pitch);
-	rt->screen.y = vec3_rotate_z(rt->screen.y, rt->camera.yaw);
-	forward = vec3_rotate_x(forward, rt->camera.pitch);
-	forward = vec3_rotate_z(forward, rt->camera.yaw);
-	rt->camera.direction = forward;
+	rt->screen.x_dir = rt->camera.right;
+	rt->screen.y_dir = vec3_cross(rt->camera.direction, rt->camera.right);
 
-	// printf("yaw: %f = %f\npitch: %f = %f\n", yaw, yaw * 180 / 3.14159, pitch, pitch * 180 / 3.14159);
-	// printf("rt->camera.direction: %f, %f, %f\n", rt->camera.direction.x, rt->camera.direction.y, rt->camera.direction.z);
-	// printf("forward: %f, %f, %f\n", forward.x, forward.y, forward.z);
-	// printf("rt->screen.x:   %f, %f, %f\n", rt->screen.x.x, rt->screen.x.y, rt->screen.x.z);
-	// printf("rt->screen.y:    %f, %f, %f\n", rt->screen.y.x, rt->screen.y.y, rt->screen.y.z);
-	// printf("\n");
-	rt->screen.origin = vec3_scale(rt->camera.focal_lenth, forward);
+	rt->screen.origin = vec3_scale(rt->camera.focal_lenth, rt->camera.direction);
 	rt->screen.pos_null = rt->screen.origin;
-	rt->screen.pos_null = vec3_sub(rt->screen.pos_null, vec3_scale(half_w, rt->screen.x));
-	rt->screen.pos_null = vec3_sub(rt->screen.pos_null, vec3_scale(half_h, rt->screen.y));
+	rt->screen.pos_null = vec3_sub(rt->screen.pos_null, vec3_scale(half_w, rt->screen.x_dir));
+	rt->screen.pos_null = vec3_sub(rt->screen.pos_null, vec3_scale(half_h, rt->screen.y_dir));
 }
 
 void	update(void *param)
