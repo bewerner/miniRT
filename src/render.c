@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 00:39:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:03:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ t_vec4	per_pixel(t_ivec2 pixel, t_vec3 AP, double rr, t_rt *rt)
 	if (light < 0)
 		col = VEC4_BLACK;
 	else
-		col = (t_vec4){{light, light, light, 1.0f}};
+		col = (t_vec4){{light, 0, 0, 1.0f}};
 
-	col = vec4_add(col, (t_vec4){.025, .025, .1, 1});
+	col = vec4_add(col, (t_vec4){{.025, .025, .1, 1}});
 
 	return (col);
 
@@ -67,7 +67,6 @@ void	render(t_rt *rt)
 {
 	t_ivec2	pixel;
 	t_vec3	a = rt->camera.origin;
-	t_vec3	b;
 	double	rr;
 	t_vec4	col;
 
@@ -75,10 +74,10 @@ void	render(t_rt *rt)
 	t_vec3	AP = vec3_sub(a, rt->objects[0].origin);
 	
 	pixel.y = 0;
-	while (pixel.y < rt->canvas->height)
+	while (pixel.y < (int32_t)rt->canvas->height)
 	{
 		pixel.x = 0;
-		while (pixel.x < rt->canvas->width)
+		while (pixel.x < (int32_t)rt->canvas->width)
 		{
 			col = per_pixel(pixel, AP, rr, rt);
 			mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col));

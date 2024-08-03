@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 00:28:24 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:37:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
 
-# define VEC2_INT_ZERO	(t_vec2_32int){0, 0}
+# define IVEC2_ZERO		(t_ivec2){0, 0}
 # define VEC2_ZERO		(t_vec2){0, 0}
 # define VEC3_ZERO		(t_vec3){0, 0, 0}
 # define VEC4_ZERO		(t_vec4){{0, 0, 0, 0}}
@@ -112,6 +112,13 @@ typedef struct		s_light
 	t_vec4			color;
 }					t_light;
 
+typedef struct		s_movement
+{
+	t_vec3			acc;
+	t_vec3			vel;
+	bool			mbr_down;
+}					t_movement;
+
 typedef struct		s_camera
 {
 	t_vec3			origin;
@@ -133,6 +140,7 @@ typedef struct		s_rt
 {
 	mlx_t			*mlx;
 	mlx_image_t		*canvas;
+	t_movement		move;
 	t_camera		camera;
 	t_screen		screen;
 	t_object		*objects;
@@ -149,6 +157,10 @@ void	terminate(char* message, uint8_t exit_code, t_rt *rt);
 
 // hooks.c
 void	init_hooks(t_rt *rt);
+
+// movement.c
+void	handle_move_input(t_rt *rt);
+void	move_camera(t_rt *rt);
 
 // render.c
 void	render(t_rt *rt);
