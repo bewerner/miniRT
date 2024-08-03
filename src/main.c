@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 21:48:23 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 22:28:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,32 @@ void	validate_input(int argc, char **argv, t_rt *rt)
 void	parse_scene(char *file, t_rt *rt)
 {
 	(void)file;
-	rt->objects = (t_object *)ft_calloc(2 + 1, sizeof(t_object));
-	rt->objects[0].type = OBJ_SPHERE;
-	rt->objects[0].origin = (t_vec3){5, 0, 0};
-	rt->objects[0].radius = 1;
+	// rt->objects = (t_object *)ft_calloc(2 + 1, sizeof(t_object));
+	// rt->objects[0].type = OBJ_SPHERE;
+	// rt->objects[0].origin = (t_vec3){5, 0, 0};
+	// rt->objects[0].radius = 1;
 
-	rt->objects[1].type = OBJ_SPHERE;
-	rt->objects[1].origin = (t_vec3){5, 0, 1.2};
-	rt->objects[1].radius = 0.5;
+	// rt->objects[1].type = OBJ_SPHERE;
+	// rt->objects[1].origin = (t_vec3){5, 0, 1.2};
+	// rt->objects[1].radius = 0.5;
+
+	rt->objects = (t_object *)ft_calloc(10 + 1, sizeof(t_object));
+	for (size_t i = 0; i < 10; i++)
+	{
+		rt->objects[i].type = OBJ_SPHERE;
+		rt->objects[i].origin = (t_vec3){i * 3, 0, 0};
+		rt->objects[i].radius = 1;
+	}
 
 	rt->lights = (t_light *)ft_calloc(1 + 1, sizeof(t_light));
-	rt->lights[0].origin = (t_vec3){0, 0, 5};
+	rt->lights[0].origin = (t_vec3){0, 0, 3.5};
 	rt->lights[0].radius = 1;
-	rt->lights[0].intensity = 100;
+	rt->lights[0].intensity = 25;
 	rt->lights[0].color = VEC4_WHITE;
 
 	// rt->camera.origin = (t_vec3){-5, 0, 10};
-	rt->camera.origin = (t_vec3){0, 0, 0};
-	rt->camera.direction = (t_vec3){1, 0, 0};
+	rt->camera.origin = (t_vec3){-5, -8.5, .5};
+	rt->camera.direction = (t_vec3){1.25, .950, 0};
 	// rt->camera.direction = (t_vec3){0.509037, 0.293894, -0.809017};
 	// rt->camera.direction = (t_vec3){0.709195, 0.616493, 0.34202};
 	rt->camera.focal_lenth = 1000;

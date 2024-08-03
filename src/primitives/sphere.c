@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 21:52:53 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/03 22:23:32 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,22 @@ t_vec4	get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt)
 {
 	t_vec4	col;
 	t_vec3	normal;
-	t_vec3	hitpoint_light;
+	t_vec3	light_ray;
+	double	light_ray_len;
 
 	// change HitRay to HitPoint
 	hitpoint.pos = vec3_add(rt->camera.origin, hitpoint.ray);
 
 	normal = vec3_normalize(vec3_sub(hitpoint.object->origin, hitpoint.pos));
-	hitpoint_light = vec3_normalize(vec3_sub(hitpoint.pos, rt->lights[0].origin));
-	double	light = vec3_dot(normal, hitpoint_light);
+	light_ray = vec3_sub(hitpoint.pos, rt->lights[0].origin);
+
+	double	light = vec3_dot(normal, vec3_normalize(light_ray));
+
+	light_ray_len = vec3_len(light_ray);
+
+	// Apply Intensity
+	light = light / (light_ray_len * light_ray_len) * rt->lights[0].intensity;
+
 	// col = (t_vec4){{normal.x * 0.5f + 0.5f, normal.y * 0.5f + 0.5f, normal.z * 0.5f + 0.5f, 1.0f}};
 
 	if (light < 0)
