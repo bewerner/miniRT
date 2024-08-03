@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 20:53:08 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/03 21:48:23 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,14 @@ void	validate_input(int argc, char **argv, t_rt *rt)
 void	parse_scene(char *file, t_rt *rt)
 {
 	(void)file;
-	rt->objects = (t_object *)ft_calloc(1 + 1, sizeof(t_object));
+	rt->objects = (t_object *)ft_calloc(2 + 1, sizeof(t_object));
 	rt->objects[0].type = OBJ_SPHERE;
 	rt->objects[0].origin = (t_vec3){5, 0, 0};
 	rt->objects[0].radius = 1;
+
+	rt->objects[1].type = OBJ_SPHERE;
+	rt->objects[1].origin = (t_vec3){5, 0, 1.2};
+	rt->objects[1].radius = 0.5;
 
 	rt->lights = (t_light *)ft_calloc(1 + 1, sizeof(t_light));
 	rt->lights[0].origin = (t_vec3){0, 0, 5};
