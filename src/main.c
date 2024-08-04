@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 19:44:35 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/04 21:56:29 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	parse_scene(char *file, t_rt *rt)
 	(void)file;
 	// rt->objects = (t_object *)ft_calloc(1 + 1, sizeof(t_object));
 	// rt->objects[0].type = OBJ_SPHERE;
-	// rt->objects[0].origin = (t_vec3){5, 0, 0};
+	// rt->objects[0].origin = (t_vec3){0, 0, 0};
 	// rt->objects[0].radius = 1;
 
 	// rt->objects[1].type = OBJ_SPHERE;
@@ -68,7 +68,7 @@ void	parse_scene(char *file, t_rt *rt)
 	// rt->objects[1].radius = 0.5;
 
 	rt->objects = (t_object *)ft_calloc(10 + 1, sizeof(t_object));
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 2; i++)
 	{
 		rt->objects[i].type = OBJ_SPHERE;
 		rt->objects[i].origin = (t_vec3){i * 3, 0, 0};
@@ -76,10 +76,11 @@ void	parse_scene(char *file, t_rt *rt)
 	}
 
 	rt->lights = (t_light *)ft_calloc(1 + 1, sizeof(t_light));
-	rt->lights[0].origin = (t_vec3){0, 0, 3.5};
+	rt->lights[0].origin = (t_vec3){-3, 0, 3};
 	rt->lights[0].radius = 1;
-	rt->lights[0].intensity = 25;
-	rt->lights[0].color = VEC4_WHITE;
+	rt->lights[0].ratio = 1;
+	rt->lights[0].color = (t_vec4){{1.0, 0.28, 0.2, 1}};
+	rt->lights[0].color = vec4_scale(rt->lights[0].ratio, rt->lights[0].color);
 
 	rt->ambient = (t_vec4){{.025, .025, .1, 1}};
 

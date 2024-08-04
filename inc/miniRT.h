@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 20:44:33 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/04 21:10:42 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct		s_light
 	// t_vec3		dir;
 	t_vec3			origin;
 	double			radius;
-	double			intensity;
+	double			ratio;
 	t_vec4			color;
 }					t_light;
 
@@ -220,6 +220,7 @@ t_vec3	vec3_cross(const t_vec3 a, const t_vec3 b);
 
 // utils/vec4_utils1.c
 t_vec4	vec4_add(const t_vec4 a, const t_vec4 b);
+t_vec4	vec4_scale(const double s, const t_vec4 a);
 
 // utils/time.c
 void	ft_timer(t_timeraction action, char *msg);
