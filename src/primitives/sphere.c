@@ -3,50 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 19:44:13 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/04 20:45:14 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-t_hitpoint	get_hitpoint_sphere(t_vec3 rayDir, t_object *object, t_rt *rt)
-{
-	t_hitpoint	hitpoint;
-	double		discriminant;
-	double		rr;
-	t_vec3		AP;
-
-	hitpoint.object = object;
-
-	rr = object->radius * object->radius;
-	AP = vec3_sub(rt->camera.origin, object->origin);
-
-	double	A = vec3_dot(rayDir, rayDir);
-	double	B = 2 * vec3_dot(AP, rayDir);
-	double	C = vec3_dot(AP, AP) - rr;
-
-	discriminant = B * B - 4 * A * C;
-
-	if (discriminant < 0)
-		return ((t_hitpoint){VEC3_INF, VEC3_INF, NULL});
-
-	// double	t0 = (-B  sqrt(discriminant)) / (2 * A)		// DO WE NEED THIS LATER ?? 
-	double	t1 = (-B - sqrt(discriminant)) / (2 * A);
-
-	if (t1 < 0)
-		return ((t_hitpoint){VEC3_INF, VEC3_INF, NULL});
-
-	// create HitRay
-	// hitpoint.pos = vec3_add(rt->camera.origin, vec3_scale(t1, rayDir));
-	hitpoint.ray = vec3_scale(t1, rayDir);
-
-	return (hitpoint);
-}
-
-t_hitpoint	get_hitpoint_sphere_ray(t_ray ray, t_object *object)
+t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object)
 {
 	t_hitpoint	hitpoint;
 	double		discriminant;
@@ -99,7 +65,7 @@ static bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
 			continue ;
 		}
 		if (rt->objects[i].type == OBJ_SPHERE )
-			current = get_hitpoint_sphere_ray(ray, &rt->objects[i]);
+			current = get_hitpoint_sphere(ray, &rt->objects[i]);
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		if (vec3_len(current.ray) < ray_len)

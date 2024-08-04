@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 21:53:38 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:43:09 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_vec3	get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt)
 
 
 
-t_hitpoint	get_closest_hitpoint(t_vec3 rayDir, t_rt *rt)
+t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 {
 	size_t		i;
 	t_hitpoint	closest;
@@ -36,7 +36,7 @@ t_hitpoint	get_closest_hitpoint(t_vec3 rayDir, t_rt *rt)
 	while (rt->objects[i].type)
 	{
 		if (rt->objects[i].type == OBJ_SPHERE)
-			current = get_hitpoint_sphere(rayDir, &rt->objects[i], rt);
+			current = get_hitpoint_sphere(ray, &rt->objects[i], rt);
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		if (vec3_len(current.ray) < vec3_len(closest.ray))
@@ -57,13 +57,14 @@ t_vec4	get_diffuse_color(t_hitpoint hitpoint, t_rt *rt)
 
 void	trace_ray(t_ivec2 pixel, t_rt *rt)
 {
-	t_vec3		rayDir;
+	t_ray		pixel_ray;
 	t_hitpoint	hitpoint;
 	t_vec4		col;
 
-	rayDir = get_pixel_ray(pixel.x, pixel.y, rt);
+	pixel_ray.origin = rt->camera.origin;
+	pixel_ray.dir = get_pixel_ray(pixel.x, pixel.y, rt);
 	// get closest hitpoint (and object pointer)
-	hitpoint = get_closest_hitpoint(rayDir, rt);
+	hitpoint = get_closest_hitpoint(pixel_ray, rt);
 	if (!hitpoint.object)
 		return ;
 	col = get_diffuse_color(hitpoint, rt);

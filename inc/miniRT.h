@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 19:40:46 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/04 20:44:33 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,11 +190,11 @@ void	handle_move_input(t_rt *rt);
 void	move_camera(t_rt *rt);
 
 // render.c
-t_hitpoint	get_closest_hitpoint(t_vec3 rayDir, t_rt *rt);
+t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt);
 void		render(t_rt *rt);
 
 // primitives/sphere.c
-t_hitpoint	get_hitpoint_sphere(t_vec3 rayDir, t_object *object, t_rt *rt);
+t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object);
 t_vec4		get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt);
 
 // color_convert.c
