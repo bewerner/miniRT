@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 19:44:51 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:16:46 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-#define ACC  0.08f
+#define ACC  0.15f
 #define DAMP 0.65f
 
 void	handle_move_input(t_rt *rt)
 {
+	rt->move.acc = VEC3_ZERO;
 	if (mlx_is_key_down(rt->mlx, MLX_KEY_A))
 		rt->move.acc.x -= ACC;
 	if (mlx_is_key_down(rt->mlx, MLX_KEY_D))
@@ -42,7 +43,6 @@ void	move_camera(t_rt *rt)
 
 	rt->move.vel = vec3_add(rt->move.vel, rt->move.acc);
 	rt->move.vel = vec3_scale(DAMP, rt->move.vel);
-	rt->move.acc = vec3_scale(DAMP, rt->move.acc);
 
 	rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(rt->move.vel.x, rt->camera.right));
 	rt->camera.origin = vec3_add(rt->camera.origin, (t_vec3){0, 0, rt->move.vel.y});

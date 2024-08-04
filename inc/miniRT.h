@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 22:52:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:40:46 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ typedef struct		s_rt
 	t_screen		screen;
 	t_object		*objects;
 	t_light			*lights;
+	t_vec4			ambient;
 	double			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_ivec2			initial_cursor_pos;
