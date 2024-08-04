@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 22:28:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:44:35 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	validate_input(int argc, char **argv, t_rt *rt)
 void	parse_scene(char *file, t_rt *rt)
 {
 	(void)file;
-	// rt->objects = (t_object *)ft_calloc(2 + 1, sizeof(t_object));
+	// rt->objects = (t_object *)ft_calloc(1 + 1, sizeof(t_object));
 	// rt->objects[0].type = OBJ_SPHERE;
 	// rt->objects[0].origin = (t_vec3){5, 0, 0};
 	// rt->objects[0].radius = 1;
@@ -80,6 +80,8 @@ void	parse_scene(char *file, t_rt *rt)
 	rt->lights[0].radius = 1;
 	rt->lights[0].intensity = 25;
 	rt->lights[0].color = VEC4_WHITE;
+
+	rt->ambient = (t_vec4){{.025, .025, .1, 1}};
 
 	// rt->camera.origin = (t_vec3){-5, 0, 10};
 	rt->camera.origin = (t_vec3){-5, -8.5, .5};

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 23:35:18 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:44:13 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ t_vec4	get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt)
 
 	// Check for Ligth Collision
 	if (is_obstructed(light_ray_inverser, hitpoint.object, rt))
-		return ((t_vec4){{.025, .025, .1, 1}});
+		return (rt->ambient);
 
 
 
@@ -153,7 +153,7 @@ t_vec4	get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt)
 	else
 		col = (t_vec4){{light, 0, 0, 1.0f}};
 
-	col = vec4_add(col, (t_vec4){{.025, .025, .1, 1}});
+	col = vec4_add(col, rt->ambient);
 
 	return (col);
 }
