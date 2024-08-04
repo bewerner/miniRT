@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 20:43:09 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:48:59 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 	while (rt->objects[i].type)
 	{
 		if (rt->objects[i].type == OBJ_SPHERE)
-			current = get_hitpoint_sphere(ray, &rt->objects[i], rt);
+			current = get_hitpoint_sphere(ray, &rt->objects[i]);
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		if (vec3_len(current.ray) < vec3_len(closest.ray))
