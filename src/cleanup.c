@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/07/30 16:36:04 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/05 15:00:12 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ void	error(char *message)
 	errno = 0;
 }
 
-void	cleanup(void)
+void	cleanup(t_rt *rt)
 {
-	return ;
+	free(rt->objects);
+	free(rt->lights);
 }
 
 void	terminate(char* message, uint8_t exit_code, t_rt *rt)
@@ -35,6 +36,6 @@ void	terminate(char* message, uint8_t exit_code, t_rt *rt)
 		error(message);
 	if (rt->mlx)
 		mlx_terminate(rt->mlx);
-	cleanup();
+	cleanup(rt);
 	exit (exit_code);
 }

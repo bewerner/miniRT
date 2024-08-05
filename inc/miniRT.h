@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 21:10:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:47:57 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 # define VEC4_WHITE			(t_vec4){{1, 1, 1, 1}}
 # define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
 # define VEC4_TRANSPARENT	(t_vec4){{0, 0, 0, 0}}
+
+# define FALLOFF_THRESHOLD (1.0f / 256)
 
 typedef enum e_timeraction
 {
@@ -128,9 +130,15 @@ typedef struct		s_hitpoint
 	t_object		*object;
 }					t_hitpoint;
 
+typedef enum		e_light_type
+{
+	LIGHT_NONE,
+	LIGHT_POINT
+}					t_light_type;
+
 typedef struct		s_light
 {
-	// t_light_type	type;
+	t_light_type	type;
 	// t_vec3		dir;
 	t_vec3			origin;
 	double			radius;
