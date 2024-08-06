@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/05 16:47:57 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/06 15:33:12 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct		s_object
 	t_obj_type		type;
 	t_vec3			origin;
 	t_vec3			normal;
+	t_vec4			base_color;
 	double			radius;
 	double			height;
 }					t_object;
@@ -228,6 +229,8 @@ t_vec3	vec3_cross(const t_vec3 a, const t_vec3 b);
 
 // utils/vec4_utils1.c
 t_vec4	vec4_add(const t_vec4 a, const t_vec4 b);
+t_vec4	vec4_sub(const t_vec4 a, const t_vec4 b);
+t_vec4	vec4_mul(const t_vec4 a, const t_vec4 b);
 t_vec4	vec4_scale(const double s, const t_vec4 a);
 
 // utils/time.c

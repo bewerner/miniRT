@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/05 16:59:13 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/06 15:49:36 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,29 +73,42 @@ void	parse_scene(char *file, t_rt *rt)
 		rt->objects[i].type = OBJ_SPHERE;
 		rt->objects[i].origin = (t_vec3){-3 + (int)i * 3, 0, 0};
 		rt->objects[i].radius = 1;
+		// rt->objects[i].base_color = (t_vec4){{i == 0 ? 1.0 : 0.0, i == 1 ? 1.0 : 0.0, i == 2 ? 1.0 : 0.0, 1.0}};
+		rt->objects[i].base_color = (t_vec4){{1.0, 1.0, 1.0, 1.0}};
 	}
 
-	rt->lights = (t_light *)ft_calloc(2 + 1, sizeof(t_light));
+	rt->lights = (t_light *)ft_calloc(3 + 1, sizeof(t_light));
 	rt->lights[0].type = LIGHT_POINT;
 	rt->lights[0].origin = (t_vec3){-3, 0, 3};
 	rt->lights[0].radius = 1;
 	rt->lights[0].ratio = 1;
-	rt->lights[0].color = (t_vec4){{1.0, 0.4, 0.2, 1}};
+	rt->lights[0].color = (t_vec4){{1.0, 0.0, 0.0, 1}};
+	// rt->lights[0].color = (t_vec4){{1.0, 1.0, 1.0, 1}};
 	rt->lights[0].color = vec4_scale(rt->lights[0].ratio, rt->lights[0].color);
+
 	rt->lights[1].type = LIGHT_POINT;
-	rt->lights[1].origin = (t_vec3){3, 0, 3};
+	rt->lights[1].origin = (t_vec3){0, 0, 3};
 	rt->lights[1].radius = 1;
 	rt->lights[1].ratio = 1;
-	rt->lights[1].color = (t_vec4){{0.2, 0.6, 1.0, 1}};
+	// rt->lights[1].color = (t_vec4){{1.0, 0.0, 0.0, 1}};
+	rt->lights[1].color = (t_vec4){{0.0, 1.0, 0.0, 1}};
+	// rt->lights[1].color = (t_vec4){{1.0, 1.0, 1.0, 1}};
 	rt->lights[1].color = vec4_scale(rt->lights[1].ratio, rt->lights[1].color);
 
+	rt->lights[2].type = LIGHT_POINT;
+	rt->lights[2].origin = (t_vec3){3, 0, 3};
+	rt->lights[2].radius = 1;
+	rt->lights[2].ratio = 1;
+	// rt->lights[2].color = (t_vec4){{1.0, 0.0, 0.0, 1}};
+	rt->lights[2].color = (t_vec4){{0.0, 0.0, 1.0, 1}};
+	// rt->lights[2].color = (t_vec4){{1.0, 1.0, 1.0, 1}};
+	rt->lights[2].color = vec4_scale(rt->lights[2].ratio, rt->lights[2].color);
+
+	// rt->ambient = (t_vec4){{.00, .00, .00, 1}};
 	rt->ambient = (t_vec4){{.025, .025, .1, 1}};
 
-	// rt->camera.origin = (t_vec3){-5, 0, 10};
 	rt->camera.origin = (t_vec3){0, -8.5, .5};
 	rt->camera.direction = (t_vec3){0, 1, 0};
-	// rt->camera.direction = (t_vec3){0.509037, 0.293894, -0.809017};
-	// rt->camera.direction = (t_vec3){0.709195, 0.616493, 0.34202};
 	rt->camera.focal_lenth = 1000;
 }
 
