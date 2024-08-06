@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 20:48:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:10:08 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 	{
 		if (rt->objects[i].type == OBJ_SPHERE)
 			current = get_hitpoint_sphere(ray, &rt->objects[i]);
-		// else if (rt->object[i].type == OBJ_SPHERE)
+		else if (rt->objects[i].type == OBJ_PLANE)
+			current = get_hitpoint_plane(ray, &rt->objects[i]);
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		if (vec3_len(current.ray) < vec3_len(closest.ray))
 			closest = current;
@@ -50,8 +51,9 @@ t_vec4	get_diffuse_color(t_hitpoint hitpoint, t_rt *rt)
 {
 	if (hitpoint.object->type == OBJ_SPHERE)
 		return (get_diffuse_color_sphere(hitpoint, rt));
-	// else if (rt->object[i].type == OBJ_SPHERE)
-	// else if (rt->object[i].type == OBJ_SPHERE)
+	else if (hitpoint.object->type == OBJ_PLANE)
+		return (get_diffuse_color_plane(hitpoint, rt));
+	// else if (hitpoint.object->type == OBJ_SPHERE)
 	return (VEC4_BLACK);
 }
 
