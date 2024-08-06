@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/04 19:40:44 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/06 15:17:49 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,43 @@
 
 void	keyhook(mlx_key_data_t keydata, void* param)
 {
+	double	dist;
 	t_rt	*rt;
 
 	rt = (t_rt*)param;
 	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
 		mlx_close_window(rt->mlx);
+	
+	if (keydata.key == MLX_KEY_KP_1 && keydata.action == MLX_PRESS)
+	{
+		// FRONT_VIEW
+		dist = vec3_len(rt->camera.origin);
+		rt->camera.origin = (t_vec3){0, (double)-1 * dist, 0};
+		rt->camera.yaw = 0;
+		rt->camera.pitch = M_PI / 2;
+		update_screen(rt);
+		rt->move.vel = VEC3_ZERO;
+	}
+	else if (keydata.key == MLX_KEY_KP_3 && keydata.action == MLX_PRESS)
+	{
+		// RIGHT_VIEW
+		dist = vec3_len(rt->camera.origin);
+		rt->camera.origin = (t_vec3){(double)-1 * dist, 0, 0};
+		rt->camera.yaw = -M_PI / 2;
+		rt->camera.pitch = M_PI / 2;
+		update_screen(rt);
+		rt->move.vel = VEC3_ZERO;
+	}
+	else if (keydata.key == MLX_KEY_KP_7 && keydata.action == MLX_PRESS)
+	{
+		// TOP_VIEW
+		dist = vec3_len(rt->camera.origin);
+		rt->camera.origin = (t_vec3){0, 0, (double)1 * dist};
+		rt->camera.yaw = 0;
+		rt->camera.pitch = 0;
+		update_screen(rt);
+		rt->move.vel = VEC3_ZERO;
+	}
 }
 
 void	update_screen(t_rt *rt)
