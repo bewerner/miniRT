@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 15:22:13 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/06 15:35:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,9 @@ t_vec4	get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt)
 	}
 	combined_light_col.a = 1;
 	combined_light_col = vec4_add(combined_light_col, rt->ambient);
+
+	// combine Light color with base color
+	combined_light_col = vec4_mul(hitpoint.object->base_color, combined_light_col);
+
 	return (combined_light_col);
 }
