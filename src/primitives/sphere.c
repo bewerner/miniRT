@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 15:35:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:40:09 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object)
 	return (hitpoint);
 }
 
-static bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
+bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
 {
 	size_t		i;
 	t_hitpoint	current;
@@ -66,7 +66,8 @@ static bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
 		}
 		if (rt->objects[i].type == OBJ_SPHERE )
 			current = get_hitpoint_sphere(ray, &rt->objects[i]);
-		// else if (rt->object[i].type == OBJ_SPHERE)
+		else if (rt->objects[i].type == OBJ_PLANE)
+			current = get_hitpoint_plane(ray, &rt->objects[i]);
 		// else if (rt->object[i].type == OBJ_SPHERE)
 		if (vec3_len(current.ray) < ray_len)
 			return (true);
@@ -85,7 +86,10 @@ t_vec4	get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt)
 	int		i;
 	t_vec4	combined_light_col;
 	double	received_intensity;
+
+	// REFACTOR INTO get_hitpoint_OBJ function // also for plane !!!
 	hitpoint.pos = vec3_add(rt->camera.origin, hitpoint.ray); // change HitRay to HitPoint
+
 	normal = vec3_normalize(vec3_sub(hitpoint.pos, hitpoint.object->origin));
 	combined_light_col = VEC4_BLACK;
 

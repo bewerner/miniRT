@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 15:33:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:37:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,14 @@ typedef struct		s_object
 	t_vec3			origin;
 	t_vec3			normal;
 	t_vec4			base_color;
+	double			dist;
 	double			radius;
 	double			height;
 }					t_object;
 
 typedef struct		s_hitpoint
 {
-	t_vec3			ray;
+	t_vec3			ray;	// incident_ray oder pixel_ray oder camera_ray
 	t_vec3			pos;
 	t_object		*object;
 }					t_hitpoint;
@@ -202,9 +203,15 @@ void	move_camera(t_rt *rt);
 t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt);
 void		render(t_rt *rt);
 
+// primitives/plane.c
+t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object);
+t_vec4		get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt);
+
 // primitives/sphere.c
 t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object);
 t_vec4		get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt);
+
+bool		is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);
 
 // color_convert.c
 uint32_t	combine_rgba(int r, int g, int b, int a);
