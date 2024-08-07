@@ -3,9 +3,9 @@ NAME				=	miniRT
 LIBFT				=	libft/libft.a
 MLX42				=	MLX42/build/libmlx42.a
 
-VPATH				=	src src/primitives src/utils
+VPATH				=	src src/parser src/primitives src/utils
 
-SRC					=	main.c cleanup.c hooks.c movement.c render.c plane.c sphere.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotate.c color_convert.c time.c
+SRC					=	main.c cleanup.c parser.c hooks.c movement.c render.c plane.c sphere.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotate.c color_convert.c time.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
 CFLAGS				=	-Wall -Wextra -Werror -Ofast -flto

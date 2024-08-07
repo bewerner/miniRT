@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 20:32:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:25:00 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_mlx(t_rt *rt)
 		terminate("mlx_new_image failed", 1, rt);
 }
 
-void	validate_input(int argc, char **argv, t_rt *rt)
+void	validate_args(int argc, char **argv, t_rt *rt)
 {
 	if (argc != 2)
 		terminate("usage: ./miniRt scene_file.rt", 1, rt);
@@ -51,79 +51,8 @@ void	validate_input(int argc, char **argv, t_rt *rt)
 		|| !ft_strrchr(argv[1], '.')
 		|| ft_strncasecmp(ft_strrchr(argv[1], '.'), ".rt\0", 4))
 	{
-		terminate("error: wrong file format. (needs to be .rt)", 1, rt);
+		terminate("error: ", 1, rt);
 	}
-}
-
-void	parse_scene(char *file, t_rt *rt)
-{
-	(void)file;
-	// rt->objects = (t_object *)ft_calloc(1 + 1, sizeof(t_object));
-	// rt->objects[0].type = OBJ_SPHERE;
-	// rt->objects[0].origin = (t_vec3){0, 0, 0};
-	// rt->objects[0].radius = 1;
-
-	// rt->objects[1].type = OBJ_SPHERE;
-	// rt->objects[1].origin = (t_vec3){5, 0, 1.2};
-	// rt->objects[1].radius = 0.5;
-
-	// rt->objects = (t_object *)ft_calloc(4 + 1, sizeof(t_object));
-	// for (size_t i = 0; i < 3; i++)
-	// {
-	// 	rt->objects[i].type = OBJ_SPHERE;
-	// 	rt->objects[i].origin = (t_vec3){-3 + (int)i * 3, 0, 0};
-	// 	rt->objects[i].radius = 1;
-	// 	// rt->objects[i].base_color = (t_vec4){{i == 0 ? 1.0 : 0.0, i == 1 ? 1.0 : 0.0, i == 2 ? 1.0 : 0.0, 1.0}};
-	// 	rt->objects[i].base_color = (t_vec4){{1.0, 1.0, 1.0, 1.0}};
-	// }
-
-	// -------PLANE-------
-	rt->objects = (t_object *)ft_calloc(2 + 1, sizeof(t_object));
-	rt->objects[0].type = OBJ_PLANE;
-	rt->objects[0].origin = (t_vec3){0, 0, -1};
-	rt->objects[0].normal = vec3_normalize((t_vec3){0, 0, 1});							// must be normalized in parser
-	rt->objects[0].dist = vec3_dot(rt->objects[0].origin, rt->objects[0].normal);		// distance of plane from world origin --> has to be calculated in parser!!!!
-	rt->objects[0].base_color = (t_vec4){{1.0, 1.0, 1.0, 1.0}};
-
-	// rt->objects[1].type = OBJ_SPHERE;
-	// rt->objects[1].origin = (t_vec3){0, 0, 0};
-	// rt->objects[1].radius = 1;
-	// rt->objects[1].base_color = (t_vec4){{1.0, 1.0, 1.0, 1.0}};
-
-
-	rt->lights = (t_light *)ft_calloc(3 + 1, sizeof(t_light));
-	rt->lights[0].type = LIGHT_POINT;
-	rt->lights[0].origin = (t_vec3){-3, 0, 3};
-	rt->lights[0].radius = 1;
-	rt->lights[0].ratio = 1;
-	rt->lights[0].color = (t_vec4){{1.0, 0.0, 0.0, 1}};
-	// rt->lights[0].color = (t_vec4){{1.0, 1.0, 1.0, 1}};
-	rt->lights[0].color = vec4_scale(rt->lights[0].ratio, rt->lights[0].color);
-
-	rt->lights[1].type = LIGHT_POINT;
-	rt->lights[1].origin = (t_vec3){0, 0, 3};
-	rt->lights[1].radius = 1;
-	rt->lights[1].ratio = 1;
-	// rt->lights[1].color = (t_vec4){{1.0, 0.0, 0.0, 1}};
-	rt->lights[1].color = (t_vec4){{0.0, 1.0, 0.0, 1}};
-	// rt->lights[1].color = (t_vec4){{1.0, 1.0, 1.0, 1}};
-	rt->lights[1].color = vec4_scale(rt->lights[1].ratio, rt->lights[1].color);
-
-	rt->lights[2].type = LIGHT_POINT;
-	rt->lights[2].origin = (t_vec3){3, 0, 3};
-	rt->lights[2].radius = 1;
-	rt->lights[2].ratio = 1;
-	// rt->lights[2].color = (t_vec4){{1.0, 0.0, 0.0, 1}};
-	rt->lights[2].color = (t_vec4){{0.0, 0.0, 1.0, 1}};
-	// rt->lights[2].color = (t_vec4){{1.0, 1.0, 1.0, 1}};
-	rt->lights[2].color = vec4_scale(rt->lights[2].ratio, rt->lights[2].color);
-
-	rt->ambient = (t_vec4){{.00, .00, .00, 1}};
-	// rt->ambient = (t_vec4){{.025, .025, .1, 1}};
-
-	rt->camera.origin = (t_vec3){0, -8.5, .5};
-	rt->camera.direction = (t_vec3){0, 1, 0};
-	rt->camera.focal_lenth = 1000;
 }
 
 void	init_camera(t_camera* camera)
@@ -143,8 +72,8 @@ int	main(int argc, char **argv)
 
 	errno = 0;
 	ft_bzero(&rt, sizeof(t_rt));
-	validate_input(argc, argv, &rt);
-	parse_scene(argv[1], &rt);
+	validate_args(argc, argv, &rt);
+	load_scene(argv[1], &rt);
 	init_mlx(&rt);
 	init_camera(&rt.camera);
 	init_hooks(&rt);
