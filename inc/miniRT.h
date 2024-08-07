@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 18:37:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:37:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@
 # include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
-# include <stdio.h>
-# include <math.h>
 # include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <math.h>
 # include <sys/errno.h>
+
+# include "minirt_errors.h"
 
 # define LIGHTGRAY		"\033[97m"
 # define DARKGRAY		"\033[90m"
@@ -43,7 +46,9 @@
 # define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
 # define VEC4_TRANSPARENT	(t_vec4){{0, 0, 0, 0}}
 
+# define LIGHT_POWER 7.5
 # define FALLOFF_THRESHOLD (1.0f / 256)
+
 
 typedef enum e_timeraction
 {
@@ -189,19 +194,23 @@ typedef struct		s_rt
 }					t_rt;
 
 // cleanup.c
-void	error(char *message);
-void	terminate(char* message, uint8_t exit_code, t_rt *rt);
+char		*error_msg(t_error error);
+void		error(char *message);
+void		terminate(char *msg, uint8_t exit_code, t_rt *rt);
 
 // hooks.c
-void	init_hooks(t_rt *rt);
+void		init_hooks(t_rt *rt);
 
 // movement.c
-void	handle_move_input(t_rt *rt);
-void	move_camera(t_rt *rt);
+void		handle_move_input(t_rt *rt);
+void		move_camera(t_rt *rt);
 
 // render.c
 t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt);
 void		render(t_rt *rt);
+
+// parser/parser.c
+void		load_scene(char *file, t_rt *rt);
 
 // primitives/plane.c
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object);
@@ -218,29 +227,29 @@ uint32_t	combine_rgba(int r, int g, int b, int a);
 uint32_t	vec4_to_rgba(t_vec4	col);
 
 // utils/vec3_rotate.c
-t_vec3	vec3_rotate_x(t_vec3 p, double rad);
-t_vec3	vec3_rotate_y(t_vec3 p, double rad);
-t_vec3	vec3_rotate_z(t_vec3 p, double rad);
+t_vec3		vec3_rotate_x(t_vec3 p, double rad);
+t_vec3		vec3_rotate_y(t_vec3 p, double rad);
+t_vec3		vec3_rotate_z(t_vec3 p, double rad);
 
 // utils/vec3_utils1.c
-t_vec3	vec3_add(const t_vec3 a, const t_vec3 b);
-t_vec3	vec3_sub(const t_vec3 a, const t_vec3 b);
-t_vec3	vec3_mul(const t_vec3 a, const t_vec3 b);
-t_vec3	vec3_scale(const double s, const t_vec3 a);
-double	vec3_dot(const t_vec3 a, const t_vec3 b);
+t_vec3		vec3_add(const t_vec3 a, const t_vec3 b);
+t_vec3		vec3_sub(const t_vec3 a, const t_vec3 b);
+t_vec3		vec3_mul(const t_vec3 a, const t_vec3 b);
+t_vec3		vec3_scale(const double s, const t_vec3 a);
+double		vec3_dot(const t_vec3 a, const t_vec3 b);
 
 // utils/vec3_utils2.c
-double	vec3_len(const t_vec3 a);
-t_vec3	vec3_normalize(const t_vec3 a);
-t_vec3	vec3_cross(const t_vec3 a, const t_vec3 b);
+double		vec3_len(const t_vec3 a);
+t_vec3		vec3_normalize(const t_vec3 a);
+t_vec3		vec3_cross(const t_vec3 a, const t_vec3 b);
 
 // utils/vec4_utils1.c
-t_vec4	vec4_add(const t_vec4 a, const t_vec4 b);
-t_vec4	vec4_sub(const t_vec4 a, const t_vec4 b);
-t_vec4	vec4_mul(const t_vec4 a, const t_vec4 b);
-t_vec4	vec4_scale(const double s, const t_vec4 a);
+t_vec4		vec4_add(const t_vec4 a, const t_vec4 b);
+t_vec4		vec4_sub(const t_vec4 a, const t_vec4 b);
+t_vec4		vec4_mul(const t_vec4 a, const t_vec4 b);
+t_vec4		vec4_scale(const double s, const t_vec4 a);
 
 // utils/time.c
-void	ft_timer(t_timeraction action, char *msg);
+void		ft_timer(t_timeraction action, char *msg);
 
 #endif
