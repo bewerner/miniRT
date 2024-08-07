@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/07 15:25:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:54:33 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	validate_args(int argc, char **argv, t_rt *rt)
 		|| !ft_strrchr(argv[1], '.')
 		|| ft_strncasecmp(ft_strrchr(argv[1], '.'), ".rt\0", 4))
 	{
-		terminate("error: ", 1, rt);
+		terminate(error_msg(RT_ERROR_WRONG_FILE_FORMAT), 1, rt);
 	}
 }
 
