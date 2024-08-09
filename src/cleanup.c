@@ -14,7 +14,7 @@
 
 char	*error_msg(t_error error)
 {
-	const char	*msgs[9] = {
+	const char	*msgs[11] = {
 		RT_ERROR_MSG_SUCCES,
 		RT_ERROR_MSG_WRONG_FILE_FORMAT,
 		RT_ERROR_MSG_INVALID_IDENTIFIER,
@@ -24,6 +24,8 @@ char	*error_msg(t_error error)
 		RT_ERROR_MSG_TOO_MANY_LIGHTS,
 		RT_ERROR_MSG_TOO_MANY_CAMERAS,
 		RT_ERROR_MSG_TOO_MANY_AMBIENT
+		RT_ERROR_MSG_TOO_MANY_PLANES,
+		RT_ERROR_MSG_TOO_MANY_CYLINDER
 	};
 
 	return ((char*)msgs[error]);
