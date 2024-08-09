@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_diffuse_color.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:23:37 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/09 21:00:32 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 21:58:07 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_vec4	get_diffuse_color(t_hitpoint hitpoint, t_rt *rt)
 	return (col);
 }
 
-t_vec4	get_viewport_color(t_hitpoint hitpoint, t_rt *rt)
+t_vec4	get_solid_color(t_hitpoint hitpoint, t_rt *rt)
 {
 	t_vec4			col;
 	static t_vec4	vp_ambient = {{0.2, 0.2, 0.22, 1}};
