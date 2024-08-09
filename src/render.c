@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 18:31:40 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 20:42:06 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 	hitpoint = get_closest_hitpoint(pixel_ray, rt);
 	if (!hitpoint.object)
 		return ;
-	col = get_diffuse_color(hitpoint, rt);
+	if (rt->mode == MODE_PREVIEW)
+		col = get_diffuse_color(hitpoint, rt);
+	else
+		col = get_viewport_color(hitpoint, rt);
 	mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col));
 }
 

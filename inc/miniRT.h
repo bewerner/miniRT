@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 18:28:17 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 20:42:10 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define VEC4_WHITE			(t_vec4){{1, 1, 1, 1}}
 # define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
 # define VEC4_TRANSPARENT	(t_vec4){{0, 0, 0, 0}}
+# define VEC4_MG			(t_vec4){{0.05, 0.05, 0.05, 0}}
 
 # define HP_INF				(t_hitpoint){VEC3_INF, VEC3_INF, VEC3_ZERO, NULL}
 
@@ -72,6 +73,12 @@ typedef enum e_identifier
 	ID_PLANE,
 	ID_CYLINDER
 }	t_identifier;
+
+typedef enum e_mode
+{
+	MODE_SOLID,
+	MODE_PREVIEW,
+}	t_mode;
 
 typedef union		u_color
 {
@@ -187,6 +194,7 @@ typedef struct		s_camera
 	t_vec3			origin;
 	t_vec3			direction;
 	t_vec3			right;
+	t_vec3			viewport_light;
 	double			yaw;
 	double			pitch;
 	double			focal_lenth;
@@ -215,6 +223,7 @@ typedef struct		s_rt
 	double			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_ivec2			initial_cursor_pos;
+	int				mode;
 }					t_rt;
 
 // main.c
@@ -280,10 +289,15 @@ t_hitpoint		get_hitpoint_sphere(t_ray ray, t_object *object);
 
 // primitives/get_diffuse_color.c
 t_vec4			get_diffuse_color(t_hitpoint hitpoint, t_rt *rt);
+t_vec4			get_viewport_color(t_hitpoint hitpoint, t_rt *rt);
 
 // primitives/get_hitpoint.c
 bool			is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);
 t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
+
+// ┌───────────┐
+// │ Utilities │
+// └───────────┘
 
 // color_convert.c
 uint32_t		combine_rgba(int r, int g, int b, int a);

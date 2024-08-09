@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 19:04:49 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 20:34:54 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,9 @@ void	move_camera(t_rt *rt)
 	rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(rt->move.vel.x, rt->camera.right));
 	rt->camera.origin = vec3_add(rt->camera.origin, (t_vec3){0, 0, rt->move.vel.y});
 	rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(rt->move.vel.z, rt->camera.direction));
+
+	// rt->camera.viewport_light = (t_vec3){-0.4, 0.4, 1};
+	rt->camera.viewport_light = (t_vec3){-0.348155, 0.348155, 0.870388};
+	rt->camera.viewport_light = vec3_rotate_x(rt->camera.viewport_light, rt->camera.pitch);
+	rt->camera.viewport_light = vec3_rotate_z(rt->camera.viewport_light, rt->camera.yaw);
 }
