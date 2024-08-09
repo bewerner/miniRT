@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 15:23:22 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/08 23:04:13 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	update(void *param)
 	update_screen(rt);
 
 	ft_timer(TIMER_START, NULL);
-	ft_memset_int(rt->canvas->pixels, 0xFF000000, rt->mlx->width * rt->mlx->height);
+	ft_memset_int(rt->canvas->pixels, 0xFF000000, rt->canvas->width * rt->canvas->height);
 	render(rt);
 	ft_timer(TIMER_STOP, NULL);
 }
