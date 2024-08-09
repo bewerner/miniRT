@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 12:40:26 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:23:38 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@
 # define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
 # define VEC4_TRANSPARENT	(t_vec4){{0, 0, 0, 0}}
 
-# define LIGHT_POWER 1000
-# define FALLOFF_THRESHOLD (1.0f / 256)
+# define HP_INF				(t_hitpoint){VEC3_INF, VEC3_INF, VEC3_ZERO, NULL}
+
+# define MAX_POWER			1000
+# define LIGHT_POWER		0.575f
+# define FALLOFF_THRESHOLD	(1.0f / 256)
 
 
 typedef enum e_timeraction
@@ -137,7 +140,10 @@ typedef struct		s_object
 {
 	t_obj_type		type;
 	t_vec3			origin;
+	t_vec3			cap1;
+	t_vec3			cap2;
 	t_vec3			normal;
+	t_vec3			orientation;
 	t_vec4			base_color;
 	double			dist;
 	double			radius;
@@ -148,6 +154,7 @@ typedef struct		s_hitpoint
 {
 	t_vec3			ray;	// incident_ray oder pixel_ray oder camera_ray
 	t_vec3			pos;
+	t_vec3			normal;
 	t_object		*object;
 }					t_hitpoint;
 
@@ -164,6 +171,8 @@ typedef struct		s_light
 	t_vec3			origin;
 	double			radius;
 	double			ratio;
+	double			power;
+	double			intensity;
 	t_vec4			color;
 }					t_light;
 
@@ -253,8 +262,12 @@ double			validate_range(double nbr, t_vec2 min_max, t_rt *rt);
 t_identifier	get_identifier(char *line);
 
 // primitives/plane.c
-t_hitpoint		get_hitpoint_plane(t_ray ray, t_object *object);
-t_vec4			get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt);
+t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object);
+t_vec4		get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt);
+
+// primitives/cylinder.c
+t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object);
+t_vec4		get_diffuse_color_cylinder(t_hitpoint hitpoint, t_rt *rt);
 
 // primitives/sphere.c
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_object *object);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 16:00:59 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 20:37:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:43:06 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object)
 	dp = vec3_dot(ray.dir, object->normal);
 
 	if (dp >= 0)
-		return ((t_hitpoint){VEC3_INF, VEC3_INF, NULL});
+		return (HP_INF);
 
 	double t = (object->dist - vec3_dot(ray.origin, object->normal)) / dp;
 
 	if (t < 0)
-		return ((t_hitpoint){VEC3_INF, VEC3_INF, NULL});
+		return (HP_INF);
 
 	hitpoint.ray = vec3_scale(t, ray.dir);
 	hitpoint.object = object;
@@ -40,7 +40,7 @@ t_vec4	get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt)
 	int		i;
 	t_vec4	col;
 	t_ray	light_ray;
-	double	scaled_distance;
+	double	distance;
 	t_vec4	combined_light_col;
 	double	received_intensity;
 
@@ -56,12 +56,13 @@ t_vec4	get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt)
 		received_intensity = -vec3_dot(hitpoint.object->normal, vec3_normalize(light_ray.dir));
 		if (received_intensity <= 0)
 			continue ;
-		scaled_distance = vec3_len(light_ray.dir) / 10 + 1;
-		received_intensity = received_intensity / (scaled_distance * scaled_distance); // Apply Falloff
-		if (received_intensity <= 0.0039) // 1 / 256 = ~0.0039
+		distance = vec3_len(light_ray.dir);
+		received_intensity = received_intensity / (distance * distance); // Apply Falloff
+		if (received_intensity <= 0.0000039) // 1 / 256 = ~0.0039
 			continue ;
 		if (is_obstructed(light_ray, hitpoint.object, rt)) // Check for Ligth Collision
 			continue ;
+		received_intensity *= rt->lights[i].intensity;
 		col = (t_vec4){{rt->lights[i].color.r * received_intensity, rt->lights[i].color.g * received_intensity, rt->lights[i].color.b * received_intensity, 1.0f}};
 		combined_light_col = vec4_add(combined_light_col, col);
 	}
