@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 17:14:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 17:53:54 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 
 	pixel_ray.origin = rt->camera.origin;
 	pixel_ray.dir = get_pixel_ray(pixel.x, pixel.y, rt);
-	// get closest hitpoint (and object pointer)
 	hitpoint = get_closest_hitpoint(pixel_ray, rt);
 	if (!hitpoint.object)
 		return ;
