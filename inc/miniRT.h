@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 17:15:19 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 17:20:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,8 +249,10 @@ t_error			parse_light(t_rt *rt);
 // parser/parse_primitives.c
 t_error			parse_sphere(size_t *obj_count, t_rt *rt);
 t_error			parse_plane(size_t *obj_count, t_rt *rt);
+t_error			parse_cylinder(size_t *obj_count, t_rt *rt);
 
 // parser/parser_utils1.c
+void			whitespace_to_space(char *str);
 void			ft_skipspace(char **str);
 double			ft_atod(char **str, double nbr, int sign_dpoint_dplaces[3]);
 
