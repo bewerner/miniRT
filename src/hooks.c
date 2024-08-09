@@ -6,52 +6,48 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 23:18:27 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 23:36:47 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	keyhook(mlx_key_data_t keydata, void* param)
+void	keyhook_axial_view(mlx_key_data_t keydata, t_rt *rt)
 {
-	double	dist;
-	t_rt	*rt;
-
-	rt = (t_rt*)param;
-	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
-		mlx_close_window(rt->mlx);
-	
 	if (keydata.key == MLX_KEY_KP_1 && keydata.action == MLX_PRESS)
 	{
-		// FRONT_VIEW
-		dist = vec3_len(rt->camera.origin);
-		rt->camera.origin = (t_vec3){0, (double)-1 * dist, 0};
+		rt->camera.origin = (t_vec3){0, -vec3_len(rt->camera.origin), 0};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = M_PI / 2;
 		rt->move.vel = VEC3_ZERO;
 	}
 	else if (keydata.key == MLX_KEY_KP_3 && keydata.action == MLX_PRESS)
 	{
-		// RIGHT_VIEW
-		dist = vec3_len(rt->camera.origin);
-		rt->camera.origin = (t_vec3){(double)-1 * dist, 0, 0};
+		rt->camera.origin = (t_vec3){-vec3_len(rt->camera.origin), 0, 0};
 		rt->camera.yaw = -M_PI / 2;
 		rt->camera.pitch = M_PI / 2;
 		rt->move.vel = VEC3_ZERO;
 	}
 	else if (keydata.key == MLX_KEY_KP_7 && keydata.action == MLX_PRESS)
 	{
-		// TOP_VIEW
-		dist = vec3_len(rt->camera.origin);
-		rt->camera.origin = (t_vec3){0, 0, (double)1 * dist};
+		rt->camera.origin = (t_vec3){0, 0, vec3_len(rt->camera.origin)};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = 0;
 		rt->move.vel = VEC3_ZERO;
 	}
+}
+
+void	keyhook(mlx_key_data_t keydata, void* param)
+{
+	t_rt	*rt;
+
+	rt = (t_rt*)param;
+	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
+		mlx_close_window(rt->mlx);
 	else if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
-	{
 		rt->mode = !rt->mode;
-	}
+	else
+		keyhook_axial_view(keydata, rt);
 }
 
 void	update_screen(t_rt *rt)
