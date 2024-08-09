@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 16:59:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 01:09:23 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_error	parse_sphere(size_t *obj_count, t_rt *rt)
 	count++;
 	if (ft_strncmp(rt->line->content, "SP ", 3) == 0 && count > 1)
 		return (RT_ERROR_TOO_MANY_SPHERES);
-	line = &rt->line->content[2];
+	line = (char *)rt->line->content +2;
 	rt->objects[*obj_count].type = OBJ_SPHERE;
 	rt->objects[*obj_count].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->objects[*obj_count].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -42,7 +42,7 @@ t_error	parse_plane(size_t *obj_count, t_rt *rt)
 	count++;
 	if (ft_strncmp(rt->line->content, "PL ", 3) == 0  && count > 1)
 		return (RT_ERROR_TOO_MANY_PLANES);
-	line = &rt->line->content[2];
+	line = (char *)rt->line->content + 2;
 	rt->objects[*obj_count].type = OBJ_PLANE;
 	rt->objects[*obj_count].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->objects[*obj_count].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -68,7 +68,7 @@ t_error	parse_cylinder(size_t *obj_count, t_rt *rt)
 	count++;
 	if (ft_strncmp(rt->line->content, "CY ", 3) == 0  && count > 1)
 		return (RT_ERROR_TOO_MANY_CYLINDER);
-	line = &rt->line->content[2];
+	line = (char *)rt->line->content + 2;
 	rt->objects[*obj_count].type = OBJ_CYLINDER;
 	rt->objects[*obj_count].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->objects[*obj_count].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
