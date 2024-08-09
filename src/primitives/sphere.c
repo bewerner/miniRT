@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 17:14:49 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 18:25:20 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,35 +45,4 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object)
 	hitpoint.normal = vec3_normalize(vec3_sub(hitpoint.pos, object->origin));
 
 	return (hitpoint);
-}
-
-bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
-{
-	size_t		i;
-	t_hitpoint	current;
-	double		ray_len;
-
-	current.ray = VEC3_INF;
-	current.pos = VEC3_INF;
-	current.object = NULL;
-	ray_len = vec3_len(ray.dir);
-	i = 0;
-	while (rt->objects[i].type)
-	{
-		if (&rt->objects[i] == exclude)
-		{
-			i++;
-			continue ;
-		}
-		if (rt->objects[i].type == OBJ_SPHERE )
-			current = get_hitpoint_sphere(ray, &rt->objects[i]);
-		else if (rt->objects[i].type == OBJ_PLANE)
-			current = get_hitpoint_plane(ray, &rt->objects[i]);
-		else if (rt->objects[i].type == OBJ_CYLINDER)
-			current = get_hitpoint_cylinder(ray, &rt->objects[i]);
-		if (vec3_len(current.ray) < ray_len)
-			return (true);
-		i++;
-	}
-	return (false);
 }
