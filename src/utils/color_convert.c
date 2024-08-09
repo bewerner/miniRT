@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_convert.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 22:04:33 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 15:01:50 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 15:31:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,7 @@ static uint8_t	rand_dither(double value)
 
 uint32_t	vec4_to_rgba(t_vec4	col)
 {
-	static size_t	i;
-	i++;
-	if (i > 20 * 1280 * 720)
-		i = 0;
-	if (i < 10 * 1280 * 720)
+	if (true)
 		return (0
 			| ((uint8_t)(rand_dither(clamp(col.r, 0, 1) * 255)) << 24)
 			| ((uint8_t)(rand_dither(clamp(col.g, 0, 1) * 255)) << 16)

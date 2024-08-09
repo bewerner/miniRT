@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 15:23:38 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:38:43 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 
 # define HP_INF				(t_hitpoint){VEC3_INF, VEC3_INF, VEC3_ZERO, NULL}
 
-# define MAX_POWER			1000
+# define MAX_POWER			10000
 # define LIGHT_POWER		0.575f
 # define FALLOFF_THRESHOLD	(1.0f / 256)
 

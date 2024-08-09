@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:31:54 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 12:32:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:28:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ t_error	parse_light(t_rt *rt)
 	rt->lights[count - 1].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->lights[count - 1].origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->lights[count - 1].ratio = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt) * LIGHT_POWER;
+	rt->lights[count - 1].power = rt->lights[count - 1].ratio * MAX_POWER;
+	rt->lights[count - 1].intensity = rt->lights[count - 1].power / 38.26f;
 	rt->lights[count - 1].color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->lights[count - 1].color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->lights[count - 1].color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->lights[count - 1].color.a = 1.0f;
-	rt->lights[count - 1].radius = 0.0f;		/// DELETE ME AND ALSO IN STRUCT
-	rt->lights[count - 1].color = vec4_scale(rt->lights[count - 1].ratio, rt->lights[count - 1].color);
+	// rt->lights[count - 1].radius = 0.0f;		/// DELETE ME AND ALSO IN STRUCT
 	return (RT_SUCCESS);
 }
 
