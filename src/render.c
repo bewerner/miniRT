@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/07 18:07:29 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 17:14:36 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,31 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 
 t_vec4	get_diffuse_color(t_hitpoint hitpoint, t_rt *rt)
 {
-	if (hitpoint.object->type == OBJ_SPHERE)
-		return (get_diffuse_color_sphere(hitpoint, rt));
-	else if (hitpoint.object->type == OBJ_PLANE)
-		return (get_diffuse_color_plane(hitpoint, rt));
-	else if (hitpoint.object->type == OBJ_CYLINDER)
-		return (get_diffuse_color_cylinder(hitpoint, rt));
-	return (VEC4_BLACK);
+	int		i;
+	t_ray	light_ray;
+	double	distance;
+	t_vec4	col;
+	double	intensity;
+
+	col = VEC4_BLACK;
+	i = -1;
+	while (rt->lights[++i].type)
+	{
+		light_ray.dir = vec3_sub(hitpoint.pos, rt->lights[i].origin);
+		light_ray.origin = rt->lights[i].origin;
+		intensity = -vec3_dot(hitpoint.normal, vec3_normalize(light_ray.dir));
+		if (intensity <= 0)
+			continue ;
+		distance = vec3_len(light_ray.dir);
+		intensity = intensity / (distance * distance);
+		if (intensity <= 0.0f || is_obstructed(light_ray, hitpoint.object, rt))
+			continue ;
+		intensity *= rt->lights[i].intensity;
+		col = vec4_add(col, vec4_scale(intensity, rt->lights[i].color));
+	}
+	col = vec4_add(col, rt->ambient);
+	col = vec4_mul(hitpoint.object->base_color, col);
+	return (col);
 }
 
 void	trace_ray(t_ivec2 pixel, t_rt *rt)

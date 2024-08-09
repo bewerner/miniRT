@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 15:43:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:14:49 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object)
 	double		discriminant;
 	double		rr;
 	t_vec3		AP;
-
-	hitpoint.object = object;
 
 	rr = object->radius * object->radius;
 	AP = vec3_sub(ray.origin, object->origin);
@@ -41,7 +39,10 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object)
 
 	// create HitRay
 	// hitpoint.pos = vec3_add(rt->camera.origin, vec3_scale(t1, rayDir));
+	hitpoint.object = object;
 	hitpoint.ray = vec3_scale(t1, ray.dir);
+	hitpoint.pos = vec3_add(ray.origin, hitpoint.ray);
+	hitpoint.normal = vec3_normalize(vec3_sub(hitpoint.pos, object->origin));
 
 	return (hitpoint);
 }
@@ -75,48 +76,4 @@ bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
 		i++;
 	}
 	return (false);
-}
-
-
-t_vec4	get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt)
-{
-	t_vec4	col;
-	t_vec3	normal;
-	t_ray	light_ray;
-	double	distance;
-	int		i;
-	t_vec4	combined_light_col;
-	double	received_intensity;
-
-	// REFACTOR INTO get_hitpoint_OBJ function // also for plane !!!
-	hitpoint.pos = vec3_add(rt->camera.origin, hitpoint.ray); // change HitRay to HitPoint
-
-	normal = vec3_normalize(vec3_sub(hitpoint.pos, hitpoint.object->origin));
-	combined_light_col = VEC4_BLACK;
-
-	i = -1;
-	while (rt->lights[++i].type)
-	{
-		light_ray.dir = vec3_sub(hitpoint.pos, rt->lights[i].origin);
-		light_ray.origin = rt->lights[i].origin;
-		received_intensity = -vec3_dot(normal, vec3_normalize(light_ray.dir));
-		if (received_intensity <= 0)
-			continue ;
-		distance = vec3_len(light_ray.dir);
-		received_intensity = received_intensity / (distance * distance); // Apply Falloff
-		if (received_intensity <= 0.0f) // 1 / 256 = ~0.0039
-			continue ;
-		if (is_obstructed(light_ray, hitpoint.object, rt)) // Check for Ligth Collision
-			continue ;
-		received_intensity *= rt->lights[i].intensity;
-		col = (t_vec4){{rt->lights[i].color.r * received_intensity, rt->lights[i].color.g * received_intensity, rt->lights[i].color.b * received_intensity, 1.0f}};
-		combined_light_col = vec4_add(combined_light_col, col);
-	}
-	combined_light_col.a = 1;
-	combined_light_col = vec4_add(combined_light_col, rt->ambient);
-
-	// combine Light color with base color
-	combined_light_col = vec4_mul(hitpoint.object->base_color, combined_light_col);
-
-	return (combined_light_col);
 }
