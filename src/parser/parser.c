@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 15:21:04 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:59:28 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static t_error	parse_scene(t_rt *rt)
 			error = parse_sphere(&obj_count, rt);
 		else if (id == ID_PLANE)
 			error = parse_plane(&obj_count, rt);
+		else if (id == ID_CYLINDER)
+			error = parse_cylinder(&obj_count, rt);
 		else if (id != ID_COMMENT)
 			error = RT_ERROR_INVALID_IDENTIFIER;
 		if (error)
@@ -57,6 +59,7 @@ static t_ivec2	load_elements(int fd, t_rt *rt)
 		id = get_identifier(line);
 		if (id == ID_INVALID)
 		{
+			free(line);
 			close(fd);
 			terminate(error_msg(RT_ERROR_INVALID_IDENTIFIER), 1, rt);
 		}
