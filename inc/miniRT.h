@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 17:20:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 18:28:17 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,8 +233,11 @@ void			handle_move_input(t_rt *rt);
 void			move_camera(t_rt *rt);
 
 // render.c
-t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 void			render(t_rt *rt);
+
+// ┌────────┐
+// │ Parser │
+// └────────┘
 
 // parser/parser.c
 void			load_scene(char *file, t_rt *rt);
@@ -262,6 +265,10 @@ double			get_next_value(char **line, t_rt *rt);
 double			validate_range(double nbr, t_vec2 min_max, t_rt *rt);
 t_identifier	get_identifier(char *line);
 
+// ┌────────────┐
+// │ Primitives │
+// └────────────┘
+
 // primitives/plane.c
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object);
 
@@ -271,7 +278,12 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object);
 // primitives/sphere.c
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_object *object);
 
+// primitives/get_diffuse_color.c
+t_vec4			get_diffuse_color(t_hitpoint hitpoint, t_rt *rt);
+
+// primitives/get_hitpoint.c
 bool			is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);
+t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 
 // color_convert.c
 uint32_t		combine_rgba(int r, int g, int b, int a);
