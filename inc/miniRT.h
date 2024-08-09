@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 22:29:38 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 23:12:39 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,10 +299,13 @@ t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 // │ Utilities │
 // └───────────┘
 
-// color_convert.c
+// utils/color_convert.c
 uint32_t		combine_rgba(int r, int g, int b, int a);
 uint32_t		vec4_to_abgr(t_vec4	col, bool dither);
 uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
+
+// utils/image.c
+void			fill_image(mlx_image_t *image, t_vec4 color);
 
 // utils/vec3_rotate.c
 t_vec3			vec3_rotate_x(t_vec3 p, double rad);

@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 23:00:10 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 23:18:27 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ void	update(void *param)
 
 	ft_timer(TIMER_START, NULL);
 	if (rt->mode == MODE_PREVIEW)
-		ft_memset_int(rt->canvas->pixels, vec4_to_abgr(rt->ambient, false), rt->canvas->width * rt->canvas->height);
+		fill_image(rt->canvas, rt->ambient);
 	else
-		ft_memset_int(rt->canvas->pixels, 0xFF404040, rt->canvas->width * rt->canvas->height);
+		fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});
 	render(rt);
 	ft_timer(TIMER_STOP, NULL);
 }
@@ -124,8 +124,6 @@ void	set_rotation(t_vec2 distance, t_rt *rt)
 		rt->camera.yaw += 2 * M_PI;
 	rt->camera.pitch -= (double)distance.y / 700;
 	rt->camera.pitch = fmax(fmin(rt->camera.pitch, M_PI), 0);
-	// printf("yaw:   %10f = %4.1f, pitch: %10f = %4.1f\n", rt->camera.yaw, rt->camera.yaw * 180 / M_PI, rt->camera.pitch, rt->camera.pitch * 180 / M_PI);
-	// printf("yaw: %f, pitch: %f\n", rt->camera.yaw, rt->camera.pitch);
 }
 
 void	cursor_hook(double cursor_x, double cursor_y, void *param)
@@ -143,7 +141,8 @@ void	cursor_hook(double cursor_x, double cursor_y, void *param)
 	distance.y = cursor_y - rt->initial_cursor_pos.y;
 	if (mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_RIGHT))
 		set_rotation(distance, rt);
-	mlx_set_mouse_pos(rt->mlx, rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
+	mlx_set_mouse_pos(rt->mlx,
+		rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
 }
 
 void	init_hooks(t_rt *rt)
