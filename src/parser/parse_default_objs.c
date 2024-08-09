@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 00:47:01 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 01:03:48 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_error	parse_ambient(t_rt *rt)
 		return (RT_ERROR_TOO_MANY_AMBIENT);
 	if (ft_strncmp(rt->line->content, "a ", 2) == 0)
 		return (RT_ERROR_AMBIENT_LOWER_CASE);
-	line = &rt->line->content[1];
+	line = (char *)rt->line->content + 1;
 	ratio = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	rt->ambient.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->ambient.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
@@ -43,7 +43,7 @@ t_error	parse_camera(t_rt *rt)
 		return (RT_ERROR_TOO_MANY_CAMERAS);
 	else if (ft_strncmp(rt->line->content, "c ", 2) == 0)
 		return (RT_ERROR_CAMERA_LOWER_CASE);
-	line = &rt->line->content[1];
+	line = (char *)rt->line->content + 1;
 	rt->camera.origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->camera.origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->camera.origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
