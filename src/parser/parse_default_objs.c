@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_default_objs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 22:52:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 00:47:01 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_error	parse_ambient(t_rt *rt)
 	count++;
 	if (count > 1)
 		return (RT_ERROR_TOO_MANY_AMBIENT);
-	if (*(char *)(rt->line->content) == 'a')
+	if (ft_strncmp(rt->line->content, "a ", 2) == 0)
 		return (RT_ERROR_AMBIENT_LOWER_CASE);
 	line = &rt->line->content[1];
 	ratio = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
@@ -41,7 +41,7 @@ t_error	parse_camera(t_rt *rt)
 	count++;
 	if (count > 1)
 		return (RT_ERROR_TOO_MANY_CAMERAS);
-	else if (*(char *)(rt->line->content) == 'c')
+	else if (ft_strncmp(rt->line->content, "c ", 2) == 0)
 		return (RT_ERROR_CAMERA_LOWER_CASE);
 	line = &rt->line->content[1];
 	rt->camera.origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
