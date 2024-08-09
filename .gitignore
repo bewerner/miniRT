@@ -10,6 +10,8 @@
 !src/**
 !inc
 !inc/**
+!scenes
+!scenes/*.rt
 !Makefile
 !.gitignore
 

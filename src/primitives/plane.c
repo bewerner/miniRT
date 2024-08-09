@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 16:00:59 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/08 23:43:06 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 15:43:38 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_vec4	get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt)
 			continue ;
 		distance = vec3_len(light_ray.dir);
 		received_intensity = received_intensity / (distance * distance); // Apply Falloff
-		if (received_intensity <= 0.0000039) // 1 / 256 = ~0.0039
+		if (received_intensity <= 0.0f) // 1 / 256 = ~0.0039
 			continue ;
 		if (is_obstructed(light_ray, hitpoint.object, rt)) // Check for Ligth Collision
 			continue ;
