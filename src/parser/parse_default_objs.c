@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_default_objs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 12:35:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 22:52:59 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_error	parse_ambient(t_rt *rt)
 {
-	double			r;
+	double			ratio;
 	char			*line;
 	static size_t	count;
 
@@ -24,12 +24,12 @@ t_error	parse_ambient(t_rt *rt)
 	if (*(char *)(rt->line->content) == 'a')
 		return (RT_ERROR_AMBIENT_LOWER_CASE);
 	line = &rt->line->content[1];
-	r = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
-	rt->ambient.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 255.0f}, rt);
-	rt->ambient.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 255.0f}, rt);
-	rt->ambient.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 255.0f}, rt);
-	rt->ambient.a = 1.0;
-	rt->ambient = vec4_scale(r, rt->ambient);
+	ratio = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient = vec4_scale(ratio, rt->ambient);
+	rt->ambient.a = 1.0f;
 	return (RT_SUCCESS);
 }
 
@@ -47,9 +47,10 @@ t_error	parse_camera(t_rt *rt)
 	rt->camera.origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->camera.origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->camera.origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	rt->camera.direction.x = validate_range(get_next_value(&line, rt), (t_vec2){-2.0f, 2.0f}, rt);
-	rt->camera.direction.y = validate_range(get_next_value(&line, rt), (t_vec2){-2.0f, 2.0f}, rt);
-	rt->camera.direction.z = validate_range(get_next_value(&line, rt), (t_vec2){-2.0f, 2.0f}, rt);
+	rt->camera.direction.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->camera.direction.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->camera.direction.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->camera.direction = vec3_normalize(rt->camera.direction);
 	rt->camera.fov = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 180.0f}, rt);
 	return (RT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 20:42:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 22:06:04 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 	if (rt->mode == MODE_PREVIEW)
 		col = get_diffuse_color(hitpoint, rt);
 	else
-		col = get_viewport_color(hitpoint, rt);
-	mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col));
+		col = get_solid_color(hitpoint, rt);
+	mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col, true));
 }
 
 void	render(t_rt *rt)
