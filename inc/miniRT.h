@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 15:38:43 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:15:19 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,6 @@ typedef struct		s_rt
 	double			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_ivec2			initial_cursor_pos;
-
 }					t_rt;
 
 // main.c
@@ -263,15 +262,12 @@ t_identifier	get_identifier(char *line);
 
 // primitives/plane.c
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object);
-t_vec4		get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt);
 
 // primitives/cylinder.c
 t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object);
-t_vec4		get_diffuse_color_cylinder(t_hitpoint hitpoint, t_rt *rt);
 
 // primitives/sphere.c
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_object *object);
-t_vec4			get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt);
 
 bool			is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);
 
