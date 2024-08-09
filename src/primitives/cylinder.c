@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:16:32 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/09 17:14:53 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/09 18:00:32 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object)
 		return (HP_INF);
 	}
 
+	if (t1 < 0)
+		return (HP_INF);
+
 	hitpoint.normal = vec3_cross(hitpoint.object->orientation, vec3_cross(vec3_sub(hitpoint.pos, hitpoint.object->origin), hitpoint.object->orientation));
+	hitpoint.normal = vec3_normalize(hitpoint.normal);
 	return (hitpoint);
 }
