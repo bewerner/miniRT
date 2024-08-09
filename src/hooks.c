@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 20:42:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 23:00:10 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	update(void *param)
 
 	ft_timer(TIMER_START, NULL);
 	if (rt->mode == MODE_PREVIEW)
-		ft_memset_int(rt->canvas->pixels, 0xFF000000, rt->canvas->width * rt->canvas->height);
+		ft_memset_int(rt->canvas->pixels, vec4_to_abgr(rt->ambient, false), rt->canvas->width * rt->canvas->height);
 	else
 		ft_memset_int(rt->canvas->pixels, 0xFF404040, rt->canvas->width * rt->canvas->height);
 	render(rt);
