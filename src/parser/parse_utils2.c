@@ -6,11 +6,19 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 12:39:13 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:00:02 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
+
+static bool	check_id(char *id, char *s1, char *s2)
+{
+	if (ft_strncmp(id, s1, ft_strlen(s1)) == 0
+		|| ft_strncmp(id, s2, ft_strlen(s2)) == 0)
+		return (true);
+	return (false);
+}
 
 t_identifier	get_identifier(char *line)
 {
@@ -18,17 +26,17 @@ t_identifier	get_identifier(char *line)
 		return (ID_EOF);
 	if (line[0] == '#')
 		return (ID_COMMENT);
-	if (line[0] == 'A' || line[0] == 'a')
+	if (ft_strncmp(line, "A ", 2) == 0)
 		return (ID_AMBIENT);
-	else if (line[0] == 'C' || line[0] == 'c')
+	else if (ft_strncmp(line, "C ", 2) == 0)
 		return (ID_CAMERA);
-	else if (line[0] == 'L' || line[0] == 'l')
+	else if (check_id(line, "L ", "l "))
 		return (ID_LIGHT);
-	else if (ft_strncmp(line, "SP", 2) == 0 || ft_strncmp(line, "sp", 2) == 0)
+	else if (check_id(line, "SP ", "sp "))
 		return (ID_SPHERE);
-	else if (ft_strncmp(line, "PL", 2) == 0 || ft_strncmp(line, "pl", 2) == 0)
+	else if (check_id(line, "PL ", "pl "))
 		return (ID_PLANE);
-	else if (ft_strncmp(line, "CY", 2) == 0 || ft_strncmp(line, "cy", 2) == 0)
+	else if (check_id(line, "CY ", "cy "))
 		return (ID_CYLINDER);
 	return (ID_INVALID);
 }
@@ -62,15 +70,13 @@ char *prep_line(char *str)
 
 	if (str == NULL)
 		return (str);
+	whitespace_to_space(str);
 	len = ft_strlen(str);
-	if (str[len - 1] == '\n')
-		str[len - 1] = '\0';
 	if (str && (str[0] == '\0' || !ft_isspace(str[0])))
 		return (str);
 	len = 0;
 	while (ft_isspace(str[len]))
 		len++;
 	ft_memcpy(str, &str[len], ft_strlen(&str[len]) + 1);
-	printf("|%s|\n",str);
 	return (str);
 }

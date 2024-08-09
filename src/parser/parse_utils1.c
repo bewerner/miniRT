@@ -6,11 +6,26 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:56:53 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/08 22:51:18 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:11:34 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
+
+void	whitespace_to_space(char *str)
+{
+	int		i;
+
+	if (str == NULL)
+		return;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (ft_isspace(str[i]))
+			str[i] = ' ';
+		i++;
+	}
+}
 
 static int	get_sign(char **str)
 {
