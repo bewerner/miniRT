@@ -5,7 +5,11 @@ MLX42				=	MLX42/build/libmlx42.a
 
 VPATH				=	src src/parser src/primitives src/utils
 
-SRC					=	main.c cleanup.c parser.c hooks.c movement.c render.c plane.c sphere.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotate.c color_convert.c time.c
+SRC					=	main.c cleanup.c \
+						parser.c parse_utils1.c parse_utils2.c parse_default_objs.c parse_lights.c parse_primitives.c \
+						hooks.c movement.c \
+						render.c plane.c sphere.c \
+						vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotate.c color_convert.c time.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
 CFLAGS				=	-Wall -Wextra -Werror -Ofast -flto
@@ -58,7 +62,7 @@ re: fclean all
 f: LDFLAGS += $(FSANITIZE)
 f: CFLAGS += $(FSANITIZE)
 f: re
-	./$(NAME)
+	# ./$(NAME)
 
 d: LDFLAGS += $(DEBUG)
 d: CFLAGS += $(DEBUG)
