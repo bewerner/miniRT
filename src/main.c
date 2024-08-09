@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/07 15:54:33 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:25:22 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,22 @@ void	validate_args(int argc, char **argv, t_rt *rt)
 	}
 }
 
-void	init_camera(t_camera* camera)
+void	init_camera(t_camera* camera, t_rt *rt)
 {
-	camera->direction = vec3_normalize(camera->direction);
 	t_vec3	dir;
+
+	camera->direction = vec3_normalize(camera->direction);
 	dir = camera->direction;
 	// get camera.pitch and camera.yaw from camera.direction
 	camera->pitch = atan2(sqrt(dir.x * dir.x + dir.y * dir.y), -dir.z);
 	camera->yaw = atan2(dir.x, dir.y) * -1;
 	// printf("yaw:   %10f = %4.1f\npitch: %10f = %4.1f\n", camera->yaw, camera->yaw * 180 / M_PI, camera->pitch, camera->pitch * 180 / M_PI);
+
+	double rad = camera->fov * (M_PI / 180);
+
+	camera->focal_lenth = ((double)rt->canvas->width * 0.5) / tan(rad * 0.5 );
+	// printf("focal length -> %f \n", camera->focal_lenth);
+
 }
 
 int	main(int argc, char **argv)
@@ -75,7 +82,7 @@ int	main(int argc, char **argv)
 	validate_args(argc, argv, &rt);
 	load_scene(argv[1], &rt);
 	init_mlx(&rt);
-	init_camera(&rt.camera);
+	init_camera(&rt.camera, &rt);
 	init_hooks(&rt);
 	mlx_loop(rt.mlx);
 	terminate(NULL, 0, &rt);

@@ -6,99 +6,89 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/07 15:45:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:38:20 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-typedef enum e_identifier
+static t_error	parse_scene(t_rt *rt)
 {
-	ID_INVALID,
-	ID_AMBIENT,
-	ID_CAMERA,
-	ID_LIGHT,
-	ID_SPHERE,
-	ID_CYLINDER
-}	t_identifier;
-
-t_identifier	get_identifier(char *line)
-{
-	if (line[0] == 'A' || line[0] == 'a')
-		return (ID_AMBIENT);
-	return (ID_INVALID);
-}
-
-// double	get_next_value(char **line)
-// {
-// 	if (line[0] == 'A' || line[0] == 'a')
-// 		return (RT_ID_AMBIENT);
-// }
-
-
-t_error	parse_ambient(char *line, t_rt *rt)
-{
-	if (line[0] == 'a')
-		return (RT_ERROR_AMBIENT_LOWER_CASE);
-
-	rt->ambient = (t_vec4){{.05, .05, .1, 1}};
-	return (RT_SUCCESS);
-}
-
-static t_error	parse_scene(int fd, t_rt *rt)
-{
-	t_error	error;
-	char	*line;
+	t_identifier	id;
+	t_error			error;
+	t_list			*tmp;
+	static size_t	obj_count;
 
 	error = RT_SUCCESS;
-	line = get_next_line(fd);
-	while (line)
+	while (rt->line)
 	{
-		if (get_identifier(line) == ID_AMBIENT)
-			error = parse_ambient(line, rt);
-
-		free(line);
+		id = get_identifier(rt->line->content);
+		if (id == ID_AMBIENT)
+			error = parse_ambient(rt);
+		else if (id == ID_CAMERA)
+			error = parse_camera(rt);
+		else if (id == ID_LIGHT)
+			error = parse_light(rt);
+		else if (id == ID_SPHERE)
+			error = parse_sphere(&obj_count, rt);
+		else if (id == ID_PLANE)
+			error = parse_plane(&obj_count, rt);
+		else if (id != ID_COMMENT)
+			error = RT_ERROR_INVALID_IDENTIFIER;
 		if (error)
 			return (error);
-		line = get_next_line(fd);
+		tmp = rt->line;
+		rt->line = tmp->next;
+		ft_lstdelone(tmp, free);
 	}
 	return (RT_SUCCESS);
+}
+
+static t_ivec2	load_elements(int fd, t_rt *rt)
+{
+	char			*line;
+	t_ivec2			obj_light_count;
+	t_identifier	id;
+
+	obj_light_count = (t_ivec2){0, 0};
+	line = prep_line(get_next_line(fd));
+	while (line)
+	{
+		id = get_identifier(line);
+		if (id == ID_INVALID)
+		{
+			close(fd);
+			terminate(error_msg(RT_ERROR_INVALID_IDENTIFIER), 1, rt);
+		}
+		else if (id == ID_LIGHT)
+			obj_light_count.y++;
+		else if (id >= ID_SPHERE)
+			obj_light_count.x++;
+		if (id >= ID_COMMENT)
+			ft_lstadd_back(&rt->line, ft_lstnew(line));		// TODO: What aboty that?
+		else
+			free(line);
+		line = prep_line(get_next_line(fd));
+	}
+	return (obj_light_count);
 }
 
 void	load_scene(char *file, t_rt *rt)
 {
 	int		fd;
 	t_error	error;
+	t_ivec2	obj_light_count;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		terminate("failed to load file", 1, rt);
-
-	error = parse_scene(fd, rt);
+	obj_light_count = load_elements(fd, rt);
 	close(fd);
+	rt->objects = (t_object *)ft_calloc(obj_light_count.x + 1, sizeof(t_object));
+	rt->lights = (t_light *)ft_calloc(obj_light_count.y + 1, sizeof(t_light));
+	if (rt->objects == NULL || rt->lights == NULL)
+		terminate(error_msg(RT_ERROR_MALLOC), 1, rt);
+	error = parse_scene(rt);
 	if (error)
 		terminate(error_msg(error), 1, rt);
-
-
-
-	// --------OBJECTS--------
-	rt->objects = (t_object *)ft_calloc(1 + 1, sizeof(t_object));
-	rt->objects[0].type = OBJ_SPHERE;
-	rt->objects[0].origin = (t_vec3){0, 0, 0};
-	rt->objects[0].radius = 1;
-	rt->objects[0].base_color = (t_vec4){{1.0, 1.0, 1.0, 1.0}};
-
-	// --------LIGHTS--------
-	rt->lights = (t_light *)ft_calloc(1 + 1, sizeof(t_light));
-	rt->lights[0].type = LIGHT_POINT;
-	rt->lights[0].origin = (t_vec3){0, 0, 3};
-	rt->lights[0].radius = 1;
-	rt->lights[0].ratio = 1 * LIGHT_POWER;
-	rt->lights[0].color = (t_vec4){{1.0, 1.0, 1.0, 1}};
-	rt->lights[0].color = vec4_scale(rt->lights[0].ratio, rt->lights[0].color);
-
-	// --------CAMERA--------
-	rt->camera.origin = (t_vec3){0, -8.5, .5};
-	rt->camera.direction = (t_vec3){0, 1, 0};
-	rt->camera.focal_lenth = 1000;	
 }

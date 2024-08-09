@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/07 15:37:30 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:40:26 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
 # define VEC4_TRANSPARENT	(t_vec4){{0, 0, 0, 0}}
 
-# define LIGHT_POWER 7.5
+# define LIGHT_POWER 1000
 # define FALLOFF_THRESHOLD (1.0f / 256)
 
 
@@ -55,6 +55,20 @@ typedef enum e_timeraction
 	TIMER_START,
 	TIMER_STOP
 }	t_timeraction;
+
+// identifiers for parsing
+typedef enum e_identifier
+{
+	ID_EOF,
+	ID_INVALID,
+	ID_COMMENT,
+	ID_AMBIENT,
+	ID_CAMERA,
+	ID_LIGHT,
+	ID_SPHERE,
+	ID_PLANE,
+	ID_CYLINDER
+}	t_identifier;
 
 typedef union		u_color
 {
@@ -167,6 +181,7 @@ typedef struct		s_camera
 	double			yaw;
 	double			pitch;
 	double			focal_lenth;
+	double			fov;
 }					t_camera;
 
 typedef struct		s_screen
@@ -179,6 +194,7 @@ typedef struct		s_screen
 
 typedef struct		s_rt
 {
+	t_list			*line;
 	mlx_t			*mlx;
 	mlx_image_t		*canvas;
 	t_movement		move;
@@ -193,63 +209,87 @@ typedef struct		s_rt
 
 }					t_rt;
 
+// main.c
+void			init_camera(t_camera* camera, t_rt *rt);
+
 // cleanup.c
-char		*error_msg(t_error error);
-void		error(char *message);
-void		terminate(char *msg, uint8_t exit_code, t_rt *rt);
+char			*error_msg(t_error error);
+void			error(char *message);
+void			terminate(char *msg, uint8_t exit_code, t_rt *rt);
 
 // hooks.c
-void		init_hooks(t_rt *rt);
+void			init_hooks(t_rt *rt);
 
 // movement.c
-void		handle_move_input(t_rt *rt);
-void		move_camera(t_rt *rt);
+void			handle_move_input(t_rt *rt);
+void			move_camera(t_rt *rt);
 
 // render.c
-t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt);
-void		render(t_rt *rt);
+t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
+void			render(t_rt *rt);
 
 // parser/parser.c
-void		load_scene(char *file, t_rt *rt);
+void			load_scene(char *file, t_rt *rt);
+
+// parser/parse_default_objs.c
+t_error			parse_ambient(t_rt *rt);
+t_error			parse_camera(t_rt *rt);
+
+// parser/parse_lights.c
+t_error			parse_light(t_rt *rt);
+
+// parser/parse_primitives.c
+t_error			parse_sphere(size_t *obj_count, t_rt *rt);
+t_error			parse_plane(size_t *obj_count, t_rt *rt);
+
+// parser/parser_utils1.c
+void			ft_skipspace(char **str);
+double			ft_atod(char **str, double nbr, int sign_dpoint_dplaces[3]);
+
+// parser/parser_utils2.c
+char			*prep_line(char *str);
+double			get_next_value(char **line, t_rt *rt);
+double			validate_range(double nbr, t_vec2 min_max, t_rt *rt);
+t_identifier	get_identifier(char *line);
 
 // primitives/plane.c
-t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object);
-t_vec4		get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt);
+t_hitpoint		get_hitpoint_plane(t_ray ray, t_object *object);
+t_vec4			get_diffuse_color_plane(t_hitpoint hitpoint, t_rt *rt);
 
 // primitives/sphere.c
-t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object);
-t_vec4		get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt);
+t_hitpoint		get_hitpoint_sphere(t_ray ray, t_object *object);
+t_vec4			get_diffuse_color_sphere(t_hitpoint hitpoint, t_rt *rt);
 
-bool		is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);
+bool			is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);
 
 // color_convert.c
-uint32_t	combine_rgba(int r, int g, int b, int a);
-uint32_t	vec4_to_rgba(t_vec4	col);
+uint32_t		combine_rgba(int r, int g, int b, int a);
+uint32_t		vec4_to_rgba(t_vec4	col);
 
 // utils/vec3_rotate.c
-t_vec3		vec3_rotate_x(t_vec3 p, double rad);
-t_vec3		vec3_rotate_y(t_vec3 p, double rad);
-t_vec3		vec3_rotate_z(t_vec3 p, double rad);
+t_vec3			vec3_rotate_x(t_vec3 p, double rad);
+t_vec3			vec3_rotate_y(t_vec3 p, double rad);
+t_vec3			vec3_rotate_z(t_vec3 p, double rad);
 
 // utils/vec3_utils1.c
-t_vec3		vec3_add(const t_vec3 a, const t_vec3 b);
-t_vec3		vec3_sub(const t_vec3 a, const t_vec3 b);
-t_vec3		vec3_mul(const t_vec3 a, const t_vec3 b);
-t_vec3		vec3_scale(const double s, const t_vec3 a);
-double		vec3_dot(const t_vec3 a, const t_vec3 b);
+t_vec3			vec3_add(const t_vec3 a, const t_vec3 b);
+t_vec3			vec3_sub(const t_vec3 a, const t_vec3 b);
+t_vec3			vec3_mul(const t_vec3 a, const t_vec3 b);
+t_vec3			vec3_scale(const double s, const t_vec3 a);
+double			vec3_dot(const t_vec3 a, const t_vec3 b);
 
 // utils/vec3_utils2.c
-double		vec3_len(const t_vec3 a);
-t_vec3		vec3_normalize(const t_vec3 a);
-t_vec3		vec3_cross(const t_vec3 a, const t_vec3 b);
+double			vec3_len(const t_vec3 a);
+t_vec3			vec3_normalize(const t_vec3 a);
+t_vec3			vec3_cross(const t_vec3 a, const t_vec3 b);
 
 // utils/vec4_utils1.c
-t_vec4		vec4_add(const t_vec4 a, const t_vec4 b);
-t_vec4		vec4_sub(const t_vec4 a, const t_vec4 b);
-t_vec4		vec4_mul(const t_vec4 a, const t_vec4 b);
-t_vec4		vec4_scale(const double s, const t_vec4 a);
+t_vec4			vec4_add(const t_vec4 a, const t_vec4 b);
+t_vec4			vec4_sub(const t_vec4 a, const t_vec4 b);
+t_vec4			vec4_mul(const t_vec4 a, const t_vec4 b);
+t_vec4			vec4_scale(const double s, const t_vec4 a);
 
 // utils/time.c
-void		ft_timer(t_timeraction action, char *msg);
+void			ft_timer(t_timeraction action, char *msg);
 
 #endif
