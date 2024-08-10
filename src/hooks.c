@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 17:41:37 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 18:15:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
 		mlx_close_window(rt->mlx);
 	else if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
-		rt->mode = !rt->mode;
+	{
+		rt->mode++;
+		if (rt->mode > MODE_PREVIEW)
+			rt->mode = MODE_SOLID;
+	}
 	else
 		keyhook_axial_view(keydata, rt);
 }
@@ -79,7 +83,7 @@ void	update(void *param)
 
 	if (i == 1)
 		ft_timer(TIMER_START, NULL);
-	if (rt->mode == MODE_PREVIEW)
+	if (rt->mode >= MODE_NORMAL)
 		fill_image(rt->canvas, rt->ambient);
 	else
 		fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});
