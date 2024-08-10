@@ -3,55 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 20:42:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 17:41:37 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	keyhook(mlx_key_data_t keydata, void* param)
+void	keyhook_axial_view(mlx_key_data_t keydata, t_rt *rt)
 {
-	double	dist;
-	t_rt	*rt;
-
-	rt = (t_rt*)param;
-	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
-		mlx_close_window(rt->mlx);
-	
 	if (keydata.key == MLX_KEY_KP_1 && keydata.action == MLX_PRESS)
 	{
-		// FRONT_VIEW
-		dist = vec3_len(rt->camera.origin);
-		rt->camera.origin = (t_vec3){0, (double)-1 * dist, 0};
+		rt->camera.origin = (t_vec3){0, -vec3_len(rt->camera.origin), 0};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = M_PI / 2;
 		rt->move.vel = VEC3_ZERO;
 	}
 	else if (keydata.key == MLX_KEY_KP_3 && keydata.action == MLX_PRESS)
 	{
-		// RIGHT_VIEW
-		dist = vec3_len(rt->camera.origin);
-		rt->camera.origin = (t_vec3){(double)-1 * dist, 0, 0};
+		rt->camera.origin = (t_vec3){-vec3_len(rt->camera.origin), 0, 0};
 		rt->camera.yaw = -M_PI / 2;
 		rt->camera.pitch = M_PI / 2;
 		rt->move.vel = VEC3_ZERO;
 	}
 	else if (keydata.key == MLX_KEY_KP_7 && keydata.action == MLX_PRESS)
 	{
-		// TOP_VIEW
-		dist = vec3_len(rt->camera.origin);
-		rt->camera.origin = (t_vec3){0, 0, (double)1 * dist};
+		rt->camera.origin = (t_vec3){0, 0, vec3_len(rt->camera.origin)};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = 0;
 		rt->move.vel = VEC3_ZERO;
 	}
+}
+
+void	keyhook(mlx_key_data_t keydata, void* param)
+{
+	t_rt	*rt;
+
+	rt = (t_rt*)param;
+	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
+		mlx_close_window(rt->mlx);
 	else if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
-	{
 		rt->mode = !rt->mode;
-	}
+	else
+		keyhook_axial_view(keydata, rt);
 }
 
 void	update_screen(t_rt *rt)
@@ -73,19 +69,26 @@ void	update(void *param)
 	t_rt	*rt;
 
 	rt = (t_rt*)param;
+	static int i;
+	i++;
 
 	handle_move_input(rt);
 	move_camera(rt);
 
 	update_screen(rt);
 
-	ft_timer(TIMER_START, NULL);
+	if (i == 1)
+		ft_timer(TIMER_START, NULL);
 	if (rt->mode == MODE_PREVIEW)
-		ft_memset_int(rt->canvas->pixels, 0xFF000000, rt->canvas->width * rt->canvas->height);
+		fill_image(rt->canvas, rt->ambient);
 	else
-		ft_memset_int(rt->canvas->pixels, 0xFF404040, rt->canvas->width * rt->canvas->height);
+		fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});
 	render(rt);
-	ft_timer(TIMER_STOP, NULL);
+	if (i == 100)
+	{
+		ft_timer(TIMER_STOP, NULL);
+		i = 0;
+	}
 }
 
 void	mouse_hook(	enum mouse_key button,		enum action action,
@@ -124,8 +127,6 @@ void	set_rotation(t_vec2 distance, t_rt *rt)
 		rt->camera.yaw += 2 * M_PI;
 	rt->camera.pitch -= (double)distance.y / 700;
 	rt->camera.pitch = fmax(fmin(rt->camera.pitch, M_PI), 0);
-	// printf("yaw:   %10f = %4.1f, pitch: %10f = %4.1f\n", rt->camera.yaw, rt->camera.yaw * 180 / M_PI, rt->camera.pitch, rt->camera.pitch * 180 / M_PI);
-	// printf("yaw: %f, pitch: %f\n", rt->camera.yaw, rt->camera.pitch);
 }
 
 void	cursor_hook(double cursor_x, double cursor_y, void *param)
@@ -143,7 +144,8 @@ void	cursor_hook(double cursor_x, double cursor_y, void *param)
 	distance.y = cursor_y - rt->initial_cursor_pos.y;
 	if (mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_RIGHT))
 		set_rotation(distance, rt);
-	mlx_set_mouse_pos(rt->mlx, rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
+	mlx_set_mouse_pos(rt->mlx,
+		rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
 }
 
 void	init_hooks(t_rt *rt)

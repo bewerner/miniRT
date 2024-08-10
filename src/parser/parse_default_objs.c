@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 12:35:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 01:03:48 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 t_error	parse_ambient(t_rt *rt)
 {
-	double			r;
+	double			ratio;
 	char			*line;
 	static size_t	count;
 
 	count++;
 	if (count > 1)
 		return (RT_ERROR_TOO_MANY_AMBIENT);
-	if (*(char *)(rt->line->content) == 'a')
+	if (ft_strncmp(rt->line->content, "a ", 2) == 0)
 		return (RT_ERROR_AMBIENT_LOWER_CASE);
-	line = &rt->line->content[1];
-	r = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
-	rt->ambient.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 255.0f}, rt);
-	rt->ambient.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 255.0f}, rt);
-	rt->ambient.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 255.0f}, rt);
-	rt->ambient.a = 1.0;
-	rt->ambient = vec4_scale(r, rt->ambient);
+	line = (char *)rt->line->content + 1;
+	ratio = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->ambient = vec4_scale(ratio, rt->ambient);
+	rt->ambient.a = 1.0f;
 	return (RT_SUCCESS);
 }
 
@@ -41,15 +41,16 @@ t_error	parse_camera(t_rt *rt)
 	count++;
 	if (count > 1)
 		return (RT_ERROR_TOO_MANY_CAMERAS);
-	else if (*(char *)(rt->line->content) == 'c')
+	else if (ft_strncmp(rt->line->content, "c ", 2) == 0)
 		return (RT_ERROR_CAMERA_LOWER_CASE);
-	line = &rt->line->content[1];
+	line = (char *)rt->line->content + 1;
 	rt->camera.origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->camera.origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->camera.origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	rt->camera.direction.x = validate_range(get_next_value(&line, rt), (t_vec2){-2.0f, 2.0f}, rt);
-	rt->camera.direction.y = validate_range(get_next_value(&line, rt), (t_vec2){-2.0f, 2.0f}, rt);
-	rt->camera.direction.z = validate_range(get_next_value(&line, rt), (t_vec2){-2.0f, 2.0f}, rt);
+	rt->camera.direction.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->camera.direction.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->camera.direction.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->camera.direction = vec3_normalize(rt->camera.direction);
 	rt->camera.fov = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 180.0f}, rt);
 	return (RT_SUCCESS);
 }
