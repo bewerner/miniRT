@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 21:11:34 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 22:41:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	update(void *param)
 	else
 		fill_image(rt->canvas, rt->ambient);
 	render(rt);
-	if (i == 20)
+	if (i == 50)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;
