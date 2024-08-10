@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 21:08:44 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 22:37:33 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,40 @@ typedef enum e_obj_type
 	OBJ_CYLINDER
 }	t_obj_type;
 
+// typedef struct		s_sphere
+// {
+// 	t_vec3			origin;
+// 	float			radius;
+// }					t_sphere;
+
+// typedef struct		s_plane
+// {
+// 	t_vec3			origin;
+// 	t_vec3			normal;
+// 	float			dist;
+// }					t_plane;
+
+// typedef struct		s_cylinder
+// {
+// 	t_vec3			origin;
+// 	t_vec3			cap1;
+// 	t_vec3			cap2;
+// 	t_vec3			orientation;
+// 	float			height;
+// }					t_cylinder;
+
+// typedef struct		s_object
+// {
+// 	t_obj_type		type;
+// 	t_vec4			base_color;
+// 	union
+// 	{
+// 		t_sphere	sphere;
+// 		t_plane		plane;
+// 		t_cylinder	cylinder;
+// 	};
+// }					t_object;
+
 typedef struct		s_object
 {
 	t_obj_type		type;
@@ -165,6 +199,16 @@ typedef struct		s_hitpoint
 	t_vec3			normal;
 	t_object		*object;
 }					t_hitpoint;
+
+typedef struct		s_quadratic_formula
+{
+	float			a;
+	float			b;
+	float			c;
+	float			t0;
+	float			t1;
+	float			discriminant;
+}					t_quadratic_formula;
 
 typedef enum		e_light_type
 {
