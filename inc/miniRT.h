@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 23:12:39 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 18:17:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ typedef enum e_identifier
 typedef enum e_mode
 {
 	MODE_SOLID,
-	MODE_PREVIEW,
+	MODE_NORMAL,
+	MODE_PREVIEW
 }	t_mode;
 
 typedef union		u_color
@@ -290,6 +291,7 @@ t_hitpoint		get_hitpoint_sphere(t_ray ray, t_object *object);
 // primitives/get_diffuse_color.c
 t_vec4			get_diffuse_color(t_hitpoint hitpoint, t_rt *rt);
 t_vec4			get_solid_color(t_hitpoint hitpoint, t_rt *rt);
+t_vec4			get_normal_color(t_hitpoint hitpoint, t_rt *rt);
 
 // primitives/get_hitpoint.c
 bool			is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);

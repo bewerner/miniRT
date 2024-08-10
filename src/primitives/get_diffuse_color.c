@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_diffuse_color.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:23:37 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/09 21:58:07 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 18:11:34 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,20 @@ t_vec4	get_solid_color(t_hitpoint hitpoint, t_rt *rt)
 	col = vec4_scale(dot, vp_light);
 	col = vec4_add(col, vp_ambient);
 	// col = vec4_mul(hitpoint.object->base_color, col);
+	return (col);
+}
+
+t_vec4	get_normal_color(t_hitpoint hitpoint, t_rt *rt)
+{
+	t_vec4			col;
+
+	(void)rt;
+
+	// real Normals
+	col = (t_vec4){{hitpoint.normal.x * 0.5f + 0.5f, hitpoint.normal.y * 0.5f + 0.5f, hitpoint.normal.z * 0.5f + 0.5f, 1.0f}};
+
+	// Achsen-Normals
+	// col = (t_vec4){{fabs(hitpoint.normal.x), fabs(hitpoint.normal.y), fabs(hitpoint.normal.z), 1.0f}};
+	
 	return (col);
 }
