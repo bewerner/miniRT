@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 23:36:47 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 17:41:37 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,26 @@ void	update(void *param)
 	t_rt	*rt;
 
 	rt = (t_rt*)param;
+	static int i;
+	i++;
 
 	handle_move_input(rt);
 	move_camera(rt);
 
 	update_screen(rt);
 
-	ft_timer(TIMER_START, NULL);
+	if (i == 1)
+		ft_timer(TIMER_START, NULL);
 	if (rt->mode == MODE_PREVIEW)
 		fill_image(rt->canvas, rt->ambient);
 	else
 		fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});
 	render(rt);
-	ft_timer(TIMER_STOP, NULL);
+	if (i == 100)
+	{
+		ft_timer(TIMER_STOP, NULL);
+		i = 0;
+	}
 }
 
 void	mouse_hook(	enum mouse_key button,		enum action action,
