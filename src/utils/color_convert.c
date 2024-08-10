@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 22:04:33 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 22:53:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ uint32_t	combine_rgba(int r, int g, int b, int a)
 	return (0 | (r << 24) | (g << 16) | (b << 8) | a);
 }
 
-static double	clamp(double value, double min, double max)
+static float	clamp(float value, float min, float max)
 {
 	if (value < min)
 		return (min);
@@ -26,11 +26,11 @@ static double	clamp(double value, double min, double max)
 	return (value);
 }
 
-static uint8_t	rand_dither(double value)
+static uint8_t	rand_dither(float value)
 {
 	static int	rand;
 	rand = (214013 * rand + 2531011);
-	if ((double)((rand >> 16) & 0x7FFF) / 32768 < value - (uint8_t)value)
+	if ((float)((rand >> 16) & 0x7FFF) / 32768 < value - (uint8_t)value)
 		value++;
 	return ((uint8_t)value);
 }

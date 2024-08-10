@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 18:15:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:15:19 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 
 void	update_screen(t_rt *rt)
 {
-	double	half_w = (rt->canvas->width - 1) / 2;
-	double	half_h = (rt->canvas->height - 1) / 2;
+	float	half_w = (rt->canvas->width - 1) / 2;
+	float	half_h = (rt->canvas->height - 1) / 2;
 
 	rt->screen.x_dir = rt->camera.right;
 	rt->screen.y_dir = vec3_cross(rt->camera.direction, rt->camera.right);
@@ -88,7 +88,7 @@ void	update(void *param)
 	else
 		fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});
 	render(rt);
-	if (i == 100)
+	if (i == 20)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;
@@ -124,12 +124,12 @@ void	mouse_hook(	enum mouse_key button,		enum action action,
 
 void	set_rotation(t_vec2 distance, t_rt *rt)
 {
-	rt->camera.yaw -= (double)distance.x / 700;
+	rt->camera.yaw -= (float)distance.x / 700;
 	if (rt->camera.yaw > 2 * M_PI)
 		rt->camera.yaw -= 2 * M_PI;
 	if (rt->camera.yaw < 0)
 		rt->camera.yaw += 2 * M_PI;
-	rt->camera.pitch -= (double)distance.y / 700;
+	rt->camera.pitch -= (float)distance.y / 700;
 	rt->camera.pitch = fmax(fmin(rt->camera.pitch, M_PI), 0);
 }
 

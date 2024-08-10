@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 17:00:02 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_identifier	get_identifier(char *line)
 	return (ID_INVALID);
 }
 
-double	validate_range(double nbr, t_vec2 min_max, t_rt *rt)
+float	validate_range(float nbr, t_vec2 min_max, t_rt *rt)
 {
 	if (nbr >= min_max.x && nbr <= min_max.y)
 		return (nbr);
@@ -49,9 +49,9 @@ double	validate_range(double nbr, t_vec2 min_max, t_rt *rt)
 	return (0);
 }
 
-double	get_next_value(char **line, t_rt *rt)
+float	get_next_value(char **line, t_rt *rt)
 {
-	double	value;
+	float	value;
 
 	ft_skipspace(line);
 	if (**line == '\0')

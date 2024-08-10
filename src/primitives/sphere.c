@@ -6,19 +6,19 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 19:21:28 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-static double	get_discriminant_and_scalars(t_ray ray, t_object *object, double *t0, double *t1)
+static float	get_discriminant_and_scalars(t_ray ray, t_object *object, float *t0, float *t1)
 {
-	double		discriminant;
+	float		discriminant;
 	t_vec3		AP;
-	double		A;
-	double		B;
-	double		sqrt_discriminant;
+	float		A;
+	float		B;
+	float		sqrt_discriminant;
 
 	AP = vec3_sub(ray.origin, object->origin);
 	A = vec3_dot(ray.dir, ray.dir);
@@ -35,9 +35,9 @@ static double	get_discriminant_and_scalars(t_ray ray, t_object *object, double *
 t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object)
 {
 	t_hitpoint	hitpoint;
-	double		discriminant;
-	double		t0;
-	double		t1;
+	float		discriminant;
+	float		t0;
+	float		t1;
 
 	discriminant = get_discriminant_and_scalars(ray, object, &t0, &t1);
 	if (discriminant < 0)

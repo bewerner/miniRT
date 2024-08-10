@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_default_objs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 01:03:48 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_error	parse_ambient(t_rt *rt)
 {
-	double			ratio;
+	float			ratio;
 	char			*line;
 	static size_t	count;
 

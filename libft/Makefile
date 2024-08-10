@@ -15,7 +15,7 @@ GET_NEXT_LINE_CFILES	=	get_next_line/get_next_line.c
 
 OFILES					=	$(CFILES:.c=.o)
 
-CFLAGS					=	-Wall -Wextra -Werror -Ofast -flto
+CFLAGS					=	-Wall -Wextra -Werror -Ofast -ffast-math -march=native -flto
 
 CC						=	cc
 

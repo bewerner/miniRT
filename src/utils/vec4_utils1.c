@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec4_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:05:44 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/06 15:33:01 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_vec4	vec4_mul(const t_vec4 a, const t_vec4 b)
 	return (v);
 }
 
-t_vec4	vec4_scale(const double s, const t_vec4 a)
+t_vec4	vec4_scale(const float s, const t_vec4 a)
 {
 	t_vec4	v;
 

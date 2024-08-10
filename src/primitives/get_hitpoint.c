@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:27:07 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/09 18:31:39 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
 {
 	size_t		i;
 	t_hitpoint	current;
-	double		ray_len;
+	float		ray_len;
 
 	current.ray = VEC3_INF;
 	current.pos = VEC3_INF;
