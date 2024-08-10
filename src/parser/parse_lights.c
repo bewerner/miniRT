@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:31:54 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 15:28:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 01:09:48 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_error	parse_light(t_rt *rt)
 	count++;
 	if (*(char *)(rt->line->content) == 'L' && count > 1)
 		return (RT_ERROR_TOO_MANY_LIGHTS);
-	line = &rt->line->content[1];
+	line = (char *)rt->line->content + 1;
 	rt->lights[count - 1].type = LIGHT_POINT;
 	rt->lights[count - 1].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	rt->lights[count - 1].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);

@@ -22,8 +22,9 @@
 # define RT_ERROR_MSG_TOO_MANY_LIGHTS "too many lights, use lowercase for multiple lights, force one light with capital L"
 # define RT_ERROR_MSG_TOO_MANY_CAMERAS "too many cameras, only one allowed"
 # define RT_ERROR_MSG_TOO_MANY_AMBIENT "too many ambient definitions, only one allowed"
-# define RT_ERROR_MSG_TOO_MANY_SPHERES "too many spheres definitions, use lowercase for many, uppercase for one allowd sphere"
-
+# define RT_ERROR_MSG_TOO_MANY_SPHERES "too many spheres definitions, use lowercase for many, uppercase for one allowed sphere"
+# define RT_ERROR_MSG_TOO_MANY_PLANES "too many plane definitions, use lowercase for many, uppercase for one allowed plane"
+# define RT_ERROR_MSG_TOO_MANY_CYLINDER "too many plane definitions, use lowercase for many, uppercase for one allowed plane"
 
 typedef enum e_error
 {
@@ -36,7 +37,9 @@ typedef enum e_error
 	RT_ERROR_TOO_MANY_LIGHTS,
 	RT_ERROR_TOO_MANY_CAMERAS,
 	RT_ERROR_TOO_MANY_AMBIENT,
-	RT_ERROR_TOO_MANY_SPHERES
+	RT_ERROR_TOO_MANY_SPHERES,
+	RT_ERROR_TOO_MANY_PLANES,
+	RT_ERROR_TOO_MANY_CYLINDER
 }					t_error;
 
 #endif
