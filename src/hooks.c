@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 20:15:19 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 21:11:34 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,12 @@ void	update(void *param)
 
 	if (i == 1)
 		ft_timer(TIMER_START, NULL);
-	if (rt->mode >= MODE_NORMAL)
-		fill_image(rt->canvas, rt->ambient);
-	else
+	if (rt->mode == MODE_SOLID)
 		fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});
+	else if (rt->mode == MODE_NORMAL)
+		fill_image(rt->canvas, (t_vec4){{0, 0, 0, 1}});
+	else
+		fill_image(rt->canvas, rt->ambient);
 	render(rt);
 	if (i == 20)
 	{

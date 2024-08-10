@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:20:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 21:08:23 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 float	vec3_len(const t_vec3 a)
 {
-	return (sqrt(vec3_dot(a, a)));
+	float	dot;
+
+	dot = vec3_dot(a, a);
+	if (dot == INFINITY || dot == -INFINITY)
+		return (dot);
+	return (sqrt(dot));
 }
 
 t_vec3	vec3_normalize(const t_vec3 a)
