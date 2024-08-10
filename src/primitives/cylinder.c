@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:16:32 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/09 18:00:32 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object)
 {
 	t_hitpoint	hitpoint;
-	double		discriminant;
-	double		rr;
+	float		discriminant;
+	float		rr;
 	t_vec3		AP;
 	t_vec3		tmp;
 	t_vec3		tmp2;
@@ -30,18 +30,18 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object)
 	AP = vec3_sub(ray.origin, object->origin);
 
 	tmp = vec3_sub(ray.dir, vec3_scale(vec3_dot(ray.dir, object->orientation), object->orientation));
-	double	A = vec3_dot(tmp, tmp);
+	float	A = vec3_dot(tmp, tmp);
 	tmp2 = vec3_sub(AP, vec3_scale(vec3_dot(AP, object->orientation), object->orientation));
-	double	B = 2 * vec3_dot(tmp, tmp2);
-	double	C = vec3_dot(tmp2, tmp2) - rr;
+	float	B = 2 * vec3_dot(tmp, tmp2);
+	float	C = vec3_dot(tmp2, tmp2) - rr;
 
 	discriminant = B * B - 4 * A * C;
 
 	if (discriminant < 0)
 		return (HP_INF);
 
-	double	t0 = (-B + sqrt(discriminant)) / (2 * A);
-	double	t1 = (-B - sqrt(discriminant)) / (2 * A);
+	float	t0 = (-B + sqrt(discriminant)) / (2 * A);
+	float	t1 = (-B - sqrt(discriminant)) / (2 * A);
 
 	if (t1 < 0 && t0 < 0)
 		return (HP_INF);

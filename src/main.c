@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 15:21:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	init_mlx(t_rt *rt)
 {
 	// int32_t	width;
 	// int32_t	height;
-	// double	ratio;
+	// float	ratio;
 
 	rt->mlx = mlx_init(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT", 1);
 	if (!rt->mlx)
 		terminate("mlx_init failed", 1, rt);
 	// mlx_get_monitor_size(0, &width, &height);
-	// ratio = (double)WINDOW_WIDTH / WINDOW_HEIGHT;
+	// ratio = (float)WINDOW_WIDTH / WINDOW_HEIGHT;
 	// if (rt->mlx->width > width)
 	// {
 	// 	height = width / ratio;
@@ -66,9 +66,9 @@ void	init_camera(t_camera* camera, t_rt *rt)
 	camera->yaw = atan2(dir.x, dir.y) * -1;
 	// printf("yaw:   %10f = %4.1f\npitch: %10f = %4.1f\n", camera->yaw, camera->yaw * 180 / M_PI, camera->pitch, camera->pitch * 180 / M_PI);
 
-	double rad = camera->fov * (M_PI / 180);
+	float rad = camera->fov * (M_PI / 180);
 
-	camera->focal_lenth = ((double)rt->canvas->width * 0.5) / tan(rad * 0.5 );
+	camera->focal_lenth = ((float)rt->canvas->width * 0.5) / tan(rad * 0.5 );
 	// printf("focal length -> %f \n", camera->focal_lenth);
 
 }

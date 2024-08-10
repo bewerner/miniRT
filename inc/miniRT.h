@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 18:17:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,32 +101,32 @@ typedef struct s_ivec2
 
 typedef struct 		s_vec2
 {
-	double			x;
-	double			y;
+	float			x;
+	float			y;
 }					t_vec2;
 
 typedef struct 		s_vec3
 {
-	double			x;
-	double			y;
-	double			z;
+	float			x;
+	float			y;
+	float			z;
 }					t_vec3;
 
 typedef union		s_vec4
 {
 	struct
 	{
-		double		r;
-		double		g;
-		double		b;
-		double		a;
+		float		r;
+		float		g;
+		float		b;
+		float		a;
 	};
 	struct
 	{
-		double		x;
-		double		y;
-		double		z;
-		double		w;
+		float		x;
+		float		y;
+		float		z;
+		float		w;
 	};
 }					t_vec4;
 
@@ -153,9 +153,9 @@ typedef struct		s_object
 	t_vec3			normal;
 	t_vec3			orientation;
 	t_vec4			base_color;
-	double			dist;
-	double			radius;
-	double			height;
+	float			dist;
+	float			radius;
+	float			height;
 }					t_object;
 
 typedef struct		s_hitpoint
@@ -177,10 +177,10 @@ typedef struct		s_light
 	t_light_type	type;
 	// t_vec3		dir;
 	t_vec3			origin;
-	double			radius;
-	double			ratio;
-	double			power;
-	double			intensity;
+	float			radius;
+	float			ratio;
+	float			power;
+	float			intensity;
 	t_vec4			color;
 }					t_light;
 
@@ -196,10 +196,10 @@ typedef struct		s_camera
 	t_vec3			direction;
 	t_vec3			right;
 	t_vec3			viewport_light;
-	double			yaw;
-	double			pitch;
-	double			focal_lenth;
-	double			fov;
+	float			yaw;
+	float			pitch;
+	float			focal_lenth;
+	float			fov;
 }					t_camera;
 
 typedef struct		s_screen
@@ -221,7 +221,7 @@ typedef struct		s_rt
 	t_object		*objects;
 	t_light			*lights;
 	t_vec4			ambient;
-	double			clicked;
+	float			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_ivec2			initial_cursor_pos;
 	int				mode;
@@ -267,12 +267,12 @@ t_error			parse_cylinder(size_t *obj_count, t_rt *rt);
 // parser/parser_utils1.c
 void			whitespace_to_space(char *str);
 void			ft_skipspace(char **str);
-double			ft_atod(char **str, double nbr, int sign_dpoint_dplaces[3]);
+float			ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3]);
 
 // parser/parser_utils2.c
 char			*prep_line(char *str);
-double			get_next_value(char **line, t_rt *rt);
-double			validate_range(double nbr, t_vec2 min_max, t_rt *rt);
+float			get_next_value(char **line, t_rt *rt);
+float			validate_range(float nbr, t_vec2 min_max, t_rt *rt);
 t_identifier	get_identifier(char *line);
 
 // ┌────────────┐
@@ -310,19 +310,19 @@ uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
 void			fill_image(mlx_image_t *image, t_vec4 color);
 
 // utils/vec3_rotate.c
-t_vec3			vec3_rotate_x(t_vec3 p, double rad);
-t_vec3			vec3_rotate_y(t_vec3 p, double rad);
-t_vec3			vec3_rotate_z(t_vec3 p, double rad);
+t_vec3			vec3_rotate_x(t_vec3 p, float rad);
+t_vec3			vec3_rotate_y(t_vec3 p, float rad);
+t_vec3			vec3_rotate_z(t_vec3 p, float rad);
 
 // utils/vec3_utils1.c
 t_vec3			vec3_add(const t_vec3 a, const t_vec3 b);
 t_vec3			vec3_sub(const t_vec3 a, const t_vec3 b);
 t_vec3			vec3_mul(const t_vec3 a, const t_vec3 b);
-t_vec3			vec3_scale(const double s, const t_vec3 a);
-double			vec3_dot(const t_vec3 a, const t_vec3 b);
+t_vec3			vec3_scale(const float s, const t_vec3 a);
+float			vec3_dot(const t_vec3 a, const t_vec3 b);
 
 // utils/vec3_utils2.c
-double			vec3_len(const t_vec3 a);
+float			vec3_len(const t_vec3 a);
 t_vec3			vec3_normalize(const t_vec3 a);
 t_vec3			vec3_cross(const t_vec3 a, const t_vec3 b);
 
@@ -330,7 +330,7 @@ t_vec3			vec3_cross(const t_vec3 a, const t_vec3 b);
 t_vec4			vec4_add(const t_vec4 a, const t_vec4 b);
 t_vec4			vec4_sub(const t_vec4 a, const t_vec4 b);
 t_vec4			vec4_mul(const t_vec4 a, const t_vec4 b);
-t_vec4			vec4_scale(const double s, const t_vec4 a);
+t_vec4			vec4_scale(const float s, const t_vec4 a);
 
 // utils/time.c
 void			ft_timer(t_timeraction action, char *msg);

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:20:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/03 18:03:56 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-double	vec3_len(const t_vec3 a)
+float	vec3_len(const t_vec3 a)
 {
 	return (sqrt(vec3_dot(a, a)));
 }
 
 t_vec3	vec3_normalize(const t_vec3 a)
 {
-	double	len;
+	float	len;
 	t_vec3	v;
 
 	len = vec3_len(a);

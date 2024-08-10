@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 12:56:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/07/31 16:46:50 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_vec3	vec3_mul(const t_vec3 a, const t_vec3 b)
 	return (v);
 }
 
-t_vec3	vec3_scale(const double s, const t_vec3 a)
+t_vec3	vec3_scale(const float s, const t_vec3 a)
 {
 	t_vec3	v;
 
@@ -52,7 +52,7 @@ t_vec3	vec3_scale(const double s, const t_vec3 a)
 	return (v);
 }
 
-double	vec3_dot(const t_vec3 a, const t_vec3 b)
+float	vec3_dot(const t_vec3 a, const t_vec3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
