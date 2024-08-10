@@ -12,7 +12,7 @@ SRC					=	main.c cleanup.c \
 						vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotate.c color_convert.c time.c image.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
-CFLAGS				=	-Wall -Wextra -Werror -Ofast -ffast-math -march=native -flto
+CFLAGS				=	-Wall -Wextra -Werror -flto -Ofast #-march=native
 LDFLAGS				=	-lm -ldl -lglfw -flto
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
