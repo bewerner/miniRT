@@ -6,43 +6,56 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/09 18:25:20 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/10 19:21:28 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
+static double	get_discriminant_and_scalars(t_ray ray, t_object *object, double *t0, double *t1)
+{
+	double		discriminant;
+	t_vec3		AP;
+	double		A;
+	double		B;
+	double		sqrt_discriminant;
+
+	AP = vec3_sub(ray.origin, object->origin);
+	A = vec3_dot(ray.dir, ray.dir);
+	B = 2 * vec3_dot(AP, ray.dir);
+	discriminant = B * B - 4 * A * (vec3_dot(AP, AP) - object->radius * object->radius);
+	if (discriminant < 0)
+		return (discriminant);
+	sqrt_discriminant = sqrt(discriminant);
+	*t0 = (-B + sqrt_discriminant) / (2 * A);
+	*t1 = (-B - sqrt_discriminant) / (2 * A);
+	return (discriminant);
+}
+
 t_hitpoint	get_hitpoint_sphere(t_ray ray, t_object *object)
 {
 	t_hitpoint	hitpoint;
 	double		discriminant;
-	double		rr;
-	t_vec3		AP;
+	double		t0;
+	double		t1;
 
-	rr = object->radius * object->radius;
-	AP = vec3_sub(ray.origin, object->origin);
-
-	double	A = vec3_dot(ray.dir, ray.dir);
-	double	B = 2 * vec3_dot(AP, ray.dir);
-	double	C = vec3_dot(AP, AP) - rr;
-
-	discriminant = B * B - 4 * A * C;
-
+	discriminant = get_discriminant_and_scalars(ray, object, &t0, &t1);
 	if (discriminant < 0)
 		return (HP_INF);
-
-	// double	t0 = (-B  sqrt(discriminant)) / (2 * A)		// DO WE NEED THIS LATER ?? 
-	double	t1 = (-B - sqrt(discriminant)) / (2 * A);
-
+	if (t1 < 0 && t0 < 0)
+	 	return (HP_INF);
 	if (t1 < 0)
-		return (HP_INF);
-
-	// create HitRay
-	// hitpoint.pos = vec3_add(rt->camera.origin, vec3_scale(t1, rayDir));
+	{
+		hitpoint.ray = vec3_scale(t0, ray.dir);
+		hitpoint.pos = vec3_add(ray.origin, hitpoint.ray);
+		hitpoint.normal = vec3_normalize(vec3_sub(object->origin, hitpoint.pos));
+	}
+	else
+	{
+		hitpoint.ray = vec3_scale(t1, ray.dir);
+		hitpoint.pos = vec3_add(ray.origin, hitpoint.ray);
+		hitpoint.normal = vec3_normalize(vec3_sub(hitpoint.pos, object->origin));
+	}
 	hitpoint.object = object;
-	hitpoint.ray = vec3_scale(t1, ray.dir);
-	hitpoint.pos = vec3_add(ray.origin, hitpoint.ray);
-	hitpoint.normal = vec3_normalize(vec3_sub(hitpoint.pos, object->origin));
-
 	return (hitpoint);
 }
