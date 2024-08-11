@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 22:12:38 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/11 10:44:23 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	init_camera(t_camera* camera, t_rt *rt)
 	camera->direction = vec3_normalize(camera->direction);
 	dir = camera->direction;
 	// get camera.pitch and camera.yaw from camera.direction
-	camera->pitch = atan2(sqrt(dir.x * dir.x + dir.y * dir.y), -dir.z);
-	camera->yaw = atan2(dir.x, dir.y) * -1;
+	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
+	camera->yaw = atan2f(dir.x, dir.y) * -1;
 	// printf("yaw:   %10f = %4.1f\npitch: %10f = %4.1f\n", camera->yaw, camera->yaw * 180 / M_PI, camera->pitch, camera->pitch * 180 / M_PI);
 
 	float rad = camera->fov * (M_PI / 180);

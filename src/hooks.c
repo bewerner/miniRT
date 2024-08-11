@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 22:41:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/11 10:42:35 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	set_rotation(t_vec2 distance, t_rt *rt)
 	if (rt->camera.yaw < 0)
 		rt->camera.yaw += 2 * M_PI;
 	rt->camera.pitch -= (float)distance.y / 700;
-	rt->camera.pitch = fmax(fmin(rt->camera.pitch, M_PI), 0);
+	rt->camera.pitch = fmaxf(fminf(rt->camera.pitch, M_PI), 0);
 }
 
 void	cursor_hook(double cursor_x, double cursor_y, void *param)

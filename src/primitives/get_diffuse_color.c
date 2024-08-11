@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_diffuse_color.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:23:37 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/11 10:41:18 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_vec4	get_solid_color(t_hitpoint hitpoint, t_rt *rt)
 	static t_vec4	vp_light = {{0.55, 0.55, 0.55, 1}};
 
 	float dot = vec3_dot(rt->camera.viewport_light, hitpoint.normal);
-	dot = fmax(dot, 0);
+	dot = fmaxf(dot, 0);
 	col = vec4_scale(dot, vp_light);
 	col = vec4_add(col, vp_ambient);
 	// col = vec4_mul(hitpoint.object->base_color, col);
