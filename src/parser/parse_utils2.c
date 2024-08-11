@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/11 21:23:11 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_identifier	get_identifier(char *line)
 
 float	validate_range(float nbr, t_vec2 min_max, t_rt *rt)
 {
-	if (nbr >= min_max.x && nbr <= min_max.y)
+	if (nbr >= min_max.x - EPSILON && nbr <= min_max.y + EPSILON)
 		return (nbr);
 	terminate("number not in valid range", 1, rt);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:20:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/11 10:43:33 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/11 19:10:45 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ float	vec3_len(const t_vec3 a)
 	if (dot == INFINITY || dot == -INFINITY)
 		return (dot);
 	return (sqrtf(dot));
+}
+
+float	vec3_dist(const t_vec3 a, const t_vec3 b)
+{
+	return (vec3_len(vec3_sub(a, b)));
 }
 
 t_vec3	vec3_normalize(const t_vec3 a)

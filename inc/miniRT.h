@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 22:37:33 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/11 21:21:23 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # define LIGHT_POWER		0.575f
 # define FALLOFF_THRESHOLD	(1.0f / 256)
 
+# define EPSILON			0.000001f
 
 typedef enum e_timeraction
 {
@@ -367,6 +368,7 @@ float			vec3_dot(const t_vec3 a, const t_vec3 b);
 
 // utils/vec3_utils2.c
 float			vec3_len(const t_vec3 a);
+float			vec3_dist(const t_vec3 a, const t_vec3 b);
 t_vec3			vec3_normalize(const t_vec3 a);
 t_vec3			vec3_cross(const t_vec3 a, const t_vec3 b);
 
