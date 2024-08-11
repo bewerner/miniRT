@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:16:32 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/10 23:35:29 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/11 10:43:45 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static float	get_discriminant(t_ray ray, t_object *object, float *t0, float *t1)
 	discriminant = B * B - 4 * A * (vec3_dot(AP, AP) - object->radius * object->radius);
 	if (discriminant < 0)
 		return (discriminant);
-	sqrt_discriminant = sqrt(discriminant);
+	sqrt_discriminant = sqrtf(discriminant);
 	*t0 = (-B + sqrt_discriminant) / (2 * A);
 	*t1 = (-B - sqrt_discriminant) / (2 * A);
 	return (discriminant);
@@ -128,8 +128,8 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object)
 // 	if (discriminant < 0)
 // 		return (HP_INF);
 
-// 	float	t0 = (-B + sqrt(discriminant)) / (2 * A);
-// 	float	t1 = (-B - sqrt(discriminant)) / (2 * A);
+// 	float	t0 = (-B + sqrtf(discriminant)) / (2 * A);
+// 	float	t1 = (-B - sqrtf(discriminant)) / (2 * A);
 
 // 	if (t1 < 0 && t0 < 0)
 // 		return (HP_INF);

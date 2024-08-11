@@ -17,8 +17,8 @@ t_vec3	vec3_rotate_x(t_vec3 v, float rad)
 	float	s;
 	float	c;
 
-	s = sin(rad);
-	c = cos(rad);
+	s = sinf(rad);
+	c = cosf(rad);
 	return ((t_vec3){v.x, v.y * c - v.z * s, v.y * s + v.z * c});
 }
 
@@ -27,8 +27,8 @@ t_vec3	vec3_rotate_y(t_vec3 v, float rad)
 	float	s;
 	float	c;
 
-	s = sin(rad);
-	c = cos(rad);
+	s = sinf(rad);
+	c = cosf(rad);
 	return ((t_vec3){v.x * c + v.z * s, v.y, -v.x * s + v.z * c});
 }
 
@@ -37,8 +37,8 @@ t_vec3	vec3_rotate_z(t_vec3 v, float rad)
 	float	s;
 	float	c;
 
-	s = sin(rad);
-	c = cos(rad);
+	s = sinf(rad);
+	c = cosf(rad);
 	return ((t_vec3){v.x * c - v.y * s, v.x * s + v.y * c, v.z});
 }
 
@@ -58,15 +58,15 @@ t_vec3	vec3_rotate_z(t_vec3 v, float rad)
 // 	v = p;
 // 	v = vec3_transform_m3(v,
 // 		(t_vec3){1, 0, 0},
-// 		(t_vec3){0, cos(rad), -sin(rad)},
-// 		(t_vec3){0, sin(rad), cos(rad)});
+// 		(t_vec3){0, cosf(rad), -sinf(rad)},
+// 		(t_vec3){0, sinf(rad), cosf(rad)});
 // 	// v = vec3_transform_m3(v,
-// 	// 	(t_vec3){cos(rad), 0, sin(rad)},
+// 	// 	(t_vec3){cosf(rad), 0, sinf(rad)},
 // 	// 	(t_vec3){1, 0, 0},
-// 	// 	(t_vec3){-sin(rad), 0, cos(rad)});
+// 	// 	(t_vec3){-sinf(rad), 0, cosf(rad)});
 // 	// v = vec3_transform_m3(v,
-// 	// 	(t_vec3){cos(yaw), -sin(yaw), 0},
-// 	// 	(t_vec3){sin(yaw), cos(yaw), 0},
+// 	// 	(t_vec3){cosf(yaw), -sinf(yaw), 0},
+// 	// 	(t_vec3){sinf(yaw), cosf(yaw), 0},
 // 	// 	(t_vec3){0, 0, 1});
 
 // 	return (v);
@@ -78,15 +78,15 @@ t_vec3	vec3_rotate_z(t_vec3 v, float rad)
 // 	v = p;
 // 	// v = vec3_transform_m3(v,
 // 	// 	(t_vec3){1, 0, 0},
-// 	// 	(t_vec3){0, cos(pitch), -sin(pitch)},
-// 	// 	(t_vec3){0, sin(pitch), cos(pitch)});
+// 	// 	(t_vec3){0, cosf(pitch), -sinf(pitch)},
+// 	// 	(t_vec3){0, sinf(pitch), cosf(pitch)});
 // 	v = vec3_transform_m3(v,
-// 		(t_vec3){cos(rad), 0, sin(rad)},
+// 		(t_vec3){cosf(rad), 0, sinf(rad)},
 // 		(t_vec3){1, 0, 0},
-// 		(t_vec3){-sin(rad), 0, cos(rad)});
+// 		(t_vec3){-sinf(rad), 0, cosf(rad)});
 // 	// v = vec3_transform_m3(v,
-// 	// 	(t_vec3){cos(yaw), -sin(yaw), 0},
-// 	// 	(t_vec3){sin(yaw), cos(yaw), 0},
+// 	// 	(t_vec3){cosf(yaw), -sinf(yaw), 0},
+// 	// 	(t_vec3){sinf(yaw), cosf(yaw), 0},
 // 	// 	(t_vec3){0, 0, 1});
 
 // 	return (v);
@@ -98,15 +98,15 @@ t_vec3	vec3_rotate_z(t_vec3 v, float rad)
 // 	v = p;
 // 	// v = vec3_transform_m3(v,
 // 	// 	(t_vec3){1, 0, 0},
-// 	// 	(t_vec3){0, cos(pitch), -sin(pitch)},
-// 	// 	(t_vec3){0, sin(pitch), cos(pitch)});
+// 	// 	(t_vec3){0, cosf(pitch), -sinf(pitch)},
+// 	// 	(t_vec3){0, sinf(pitch), cosf(pitch)});
 // 	// v = vec3_transform_m3(v,
-// 	// 	(t_vec3){cos(pitch), 0, sin(pitch)},
+// 	// 	(t_vec3){cosf(pitch), 0, sinf(pitch)},
 // 	// 	(t_vec3){1, 0, 0},
-// 	// 	(t_vec3){-sin(pitch), 0, cos(pitch)});
+// 	// 	(t_vec3){-sinf(pitch), 0, cosf(pitch)});
 // 	v = vec3_transform_m3(v,
-// 		(t_vec3){cos(rad), -sin(rad), 0},
-// 		(t_vec3){sin(rad), cos(rad), 0},
+// 		(t_vec3){cosf(rad), -sinf(rad), 0},
+// 		(t_vec3){sinf(rad), cosf(rad), 0},
 // 		(t_vec3){0, 0, 1});
 
 // 	return (v);
