@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/11 21:21:23 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/12 18:11:46 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,7 +347,6 @@ t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 // └───────────┘
 
 // utils/color_convert.c
-uint32_t		combine_rgba(int r, int g, int b, int a);
 uint32_t		vec4_to_abgr(t_vec4	col, bool dither);
 uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
 
