@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 22:54:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/12 22:57:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	init_mlx(t_rt *rt)
 	// int32_t	height;
 	// float	ratio;
 
-	printf("……………………………………\n");
 	rt->mlx = mlx_init(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT", 1);
-	printf("……………………………………\n");
 	if (!rt->mlx)
 		terminate("mlx_init failed", 1, rt);
 	// mlx_get_monitor_size(0, &width, &height);
