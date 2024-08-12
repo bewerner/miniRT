@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 21:31:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/12 22:06:36 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_error	parse_sphere(t_sphere *sphere, t_rt *rt)
 	line = (char *)rt->line->content +2;
 
 	sphere->type = OBJ_SPHERE;
-	sphere->next = (t_object *)(&sphere) + sizeof(t_sphere);
+	sphere->next = (void *)sphere + sizeof(t_sphere);
 	sphere->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	sphere->origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	sphere->origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -56,9 +56,8 @@ t_error	parse_plane(t_plane *plane, t_rt *rt)
 		return (RT_ERROR_TOO_MANY_PLANES);
 	line = (char *)rt->line->content + 2;
 
-
 	plane->type = OBJ_PLANE;
-	plane->next = (t_object *)(&plane + sizeof(t_plane));
+	plane->next = (void *)plane + sizeof(t_plane);
 	plane->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	plane->origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	plane->origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -71,6 +70,7 @@ t_error	parse_plane(t_plane *plane, t_rt *rt)
 	plane->base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	plane->base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	plane->base_color.a = 1.0f;
+
 
 	// rt->objects[*obj_count].type = OBJ_PLANE;
 	// rt->objects[*obj_count].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -98,8 +98,9 @@ t_error	parse_cylinder(t_cylinder *cylinder, t_rt *rt)
 	if (ft_strncmp(rt->line->content, "CY ", 3) == 0  && count > 1)
 		return (RT_ERROR_TOO_MANY_CYLINDER);
 	line = (char *)rt->line->content + 2;
+
 	cylinder->type = OBJ_CYLINDER;
-	cylinder->next = (t_object *)(&cylinder + sizeof(t_cylinder));
+	cylinder->next = (void *)cylinder + sizeof(t_cylinder);
 	cylinder->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	cylinder->origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	cylinder->origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
