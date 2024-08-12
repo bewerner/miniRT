@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 18:11:46 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/12 21:24:10 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ typedef enum e_identifier
 	ID_PLANE,
 	ID_CYLINDER
 }	t_identifier;
+
+typedef struct	s_scene_size
+{
+	size_t		object_count;
+	size_t		objects_size;
+	size_t		light_count;
+}				t_scene_size;
+
 
 typedef enum e_mode
 {
@@ -145,53 +153,61 @@ typedef enum e_obj_type
 	OBJ_CYLINDER
 }	t_obj_type;
 
-// typedef struct		s_sphere
-// {
-// 	t_vec3			origin;
-// 	float			radius;
-// }					t_sphere;
+typedef struct s_object		t_object;
 
-// typedef struct		s_plane
-// {
-// 	t_vec3			origin;
-// 	t_vec3			normal;
-// 	float			dist;
-// }					t_plane;
+typedef struct 		s_object
+{
+	t_obj_type		type;
+	t_object		*next;
+	t_vec3			origin;
+	t_vec4			base_color;
+}					t_object;
 
-// typedef struct		s_cylinder
-// {
-// 	t_vec3			origin;
-// 	t_vec3			cap1;
-// 	t_vec3			cap2;
-// 	t_vec3			orientation;
-// 	float			height;
-// }					t_cylinder;
+typedef struct		s_sphere
+{
+	t_obj_type		type;
+	t_object		*next;
+	t_vec3			origin;
+	t_vec4			base_color;
+	float			radius;
+}					t_sphere;
+
+typedef struct		s_plane
+{
+	t_obj_type		type;
+	t_object		*next;
+	t_vec3			origin;
+	t_vec4			base_color;
+	t_vec3			normal;
+	float			dist;
+}					t_plane;
+
+typedef struct		s_cylinder
+{
+	t_obj_type		type;
+	t_object		*next;
+	t_vec3			origin;
+	t_vec4			base_color;
+	t_vec3			orientation;
+	float			radius;
+	float			height;
+	t_vec3			cap1;
+	t_vec3			cap2;
+}					t_cylinder;
 
 // typedef struct		s_object
 // {
 // 	t_obj_type		type;
+// 	t_vec3			origin;
+// 	t_vec3			cap1;
+// 	t_vec3			cap2;
+// 	t_vec3			normal;
+// 	t_vec3			orientation;
 // 	t_vec4			base_color;
-// 	union
-// 	{
-// 		t_sphere	sphere;
-// 		t_plane		plane;
-// 		t_cylinder	cylinder;
-// 	};
+// 	float			dist;
+// 	float			radius;
+// 	float			height;
 // }					t_object;
-
-typedef struct		s_object
-{
-	t_obj_type		type;
-	t_vec3			origin;
-	t_vec3			cap1;
-	t_vec3			cap2;
-	t_vec3			normal;
-	t_vec3			orientation;
-	t_vec4			base_color;
-	float			dist;
-	float			radius;
-	float			height;
-}					t_object;
 
 typedef struct		s_hitpoint
 {
@@ -305,9 +321,9 @@ t_error			parse_camera(t_rt *rt);
 t_error			parse_light(t_rt *rt);
 
 // parser/parse_primitives.c
-t_error			parse_sphere(size_t *obj_count, t_rt *rt);
-t_error			parse_plane(size_t *obj_count, t_rt *rt);
-t_error			parse_cylinder(size_t *obj_count, t_rt *rt);
+t_error			parse_sphere(t_sphere *sphere, t_rt *rt);
+t_error			parse_plane(t_plane *plane, t_rt *rt);
+t_error			parse_cylinder(t_cylinder *cylinder, t_rt *rt);
 
 // parser/parser_utils1.c
 void			whitespace_to_space(char *str);
@@ -320,18 +336,22 @@ float			get_next_value(char **line, t_rt *rt);
 float			validate_range(float nbr, t_vec2 min_max, t_rt *rt);
 t_identifier	get_identifier(char *line);
 
+// parser/parser_utils3.c
+size_t			obj_size(t_identifier id);
+void			ft_delete_line(char **str);
+
 // ┌────────────┐
 // │ Primitives │
 // └────────────┘
 
 // primitives/plane.c
-t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object);
+t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane *plane);
 
 // primitives/cylinder.c
-t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_object *object);
+t_hitpoint		get_hitpoint_cylinder(t_ray ray, t_cylinder *cylinder);
 
 // primitives/sphere.c
-t_hitpoint		get_hitpoint_sphere(t_ray ray, t_object *object);
+t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere *sphere);
 
 // primitives/get_diffuse_color.c
 t_vec4			get_diffuse_color(t_hitpoint hitpoint, t_rt *rt);

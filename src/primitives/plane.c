@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 16:00:59 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 20:50:28 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/12 19:10:25 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,26 @@ static bool	is_near_zero(float value)
 	return (value > -0.0001 && value < 0.0001);
 }
 
-t_hitpoint	get_hitpoint_plane(t_ray ray, t_object *object)
+t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane *plane)
 {
 	t_hitpoint	hitpoint;
 	float		dp;
 
-	if (is_near_zero(vec3_dot(vec3_sub(object->origin, ray.origin), object->normal)))
+	if (is_near_zero(vec3_dot(vec3_sub(plane->origin, ray.origin), plane->normal)))
 		return (HP_INF);
-	dp = vec3_dot(ray.dir, object->normal);
+	dp = vec3_dot(ray.dir, plane->normal);
 	if (is_near_zero(dp))
 		return (HP_INF);
 	if (dp > 0)
-		hitpoint.normal = vec3_scale(-1, object->normal);
+		hitpoint.normal = vec3_scale(-1, plane->normal);
 	else
-		hitpoint.normal = object->normal;
+		hitpoint.normal = plane->normal;
 //	else if (backface culling is on)
 //		return (HP_INF);
-	float t = (object->dist - vec3_dot(ray.origin, object->normal)) / dp;
+	float t = (plane->dist - vec3_dot(ray.origin, plane->normal)) / dp;
 	if (t < 0)
 		return (HP_INF);
-	hitpoint.object = object;
+	hitpoint.object = (t_object *)plane;
 	hitpoint.ray = vec3_scale(t, ray.dir);
 	hitpoint.pos = vec3_add(ray.origin, hitpoint.ray);
  	return (hitpoint);

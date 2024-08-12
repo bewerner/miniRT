@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_default_objs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/12 19:43:09 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
