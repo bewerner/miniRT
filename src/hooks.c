@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 22:52:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/12 22:56:28 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 			rt->mode = MODE_SOLID;
 	}
 	else if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
+	{
 		reset_camera(&rt->camera);
+		rt->move.vel = VEC3_ZERO;
+	}
 	else
 		keyhook_axial_view(keydata, rt);
 }
