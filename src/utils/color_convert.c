@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_convert.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 22:04:33 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 20:14:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/12 16:52:55 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 uint32_t	combine_rgba(int r, int g, int b, int a)
 {
-	return (0 | (r << 24) | (g << 16) | (b << 8) | a);
+	return (0 | (a << 24) | (b << 16) | (g << 8) | r);
 }
 
 static float	clamp(float value, float min, float max)
