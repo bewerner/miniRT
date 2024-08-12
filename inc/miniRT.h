@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 22:08:08 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/12 22:52:34 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,6 +290,7 @@ typedef struct		s_rt
 
 // main.c
 void			init_camera(t_camera* camera, t_rt *rt);
+void			reset_camera(t_camera *camera);
 
 // cleanup.c
 char			*error_msg(t_error error);

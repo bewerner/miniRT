@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 20:14:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/12 22:54:42 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,32 @@ void	validate_args(int argc, char **argv, t_rt *rt)
 	}
 }
 
-void	init_camera(t_camera* camera, t_rt *rt)
+void	init_camera(t_camera *camera, t_rt *rt)
 {
 	t_vec3	dir;
+	float	rad;
 
 	camera->direction = vec3_normalize(camera->direction);
 	dir = camera->direction;
-	// get camera.pitch and camera.yaw from camera.direction
 	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
 	camera->yaw = atan2f(dir.x, dir.y) * -1;
-	// printf("yaw:   %10f = %4.1f\npitch: %10f = %4.1f\n", camera->yaw, camera->yaw * 180 / M_PI, camera->pitch, camera->pitch * 180 / M_PI);
-
-	float rad = camera->fov * (M_PI / 180);
-
+	rad = camera->fov * (M_PI / 180);
 	camera->focal_lenth = ((float)rt->canvas->width * 0.5) / tan(rad * 0.5 );
-	// printf("focal length -> %f \n", camera->focal_lenth);
+	reset_camera(camera);
+}
 
+void	reset_camera(t_camera *camera)
+{
+	static t_camera	cam;
+	static bool		is_set;
+
+	if (is_set == false)
+	{
+		cam = *camera;
+		is_set = true;
+	}
+	else
+		*camera = cam;
 }
 
 int	main(int argc, char **argv)
