@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/11 21:23:11 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/13 19:27:03 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ t_identifier	get_identifier(char *line)
 	return (ID_INVALID);
 }
 
-float	validate_range(float nbr, t_vec2 min_max, t_rt *rt)
+//	validate_range
+float	vr(float nbr, t_vec2 min_max, t_rt *rt)
 {
 	if (nbr >= min_max.x - EPSILON && nbr <= min_max.y + EPSILON)
 		return (nbr);
@@ -49,14 +50,15 @@ float	validate_range(float nbr, t_vec2 min_max, t_rt *rt)
 	return (0);
 }
 
-float	get_next_value(char **line, t_rt *rt)
+//	get_next_value
+float	gnv(char **line, t_rt *rt)
 {
 	float	value;
 
 	ft_skipspace(line);
 	if (**line == '\0')
 		terminate("Missing value detected", 1, rt);
-	value = ft_atod(line, 0, (int[3]){1, -1, 0});
+	value = ft_atod(line, 0, (int [3]){1, -1, 0});
 	if (value == NAN || value == INFINITY || value == -INFINITY)
 		terminate("invalid number", 1, rt);
 	while (*line && (ft_isspace(**line) || **line == ','))
@@ -64,7 +66,7 @@ float	get_next_value(char **line, t_rt *rt)
 	return (value);
 }
 
-char *prep_line(char *str)
+char	*prep_line(char *str)
 {
 	size_t	len;
 

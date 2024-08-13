@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:31:54 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 11:17:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:12:14 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ t_error	parse_light(t_rt *rt)
 		return (RT_ERROR_TOO_MANY_LIGHTS);
 	line = (char *)rt->line->content + 1;
 	rt->lights[count - 1].type = LIGHT_POINT;
-	rt->lights[count - 1].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	rt->lights[count - 1].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	rt->lights[count - 1].origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	rt->lights[count - 1].ratio = validate_range(get_next_value(&line, rt), (t_vec2){0.0f, 1.0f}, rt) * LIGHT_POWER;
+	rt->lights[count - 1].origin.x = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->lights[count - 1].origin.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->lights[count - 1].origin.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	rt->lights[count - 1].ratio = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt) * LIGHT_POWER;
 	rt->lights[count - 1].power = rt->lights[count - 1].ratio * MAX_POWER;
 	rt->lights[count - 1].intensity = rt->lights[count - 1].power / 38.26f;
-	rt->lights[count - 1].color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	rt->lights[count - 1].color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	rt->lights[count - 1].color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->lights[count - 1].color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->lights[count - 1].color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	rt->lights[count - 1].color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->lights[count - 1].color.a = 1.0f;
 	return (RT_SUCCESS);
 }
