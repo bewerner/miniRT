@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 17:54:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/13 18:51:40 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,6 +286,7 @@ typedef struct		s_rt
 	int8_t			mouse_buttons_pressed;
 	t_ivec2			initial_cursor_pos;
 	int				mode;
+	int				fd;
 }					t_rt;
 
 // main.c
@@ -311,8 +312,11 @@ void			render(t_rt *rt);
 // │ Parser │
 // └────────┘
 
-// parser/parser.c
+// parser/loader.c
 void			load_scene(char *file, t_rt *rt);
+
+// parser/parser.c
+t_error			parse_scene(size_t obj_cnt, t_rt *rt);
 
 // parser/parse_default_objs.c
 t_error			parse_ambient(t_rt *rt);
