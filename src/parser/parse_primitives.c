@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_primitives.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 18:20:10 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/13 19:25:54 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-t_error	parse_sphere(t_sphere *sphere, t_rt *rt)
+t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 {
 	char			*line;
 	static size_t	count;
@@ -21,82 +21,90 @@ t_error	parse_sphere(t_sphere *sphere, t_rt *rt)
 	if (ft_strncmp(rt->line->content, "SP ", 3) == 0 && count > 1)
 		return (RT_ERROR_TOO_MANY_SPHERES);
 	line = (char *)rt->line->content +2;
-	sphere->type = OBJ_SPHERE;
-	sphere->next = (void *)sphere + sizeof(t_sphere);
-	sphere->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	sphere->origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	sphere->origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	sphere->radius = validate_range(get_next_value(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
-	sphere->base_color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	sphere->base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	sphere->base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	sphere->base_color.a = 1.0f;
+	sp->type = OBJ_SPHERE;
+	sp->next = (void *)sp + sizeof(t_sphere);
+	sp->origin.x = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	sp->origin.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	sp->origin.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	sp->radius = vr(gnv(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
+	sp->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	sp->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	sp->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	sp->base_color.a = 1.0f;
 	return (RT_SUCCESS);
 }
 
-t_error	parse_plane(t_plane *plane, t_rt *rt)
+t_error	parse_plane(t_plane *pl, t_rt *rt)
 {
 	char			*line;
 	static size_t	count;
 
 	count++;
-	if (ft_strncmp(rt->line->content, "PL ", 3) == 0  && count > 1)
+	if (ft_strncmp(rt->line->content, "PL ", 3) == 0 && count > 1)
 		return (RT_ERROR_TOO_MANY_PLANES);
 	line = (char *)rt->line->content + 2;
-	plane->type = OBJ_PLANE;
-	plane->next = (void *)plane + sizeof(t_plane);
-	plane->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	plane->origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	plane->origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	plane->normal.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	plane->normal.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	plane->normal.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	plane->normal = vec3_normalize(plane->normal);
-	plane->dist = vec3_dot(plane->origin, plane->normal);
-	plane->base_color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	plane->base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	plane->base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	plane->base_color.a = 1.0f;
+	pl->type = OBJ_PLANE;
+	pl->next = (void *)pl + sizeof(t_plane);
+	pl->origin.x = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	pl->origin.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	pl->origin.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	pl->normal.x = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	pl->normal.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	pl->normal.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	pl->normal = vec3_normalize(pl->normal);
+	pl->dist = vec3_dot(pl->origin, pl->normal);
+	pl->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	pl->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	pl->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	pl->base_color.a = 1.0f;
 	return (RT_SUCCESS);
 }
 
-t_error	parse_cylinder(t_cylinder *cylinder, t_rt *rt)
+static t_vec3	parse_vec3_infinity(char **line, t_rt *rt)
+{
+	t_vec3	v;
+
+	v.x = vr(gnv(line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	v.y = vr(gnv(line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	v.z = vr(gnv(line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	return (v);
+}
+
+static void	init_caps(t_cylinder *cy)
+{
+	cy->cap1.origin = vec3_sub(cy->origin,
+			vec3_scale(cy->height / 2, cy->orientation));
+	cy->cap2.origin = vec3_add(cy->origin,
+			vec3_scale(cy->height / 2, cy->orientation));
+	cy->cap1.normal = vec3_scale(-1, cy->orientation);
+	cy->cap2.normal = cy->orientation;
+	cy->cap1.dist = vec3_dot(cy->cap1.origin, cy->cap1.normal);
+	cy->cap2.dist = vec3_dot(cy->cap2.origin, cy->cap2.normal);
+	cy->cap1.base_color = cy->base_color;
+	cy->cap2.base_color = cy->base_color;
+}
+
+t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
 {
 	char			*line;
 	static size_t	count;
 
 	count++;
-	if (ft_strncmp(rt->line->content, "CY ", 3) == 0  && count > 1)
+	if (ft_strncmp(rt->line->content, "CY ", 3) == 0 && count > 1)
 		return (RT_ERROR_TOO_MANY_CYLINDER);
 	line = (char *)rt->line->content + 2;
-	cylinder->type = OBJ_CYLINDER;
-	cylinder->next = (void *)cylinder + sizeof(t_cylinder);
-	cylinder->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	cylinder->origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	cylinder->origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	
-	cylinder->orientation.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	cylinder->orientation.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	cylinder->orientation.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	cylinder->orientation = vec3_normalize(cylinder->orientation);
-
-	cylinder->radius = validate_range(get_next_value(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
-	cylinder->height = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	
-	cylinder->base_color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	cylinder->base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	cylinder->base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	cylinder->base_color.a = 1.0f;
-
-	cylinder->cap1.origin = vec3_sub(cylinder->origin, vec3_scale(cylinder->height / 2, cylinder->orientation));
-	cylinder->cap2.origin = vec3_add(cylinder->origin, vec3_scale(cylinder->height / 2, cylinder->orientation));
-	cylinder->cap1.normal = vec3_scale(-1, cylinder->orientation);
-	cylinder->cap2.normal = cylinder->orientation;
-	cylinder->cap1.dist = vec3_dot(cylinder->cap1.origin, cylinder->cap1.normal);
-	cylinder->cap2.dist = vec3_dot(cylinder->cap2.origin, cylinder->cap2.normal);
-	cylinder->cap1.base_color = cylinder->base_color;
-	cylinder->cap2.base_color = cylinder->base_color;
-
+	cy->type = OBJ_CYLINDER;
+	cy->next = (void *)cy + sizeof(t_cylinder);
+	cy->origin = parse_vec3_infinity(&line, rt);
+	cy->orientation = parse_vec3_infinity(&line, rt);
+	cy->orientation = vec3_normalize(cy->orientation);
+	cy->radius = vr(gnv(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
+	cy->height = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	cy->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	cy->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	cy->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	cy->base_color.a = 1.0f;
+	init_caps(cy);
 	return (RT_SUCCESS);
 }
 

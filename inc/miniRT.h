@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 18:59:22 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:10:20 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,10 +322,10 @@ void			ft_skipspace(char **str);
 float			ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3]);
 
 // parser/parser_utils2.c
-char			*prep_line(char *str);
-float			get_next_value(char **line, t_rt *rt);
-float			validate_range(float nbr, t_vec2 min_max, t_rt *rt);
 t_identifier	get_identifier(char *line);
+float			vr(float nbr, t_vec2 min_max, t_rt *rt);
+float			gnv(char **line, t_rt *rt);
+char			*prep_line(char *str);
 
 // parser/parser_utils3.c
 size_t			obj_size(t_identifier id);
