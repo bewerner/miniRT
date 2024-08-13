@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 19:10:20 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 20:09:20 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef enum e_identifier
 	ID_COMMENT,
 	ID_AMBIENT,
 	ID_CAMERA,
-	ID_LIGHT,
+	ID_POINT_LIGHT,
 	ID_SPHERE,
 	ID_PLANE,
 	ID_CYLINDER
@@ -80,6 +80,7 @@ typedef struct	s_scene_size
 	size_t		obj_cnt;
 	size_t		objs_size;
 	size_t		light_cnt;
+	size_t		light_size;
 }				t_scene_size;
 
 
@@ -219,17 +220,24 @@ typedef enum		e_light_type
 	LIGHT_POINT
 }					t_light_type;
 
+typedef struct s_light	t_light;
+
 typedef struct		s_light
 {
 	t_light_type	type;
-	// t_vec3		dir;
+	t_light			*next;
+}					t_light;
+
+typedef struct		s_point_light
+{
+	t_light_type	type;
+	t_light			*next;
 	t_vec3			origin;
-	float			radius;
 	float			ratio;
 	float			power;
 	float			intensity;
 	t_vec4			color;
-}					t_light;
+}					t_point_light;
 
 typedef struct		s_movement
 {
@@ -302,14 +310,14 @@ void			render(t_rt *rt);
 void			load_scene(char *file, t_rt *rt);
 
 // parser/parser.c
-t_error			parse_scene(size_t obj_cnt, t_rt *rt);
+t_error			parse_scene(size_t obj_cnt, size_t light_cnt, t_rt *rt);
 
 // parser/parse_default_objs.c
 t_error			parse_ambient(t_rt *rt);
 t_error			parse_camera(t_rt *rt);
 
 // parser/parse_lights.c
-t_error			parse_light(t_rt *rt);
+t_error			parse_point_light(t_point_light *pl, t_rt *rt);
 
 // parser/parse_primitives.c
 t_error			parse_sphere(t_sphere *sphere, t_rt *rt);
@@ -329,6 +337,7 @@ char			*prep_line(char *str);
 
 // parser/parser_utils3.c
 size_t			obj_size(t_identifier id);
+size_t			light_size(t_identifier id);
 void			ft_delete_line(char **str);
 
 // ┌────────────┐

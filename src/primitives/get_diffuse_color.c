@@ -3,42 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   get_diffuse_color.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:23:37 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/13 17:54:55 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/13 20:39:15 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-t_vec4	get_diffuse_color(t_hitpoint hitpoint, t_rt *rt)
+static t_vec4	illuminate_from_point_light(t_point_light * point_light, t_hitpoint *hitpoint, t_rt *rt)
 {
-	int		i;
 	t_ray	light_ray;
 	float	distance;
-	t_vec4	col;
 	float	intensity;
 
-	col = VEC4_BLACK;
-	i = -1;
-	while (rt->lights[++i].type)
+	light_ray.dir = vec3_sub(vec3_add(hitpoint->pos, vec3_scale(0.001, hitpoint->normal)), point_light->origin); // offset the hitpoint to preven z-fighting
+	light_ray.origin = point_light->origin;
+	intensity = -vec3_dot(hitpoint->normal, vec3_normalize(light_ray.dir));
+	if (intensity <= 0)
+		return (VEC4_BLACK);
+	distance = vec3_len(light_ray.dir);
+	intensity = intensity / (distance * distance);
+	if (intensity <= 0.000005 || is_obstructed(light_ray, rt)) // keep an eye on this. if light ever cuts off
+		return (VEC4_BLACK);
+	intensity *= point_light->intensity;
+	return (vec4_scale(intensity, point_light->color));
+}
+
+
+t_vec4	get_diffuse_color(t_hitpoint hitpoint, t_rt *rt)
+{
+	t_light	*light;
+	t_vec4	final_col;
+	t_vec4	light_col;
+
+	final_col = VEC4_BLACK;
+	light = rt->lights;
+	while (light)
 	{
-		light_ray.dir = vec3_sub(vec3_add(hitpoint.pos, vec3_scale(0.001, hitpoint.normal)), rt->lights[i].origin); // offset the hitpoint to preven z-fighting
-		light_ray.origin = rt->lights[i].origin;
-		intensity = -vec3_dot(hitpoint.normal, vec3_normalize(light_ray.dir));
-		if (intensity <= 0)
-			continue ;
-		distance = vec3_len(light_ray.dir);
-		intensity = intensity / (distance * distance);
-		if (intensity <= 0.00001 || is_obstructed(light_ray, rt)) // keep an eye on this. if light ever cuts off
-			continue ;
-		intensity *= rt->lights[i].intensity;
-		col = vec4_add(col, vec4_scale(intensity, rt->lights[i].color));
+		if (light->type == LIGHT_POINT)
+			light_col = illuminate_from_point_light((t_point_light *)light, &hitpoint, rt);
+		final_col = vec4_add(final_col, light_col);
+		light = light->next;
 	}
-	col = vec4_add(col, rt->ambient);
-	col = vec4_mul(hitpoint.object->base_color, col);
-	return (col);
+	final_col = vec4_add(final_col, rt->ambient);
+	final_col = vec4_mul(hitpoint.object->base_color, final_col);
+	return (final_col);
 }
 
 t_vec4	get_solid_color(t_hitpoint hitpoint, t_rt *rt)
