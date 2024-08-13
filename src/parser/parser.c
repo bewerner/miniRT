@@ -6,17 +6,57 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 11:16:52 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:05:29 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-static t_error	parse_scene(size_t obj_count, t_rt *rt)
+static void	next_lst_item(t_list **lst)
+{
+	t_list			*tmp;
+
+	tmp = *lst;
+	*lst = tmp->next;
+	ft_lstdelone(tmp, free);
+}
+
+static void	set_next_ptr(t_identifier id, size_t obj_cnt, t_object **curr_obj)
+{
+	if (id >= ID_SPHERE)
+	{
+		if (obj_cnt == 0)
+			(*curr_obj)->next = NULL;
+		else
+			*curr_obj = (*curr_obj)->next;
+	}
+}
+
+static t_error	evaluate_id(t_identifier id, t_object *curr_obj, t_rt *rt)
+{
+	t_error	error;
+
+	if (id == ID_AMBIENT)
+		error = parse_ambient(rt);
+	else if (id == ID_CAMERA)
+		error = parse_camera(rt);
+	else if (id == ID_LIGHT)
+		error = parse_light(rt);
+	else if (id == ID_SPHERE)
+		error = parse_sphere((t_sphere *)curr_obj, rt);
+	else if (id == ID_PLANE)
+		error = parse_plane((t_plane *)curr_obj, rt);
+	else if (id == ID_CYLINDER)
+		error = parse_cylinder((t_cylinder *)curr_obj, rt);
+	else if (id != ID_COMMENT)
+		error = RT_ERROR_INVALID_IDENTIFIER;
+	return (RT_SUCCESS);
+}
+
+static t_error	parse_scene(size_t obj_cnt, t_rt *rt)
 {
 	t_identifier	id;
 	t_error			error;
-	t_list			*tmp;
 	t_object		*curr_obj;
 
 	error = RT_SUCCESS;
@@ -24,34 +64,11 @@ static t_error	parse_scene(size_t obj_count, t_rt *rt)
 	while (rt->line)
 	{
 		id = get_identifier(rt->line->content);
-		if (id == ID_AMBIENT)
-			error = parse_ambient(rt);
-		else if (id == ID_CAMERA)
-			error = parse_camera(rt);
-		else if (id == ID_LIGHT)
-			error = parse_light(rt);
-		else if (id == ID_SPHERE)
-			error = parse_sphere((t_sphere *)curr_obj, rt);
-		else if (id == ID_PLANE)
-			error = parse_plane((t_plane *)curr_obj, rt);
-		else if (id == ID_CYLINDER)
-			error = parse_cylinder((t_cylinder *)curr_obj, rt);
-		else if (id != ID_COMMENT)
-			error = RT_ERROR_INVALID_IDENTIFIER;
+		error = evaluate_id(id, curr_obj, rt);
 		if (error)
 			return (error);
-		
-		if (id >= ID_SPHERE)
-		{
-			if (--obj_count == 0)
-				curr_obj->next = NULL;
-			else
-				curr_obj = curr_obj->next;
-		}
-
-		tmp = rt->line;
-		rt->line = tmp->next;
-		ft_lstdelone(tmp, free);
+		set_next_ptr(id, --obj_cnt, &curr_obj);
+		next_lst_item(&rt->line);
 	}
 	return (RT_SUCCESS);
 }
@@ -73,11 +90,11 @@ static void	load_elements(int fd, t_scene_size *scene_size, t_rt *rt)
 			terminate(error_msg(RT_ERROR_INVALID_IDENTIFIER), 1, rt);
 		}
 		else if (id == ID_LIGHT)
-			scene_size->light_count++;
+			scene_size->light_cnt++;
 		else if (id >= ID_SPHERE)
 		{
-			scene_size->object_count++;
-			scene_size->objects_size += obj_size(id);
+			scene_size->obj_cnt++;
+			scene_size->objs_size += obj_size(id);
 		}
 		if (id > ID_COMMENT)
 			ft_lstadd_back(&rt->line, ft_lstnew(line));		// TODO: What aboty that?
@@ -91,18 +108,18 @@ void	load_scene(char *file, t_rt *rt)
 {
 	int				fd;
 	t_error			error;
-	t_scene_size	scene_size;
+	t_scene_size	scn_sze;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		terminate("failed to load file", 1, rt);
-	load_elements(fd, &scene_size, rt);
+	load_elements(fd, &scn_sze, rt);
 	close(fd);
-	rt->objects = (t_object *)ft_calloc(1, scene_size.objects_size);
-	rt->lights = (t_light *)ft_calloc(scene_size.light_count + 1, sizeof(t_light));
+	rt->objects = (t_object *)ft_calloc(1, scn_sze.objs_size);
+	rt->lights = (t_light *)ft_calloc(scn_sze.light_cnt + 1, sizeof(t_light));
 	if (rt->objects == NULL || rt->lights == NULL)
 		terminate(error_msg(RT_ERROR_MALLOC), 1, rt);
-	error = parse_scene(scene_size.object_count, rt);
+	error = parse_scene(scn_sze.obj_cnt, rt);
 	if (error)
 		terminate(error_msg(error), 1, rt);
 }

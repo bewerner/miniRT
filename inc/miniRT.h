@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 22:52:34 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 11:39:49 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ typedef enum e_identifier
 
 typedef struct	s_scene_size
 {
-	size_t		object_count;
-	size_t		objects_size;
-	size_t		light_count;
+	size_t		obj_cnt;
+	size_t		objs_size;
+	size_t		light_cnt;
 }				t_scene_size;
 
 
