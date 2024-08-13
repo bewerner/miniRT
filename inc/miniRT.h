@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 11:39:49 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:54:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,7 +360,7 @@ t_vec4			get_solid_color(t_hitpoint hitpoint, t_rt *rt);
 t_vec4			get_normal_color(t_hitpoint hitpoint, t_rt *rt);
 
 // primitives/get_hitpoint.c
-bool			is_obstructed(t_ray ray, t_object *exclude, t_rt *rt);
+bool			is_obstructed(t_ray ray, t_rt *rt);
 t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 
 // ┌───────────┐
