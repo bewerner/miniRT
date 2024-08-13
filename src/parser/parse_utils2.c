@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 19:27:03 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 20:11:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_identifier	get_identifier(char *line)
 	else if (ft_strncmp(line, "C ", 2) == 0)
 		return (ID_CAMERA);
 	else if (check_id(line, "L ", "l "))
-		return (ID_LIGHT);
+		return (ID_POINT_LIGHT);
 	else if (check_id(line, "SP ", "sp "))
 		return (ID_SPHERE);
 	else if (check_id(line, "PL ", "pl "))

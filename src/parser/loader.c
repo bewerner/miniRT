@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 18:56:01 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 20:03:17 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ static void	evaluate_id(t_identifier id, char *line, t_scene_size *sz, t_rt *rt)
 		free(line);
 		terminate(error_msg(RT_ERROR_INVALID_IDENTIFIER), 1, rt);
 	}
-	else if (id == ID_LIGHT)
+	else if (id == ID_POINT_LIGHT)
+	{
 		sz->light_cnt++;
+		sz->light_size += light_size(id);
+	}
 	else if (id >= ID_SPHERE)
 	{
 		sz->obj_cnt++;
@@ -46,7 +49,7 @@ static void	load_elements(t_scene_size *scene_size, t_rt *rt)
 	char			*line;
 	t_identifier	id;
 
-	*scene_size = (t_scene_size){0, 0, 0};
+	*scene_size = (t_scene_size){0, 0, 0, 0};
 	line = prep_line(get_next_line(rt->fd));
 	while (line)
 	{
@@ -72,10 +75,10 @@ void	load_scene(char *file, t_rt *rt)
 	close(rt->fd);
 	rt->fd = -1;
 	rt->objects = (t_object *)ft_calloc(1, scn_sze.objs_size);
-	rt->lights = (t_light *)ft_calloc(scn_sze.light_cnt + 1, sizeof(t_light));
+	rt->lights = (t_light *)ft_calloc(1, scn_sze.light_size);
 	if (rt->objects == NULL || rt->lights == NULL)
 		terminate(error_msg(RT_ERROR_MALLOC), 1, rt);
-	error = parse_scene(scn_sze.obj_cnt, rt);
+	error = parse_scene(scn_sze.obj_cnt, scn_sze.light_cnt, rt);
 	if (error)
 		terminate(error_msg(error), 1, rt);
 }
