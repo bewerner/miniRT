@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_hitpoint.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:27:07 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/12 19:30:58 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:16:40 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ bool	is_obstructed(t_ray ray, t_object *exclude, t_rt *rt)
 
 t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 {
-	// size_t		i;
 	t_object	*object;
 	t_hitpoint	closest;
 	t_hitpoint	current;
@@ -72,7 +71,6 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 	closest.ray = VEC3_INF;
 	closest.pos = VEC3_INF;
 	closest.object = NULL;
-	// i = 0;
 	object = rt->objects;
 	while (object)
 	{
@@ -87,17 +85,5 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 			closest = current;
 		object = object->next;
 	}
-	// while (rt->objects[i].type)
-	// {
-	// 	if (rt->objects[i].type == OBJ_SPHERE)
-	// 		current = get_hitpoint_sphere(ray, &rt->objects[i]);
-	// 	else if (rt->objects[i].type == OBJ_PLANE)
-	// 		current = get_hitpoint_plane(ray, &rt->objects[i]);
-	// 	else if (rt->objects[i].type == OBJ_CYLINDER)
-	// 		current = get_hitpoint_cylinder(ray, &rt->objects[i]);
-	// 	if (vec3_len(current.ray) < vec3_len(closest.ray))
-	// 		closest = current;
-	// 	i++;
-	// }
 	return (closest);
 }

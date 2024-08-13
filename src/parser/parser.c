@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 12:05:29 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:19:54 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,6 @@ static void	next_lst_item(t_list **lst)
 	tmp = *lst;
 	*lst = tmp->next;
 	ft_lstdelone(tmp, free);
-}
-
-static void	set_next_ptr(t_identifier id, size_t obj_cnt, t_object **curr_obj)
-{
-	if (id >= ID_SPHERE)
-	{
-		if (obj_cnt == 0)
-			(*curr_obj)->next = NULL;
-		else
-			*curr_obj = (*curr_obj)->next;
-	}
 }
 
 static t_error	evaluate_id(t_identifier id, t_object *curr_obj, t_rt *rt)
@@ -67,7 +56,14 @@ static t_error	parse_scene(size_t obj_cnt, t_rt *rt)
 		error = evaluate_id(id, curr_obj, rt);
 		if (error)
 			return (error);
-		set_next_ptr(id, --obj_cnt, &curr_obj);
+		if (id >= ID_SPHERE)
+		{
+			obj_cnt--;
+			if (obj_cnt == 0)
+				curr_obj->next = NULL;
+			else
+				curr_obj = curr_obj->next;
+		}
 		next_lst_item(&rt->line);
 	}
 	return (RT_SUCCESS);
