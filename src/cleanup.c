@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/08 22:53:35 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:44:37 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	cleanup(t_rt *rt)
 
 void	terminate(char *msg, uint8_t exit_code, t_rt *rt)
 {
+	if (rt->fd != -1)
+		close(rt->fd);
 	if (msg)
 		error(msg);
 	if (rt->mlx)
