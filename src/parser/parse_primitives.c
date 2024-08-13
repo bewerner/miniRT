@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 22:06:36 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 11:17:52 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_error	parse_sphere(t_sphere *sphere, t_rt *rt)
 	if (ft_strncmp(rt->line->content, "SP ", 3) == 0 && count > 1)
 		return (RT_ERROR_TOO_MANY_SPHERES);
 	line = (char *)rt->line->content +2;
-
 	sphere->type = OBJ_SPHERE;
 	sphere->next = (void *)sphere + sizeof(t_sphere);
 	sphere->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -32,17 +31,6 @@ t_error	parse_sphere(t_sphere *sphere, t_rt *rt)
 	sphere->base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	sphere->base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	sphere->base_color.a = 1.0f;
-
-	// rt->objects[*obj_count].type = OBJ_SPHERE;
-	// rt->objects[*obj_count].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].radius = validate_range(get_next_value(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].base_color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.a = 1.0f;
-	// (*obj_count)++;
 	return (RT_SUCCESS);
 }
 
@@ -55,7 +43,6 @@ t_error	parse_plane(t_plane *plane, t_rt *rt)
 	if (ft_strncmp(rt->line->content, "PL ", 3) == 0  && count > 1)
 		return (RT_ERROR_TOO_MANY_PLANES);
 	line = (char *)rt->line->content + 2;
-
 	plane->type = OBJ_PLANE;
 	plane->next = (void *)plane + sizeof(t_plane);
 	plane->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -70,22 +57,6 @@ t_error	parse_plane(t_plane *plane, t_rt *rt)
 	plane->base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	plane->base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	plane->base_color.a = 1.0f;
-
-
-	// rt->objects[*obj_count].type = OBJ_PLANE;
-	// rt->objects[*obj_count].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].normal.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].normal.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].normal.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].normal = vec3_normalize(rt->objects[*obj_count].normal);
-	// rt->objects[*obj_count].dist = vec3_dot(rt->objects[*obj_count].origin, rt->objects[*obj_count].normal);
-	// rt->objects[*obj_count].base_color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.a = 1.0f;
-	// (*obj_count)++;
 	return (RT_SUCCESS);
 }
 
@@ -98,7 +69,6 @@ t_error	parse_cylinder(t_cylinder *cylinder, t_rt *rt)
 	if (ft_strncmp(rt->line->content, "CY ", 3) == 0  && count > 1)
 		return (RT_ERROR_TOO_MANY_CYLINDER);
 	line = (char *)rt->line->content + 2;
-
 	cylinder->type = OBJ_CYLINDER;
 	cylinder->next = (void *)cylinder + sizeof(t_cylinder);
 	cylinder->origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
@@ -120,28 +90,6 @@ t_error	parse_cylinder(t_cylinder *cylinder, t_rt *rt)
 	cylinder->base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	cylinder->base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	cylinder->base_color.a = 1.0f;
-
-	// rt->objects[*obj_count].type = OBJ_CYLINDER;
-	// rt->objects[*obj_count].origin.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].origin.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].origin.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	
-	// rt->objects[*obj_count].orientation.x = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].orientation.y = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].orientation.z = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].orientation = vec3_normalize(rt->objects[*obj_count].orientation);
-
-	// rt->objects[*obj_count].radius = validate_range(get_next_value(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
-	// rt->objects[*obj_count].height = validate_range(get_next_value(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	
-	// rt->objects[*obj_count].cap1 = vec3_sub(rt->objects[*obj_count].origin, vec3_scale(rt->objects[*obj_count].height / 2, rt->objects[*obj_count].orientation));
-	// rt->objects[*obj_count].cap2 = vec3_add(rt->objects[*obj_count].origin, vec3_scale(rt->objects[*obj_count].height / 2, rt->objects[*obj_count].orientation));
-	
-	// rt->objects[*obj_count].base_color.r = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	// rt->objects[*obj_count].base_color.a = 1.0f;
-	// (*obj_count)++;
 	return (RT_SUCCESS);
 }
 
