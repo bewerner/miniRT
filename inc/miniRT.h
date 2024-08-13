@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 18:51:40 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:59:22 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,23 +191,9 @@ typedef struct		s_cylinder
 	t_vec3			orientation;
 	float			radius;
 	float			height;
-	t_vec3			cap1;
-	t_vec3			cap2;
+	t_plane			cap1;
+	t_plane			cap2;
 }					t_cylinder;
-
-// typedef struct		s_object
-// {
-// 	t_obj_type		type;
-// 	t_vec3			origin;
-// 	t_vec3			cap1;
-// 	t_vec3			cap2;
-// 	t_vec3			normal;
-// 	t_vec3			orientation;
-// 	t_vec4			base_color;
-// 	float			dist;
-// 	float			radius;
-// 	float			height;
-// }					t_object;
 
 typedef struct		s_hitpoint
 {
