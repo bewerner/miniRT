@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 20:56:46 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 21:56:19 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,20 @@ static void	next_lst_item(t_list **lst)
 static t_error	evaluate_id(t_identifier id, t_object *curr_obj,
 	t_light *curr_light, t_rt *rt)
 {
-	t_error	error;
-
 	if (id == ID_AMBIENT)
-		error = parse_ambient(rt);
+		return (parse_ambient(rt));
 	else if (id == ID_CAMERA)
-		error = parse_camera(rt);
+		return (parse_camera(rt));
 	else if (id == ID_POINT_LIGHT)
-		error = parse_point_light((t_point_light *)curr_light, rt);
+		return (parse_point_light((t_point_light *)curr_light, rt));
 	else if (id == ID_SPHERE)
-		error = parse_sphere((t_sphere *)curr_obj, rt);
+		return (parse_sphere((t_sphere *)curr_obj, rt));
 	else if (id == ID_PLANE)
-		error = parse_plane((t_plane *)curr_obj, rt);
+		return (parse_plane((t_plane *)curr_obj, rt));
 	else if (id == ID_CYLINDER)
-		error = parse_cylinder((t_cylinder *)curr_obj, rt);
+		return (parse_cylinder((t_cylinder *)curr_obj, rt));
 	else if (id != ID_COMMENT)
-		error = RT_ERROR_INVALID_IDENTIFIER;
+		return (RT_ERROR_INVALID_IDENTIFIER);
 	return (RT_SUCCESS);
 }
 
