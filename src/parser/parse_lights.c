@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:31:54 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 19:42:17 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/13 11:17:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_error	parse_light(t_rt *rt)
 	rt->lights[count - 1].color.g = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->lights[count - 1].color.b = validate_range(get_next_value(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->lights[count - 1].color.a = 1.0f;
-	// rt->lights[count - 1].radius = 0.0f;		/// DELETE ME AND ALSO IN STRUCT
 	return (RT_SUCCESS);
 }
 
