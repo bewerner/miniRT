@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_convert.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 22:04:33 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 18:12:19 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:37:49 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static float	clamp(float value, float min, float max)
 static uint8_t	rand_dither(float value)
 {
 	static int	rand;
+
 	rand = (214013 * rand + 2531011);
 	if ((float)((rand >> 16) & 0x7FFF) / 32768 < value - (uint8_t)value)
 		value++;

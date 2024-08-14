@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   image.c                                            :+:      :+:    :+:   */
+/*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 23:07:59 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/14 21:38:20 by bwerner          ###   ########.fr       */
+/*   Created: 2024/08/14 19:55:05 by bwerner           #+#    #+#             */
+/*   Updated: 2024/08/14 20:06:04 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-void	fill_image(mlx_image_t *image, t_vec4 color)
+void	init_hooks(t_rt *rt)
 {
-	uint32_t	abgr_color;
-
-	abgr_color = vec4_to_abgr(color, false);
-	ft_memset_int(image->pixels, abgr_color, image->width * image->height);
+	mlx_key_hook(rt->mlx, key_hook, rt);
+	mlx_mouse_hook(rt->mlx, mouse_hook, rt);
+	mlx_cursor_hook(rt->mlx, cursor_hook, rt);
+	mlx_loop_hook(rt->mlx, loop_hook, rt);
 }

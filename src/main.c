@@ -3,45 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 22:57:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 21:00:03 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	init_mlx(t_rt *rt)
-{
-	// int32_t	width;
-	// int32_t	height;
-	// float	ratio;
-
-	rt->mlx = mlx_init(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT", 1);
-	if (!rt->mlx)
-		terminate("mlx_init failed", 1, rt);
-	// mlx_get_monitor_size(0, &width, &height);
-	// ratio = (float)WINDOW_WIDTH / WINDOW_HEIGHT;
-	// if (rt->mlx->width > width)
-	// {
-	// 	height = width / ratio;
-	// 	mlx_set_window_size(rt->mlx, width, height);
-	// 	printf("%d x %d\n", rt->mlx->width, rt->mlx->height);
-	// }
-	// if (height < WINDOW_HEIGHT)
-	// {
-	// 	width = height * ratio;
-	// 	mlx_set_window_size(rt->mlx, width, height);
-	// 	printf("%d x %d\n", rt->mlx->width, rt->mlx->height);
-	// }
-	// mlx_get_monitor_size(0, &width, &height);
-	// mlx_set_window_pos(rt->mlx,
-	// 	((width - rt->mlx->width) / 2), ((height - rt->mlx->height) / 2));
-	rt->canvas = mlx_new_image(rt->mlx, rt->mlx->width, rt->mlx->height);
-	if (!rt->canvas || mlx_image_to_window(rt->mlx, rt->canvas, 0, 0) < 0)
-		terminate("mlx_new_image failed", 1, rt);
-}
 
 void	validate_args(int argc, char **argv, t_rt *rt)
 {
@@ -55,34 +24,6 @@ void	validate_args(int argc, char **argv, t_rt *rt)
 	}
 }
 
-void	init_camera(t_camera *camera, t_rt *rt)
-{
-	t_vec3	dir;
-	float	rad;
-
-	camera->direction = vec3_normalize(camera->direction);
-	dir = camera->direction;
-	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
-	camera->yaw = atan2f(dir.x, dir.y) * -1;
-	rad = camera->fov * (M_PI / 180);
-	camera->focal_lenth = ((float)rt->canvas->width * 0.5) / tan(rad * 0.5 );
-	reset_camera(camera);
-}
-
-void	reset_camera(t_camera *camera)
-{
-	static t_camera	cam;
-	static bool		is_set;
-
-	if (is_set == false)
-	{
-		cam = *camera;
-		is_set = true;
-	}
-	else
-		*camera = cam;
-}
-
 int	main(int argc, char **argv)
 {
 	t_rt	rt;
@@ -90,10 +31,7 @@ int	main(int argc, char **argv)
 	errno = 0;
 	ft_bzero(&rt, sizeof(t_rt));
 	validate_args(argc, argv, &rt);
-	load_scene(argv[1], &rt);
-	init_mlx(&rt);
-	init_camera(&rt.camera, &rt);
-	init_hooks(&rt);
+	init_mini_rt(argv, &rt);
 	mlx_loop(rt.mlx);
 	terminate(NULL, 0, &rt);
 	return (0);

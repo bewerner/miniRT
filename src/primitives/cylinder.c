@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:16:32 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/13 20:54:19 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/14 22:51:04 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ static t_hitpoint	get_hitpoint_cap(
 	{
 		if (vec3_dot(ray.dir, vec3_sub(cylinder->origin, cap->origin)) < 0)
 			return (get_hitpoint_plane(ray, cap));
-		return (HP_INF);
+		return (g_hp_inf);
 	}
 	else
 	{
 		hitpoint = get_hitpoint_plane(ray, cap);
 		if (vec3_dist(hitpoint.pos, cap->origin) > cylinder->radius)
-			return (HP_INF);
+			return (g_hp_inf);
 		return (hitpoint);
 	}
 }
@@ -69,7 +69,7 @@ static t_hitpoint	get_hitpoint_outside(
 		if (vec3_dot(cylinder->orientation, vec3_sub(
 					hitpoint.pos, cylinder->cap1.origin)) > 0)
 			return (get_hitpoint_plane(ray, &cylinder->cap1));
-		return (HP_INF);
+		return (g_hp_inf);
 	}
 	else if (vec3_dot(cylinder->orientation, vec3_sub(
 				hitpoint.pos, cylinder->cap2.origin)) > 0)
@@ -79,7 +79,7 @@ static t_hitpoint	get_hitpoint_outside(
 		if (vec3_dot(cylinder->orientation, vec3_sub(
 					hitpoint.pos, cylinder->cap2.origin)) < 0)
 			return (get_hitpoint_plane(ray, &cylinder->cap2));
-		return (HP_INF);
+		return (g_hp_inf);
 	}
 	hitpoint.normal = vec3_cross(cylinder->orientation, vec3_cross(vec3_sub(
 					hitpoint.pos, cylinder->origin), cylinder->orientation));
@@ -116,7 +116,7 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder *cylinder)
 	float		t1;
 
 	if (get_discriminant(ray, cylinder, &t0, &t1) < 0 || (t1 < 0 && t0 < 0))
-		return (HP_INF);
+		return (g_hp_inf);
 	if (t1 < 0)
 	{
 		hitpoint.ray = vec3_scale(t0, ray.dir);

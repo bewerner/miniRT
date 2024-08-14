@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_primitives.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 19:25:54 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 23:10:31 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,7 @@
 t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 {
 	char			*line;
-	static size_t	count;
 
-	count++;
-	if (ft_strncmp(rt->line->content, "SP ", 3) == 0 && count > 1)
-		return (RT_ERROR_TOO_MANY_SPHERES);
 	line = (char *)rt->line->content +2;
 	sp->type = OBJ_SPHERE;
 	sp->next = (void *)sp + sizeof(t_sphere);
@@ -37,11 +33,7 @@ t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 t_error	parse_plane(t_plane *pl, t_rt *rt)
 {
 	char			*line;
-	static size_t	count;
 
-	count++;
-	if (ft_strncmp(rt->line->content, "PL ", 3) == 0 && count > 1)
-		return (RT_ERROR_TOO_MANY_PLANES);
 	line = (char *)rt->line->content + 2;
 	pl->type = OBJ_PLANE;
 	pl->next = (void *)pl + sizeof(t_plane);
@@ -87,11 +79,7 @@ static void	init_caps(t_cylinder *cy)
 t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
 {
 	char			*line;
-	static size_t	count;
 
-	count++;
-	if (ft_strncmp(rt->line->content, "CY ", 3) == 0 && count > 1)
-		return (RT_ERROR_TOO_MANY_CYLINDER);
 	line = (char *)rt->line->content + 2;
 	cy->type = OBJ_CYLINDER;
 	cy->next = (void *)cy + sizeof(t_cylinder);
@@ -107,7 +95,3 @@ t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
 	init_caps(cy);
 	return (RT_SUCCESS);
 }
-
-// printf("l.x -> %f \n", rt->lights[count - 1].origin.x);
-// printf("l.y -> %f \n", rt->lights[count - 1].origin.y);
-// printf("l.z -> %f \n", rt->lights[count - 1].origin.z);

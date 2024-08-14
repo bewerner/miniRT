@@ -3,32 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:30:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 19:11:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 22:45:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-static float	get_discriminant(t_ray ray, t_sphere *sphere, float *t0, float *t1)
+static float	get_discriminant(
+		t_ray ray, t_sphere *sphere, float *t0, float *t1)
 {
-	t_vec3		AP;
-	float		A;
-	float		B;
+	t_vec3		ap;
+	float		a;
+	float		b;
 	float		discriminant;
 	float		sqrt_discriminant;
 
-	AP = vec3_sub(ray.origin, sphere->origin);
-	A = vec3_dot(ray.dir, ray.dir);
-	B = 2 * vec3_dot(AP, ray.dir);
-	discriminant = B * B - 4 * A * (vec3_dot(AP, AP) - sphere->radius * sphere->radius);
+	ap = vec3_sub(ray.origin, sphere->origin);
+	a = vec3_dot(ray.dir, ray.dir);
+	b = 2 * vec3_dot(ap, ray.dir);
+	discriminant = b * b - 4 * a * (vec3_dot(ap, ap)
+			- sphere->radius * sphere->radius);
 	if (discriminant < 0)
 		return (discriminant);
 	sqrt_discriminant = sqrtf(discriminant);
-	*t0 = (-B + sqrt_discriminant) / (2 * A);
-	*t1 = (-B - sqrt_discriminant) / (2 * A);
+	*t0 = (-b + sqrt_discriminant) / (2 * a);
+	*t1 = (-b - sqrt_discriminant) / (2 * a);
 	return (discriminant);
 }
 
@@ -41,18 +43,20 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere *sphere)
 
 	discriminant = get_discriminant(ray, sphere, &t0, &t1);
 	if (discriminant < 0 || (t1 < 0 && t0 < 0))
-	 	return (HP_INF);
+		return (g_hp_inf);
 	if (t1 < 0)
 	{
 		hitpoint.ray = vec3_scale(t0, ray.dir);
 		hitpoint.pos = vec3_add(ray.origin, hitpoint.ray);
-		hitpoint.normal = vec3_normalize(vec3_sub(sphere->origin, hitpoint.pos));
+		hitpoint.normal
+			= vec3_normalize(vec3_sub(sphere->origin, hitpoint.pos));
 	}
 	else
 	{
 		hitpoint.ray = vec3_scale(t1, ray.dir);
 		hitpoint.pos = vec3_add(ray.origin, hitpoint.ray);
-		hitpoint.normal = vec3_normalize(vec3_sub(hitpoint.pos, sphere->origin));
+		hitpoint.normal
+			= vec3_normalize(vec3_sub(hitpoint.pos, sphere->origin));
 	}
 	hitpoint.object = (t_object *)sphere;
 	return (hitpoint);

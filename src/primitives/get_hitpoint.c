@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:27:07 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/13 17:32:02 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/14 22:45:07 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ bool	is_obstructed(t_ray ray, t_rt *rt)
 	float		ray_len;
 	t_object	*object;
 
-	current.ray = VEC3_INF;
-	current.pos = VEC3_INF;
+	current.ray = g_vec3_inf;
+	current.pos = g_vec3_inf;
 	current.object = NULL;
 	ray_len = vec3_len(ray.dir);
 	object = rt->objects;
 	while (object)
 	{
-		if (object->type == OBJ_SPHERE )
+		if (object->type == OBJ_SPHERE)
 			current = get_hitpoint_sphere(ray, (t_sphere *)object);
 		else if (object->type == OBJ_PLANE)
 			current = get_hitpoint_plane(ray, (t_plane *)object);
@@ -44,8 +44,8 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, t_rt *rt)
 	t_hitpoint	closest;
 	t_hitpoint	current;
 
-	closest.ray = VEC3_INF;
-	closest.pos = VEC3_INF;
+	closest.ray = g_vec3_inf;
+	closest.pos = g_vec3_inf;
 	closest.object = NULL;
 	object = rt->objects;
 	while (object)
