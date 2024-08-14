@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:12:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/12 22:56:28 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:51:20 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ void	keyhook_axial_view(mlx_key_data_t keydata, t_rt *rt)
 	}
 }
 
-void	keyhook(mlx_key_data_t keydata, void* param)
+void	keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_rt	*rt;
 
-	rt = (t_rt*)param;
-	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q)) && keydata.action == MLX_PRESS)
+	rt = (t_rt *)param;
+	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q))
+		&& keydata.action == MLX_PRESS)
 		mlx_close_window(rt->mlx);
 	else if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
 	{
@@ -61,16 +62,21 @@ void	keyhook(mlx_key_data_t keydata, void* param)
 
 void	update_screen(t_rt *rt)
 {
-	float	half_w = (rt->canvas->width - 1) / 2;
-	float	half_h = (rt->canvas->height - 1) / 2;
+	float		half_w;
+	float		half_h;
+	t_screen	*screen;
 
-	rt->screen.x_dir = rt->camera.right;
-	rt->screen.y_dir = vec3_cross(rt->camera.direction, rt->camera.right);
+	half_w = (rt->canvas->width - 1) / 2;
+	half_h = (rt->canvas->height - 1) / 2;
+	
+	screen = &rt->screen;
+	screen->x_dir = rt->camera.right;
+	screen->y_dir = vec3_cross(rt->camera.direction, rt->camera.right);
 
-	rt->screen.origin = vec3_scale(rt->camera.focal_lenth, rt->camera.direction);
-	rt->screen.pos_null = rt->screen.origin;
-	rt->screen.pos_null = vec3_sub(rt->screen.pos_null, vec3_scale(half_w, rt->screen.x_dir));
-	rt->screen.pos_null = vec3_sub(rt->screen.pos_null, vec3_scale(half_h, rt->screen.y_dir));
+	screen->origin = vec3_scale(rt->camera.focal_lenth, rt->camera.direction);
+	screen->pos_null = screen->origin;
+	screen->pos_null = vec3_sub(screen->pos_null, vec3_scale(half_w, screen->x_dir));
+	screen->pos_null = vec3_sub(screen->pos_null, vec3_scale(half_h, screen->y_dir));
 }
 
 void	update(void *param)
