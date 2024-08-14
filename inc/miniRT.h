@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 20:09:20 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 23:04:14 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,9 @@
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
 
-# define IVEC2_ZERO			(t_ivec2){0, 0}
-# define VEC2_ZERO			(t_vec2){0, 0}
-# define VEC3_ZERO			(t_vec3){0, 0, 0}
-# define VEC3_INF			(t_vec3){INFINITY, INFINITY, INFINITY}
-# define VEC4_ZERO			(t_vec4){{0, 0, 0, 0}}
-# define VEC4_WHITE			(t_vec4){{1, 1, 1, 1}}
-# define VEC4_BLACK			(t_vec4){{0, 0, 0, 1}}
-# define VEC4_TRANSPARENT	(t_vec4){{0, 0, 0, 0}}
-# define VEC4_MG			(t_vec4){{0.05, 0.05, 0.05, 0}}
-
-# define HP_INF				(t_hitpoint){VEC3_INF, VEC3_INF, VEC3_ZERO, NULL}
-
-# define MAX_POWER			10000
-# define LIGHT_POWER		0.575f
-# define FALLOFF_THRESHOLD	(1.0f / 256)
-
-# define EPSILON			0.000001f
+# define MAX_POWER		10000
+# define LIGHT_POWER	0.575f
+# define EPSILON		0.000001f
 
 typedef enum e_timeraction
 {
@@ -75,14 +61,13 @@ typedef enum e_identifier
 	ID_CYLINDER
 }	t_identifier;
 
-typedef struct	s_scene_size
+typedef struct s_scene_size
 {
 	size_t		obj_cnt;
 	size_t		objs_size;
 	size_t		light_cnt;
 	size_t		light_size;
-}				t_scene_size;
-
+}	t_scene_size;
 
 typedef enum e_mode
 {
@@ -91,7 +76,7 @@ typedef enum e_mode
 	MODE_PREVIEW
 }	t_mode;
 
-typedef union		u_color
+typedef union u_color
 {
 	uint32_t		color;
 	struct
@@ -101,28 +86,28 @@ typedef union		u_color
 		uint8_t		g;
 		uint8_t		r;
 	};
-}					t_color;
+}	t_color;
 
 typedef struct s_ivec2
 {
 	int32_t		x;
 	int32_t		y;
-}				t_ivec2;
+}	t_ivec2;
 
-typedef struct 		s_vec2
+typedef struct s_vec2
 {
 	float			x;
 	float			y;
-}					t_vec2;
+}	t_vec2;
 
-typedef struct 		s_vec3
+typedef struct s_vec3
 {
 	float			x;
 	float			y;
 	float			z;
-}					t_vec3;
+}	t_vec3;
 
-typedef union		s_vec4
+typedef union s_vec4
 {
 	struct
 	{
@@ -138,13 +123,13 @@ typedef union		s_vec4
 		float		z;
 		float		w;
 	};
-}					t_vec4;
+}	t_vec4;
 
-typedef struct		s_ray
+typedef struct s_ray
 {
 	t_vec3			origin;
 	t_vec3			dir;
-}					t_ray;
+}	t_ray;
 
 typedef enum e_obj_type
 {
@@ -156,24 +141,24 @@ typedef enum e_obj_type
 
 typedef struct s_object		t_object;
 
-typedef struct 		s_object
+typedef struct s_object
 {
 	t_obj_type		type;
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
-}					t_object;
+}	t_object;
 
-typedef struct		s_sphere
+typedef struct s_sphere
 {
 	t_obj_type		type;
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
 	float			radius;
-}					t_sphere;
+}	t_sphere;
 
-typedef struct		s_plane
+typedef struct s_plane
 {
 	t_obj_type		type;
 	t_object		*next;
@@ -181,9 +166,9 @@ typedef struct		s_plane
 	t_vec4			base_color;
 	t_vec3			normal;
 	float			dist;
-}					t_plane;
+}	t_plane;
 
-typedef struct		s_cylinder
+typedef struct s_cylinder
 {
 	t_obj_type		type;
 	t_object		*next;
@@ -194,17 +179,17 @@ typedef struct		s_cylinder
 	float			height;
 	t_plane			cap1;
 	t_plane			cap2;
-}					t_cylinder;
+}	t_cylinder;
 
-typedef struct		s_hitpoint
+typedef struct s_hitpoint
 {
-	t_vec3			ray;	// incident_ray oder pixel_ray oder camera_ray
+	t_vec3			ray;
 	t_vec3			pos;
 	t_vec3			normal;
 	t_object		*object;
-}					t_hitpoint;
+}	t_hitpoint;
 
-typedef struct		s_quadratic_formula
+typedef struct s_quadratic_formula
 {
 	float			a;
 	float			b;
@@ -212,23 +197,23 @@ typedef struct		s_quadratic_formula
 	float			t0;
 	float			t1;
 	float			discriminant;
-}					t_quadratic_formula;
+}	t_quadratic_formula;
 
-typedef enum		e_light_type
+typedef enum e_light_type
 {
 	LIGHT_NONE,
 	LIGHT_POINT
-}					t_light_type;
+}	t_light_type;
 
-typedef struct s_light	t_light;
+typedef struct s_light		t_light;
 
-typedef struct		s_light
+typedef struct s_light
 {
 	t_light_type	type;
 	t_light			*next;
-}					t_light;
+}	t_light;
 
-typedef struct		s_point_light
+typedef struct s_point_light
 {
 	t_light_type	type;
 	t_light			*next;
@@ -237,15 +222,15 @@ typedef struct		s_point_light
 	float			power;
 	float			intensity;
 	t_vec4			color;
-}					t_point_light;
+}	t_point_light;
 
-typedef struct		s_movement
+typedef struct s_movement
 {
 	t_vec3			acc;
 	t_vec3			vel;
-}					t_movement;
+}	t_movement;
 
-typedef struct		s_camera
+typedef struct s_camera
 {
 	t_vec3			origin;
 	t_vec3			direction;
@@ -255,17 +240,17 @@ typedef struct		s_camera
 	float			pitch;
 	float			focal_lenth;
 	float			fov;
-}					t_camera;
+}	t_camera;
 
-typedef struct		s_screen
+typedef struct s_screen
 {
 	t_vec3			origin;
 	t_vec3			pos_null;
 	t_vec3			x_dir;
 	t_vec3			y_dir;
-}					t_screen;
+}	t_screen;
 
-typedef struct		s_rt
+typedef struct s_rt
 {
 	t_list			*line;
 	mlx_t			*mlx;
@@ -281,19 +266,31 @@ typedef struct		s_rt
 	t_ivec2			initial_cursor_pos;
 	int				mode;
 	int				fd;
-}					t_rt;
+}	t_rt;
+
+static const t_ivec2		g_ivec2_zero = (t_ivec2){0, 0};
+static const t_vec2			g_vec2_zero = (t_vec2){0, 0};
+static const t_vec3			g_vec3_zero = (t_vec3){0, 0, 0};
+static const t_vec3			g_vec3_inf = (t_vec3){INFINITY, INFINITY, INFINITY};
+static const t_vec4			g_vec4_zero = (t_vec4){{0, 0, 0, 0}};
+static const t_vec4			g_vec4_white = (t_vec4){{1, 1, 1, 1}};
+static const t_vec4			g_vec4_black = (t_vec4){{0, 0, 0, 1}};
+static const t_vec4			g_vec4_transparent = (t_vec4){{0, 0, 0, 0}};
+static const t_vec4			g_vec4_mg = (t_vec4){{0.05, 0.05, 0.05, 0}};
+static const t_hitpoint		g_hp_inf = (((((((t_hitpoint){
+							(t_vec3){INFINITY, INFINITY, INFINITY},
+							(t_vec3){INFINITY, INFINITY, INFINITY},
+							(t_vec3){0, 0, 0}, NULL}))))));
 
 // main.c
-void			init_camera(t_camera* camera, t_rt *rt);
-void			reset_camera(t_camera *camera);
+
+// init_miniRT.c
+void			init_mini_rt(char **argv, t_rt *rt);
 
 // cleanup.c
 char			*error_msg(t_error error);
 void			error(char *message);
 void			terminate(char *msg, uint8_t exit_code, t_rt *rt);
-
-// hooks.c
-void			init_hooks(t_rt *rt);
 
 // movement.c
 void			handle_move_input(t_rt *rt);
@@ -301,6 +298,27 @@ void			move_camera(t_rt *rt);
 
 // render.c
 void			render(t_rt *rt);
+
+// ┌───────┐
+// │ Hooks │
+// └───────┘
+
+// hooks/init_hooks.c
+void			init_hooks(t_rt *rt);
+
+// hooks/key_hook.c
+void			reset_camera(t_camera *camera);
+void			key_hook(mlx_key_data_t keydata, void *param);
+
+// hooks/cursor_hook.c
+void			cursor_hook(double cursor_x, double cursor_y, void *param);
+
+// hooks/mouse_hook.c
+void			mouse_hook(enum mouse_key button, enum action action,
+					enum modifier_key modifier, void *param);
+
+// hooks/loop_hook.c
+void			loop_hook(void *param);
 
 // ┌────────┐
 // │ Parser │

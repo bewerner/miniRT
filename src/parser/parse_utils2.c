@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 20:11:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 23:13:31 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-static bool	check_id(char *id, char *s1, char *s2)
-{
-	if (ft_strncmp(id, s1, ft_strlen(s1)) == 0
-		|| ft_strncmp(id, s2, ft_strlen(s2)) == 0)
-		return (true);
-	return (false);
-}
 
 t_identifier	get_identifier(char *line)
 {
@@ -30,13 +22,15 @@ t_identifier	get_identifier(char *line)
 		return (ID_AMBIENT);
 	else if (ft_strncmp(line, "C ", 2) == 0)
 		return (ID_CAMERA);
-	else if (check_id(line, "L ", "l "))
+	else if (ft_strncmp(line, "L ", 2) == 0)
 		return (ID_POINT_LIGHT);
-	else if (check_id(line, "SP ", "sp "))
+	else if (ft_strncmp(line, "l ", 2) == 0)
+		return (ID_POINT_LIGHT);
+	else if (ft_strncmp(line, "sp ", 3) == 0)
 		return (ID_SPHERE);
-	else if (check_id(line, "PL ", "pl "))
+	else if (ft_strncmp(line, "pl ", 3) == 0)
 		return (ID_PLANE);
-	else if (check_id(line, "CY ", "cy "))
+	else if (ft_strncmp(line, "cy ", 3) == 0)
 		return (ID_CYLINDER);
 	return (ID_INVALID);
 }

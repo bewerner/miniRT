@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/14 14:47:22 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 23:17:52 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@ char	*error_msg(t_error error)
 		RT_ERROR_MSG_SUCCES,
 		RT_ERROR_MSG_WRONG_FILE_FORMAT,
 		RT_ERROR_MSG_INVALID_IDENTIFIER,
-		RT_ERROR_MSG_AMBIENT_LOWER_CASE,
-		RT_ERROR_MSG_CAMERA_LOWER_CASE,
 		RT_ERROR_MSG_MALLOC,
 		RT_ERROR_MSG_TOO_MANY_LIGHTS,
 		RT_ERROR_MSG_TOO_MANY_CAMERAS,
 		RT_ERROR_MSG_TOO_MANY_AMBIENT
-		RT_ERROR_MSG_TOO_MANY_PLANES,
-		RT_ERROR_MSG_TOO_MANY_CYLINDER
 	};
 
 	return ((char *)msgs[error]);
