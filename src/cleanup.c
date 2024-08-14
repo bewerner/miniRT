@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/13 18:44:37 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:47:22 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*error_msg(t_error error)
 		RT_ERROR_MSG_TOO_MANY_CYLINDER
 	};
 
-	return ((char*)msgs[error]);
+	return ((char *)msgs[error]);
 }
 
 void	error(char *message)
