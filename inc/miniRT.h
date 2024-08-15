@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 23:04:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/15 19:56:46 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,6 +316,9 @@ void			cursor_hook(double cursor_x, double cursor_y, void *param);
 // hooks/mouse_hook.c
 void			mouse_hook(enum mouse_key button, enum action action,
 					enum modifier_key modifier, void *param);
+
+// hooks/resize_hook.c
+void			resize_hook(int width, int height, void *param);
 
 // hooks/loop_hook.c
 void			loop_hook(void *param);
