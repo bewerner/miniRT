@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/15 20:05:46 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/15 22:17:08 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,19 @@ static void	init_mlx_images(t_rt *rt)
 		terminate("mlx_new_image failed", 1, rt);
 }
 
-static void	init_mlx(t_rt *rt)
+static void	init_mlx(char *filename, t_rt *rt)
 {
 	t_ivec2	window_size;
 	t_ivec2	screen_size;
 	float	ratio;
+	char	*win_title;
 
 	window_size = (t_ivec2){WINDOW_WIDTH, WINDOW_HEIGHT};
-	rt->mlx = mlx_init(window_size.x, window_size.y, "miniRT", 1);
+	win_title = ft_strjoin("miniRT - ", filename);
+	if (win_title == NULL)
+		terminate("fatal", 1, rt);
+	rt->mlx = mlx_init(window_size.x, window_size.y, win_title, 1);
+	free(win_title);
 	if (!rt->mlx)
 		terminate("mlx_init failed", 1, rt);
 	mlx_get_monitor_size(0, &screen_size.x, &screen_size.y);
@@ -64,7 +69,7 @@ static void	init_camera(t_camera *camera, t_rt *rt)
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	load_scene(argv[1], rt);
-	init_mlx(rt);
+	init_mlx(argv[1], rt);
 	init_camera(&rt->camera, rt);
 	init_hooks(rt);
 }
