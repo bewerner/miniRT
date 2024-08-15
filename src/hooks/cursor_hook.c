@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cursor_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:06 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/14 19:56:52 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/15 20:21:56 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	cursor_hook(double cursor_x, double cursor_y, void *param)
 
 	rt = param;
 	rt->clicked = 0;
+	if (mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_LEFT))
+		return ;
 	if (!mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_LEFT)
 		&& !mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_MIDDLE)
 		&& !mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_RIGHT))
