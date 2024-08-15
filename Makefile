@@ -5,7 +5,7 @@ MLX42				=	MLX42/build/libmlx42.a
 
 VPATH				=	src src/parser src/primitives src/utils src/hooks
 
-SRC					=	main.c cleanup.c \
+SRC					=	main.c cleanup.c select.c \
 						loader.c parser.c parse_utils1.c parse_utils2.c parse_utils3.c parse_default_objs.c parse_lights.c parse_primitives.c \
 						init_hooks.c key_hook.c cursor_hook.c mouse_hook.c resize_hook.c loop_hook.c \
 						movement.c init_miniRT.c \
