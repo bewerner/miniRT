@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/10 18:18:40 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/15 21:11:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,75 @@ t_vec3	get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt)
 	return (v);
 }
 
+static bool	is_outline(t_ivec2 px, t_hitpoint hp, t_rt *rt)
+{
+	t_hitpoint	op;
+	t_ray		ray;
+	
+	ray.origin = rt->camera.origin;
+
+	if (px.x > 0)
+	{
+		ray.dir = get_pixel_ray(px.x - 1, px.y, rt);
+		op = get_closest_hitpoint(ray, rt);
+		if (op.object != hp.object)
+			return (true);
+	}
+
+	ray.dir = get_pixel_ray(px.x + 1, px.y, rt);
+	op = get_closest_hitpoint(ray, rt);
+	if (op.object != hp.object)
+		return (true);
+
+	if (px.y > 0)
+	{
+		ray.dir = get_pixel_ray(px.x, px.y - 1, rt);
+		op = get_closest_hitpoint(ray, rt);
+		if (op.object != hp.object)
+			return (true);
+	}
+
+	ray.dir = get_pixel_ray(px.x , px.y + 1, rt);
+	op = get_closest_hitpoint(ray, rt);
+	if (op.object != hp.object)
+		return (true);
+
+	return (false);
+}
+
+static void	rt_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t col)
+{
+	if (x >= 0 && x < img->width &&
+		y >= 0 && y < img->height)
+		mlx_put_pixel(img, x, y, col);
+}
+
+static void	put_outline_pixel(t_ivec2 px, t_rt *rt)
+{
+	int32_t	x, y;
+
+	if (px.x == 0 || px.y == 0)
+		return ;
+
+	x = px.x - 1;
+	y = px.y - 1;
+
+	// printf("x %5d   y %5d\n",px.x, px.y);
+
+	// if (px.x >= 0 && px.y >= 0)
+	// {
+	// }
+		rt_mlx_put_pixel(rt->canvas, px.x, px.y, rgba(255, 159, 45, 255));
+		rt_mlx_put_pixel(rt->canvas, px.x + 1, px.y, rgba(255, 159, 45, 255));
+		rt_mlx_put_pixel(rt->canvas, px.x, px.y +1, rgba(255, 159, 45, 255));
+
+	// if (x >= 0 && px.y >= 0)
+		rt_mlx_put_pixel(rt->canvas, x, px.y, rgba(255, 159, 45, 255));
+	// if (px.x >= 0 && y >= 0)
+		rt_mlx_put_pixel(rt->canvas, px.x, y, rgba(255, 159, 45, 255));
+	
+}
+
 void	trace_ray(t_ivec2 pixel, t_rt *rt)
 {
 	t_ray		pixel_ray;
@@ -33,7 +102,14 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 	if (!hitpoint.object)
 		return ;
 	if (rt->mode == MODE_SOLID)
+	{
+		if (hitpoint.object->is_selected && is_outline(pixel, hitpoint, rt))
+		{
+			put_outline_pixel(pixel, rt);
+			return ;	
+		}
 		col = get_solid_color(hitpoint, rt);
+	}
 	else if (rt->mode == MODE_NORMAL)
 		col = get_normal_color(hitpoint, rt);
 	else

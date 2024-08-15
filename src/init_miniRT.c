@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/14 22:50:25 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/15 20:05:46 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	init_camera(t_camera *camera, t_rt *rt)
 	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
 	camera->yaw = atan2f(dir.x, dir.y) * -1;
 	rad = camera->fov * (M_PI / 180);
-	camera->focal_lenth = ((float)rt->canvas->width * 0.5) / tan(rad * 0.5);
+	camera->focal_lenth = ((float)rt->canvas->width * 0.5) / tanf(rad * 0.5);
 	reset_camera(camera);
 }
 

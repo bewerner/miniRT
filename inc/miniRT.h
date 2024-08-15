@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 23:04:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/15 20:18:02 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ typedef struct s_object
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	bool			is_selected;
 }	t_object;
 
 typedef struct s_sphere
@@ -155,6 +156,7 @@ typedef struct s_sphere
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	bool			is_selected;
 	float			radius;
 }	t_sphere;
 
@@ -164,6 +166,7 @@ typedef struct s_plane
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	bool			is_selected;
 	t_vec3			normal;
 	float			dist;
 }	t_plane;
@@ -174,6 +177,7 @@ typedef struct s_cylinder
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	bool			is_selected;
 	t_vec3			orientation;
 	float			radius;
 	float			height;
@@ -297,6 +301,7 @@ void			handle_move_input(t_rt *rt);
 void			move_camera(t_rt *rt);
 
 // render.c
+t_vec3			get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt);
 void			render(t_rt *rt);
 
 // ┌───────┐
@@ -314,8 +319,11 @@ void			key_hook(mlx_key_data_t keydata, void *param);
 void			cursor_hook(double cursor_x, double cursor_y, void *param);
 
 // hooks/mouse_hook.c
-void			mouse_hook(enum mouse_key button, enum action action,
-					enum modifier_key modifier, void *param);
+void			mouse_hook(mouse_key_t button,		action_t action,
+					modifier_key_t modifier, void *param);
+
+// hooks/resize_hook.c
+void			resize_hook(int width, int height, void *param);
 
 // hooks/loop_hook.c
 void			loop_hook(void *param);
@@ -358,6 +366,10 @@ size_t			obj_size(t_identifier id);
 size_t			light_size(t_identifier id);
 void			ft_delete_line(char **str);
 
+// select.c
+void			unselect_all(t_object *obj);
+void			rt_select(t_rt *rt);
+
 // ┌────────────┐
 // │ Primitives │
 // └────────────┘
@@ -385,6 +397,7 @@ t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 // └───────────┘
 
 // utils/color_convert.c
+uint32_t		rgba(int r, int g, int b, int a);
 uint32_t		vec4_to_abgr(t_vec4	col, bool dither);
 uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
 
