@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/16 16:48:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:56:18 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,8 @@ typedef struct s_light
 {
 	t_light_type	type;
 	t_light			*next;
+	t_vec3			origin;
+	t_vec4			color;
 }	t_light;
 
 typedef struct s_point_light
@@ -223,10 +225,10 @@ typedef struct s_point_light
 	t_light_type	type;
 	t_light			*next;
 	t_vec3			origin;
+	t_vec4			color;
 	float			ratio;
 	float			power;
 	float			intensity;
-	t_vec4			color;
 }	t_point_light;
 
 typedef struct s_movement
@@ -389,8 +391,8 @@ t_vec4			get_diffuse_color(t_hitpoint hitpoint, t_rt *rt);
 t_vec4			get_solid_color(t_hitpoint hitpoint, t_rt *rt);
 t_vec4			get_normal_color(t_hitpoint hitpoint, t_rt *rt);
 
-// primitives/get_spec_color.c
-t_vec4			get_spec_color(t_hitpoint hp, t_rt *rt);
+// primitives/get_specular_color.c
+t_vec4			get_specular_color(t_hitpoint hp, t_rt *rt);
 
 // primitives/get_reflection_color.c
 t_vec4			get_reflection_color(t_hitpoint hp, t_rt *rt);
