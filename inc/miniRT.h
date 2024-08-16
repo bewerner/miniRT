@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/16 16:40:53 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:48:10 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,10 +282,10 @@ static const t_vec4			g_vec4_white = (t_vec4){{1, 1, 1, 1}};
 static const t_vec4			g_vec4_black = (t_vec4){{0, 0, 0, 1}};
 static const t_vec4			g_vec4_transparent = (t_vec4){{0, 0, 0, 0}};
 static const t_vec4			g_vec4_mg = (t_vec4){{0.05, 0.05, 0.05, 0}};
-static const t_hitpoint		g_hp_inf = (((((((t_hitpoint){
-							(t_vec3){INFINITY, INFINITY, INFINITY},
-							(t_vec3){INFINITY, INFINITY, INFINITY},
-							(t_vec3){0, 0, 0}, NULL}))))));
+static const t_hitpoint		g_hp_inf = ((((((((t_hitpoint){
+							{INFINITY, INFINITY, INFINITY},
+							{INFINITY, INFINITY, INFINITY},
+							{0, 0, 0}, NULL})))))));
 
 // main.c
 
