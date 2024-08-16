@@ -9,8 +9,8 @@ SRC					=	main.c cleanup.c select.c \
 						loader.c parser.c parse_utils1.c parse_utils2.c parse_utils3.c parse_default_objs.c parse_lights.c parse_primitives.c \
 						init_hooks.c key_hook.c cursor_hook.c mouse_hook.c resize_hook.c loop_hook.c \
 						movement.c init_miniRT.c \
-						render.c plane.c sphere.c cylinder.c get_diffuse_color.c get_hitpoint.c \
-						vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotation.c color_convert.c time.c image.c
+						render.c plane.c sphere.c cylinder.c get_diffuse_color.c get_spec_color.c get_reflection_color.c get_hitpoint.c \
+						ray_utils.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotation.c color_convert.c time.c image.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
 CFLAGS				=	-Wall -Wextra -Werror -flto -Ofast -march=native
