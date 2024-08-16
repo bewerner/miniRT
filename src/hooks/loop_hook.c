@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:58:12 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/15 21:34:36 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 20:10:27 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	loop_hook(void *param)
 	else
 		fill_image(rt->canvas, rt->ambient);
 	render(rt);
-	if (i == 1)
+	if (i == 50)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;

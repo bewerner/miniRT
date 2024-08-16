@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/16 19:02:02 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/16 23:04:55 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 
 		// reflection
 		(void)col_refl;
-		col_refl = get_reflection_color(hitpoint, rt);
-		col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_refl));		// lerp between diff - refl with metallicness factor (0.0 - 1.0)
+		// col_refl = get_reflection_color(hitpoint, rt);
+		// col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_refl));		// lerp between diff - refl with metallicness factor (0.0 - 1.0)
 	}
 	mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col_diff, true));
 }
