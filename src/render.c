@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/16 16:50:46 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 19:02:02 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,9 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 
 		// specular
 		(void)col_spec;
-		// col_spec = get_spec_color(hitpoint, rt);
+		col_spec = get_specular_color(hitpoint, rt);
+		col_diff = vec4_add(col_diff, col_spec);
+		// col_diff = col_spec;
 		// col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_spec));
 
 		// reflection
