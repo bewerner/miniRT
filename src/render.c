@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/15 21:11:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 02:53:07 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ static bool	is_outline(t_ivec2 px, t_hitpoint hp, t_rt *rt)
 
 static void	rt_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t col)
 {
-	if (x >= 0 && x < img->width &&
-		y >= 0 && y < img->height)
+	if (x < img->width && y < img->height)
 		mlx_put_pixel(img, x, y, col);
 }
 
@@ -79,14 +78,14 @@ static void	put_outline_pixel(t_ivec2 px, t_rt *rt)
 	// if (px.x >= 0 && px.y >= 0)
 	// {
 	// }
-		rt_mlx_put_pixel(rt->canvas, px.x, px.y, rgba(255, 159, 45, 255));
-		rt_mlx_put_pixel(rt->canvas, px.x + 1, px.y, rgba(255, 159, 45, 255));
-		rt_mlx_put_pixel(rt->canvas, px.x, px.y +1, rgba(255, 159, 45, 255));
+		rt_mlx_put_pixel(rt->canvas, px.x, px.y, rgba(242, 152, 47, 255));
+		rt_mlx_put_pixel(rt->canvas, px.x + 1, px.y, rgba(242, 152, 47, 255));
+		rt_mlx_put_pixel(rt->canvas, px.x, px.y +1, rgba(242, 152, 47, 255));
 
 	// if (x >= 0 && px.y >= 0)
-		rt_mlx_put_pixel(rt->canvas, x, px.y, rgba(255, 159, 45, 255));
+		rt_mlx_put_pixel(rt->canvas, x, px.y, rgba(242, 152, 47, 255));
 	// if (px.x >= 0 && y >= 0)
-		rt_mlx_put_pixel(rt->canvas, px.x, y, rgba(255, 159, 45, 255));
+		rt_mlx_put_pixel(rt->canvas, px.x, y, rgba(242, 152, 47, 255));
 	
 }
 
