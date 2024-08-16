@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/15 21:11:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:30:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,9 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 {
 	t_ray		pixel_ray;
 	t_hitpoint	hitpoint;
-	t_vec4		col;
+	t_vec4		col_diff;
+	t_vec4		col_spec;
+	t_vec4		col_refl;
 
 	pixel_ray.origin = rt->camera.origin;
 	pixel_ray.dir = get_pixel_ray(pixel.x, pixel.y, rt);
@@ -108,13 +110,25 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 			put_outline_pixel(pixel, rt);
 			return ;	
 		}
-		col = get_solid_color(hitpoint, rt);
+		col_diff = get_solid_color(hitpoint, rt);
 	}
 	else if (rt->mode == MODE_NORMAL)
-		col = get_normal_color(hitpoint, rt);
+		col_diff = get_normal_color(hitpoint, rt);
 	else
-		col = get_diffuse_color(hitpoint, rt);
-	mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col, true));
+	{
+		col_diff = get_diffuse_color(hitpoint, rt);
+
+		// specular
+		(void)col_spec;
+		// col_spec = get_spec_color(hitpoint, rt);
+		// col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_spec));
+
+		// reflection
+		(void)col_refl;
+		col_refl = get_reflection_color(hitpoint, rt);
+		col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_refl));		// lerp between diff - refl with metallicness factor (0.0 - 1.0)
+	}
+	mlx_put_pixel(rt->canvas, pixel.x, pixel.y, vec4_to_rgba(col_diff, true));
 }
 
 void	render(t_rt *rt)

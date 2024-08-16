@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/15 20:18:02 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:40:53 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ typedef struct s_hitpoint
 {
 	t_vec3			ray;
 	t_vec3			pos;
+	// t_ray			incident_ray;
 	t_vec3			normal;
 	t_object		*object;
 }	t_hitpoint;
@@ -388,6 +389,12 @@ t_vec4			get_diffuse_color(t_hitpoint hitpoint, t_rt *rt);
 t_vec4			get_solid_color(t_hitpoint hitpoint, t_rt *rt);
 t_vec4			get_normal_color(t_hitpoint hitpoint, t_rt *rt);
 
+// primitives/get_spec_color.c
+t_vec4			get_spec_color(t_hitpoint hp, t_rt *rt);
+
+// primitives/get_reflection_color.c
+t_vec4			get_reflection_color(t_hitpoint hp, t_rt *rt);
+
 // primitives/get_hitpoint.c
 bool			is_obstructed(t_ray ray, t_rt *rt);
 t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
@@ -403,6 +410,9 @@ uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
 
 // utils/image.c
 void			fill_image(mlx_image_t *image, t_vec4 color);
+
+// utils/ray_utils.c
+t_vec3			create_bounce_dir(t_vec3 incoming_dir, t_vec3 normal);
 
 // utils/vec3_rotate.c
 t_vec3			vec3_rotate_x(t_vec3 p, float rad);
