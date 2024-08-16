@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_convert.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 22:04:33 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/15 20:13:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/16 23:11:24 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,39 @@ static uint8_t	rand_dither(float value)
 	return ((uint8_t)value);
 }
 
+// static float linear_to_gamma(float linear_component)
+// {
+// 	if (linear_component > 0)
+// 		return sqrtf(linear_component);
+// 	return 0;
+// }
+
+// t_vec4	rgb_to_srgb(t_vec4 rgb)
+// {
+// 	t_vec4	srgb;
+
+// 	srgb.a = rgb.a;
+// 	srgb.r = rgb.r * 3.2406 + rgb.g * -1.5372 + rgb.b * -0.4986;
+// 	srgb.g = rgb.r * -0.9689 + rgb.g * 1.8758 + rgb.b * 0.0415;
+// 	srgb.b = rgb.r * 0.0557 + rgb.g * -0.2040 + rgb.b * 1.0570;
+// 	return (srgb);
+// }
+
+void	raw_to_standard(t_vec4 *col)
+{
+	static const float	gamma = 1 / 2.2f;
+
+	if (col->r > 0)
+		col->r = powf(col->r, gamma);
+	if (col->g > 0)
+		col->g = powf(col->g, gamma);
+	if (col->b > 0)
+		col->b = powf(col->b, gamma);
+}
+
 uint32_t	vec4_to_abgr(t_vec4	col, bool dither)
 {
+	raw_to_standard(&col);
 	if (dither)
 	{
 		return (0
@@ -63,6 +94,7 @@ uint32_t	vec4_to_abgr(t_vec4	col, bool dither)
 
 uint32_t	vec4_to_rgba(t_vec4	col, bool dither)
 {
+	raw_to_standard(&col);
 	if (dither)
 	{
 		return (0
