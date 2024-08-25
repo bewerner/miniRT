@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/16 18:56:18 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/25 19:20:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 # define MINIRT_H
 
 # include "../libft/libft.h"
-# include "../MLX42/include/MLX42/MLX42.h"
-
+# include "glad/glad.h"
+# include <GLFW/glfw3.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
 # include <sys/errno.h>
+# include <stdbool.h>
 
 # include "minirt_errors.h"
 
@@ -36,6 +37,8 @@
 
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
+
+# define SWAP_INTERVAL	1
 
 # define MAX_POWER		10000
 # define LIGHT_POWER	0.575f
@@ -259,9 +262,12 @@ typedef struct s_screen
 
 typedef struct s_rt
 {
+	int				width;
+	int				height;
+	GLFWwindow		*window;
+	double			delta_time;
 	t_list			*line;
-	mlx_t			*mlx;
-	mlx_image_t		*canvas;
+	// mlx_image_t		*canvas;
 	t_movement		move;
 	t_camera		camera;
 	t_screen		screen;
@@ -270,7 +276,7 @@ typedef struct s_rt
 	t_vec4			ambient;
 	float			clicked;
 	int8_t			mouse_buttons_pressed;
-	t_ivec2			initial_cursor_pos;
+	t_vec2			initial_cursor_pos;
 	int				mode;
 	int				fd;
 }	t_rt;
@@ -290,6 +296,7 @@ static const t_hitpoint		g_hp_inf = ((((((((t_hitpoint){
 							{0, 0, 0}, NULL})))))));
 
 // main.c
+t_rt			*get_rt(void);
 
 // init_miniRT.c
 void			init_mini_rt(char **argv, t_rt *rt);
@@ -307,6 +314,9 @@ void			move_camera(t_rt *rt);
 t_vec3			get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt);
 void			render(t_rt *rt);
 
+// update.c
+void			update(t_rt *rt);
+
 // ┌───────┐
 // │ Hooks │
 // └───────┘
@@ -316,17 +326,16 @@ void			init_hooks(t_rt *rt);
 
 // hooks/key_hook.c
 void			reset_camera(t_camera *camera);
-void			key_hook(mlx_key_data_t keydata, void *param);
+void			key_hook(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 // hooks/cursor_hook.c
-void			cursor_hook(double cursor_x, double cursor_y, void *param);
+void			cursor_hook(GLFWwindow* window, double cursor_x, double cursor_y);
 
 // hooks/mouse_hook.c
-void			mouse_hook(mouse_key_t button,		action_t action,
-					modifier_key_t modifier, void *param);
+void			mouse_hook(GLFWwindow* window, int button, int action, int mods);
 
 // hooks/resize_hook.c
-void			resize_hook(int width, int height, void *param);
+void			resize_hook(GLFWwindow *window, int width, int height);
 
 // hooks/loop_hook.c
 void			loop_hook(void *param);
@@ -370,8 +379,8 @@ size_t			light_size(t_identifier id);
 void			ft_delete_line(char **str);
 
 // select.c
-void			unselect_all(t_object *obj);
-void			rt_select(t_rt *rt);
+// void			unselect_all(t_object *obj);
+// void			rt_select(t_rt *rt);
 
 // ┌────────────┐
 // │ Primitives │
@@ -409,9 +418,6 @@ t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 uint32_t		rgba(int r, int g, int b, int a);
 uint32_t		vec4_to_abgr(t_vec4	col, bool dither);
 uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
-
-// utils/image.c
-void			fill_image(mlx_image_t *image, t_vec4 color);
 
 // utils/ray_utils.c
 t_vec3			create_bounce_dir(t_vec3 incoming_dir, t_vec3 normal);

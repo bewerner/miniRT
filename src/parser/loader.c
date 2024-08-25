@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/15 20:12:31 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/25 19:20:29 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,5 @@ void	load_scene(char *file, t_rt *rt)
 	error = parse_scene(scn_sze.obj_cnt, scn_sze.light_cnt, rt);
 	if (error)
 		terminate(error_msg(error), 1, rt);
-	unselect_all(rt->objects);
+	// unselect_all(rt->objects);
 }

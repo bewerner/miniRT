@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 22:45:07 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/25 19:08:27 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@
 void	handle_move_input(t_rt *rt)
 {
 	rt->move.acc = g_vec3_zero;
-	if (mlx_is_key_down(rt->mlx, MLX_KEY_A))
-		rt->move.acc.x -= ACC * rt->mlx->delta_time;
-	if (mlx_is_key_down(rt->mlx, MLX_KEY_D))
-		rt->move.acc.x += ACC * rt->mlx->delta_time;
-	if (mlx_is_key_down(rt->mlx, MLX_KEY_W))
-		rt->move.acc.z += ACC * rt->mlx->delta_time;
-	if (mlx_is_key_down(rt->mlx, MLX_KEY_S))
-		rt->move.acc.z -= ACC * rt->mlx->delta_time;
-	if (mlx_is_key_down(rt->mlx, MLX_KEY_E)
-		|| mlx_is_key_down(rt->mlx, MLX_KEY_SPACE))
-		rt->move.acc.y += ACC * rt->mlx->delta_time;
-	if (mlx_is_key_down(rt->mlx, MLX_KEY_C))
-		rt->move.acc.y -= ACC * rt->mlx->delta_time;
+	if (glfwGetKey(rt->window, GLFW_KEY_A))
+		rt->move.acc.x -= ACC * rt->delta_time;
+	if (glfwGetKey(rt->window, GLFW_KEY_D))
+		rt->move.acc.x += ACC * rt->delta_time;
+	if (glfwGetKey(rt->window, GLFW_KEY_W))
+		rt->move.acc.z += ACC * rt->delta_time;
+	if (glfwGetKey(rt->window, GLFW_KEY_S))
+		rt->move.acc.z -= ACC * rt->delta_time;
+	if (glfwGetKey(rt->window, GLFW_KEY_E)
+		|| glfwGetKey(rt->window, GLFW_KEY_SPACE))
+		rt->move.acc.y += ACC * rt->delta_time;
+	if (glfwGetKey(rt->window, GLFW_KEY_C))
+		rt->move.acc.y -= ACC * rt->delta_time;
 }
 
 void	move_camera(t_rt *rt)
