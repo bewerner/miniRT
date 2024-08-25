@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/25 19:20:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/25 20:36:42 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,10 @@ typedef struct s_rt
 	int				width;
 	int				height;
 	GLFWwindow		*window;
+	GLuint			shader_program;
 	double			delta_time;
+	GLuint			vertex_array_object;
+
 	t_list			*line;
 	// mlx_image_t		*canvas;
 	t_movement		move;
@@ -409,6 +412,19 @@ t_vec4			get_reflection_color(t_hitpoint hp, t_rt *rt);
 // primitives/get_hitpoint.c
 bool			is_obstructed(t_ray ray, t_rt *rt);
 t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
+
+// ┌────────┐
+// │ Shader │
+// └────────┘
+
+// shader/shader_assembler.c
+char			*assemble_shader_source(const char **files);
+
+// shader/shader_compiler.c
+GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
+
+// shader/shader_program.c
+void			create_shader_program(t_rt *rt);
 
 // ┌───────────┐
 // │ Utilities │

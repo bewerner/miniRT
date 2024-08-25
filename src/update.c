@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/25 19:14:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/25 20:37:06 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	update(t_rt *rt)
 	// render(rt);
 
 	// DRAW SCREEN
-	// glBindVertexArray(VAO);
-	// glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(rt->vertex_array_object);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
 	if (i == 50)

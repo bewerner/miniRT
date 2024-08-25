@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/25 19:17:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/25 20:36:38 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,44 @@ static void	init_camera(t_camera *camera)
 	reset_camera(camera);
 }
 
+static void	create_screen_vertices(t_rt *rt)
+{
+	GLuint	VBO;
+	static const float	vertices[] = {
+		 1,  1, 0,  1,  0, 0,
+		 1, -1, 0,  1,  1, 0,
+		-1, -1, 0,  0,  1, 0,
+
+		-1, -1, 0,  0,  1, 0,
+		-1,  1, 0,  0,  0, 0,
+		 1,  1, 0,  1,  0, 0
+	};
+
+	glGenVertexArrays(1, &rt->vertex_array_object);
+	glBindVertexArray(rt->vertex_array_object);
+
+	glGenBuffers(1, &VBO);
+
+	// Bind VBO to GL_ARRAY_BUFFER && copy Vertex buffer to GPU
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// LINKING VERTEX ATTRIBUTES
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	load_scene(argv[1], rt);
 	init_glfw(argv[1], rt);
 	init_camera(&rt->camera);
 	init_hooks(rt);
+	create_shader_program(rt);
+	create_screen_vertices(rt);
 }
