@@ -14,6 +14,10 @@
 !inc/**
 !scenes
 !scenes/*.rt
+!shaders
+!shaders/*
+!shaders/**/*.frag
+!shaders/**/*.vert
 !Makefile
 !.gitignore
 
