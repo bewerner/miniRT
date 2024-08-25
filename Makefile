@@ -1,20 +1,21 @@
 
 NAME				=	miniRT
 LIBFT				=	libft/libft.a
-MLX42				=	MLX42/build/libmlx42.a
 
-VPATH				=	src src/parser src/primitives src/utils src/hooks
+VPATH				=	src src/parser src/primitives src/utils src/hooks lib
 
-SRC					=	main.c cleanup.c select.c \
+SRC					=	main.c glad.c cleanup.c \
 						loader.c parser.c parse_utils1.c parse_utils2.c parse_utils3.c parse_default_objs.c parse_lights.c parse_primitives.c \
-						init_hooks.c key_hook.c cursor_hook.c mouse_hook.c resize_hook.c loop_hook.c \
+						init_hooks.c key_hook.c cursor_hook.c mouse_hook.c resize_hook.c \
 						movement.c init_miniRT.c \
-						render.c plane.c sphere.c cylinder.c get_diffuse_color.c get_specular_color.c get_reflection_color.c get_hitpoint.c \
-						ray_utils.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotation.c color_convert.c time.c image.c
+						update.c \
+						ray_utils.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotation.c color_convert.c time.c
+#						render.c plane.c sphere.c cylinder.c get_diffuse_color.c get_specular_color.c get_reflection_color.c get_hitpoint.c 
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
 CFLAGS				=	-Wall -Wextra -Werror -flto -Ofast -march=native
 LDFLAGS				=	-lm -ldl -lglfw -flto
+INCLUDES			=	-I./inc/
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
 CC					=	cc
@@ -39,13 +40,9 @@ $(LIBFT):
 #	$(MAKE) -C libft
 #	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
 
-mlx42:
-	git clone https://github.com/codam-coding-college/MLX42.git
-	cd MLX42 && cmake -B build && cmake --build build -j4
-
 ./obj/%.o: %.c
 	mkdir -p obj
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 #	$(MAKE) -C libft clean > /dev/null

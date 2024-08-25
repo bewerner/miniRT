@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/14 23:17:52 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/25 18:33:43 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ void	terminate(char *msg, uint8_t exit_code, t_rt *rt)
 		close(rt->fd);
 	if (msg)
 		error(msg);
-	if (rt->mlx)
-		mlx_terminate(rt->mlx);
+	if (rt->window)
+		glfwDestroyWindow(rt->window);
+	glfwTerminate();;
 	cleanup(rt);
 	exit (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:06 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/15 20:21:56 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/25 18:03:00 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,22 @@ static void	set_rotation(t_vec2 distance, t_rt *rt)
 	rt->camera.pitch = fmaxf(fminf(rt->camera.pitch, M_PI), 0);
 }
 
-void	cursor_hook(double cursor_x, double cursor_y, void *param)
+void	cursor_hook(GLFWwindow* window, double cursor_x, double cursor_y)
 {
 	t_rt	*rt;
 	t_vec2	distance;
 
-	rt = param;
+	rt = get_rt();
 	rt->clicked = 0;
-	if (mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_LEFT))
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) != GLFW_PRESS)
 		return ;
-	if (!mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_LEFT)
-		&& !mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_MIDDLE)
-		&& !mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_RIGHT))
-		return ;
+	// if (!mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_LEFT)
+	// 	&& !mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_MIDDLE)
+	// 	&& !mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_RIGHT))
+	// 	return ;
 	distance.x = cursor_x - rt->initial_cursor_pos.x;
 	distance.y = cursor_y - rt->initial_cursor_pos.y;
-	if (mlx_is_mouse_down(rt->mlx, MLX_MOUSE_BUTTON_RIGHT))
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		set_rotation(distance, rt);
-	mlx_set_mouse_pos(rt->mlx,
-		rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
+	glfwSetCursorPos(window, rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
 }

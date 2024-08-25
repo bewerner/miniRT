@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 21:00:03 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/25 18:51:12 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,23 @@ void	validate_args(int argc, char **argv, t_rt *rt)
 	}
 }
 
+t_rt	*get_rt(void)
+{
+	static t_rt	rt;
+
+	return (&rt);
+}
+
 int	main(int argc, char **argv)
 {
-	t_rt	rt;
+	t_rt	*rt;
 
+	rt = get_rt();
 	errno = 0;
-	ft_bzero(&rt, sizeof(t_rt));
-	validate_args(argc, argv, &rt);
-	init_mini_rt(argv, &rt);
-	mlx_loop(rt.mlx);
-	terminate(NULL, 0, &rt);
+	validate_args(argc, argv, rt);
+	init_mini_rt(argv, rt);
+	while (!glfwWindowShouldClose(rt->window))
+		update(rt);
+	terminate(NULL, 0, rt);
 	return (0);
 }

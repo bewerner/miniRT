@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/14 22:45:07 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/25 18:52:48 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,23 @@ void	reset_camera(t_camera *camera)
 		*camera = cam;
 }
 
-static void	key_hook_axial_view(mlx_key_data_t keydata, t_rt *rt)
+static void	key_hook_axial_view(int key, int action, t_rt *rt)
 {
-	if (keydata.key == MLX_KEY_KP_1 && keydata.action == MLX_PRESS)
+	if (key == GLFW_KEY_KP_1 && action == GLFW_PRESS)
 	{
 		rt->camera.origin = (t_vec3){0, -vec3_len(rt->camera.origin), 0};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = M_PI / 2;
 		rt->move.vel = g_vec3_zero;
 	}
-	else if (keydata.key == MLX_KEY_KP_3 && keydata.action == MLX_PRESS)
+	else if (key == GLFW_KEY_KP_3 && action == GLFW_PRESS)
 	{
 		rt->camera.origin = (t_vec3){-vec3_len(rt->camera.origin), 0, 0};
 		rt->camera.yaw = -M_PI / 2;
 		rt->camera.pitch = M_PI / 2;
 		rt->move.vel = g_vec3_zero;
 	}
-	else if (keydata.key == MLX_KEY_KP_7 && keydata.action == MLX_PRESS)
+	else if (key == GLFW_KEY_KP_7 && action == GLFW_PRESS)
 	{
 		rt->camera.origin = (t_vec3){0, 0, vec3_len(rt->camera.origin)};
 		rt->camera.yaw = 0;
@@ -51,25 +51,26 @@ static void	key_hook_axial_view(mlx_key_data_t keydata, t_rt *rt)
 	}
 }
 
-void	key_hook(mlx_key_data_t keydata, void *param)
+void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	t_rt	*rt;
 
-	rt = (t_rt *)param;
-	if (((keydata.key == MLX_KEY_ESCAPE) || (keydata.key == MLX_KEY_Q))
-		&& keydata.action == MLX_PRESS)
-		mlx_close_window(rt->mlx);
-	else if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
+	(void)scancode;
+	rt = get_rt();
+	if (((key == GLFW_KEY_ESCAPE) || (key == GLFW_KEY_Q))
+		&& action == GLFW_PRESS && !mods)
+		glfwSetWindowShouldClose(window, true);
+	else if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 	{
 		rt->mode++;
 		if (rt->mode > MODE_PREVIEW)
 			rt->mode = MODE_SOLID;
 	}
-	else if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
+	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
 	{
 		reset_camera(&rt->camera);
 		rt->move.vel = g_vec3_zero;
 	}
 	else
-		key_hook_axial_view(keydata, rt);
+		key_hook_axial_view(key, action, rt);
 }
