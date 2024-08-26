@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 20:55:22 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/26 21:30:33 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,16 @@ typedef struct s_gpu_cylinder
 	t_gpu_plane		cap1;
 	t_gpu_plane		cap2;
 }	t_gpu_cylinder;
+
+typedef struct s_gpu_point_light
+{
+	float			type;
+	float			next_offset;
+	t_vec3			origin;
+	t_vec4			color;
+	float			ratio;
+	float			power;
+	float			intensity;
+}	t_gpu_point_light;
 
 #endif

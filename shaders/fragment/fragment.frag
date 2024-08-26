@@ -63,6 +63,7 @@ layout(std140) uniform u_rt
 };
 
 uniform samplerBuffer objects;
+uniform samplerBuffer lights;
 
 
 vec3	vec3_rotate_x(vec3 v, float rad);
@@ -176,9 +177,12 @@ vec4	get_diffuse_color(t_hitpoint hitpoint)
 
 	final_col = vec4(0,0,0,0);
 
-	light.origin	= vec3(-1, -1, 5);
-	light.col		= vec4(1,1,1,1);
-	light.power		= 325;
+	light.origin	= vec3(texelFetch(lights, 2).r, texelFetch(lights, 3).r, texelFetch(lights, 4).r);
+	light.col		= vec4(texelFetch(lights, 5).r,texelFetch(lights, 6).r,texelFetch(lights, 7).r,texelFetch(lights, 8).r);
+	light.power		= texelFetch(lights, 10).r;
+	// light.origin	= vec3(-3,-3,-3);
+	// light.col		= vec4(1,1,1,1);
+	// light.power		= 325.0;
 	light.intensity = light.power / 22.86;
 
 	light_col = illuminate_from_point_light(light, hitpoint);
@@ -234,6 +238,6 @@ void main()
 		// col = get_normal_color(hitpoint);
 
 	FragColor = col;
-	// if (texelFetch(objects, 0).r == 0)
+	// if (texelFetch(lights, 0).r == 1)
 	// 	FragColor = vec4(0.2,0,0,1);
 }

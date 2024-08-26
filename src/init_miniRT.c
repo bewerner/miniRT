@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 20:46:03 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/26 22:50:24 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ static void	create_screen_vertices(t_rt *rt)
 	glBindVertexArray(0);
 }
 
-void	create_uniform_buffer_rt(t_rt *rt)
+void	create_ubo_rt(t_rt *rt)
 {
 	GLuint	blockIndex;
 
@@ -158,7 +158,7 @@ size_t	get_gpu_objects_size(t_object *object)
 			size += sizeof(t_gpu_cylinder);
 		object = object->next;
 	}
-	return (size + 1);
+	return (size + sizeof(float));
 }
 
 void	init_gpu_sphere(float *buffer, size_t *i, t_sphere *sphere)
@@ -209,7 +209,7 @@ void	init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder)
 	*i = gpu_cylinder.next_offset;
 }
 
-void	init_texture_buffer_objects(float *buffer, t_object *object)
+void	init_tbo_objects(float *buffer, t_object *object)
 {
 	size_t i;
 
@@ -226,7 +226,7 @@ void	init_texture_buffer_objects(float *buffer, t_object *object)
 	}
 }
 
-void	create_texture_buffer_objects(t_rt *rt)
+void	create_tbo_objects(t_rt *rt)
 {
 	size_t	size;
 	float	*buffer;
@@ -236,27 +236,101 @@ void	create_texture_buffer_objects(t_rt *rt)
 	buffer = (float *)ft_calloc(1, size);
 	if (!buffer)
 		terminate("failed to allocate texture buffer", 1, rt);
-	init_texture_buffer_objects(buffer, rt->objects);
-
-	// for (size_t i = 0; i < 10; i++)
-	// {
-	// 	printf("%f\n", buffer[i]);
-	// }
+	init_tbo_objects(buffer, rt->objects);
 
 	glGenBuffers(1, &rt->tbo_objects_id);
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
 	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
-
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
-	glActiveTexture(GL_TEXTURE0 + 1);
-	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
-
-	glBindTexture(GL_TEXTURE_BUFFER, 0);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);
 
-	// glUniform1i(glGetUniformLocation(rt->shader_program, "objects"), 1);
+	glGenTextures(1, &texture_id);
+	// glBindTexture(GL_TEXTURE_BUFFER, texture_id);
+	glActiveTexture(GL_TEXTURE0 + 1);
+	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
+
+	GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+	if (uniform_location == -1)
+		terminate("objects not found in shader program", 1, rt);
+	glUniform1i(uniform_location, 1);
+	// glBindTexture(GL_TEXTURE_BUFFER, 0);
+	free(buffer);
+}
+
+size_t	get_gpu_lights_size(t_light *light)
+{
+	size_t	size;
+
+	size = 0;
+	while (light)
+	{
+		if (light->type == LIGHT_POINT)
+			size += sizeof(t_gpu_point_light);
+		light = light->next;
+	}
+	return (size + sizeof(float));
+}
+
+void	init_gpu_point_light(float *buffer, size_t *i, t_point_light *light)
+{
+	t_gpu_point_light	gpu_light;
+	
+	gpu_light.type = (float)light->type;
+	gpu_light.next_offset = (float)(*i + sizeof(t_gpu_point_light) / sizeof(float));
+	gpu_light.origin = light->origin;
+	gpu_light.color = light->color;
+	gpu_light.ratio = light->ratio; // remove light ratio for bonus!
+	gpu_light.power = light->power;
+	gpu_light.intensity = light->intensity;
+	ft_memmove(&buffer[*i], &gpu_light, sizeof(t_gpu_point_light));
+	*i = gpu_light.next_offset;
+}
+
+void	init_tbo_lights(float *buffer, t_light *light)
+{
+	size_t i;
+
+	i = 0;
+	while (light)
+	{
+		if (light->type == LIGHT_POINT)
+			init_gpu_point_light(buffer, &i, (t_point_light *)light);
+		light = light->next;
+	}
+}
+
+void	create_tbo_lights(t_rt *rt)
+{
+	size_t	size;
+	float	*buffer;
+	GLuint	texture_id;
+
+	size = get_gpu_lights_size(rt->lights);
+	buffer = (float *)ft_calloc(1, size);
+	if (!buffer)
+		terminate("failed to allocate texture buffer", 1, rt);
+	init_tbo_lights(buffer, rt->lights);
+
+	// for (size_t i = 0; i < size / 4; i++)
+	// {
+	// 	printf("%f\n", buffer[i]);
+	// }
+
+	glGenBuffers(1, &rt->tbo_lights_id);
+	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
+	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
+	glBindBuffer(GL_TEXTURE_BUFFER, 0);
+
+	glGenTextures(1, &texture_id);
+	glActiveTexture(GL_TEXTURE0 + 2);
+	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
+
+	GLint uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+	if (uniform_location == -1)
+		terminate("lights not found in shader program", 1, rt);
+	glUniform1i(uniform_location, 2);
+	free(buffer);
 }
 
 void	init_mini_rt(char **argv, t_rt *rt)
@@ -267,6 +341,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	init_hooks(rt);
 	create_shader_program(rt);
 	create_screen_vertices(rt);
-	create_uniform_buffer_rt(rt);
-	create_texture_buffer_objects(rt);
+	create_ubo_rt(rt);
+	create_tbo_objects(rt);
+	create_tbo_lights(rt);
 }

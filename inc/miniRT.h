@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 20:54:03 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/26 21:46:43 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,7 @@ typedef struct s_rt
 	GLuint			vertex_array_object;
 	GLuint			ubo_rt_id;
 	GLuint			tbo_objects_id;
+	GLuint			tbo_lights_id;
 
 	t_list			*line;
 	t_movement		move;
