@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/25 20:36:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:44:35 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,15 +240,14 @@ typedef struct s_movement
 	t_vec3			vel;
 }	t_movement;
 
-typedef struct s_camera
-{
+typedef struct s_camera {
 	t_vec3			origin;
-	t_vec3			direction;
-	t_vec3			right;
-	t_vec3			viewport_light;
 	float			yaw;
+	t_vec3			direction;
 	float			pitch;
-	float			focal_lenth;
+	t_vec3			right;
+	float			focal_length;
+	t_vec3			viewport_light;
 	float			fov;
 }	t_camera;
 
@@ -260,17 +259,25 @@ typedef struct s_screen
 	t_vec3			y_dir;
 }	t_screen;
 
+typedef struct s_ubo
+{
+	t_camera		camera;
+	t_vec4			ambient;
+	float			aspect_ratio;
+}	t_ubo;
+
+
 typedef struct s_rt
 {
 	int				width;
 	int				height;
 	GLFWwindow		*window;
-	GLuint			shader_program;
 	double			delta_time;
+	GLuint			shader_program;
 	GLuint			vertex_array_object;
+	GLuint			ubo_rt_id;
 
 	t_list			*line;
-	// mlx_image_t		*canvas;
 	t_movement		move;
 	t_camera		camera;
 	t_screen		screen;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cursor_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:06 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/25 18:03:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:39:44 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
