@@ -62,7 +62,7 @@ layout(std140) uniform u_rt
 	t_rt			rt;
 };
 
-
+uniform samplerBuffer objects;
 
 
 vec3	vec3_rotate_x(vec3 v, float rad);
@@ -211,7 +211,9 @@ void main()
 	float M_PI = 3.1415926535897932384626433832795;
 	// float focal_len = 0.5 / tan(95 * M_PI / 180.0 * 0.5);
 
-	t_sphere sp = t_sphere(vec3(0.0, 0.0, 0), 1.0);
+	// t_sphere sp = t_sphere(vec3(0.0, 0.0, 0), 1.0);
+	// t_sphere sp = t_sphere(vec3(2, 2, 2), 1.0);
+	t_sphere sp = t_sphere(vec3(texelFetch(objects, 2).r, texelFetch(objects, 3).r, texelFetch(objects, 4).r), texelFetch(objects, 8).r);
 
 	t_ray camera_ray;
 	// camera_ray.origin = vec3(uv.xy, -3.0);
@@ -232,4 +234,6 @@ void main()
 		// col = get_normal_color(hitpoint);
 
 	FragColor = col;
+	// if (texelFetch(objects, 0).r == 0)
+	// 	FragColor = vec4(0.2,0,0,1);
 }

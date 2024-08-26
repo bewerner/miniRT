@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 15:44:35 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/26 20:54:03 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <stdbool.h>
 
 # include "minirt_errors.h"
+# include "minirt_vec_types.h"
+# include "minirt_buffer_objects.h"
 
 # define LIGHTGRAY		"\033[97m"
 # define DARKGRAY		"\033[90m"
@@ -90,43 +92,6 @@ typedef union u_color
 		uint8_t		r;
 	};
 }	t_color;
-
-typedef struct s_ivec2
-{
-	int32_t		x;
-	int32_t		y;
-}	t_ivec2;
-
-typedef struct s_vec2
-{
-	float			x;
-	float			y;
-}	t_vec2;
-
-typedef struct s_vec3
-{
-	float			x;
-	float			y;
-	float			z;
-}	t_vec3;
-
-typedef union s_vec4
-{
-	struct
-	{
-		float		r;
-		float		g;
-		float		b;
-		float		a;
-	};
-	struct
-	{
-		float		x;
-		float		y;
-		float		z;
-		float		w;
-	};
-}	t_vec4;
 
 typedef struct s_ray
 {
@@ -276,6 +241,7 @@ typedef struct s_rt
 	GLuint			shader_program;
 	GLuint			vertex_array_object;
 	GLuint			ubo_rt_id;
+	GLuint			tbo_objects_id;
 
 	t_list			*line;
 	t_movement		move;
