@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 21:18:02 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:41:53 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ void	load_scene(char *file, t_rt *rt)
 	if (scn_sze.objs_size == 0)
 		terminate(error_msg(RT_ERROR_MISSING_SCENE_OBJS), 1, rt);
 	rt->objects = (t_object *)ft_calloc(1, scn_sze.objs_size);
-	rt->lights = (t_light *)ft_calloc(1, scn_sze.light_size);
-	if (rt->objects == NULL || rt->lights == NULL)
+	if (scn_sze.light_cnt > 0)
+		rt->lights = (t_light *)ft_calloc(1, scn_sze.light_size);
+	if (rt->objects == NULL || (scn_sze.light_cnt > 0 && rt->lights == NULL))
 		terminate(error_msg(RT_ERROR_MALLOC), 1, rt);
 	error = parse_scene(scn_sze.obj_cnt, scn_sze.light_cnt, rt);
 	if (error)
