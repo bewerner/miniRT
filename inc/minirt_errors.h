@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_errors.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 13:11:26 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 23:17:34 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/26 21:15:02 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ force one light with capital L"
 "too many cameras, only one allowed"
 # define RT_ERROR_MSG_TOO_MANY_AMBIENT \
 "too many ambient definitions, only one allowed"
+# define RT_ERROR_MSG_TOO_MANY_AMBIENT \
+"too many ambient definitions, only one allowed"
+# define RT_ERROR_MSG_MISSING_SCENE_OBJS \
+"no objects in scene"
+
 
 typedef enum e_error
 {
@@ -40,7 +45,8 @@ typedef enum e_error
 	RT_ERROR_MALLOC,
 	RT_ERROR_TOO_MANY_LIGHTS,
 	RT_ERROR_TOO_MANY_CAMERAS,
-	RT_ERROR_TOO_MANY_AMBIENT
+	RT_ERROR_TOO_MANY_AMBIENT,
+	RT_ERROR_MISSING_SCENE_OBJS
 }					t_error;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/25 18:33:43 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:17:07 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ char	*error_msg(t_error error)
 		RT_ERROR_MSG_MALLOC,
 		RT_ERROR_MSG_TOO_MANY_LIGHTS,
 		RT_ERROR_MSG_TOO_MANY_CAMERAS,
-		RT_ERROR_MSG_TOO_MANY_AMBIENT
+		RT_ERROR_MSG_TOO_MANY_AMBIENT,
+		RT_ERROR_MSG_MISSING_SCENE_OBJS
 	};
 
 	return ((char *)msgs[error]);
