@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/25 19:20:29 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:18:02 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	load_scene(char *file, t_rt *rt)
 	load_elements(&scn_sze, rt);
 	close(rt->fd);
 	rt->fd = -1;
+	if (scn_sze.objs_size == 0)
+		terminate(error_msg(RT_ERROR_MISSING_SCENE_OBJS), 1, rt);
 	rt->objects = (t_object *)ft_calloc(1, scn_sze.objs_size);
 	rt->lights = (t_light *)ft_calloc(1, scn_sze.light_size);
 	if (rt->objects == NULL || rt->lights == NULL)
