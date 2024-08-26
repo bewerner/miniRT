@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/25 20:37:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:26:52 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@
 // 		= vec3_sub(screen->pos_null, vec3_scale(half_h, screen->y_dir));
 // }
 
+void	update_ubo_rt(t_rt *rt)
+{
+	t_ubo	ubo_rt;
+
+	ubo_rt.ambient = rt->ambient;
+	glfwGetWindowSize(rt->window, &rt->width, &rt->height);
+	ubo_rt.aspect_ratio = (float)rt->width / (float)rt->height;
+	ubo_rt.camera = rt->camera;
+
+	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
 void	update(t_rt *rt)
 {
 	static int	i;
@@ -51,6 +65,8 @@ void	update(t_rt *rt)
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	update_ubo_rt(rt);
 
 	// if (rt->mode == MODE_SOLID)
 	// 	fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});

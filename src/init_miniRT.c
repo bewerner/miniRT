@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/25 20:36:38 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:26:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	init_camera(t_camera *camera)
 	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
 	camera->yaw = atan2f(dir.x, dir.y) * -1;
 	rad = camera->fov * (M_PI / 180);
-	camera->focal_lenth = 0.5f / tanf(rad * 0.5f);
+	camera->focal_length = 0.5f / tanf(rad * 0.5f);
 	reset_camera(camera);
 }
 
@@ -125,6 +125,24 @@ static void	create_screen_vertices(t_rt *rt)
 	glBindVertexArray(0);
 }
 
+void	create_uniform_buffer_rt(t_rt *rt)
+{
+	GLuint	blockIndex;
+
+	glGenBuffers(1, &rt->ubo_rt_id);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(t_ubo), NULL, GL_STATIC_DRAW);
+
+	blockIndex = glGetUniformBlockIndex(rt->shader_program, "u_rt");
+	if (blockIndex == GL_INVALID_INDEX)
+		terminate("u_rt not found in shader program", 1, rt);
+	glUniformBlockBinding(rt->shader_program, blockIndex, 0);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	load_scene(argv[1], rt);
@@ -133,4 +151,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	init_hooks(rt);
 	create_shader_program(rt);
 	create_screen_vertices(rt);
+	create_uniform_buffer_rt(rt);
 }

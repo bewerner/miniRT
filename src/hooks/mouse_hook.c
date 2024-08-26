@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/25 19:18:52 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:43:19 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	mouse_hook(GLFWwindow* window, int button, int action, int mods)
 {
 	t_rt	*rt;
+	double	x;
+	double	y;
 
 	rt = get_rt();
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !mods)
@@ -25,7 +27,8 @@ void	mouse_hook(GLFWwindow* window, int button, int action, int mods)
 	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && !mods)
 	{
 		rt->mouse_buttons_pressed++;
-		glfwGetCursorPos(window, (double *)&rt->initial_cursor_pos.x, (double *)&rt->initial_cursor_pos.y);
+		glfwGetCursorPos(window, &x, &y);
+		rt->initial_cursor_pos = (t_vec2){x, y};
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 	}
 	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE && !mods)
