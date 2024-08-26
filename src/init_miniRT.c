@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 17:26:48 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/26 20:46:03 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,122 @@ void	create_uniform_buffer_rt(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
+size_t	get_gpu_objects_size(t_object *object)
+{
+	size_t	size;
+
+	size = 0;
+	while (object)
+	{
+		if (object->type == OBJ_SPHERE)
+			size += sizeof(t_gpu_sphere);
+		else if (object->type == OBJ_PLANE)
+			size += sizeof(t_gpu_plane);
+		else if (object->type == OBJ_CYLINDER)
+			size += sizeof(t_gpu_cylinder);
+		object = object->next;
+	}
+	return (size + 1);
+}
+
+void	init_gpu_sphere(float *buffer, size_t *i, t_sphere *sphere)
+{
+	t_gpu_sphere	gpu_sphere;
+	
+	gpu_sphere.type = (float)sphere->type;
+	gpu_sphere.next_offset = (float)(*i + sizeof(t_gpu_sphere) / sizeof(float));
+	gpu_sphere.origin = sphere->origin;
+	gpu_sphere.base_color = sphere->base_color;
+	gpu_sphere.radius = sphere->radius;
+	ft_memmove(&buffer[*i], &gpu_sphere, sizeof(t_gpu_sphere));
+	*i = gpu_sphere.next_offset;
+}
+
+void	init_gpu_plane(float *buffer, size_t *i, t_plane *plane)
+{
+	t_gpu_plane	gpu_plane;
+	
+	gpu_plane.type = (float)plane->type;
+	gpu_plane.next_offset = (float)(*i + sizeof(t_gpu_plane) / sizeof(float));
+	gpu_plane.origin = plane->origin;
+	gpu_plane.base_color = plane->base_color;
+	gpu_plane.normal = plane->normal;
+	gpu_plane.dist = plane->dist;
+	ft_memmove(&buffer[*i], &gpu_plane, sizeof(t_gpu_plane));
+	*i = gpu_plane.next_offset;
+}
+
+void	init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder)
+{
+	t_gpu_cylinder	gpu_cylinder;
+	size_t			size_without_caps;
+	size_t			i_cap;
+
+	size_without_caps = sizeof(t_gpu_cylinder) - 2 * sizeof(t_gpu_plane);
+	gpu_cylinder.type = (float)cylinder->type;
+	gpu_cylinder.next_offset = (float)(*i + sizeof(t_gpu_cylinder) / sizeof(float));
+	gpu_cylinder.origin = cylinder->origin;
+	gpu_cylinder.base_color = cylinder->base_color;
+	gpu_cylinder.orientation = cylinder->orientation;
+	gpu_cylinder.radius = cylinder->radius;
+	gpu_cylinder.height = cylinder->height;
+	ft_memmove(&buffer[*i], &gpu_cylinder, size_without_caps);
+	i_cap = *i + size_without_caps / sizeof(float);
+	init_gpu_plane(buffer, &i_cap, &cylinder->cap1);
+	init_gpu_plane(buffer, &i_cap, &cylinder->cap2);
+	*i = gpu_cylinder.next_offset;
+}
+
+void	init_texture_buffer_objects(float *buffer, t_object *object)
+{
+	size_t i;
+
+	i = 0;
+	while (object)
+	{
+		if (object->type == OBJ_SPHERE)
+			init_gpu_sphere(buffer, &i, (t_sphere *)object);
+		else if (object->type == OBJ_PLANE)
+			init_gpu_plane(buffer, &i, (t_plane *)object);
+		else if (object->type == OBJ_CYLINDER)
+			init_gpu_cylinder(buffer, &i, (t_cylinder *)object);
+		object = object->next;
+	}
+}
+
+void	create_texture_buffer_objects(t_rt *rt)
+{
+	size_t	size;
+	float	*buffer;
+	GLuint	texture_id;
+
+	size = get_gpu_objects_size(rt->objects);
+	buffer = (float *)ft_calloc(1, size);
+	if (!buffer)
+		terminate("failed to allocate texture buffer", 1, rt);
+	init_texture_buffer_objects(buffer, rt->objects);
+
+	// for (size_t i = 0; i < 10; i++)
+	// {
+	// 	printf("%f\n", buffer[i]);
+	// }
+
+	glGenBuffers(1, &rt->tbo_objects_id);
+	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
+	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
+
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
+	glActiveTexture(GL_TEXTURE0 + 1);
+	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
+
+	glBindTexture(GL_TEXTURE_BUFFER, 0);
+	glBindBuffer(GL_TEXTURE_BUFFER, 0);
+
+	// glUniform1i(glGetUniformLocation(rt->shader_program, "objects"), 1);
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	load_scene(argv[1], rt);
@@ -152,4 +268,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_shader_program(rt);
 	create_screen_vertices(rt);
 	create_uniform_buffer_rt(rt);
+	create_texture_buffer_objects(rt);
 }
