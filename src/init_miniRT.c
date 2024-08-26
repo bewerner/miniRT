@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 22:50:24 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/26 23:15:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,8 +243,9 @@ void	create_tbo_objects(t_rt *rt)
 	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);
 
+	free(buffer);
+
 	glGenTextures(1, &texture_id);
-	// glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
@@ -253,8 +254,6 @@ void	create_tbo_objects(t_rt *rt)
 	if (uniform_location == -1)
 		terminate("objects not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 1);
-	// glBindTexture(GL_TEXTURE_BUFFER, 0);
-	free(buffer);
 }
 
 size_t	get_gpu_lights_size(t_light *light)
@@ -321,6 +320,8 @@ void	create_tbo_lights(t_rt *rt)
 	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);
 
+	free(buffer);
+
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 2);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
@@ -330,7 +331,6 @@ void	create_tbo_lights(t_rt *rt)
 	if (uniform_location == -1)
 		terminate("lights not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 2);
-	free(buffer);
 }
 
 void	init_mini_rt(char **argv, t_rt *rt)
