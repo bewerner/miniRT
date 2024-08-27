@@ -1,8 +1,11 @@
 #define M_PI		3.1415926535897932384626433832795
+#define EPSILON		0.0001
 #define INF			(1.0 / 0.0)
 #define VEC3_INF	vec3(INF, INF, INF)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
 #define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC4_BLACK)
+
+int	g_seed = 0;
 
 struct	t_ray
 {
@@ -127,6 +130,10 @@ vec4			trace_ray(t_ray ray);
 // ┌───────────┐
 // │ Utilities │
 // └───────────┘
+
+// random.frag
+float	rand();
+vec4	dither(vec4 col);
 
 // vec3_rotations.frag
 vec3	vec3_rotate_x(vec3 v, float rad);
