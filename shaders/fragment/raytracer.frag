@@ -1,6 +1,10 @@
 #version 330 core
 
 #import shaders/fragment/header.frag
+#import shaders/fragment/get_diffuse_color.frag
+#import shaders/fragment/point_light.frag
+#import shaders/fragment/sphere.frag
+#import shaders/fragment/trace_ray.frag
 #import shaders/fragment/vec3_rotations.frag
 
 void main()
@@ -14,7 +18,5 @@ void main()
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
 
-	vec4 col = trace_ray(camera_ray);
-
-	FragColor = col;
+	FragColor = trace_ray(camera_ray);
 }

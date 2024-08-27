@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shader_program.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 14:49:25 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:00:40 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ void	create_shader_program(t_rt *rt)
 
 	// LOAD & ASSEMBLE SHADER SOURCES
 	vert_src = assemble_shader_source("shaders/vertex/screen.vert");
-	frag_src = assemble_shader_source("shaders/fragment/fragment.frag");
+	frag_src = assemble_shader_source("shaders/fragment/raytracer.frag");
+
+	int fd = open("debug.frag", O_CREAT | O_RDWR, 0644);
+	write(fd, frag_src, ft_strlen(frag_src));
+	close(fd);
 
 	// printf("%s\n", frag_src);
 
