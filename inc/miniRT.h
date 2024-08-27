@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 21:46:43 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 14:46:33 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -392,7 +392,7 @@ t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 // └────────┘
 
 // shader/shader_assembler.c
-char			*assemble_shader_source(const char **files);
+char			*assemble_shader_source(const char *file);
 
 // shader/shader_compiler.c
 GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
