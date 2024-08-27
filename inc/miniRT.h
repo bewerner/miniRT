@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 15:00:41 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 15:08:06 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,9 +393,12 @@ t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
 // └────────┘
 
 // shader/shader_assembler.c
-char			*assemble_shader_source(const char **files);
+char			*assemble_shader_source(const char *file);
 
 // shader/shader_compiler.c
+size_t			file_size(const char *file);
+int				is_import(char *str);
+char			*prepares_import_filename(char *str);
 GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 
 // shader/shader_program.c
