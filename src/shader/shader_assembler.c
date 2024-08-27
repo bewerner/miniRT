@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 12:52:05 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 14:50:25 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:05:28 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,17 @@ static size_t	read_shader_src(char *buf, const char *file)
 	return (size);
 }
 
-size_t	file_size(const char *file)
+static size_t	get_import_file_size(char *str)
 {
-	int		fd;
-	off_t	size;
+	size_t	size;
 
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (0);
-	size = lseek(fd, 0, SEEK_END);
-	if (size == -1)
-		size = 0;
-	close(fd);
-	return ((size_t)size);
+	size = 0;
+	if (ft_strlen(str) > 8)
+		size = file_size(prepares_import_filename(&str[8]));
+	return (size);
 }
 
-int	is_import(char *str)
-{
-	return (ft_strncmp(str, "#import ", 8) == 0);
-}
-
-size_t	shader_src_size_with_import(const char *file)
+static size_t	shader_src_size_with_import(const char *file)
 {
 	int		fd;
 	size_t	size;
@@ -63,28 +53,18 @@ size_t	shader_src_size_with_import(const char *file)
 	{
 		line_size = ft_strlen(line);
 		if (is_import(line))
-		{
-			if (ft_strlen(line) > 8)
-			{
-				if (line[ft_strlen(line) - 1] == '\n')
-					line[ft_strlen(line) - 1] = '\0';
-				line_size = file_size(&line[8]);
-				printf("%s -> %lu\n", &line[8], line_size);
-			}
-			else
-				line_size = 0;
-		}
+			line_size = get_import_file_size(line);
 		size += line_size;
 		free(line);
 		if (line_size == 0)
-			return (0);
+			return (close(fd), 0);
 		line = get_next_line(fd);
 	}
 	close(fd);
 	return (size);
 }
 
-int	read_into_buf(char *buf, int fd)
+static int	read_into_buf(char *buf, int fd)
 {
 	size_t	i;
 	size_t	j;
@@ -96,13 +76,9 @@ int	read_into_buf(char *buf, int fd)
 	{
 		if (is_import(line))
 		{
-			if (line[ft_strlen(line) - 1] == '\n')
-				line[ft_strlen(line) - 1] = '\0';
-			j = read_shader_src(&buf[i], &line[8]);
+			j = read_shader_src(&buf[i], prepares_import_filename(&line[8]));
 			if (j == 0)
-			{
-				return (close(fd), -1);
-			}
+				return (-1);
 			i += j;
 		}
 		else
