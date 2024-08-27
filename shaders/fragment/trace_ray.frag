@@ -25,8 +25,8 @@ bool	is_obstructed(t_ray ray)
 			current = get_hitpoint_sphere(ray, get_sphere(i));
 		else if (type == OBJ_PLANE)
 			current = get_hitpoint_plane(ray, get_plane(i));
-		// else if (type == OBJ_CYLINDER)
-		// 	current = get_hitpoint_cylinder(ray, get_cylinder(i));
+		else if (type == OBJ_CYLINDER)
+			current = get_hitpoint_cylinder(ray, get_cylinder(i));
 		if (length(current.ray) < ray_len)
 			return (true);
 		type = next_object_type(i);
@@ -50,8 +50,8 @@ t_hitpoint	get_closest_hitpoint(t_ray ray)
 			current = get_hitpoint_sphere(ray, get_sphere(i));
 		else if (type == OBJ_PLANE)
 			current = get_hitpoint_plane(ray, get_plane(i));
-		// else if (type == OBJ_CYLINDER)
-		// 	current = get_hitpoint_cylinder(ray, get_cylinder(i));
+		else if (type == OBJ_CYLINDER)
+			current = get_hitpoint_cylinder(ray, get_cylinder(i));
 		if (length(current.ray) < length(closest.ray))
 			closest = current;
 		type = next_object_type(i);

@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 23:10:31 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 21:21:45 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static t_vec3	parse_vec3_infinity(char **line, t_rt *rt)
 
 static void	init_caps(t_cylinder *cy)
 {
+	cy->cap1.type = OBJ_PLANE;
+	cy->cap2.type = OBJ_PLANE;
 	cy->cap1.origin = vec3_sub(cy->origin,
 			vec3_scale(cy->height / 2, cy->orientation));
 	cy->cap2.origin = vec3_add(cy->origin,

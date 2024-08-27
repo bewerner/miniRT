@@ -42,4 +42,3 @@ t_plane	get_plane(int offset)
 
 	return (plane);
 }
-
