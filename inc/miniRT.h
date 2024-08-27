@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 16:42:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 18:25:19 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,7 +398,8 @@ char			*assemble_shader_source(const char *file);
 // shader/shader_compiler.c
 size_t			file_size(const char *file);
 int				is_import(char *str);
-char			*prepares_import_filename(char *str);
+void			extract_shader_path(char *shader_path, const char *file);
+void			prepares_import_filename(char *filename, char *str, char *shader_path);
 GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 
 // shader/shader_program.c

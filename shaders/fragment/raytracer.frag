@@ -1,11 +1,12 @@
 #version 330 core
 
-#import shaders/fragment/header.frag
-#import shaders/fragment/get_diffuse_color.frag
-#import shaders/fragment/point_light.frag
-#import shaders/fragment/sphere.frag
-#import shaders/fragment/trace_ray.frag
-#import shaders/fragment/vec3_rotations.frag
+#import header.frag
+#import get_diffuse_color.frag
+#import point_light.frag
+#import sphere.frag
+#import plane.frag
+#import trace_ray.frag
+#import vec3_rotations.frag
 
 void main()
 {
