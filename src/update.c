@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 20:37:12 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 16:41:24 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	update(t_rt *rt)
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
-	if (i == 50)
+	if (i == 60)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;

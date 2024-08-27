@@ -1,4 +1,7 @@
-#DEFINE M_PI 3.1415926535897932384626433832795
+#define M_PI		3.1415926535897932384626433832795
+#define INF			(1.0 / 0.0)
+#define VEC3_INF	vec3(INF, INF, INF)
+#define VEC4_BLACK	vec4(0, 0, 0, 1)
 
 struct	t_ray
 {
@@ -12,12 +15,13 @@ struct t_hitpoint
 	vec3			ray;
 	vec3			pos;
 	vec3			normal;
+	vec4			color;
 };
 
-#DEFINE OBJ_NONE		0
-#DEFINE OBJ_SPHERE		1
-#DEFINE OBJ_PLANE		2
-#DEFINE OBJ_CYLINDER	3
+#define OBJ_NONE		0
+#define OBJ_SPHERE		1
+#define OBJ_PLANE		2
+#define OBJ_CYLINDER	3
 
 struct t_sphere
 {
@@ -51,8 +55,8 @@ struct t_cylinder
 	t_plane			cap2;
 };
 
-#DEFINE LIGHT_NONE		0
-#DEFINE LIGHT_POINT		1
+#define LIGHT_NONE		0
+#define LIGHT_POINT		1
 
 struct t_point_light
 {
@@ -101,7 +105,19 @@ uniform samplerBuffer lights;
 
 out vec4 FragColor;
 
+// point_light.frag
+t_point_light	get_point_light(int offset);
 
+// get_diffuse_color.frag
+vec4	get_diffuse_color(t_hitpoint hitpoint);
+
+// sphere.frag
+t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere);
+t_sphere	get_sphere(int offset);
+
+// trace_ray.frag
+bool	is_obstructed(t_ray ray);
+vec4		trace_ray(t_ray ray);
 
 // ┌───────────┐
 // │ Utilities │
