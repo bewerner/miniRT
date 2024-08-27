@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 21:46:43 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 15:00:41 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,8 @@ typedef struct s_movement
 	t_vec3			vel;
 }	t_movement;
 
-typedef struct s_camera {
+typedef struct s_camera
+{
 	t_vec3			origin;
 	float			yaw;
 	t_vec3			direction;
