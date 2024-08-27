@@ -2,6 +2,7 @@
 #define INF			(1.0 / 0.0)
 #define VEC3_INF	vec3(INF, INF, INF)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC4_BLACK)
 
 struct	t_ray
 {

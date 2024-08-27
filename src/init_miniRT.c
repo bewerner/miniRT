@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 23:15:26 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 16:53:39 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,9 @@ void	create_tbo_objects(t_rt *rt)
 	if (!buffer)
 		terminate("failed to allocate texture buffer", 1, rt);
 	init_tbo_objects(buffer, rt->objects);
+
+	// for(size_t i = 0; i < get_gpu_objects_size(rt->objects) / 4; i++)
+	// 	printf("%f\n", buffer[i]);
 
 	glGenBuffers(1, &rt->tbo_objects_id);
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);

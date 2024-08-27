@@ -27,7 +27,7 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 
 	discriminant = get_sphere_discriminant(ray, sphere, t0, t1);
 	if (discriminant < 0 || (t1 < 0 && t0 < 0))
-		return (t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC4_BLACK));
+		return (HP_INF);
 	if (t1 < 0)
 	{
 		hitpoint.ray = t0 * ray.dir;

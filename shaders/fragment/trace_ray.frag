@@ -3,8 +3,7 @@ bool	is_obstructed(t_ray ray)
 	t_hitpoint	current;
 	float		ray_len;
 
-	current.ray = VEC3_INF;
-	current.pos = VEC3_INF;
+	current = HP_INF;
 	ray_len = length(ray.dir);
 
 	int i = 0;
@@ -30,8 +29,8 @@ t_hitpoint	get_closest_hitpoint(t_ray ray)
 	t_hitpoint	closest;
 	t_hitpoint	current;
 
-	closest.ray = VEC3_INF;
-	closest.pos = VEC3_INF;
+	closest = HP_INF;
+	current = HP_INF;
 
 	int i = 0;
 	int type = int(texelFetch(objects, 0).r);
