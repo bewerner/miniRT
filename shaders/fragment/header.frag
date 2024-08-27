@@ -123,6 +123,11 @@ t_sphere		get_sphere(int offset);
 t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane);
 t_plane			get_plane(int offset);
 
+// cylinder.frag
+t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder);
+t_cylinder	get_cylinder(int offset);
+
+
 // trace_ray.frag
 bool			is_obstructed(t_ray ray);
 vec4			trace_ray(t_ray ray);

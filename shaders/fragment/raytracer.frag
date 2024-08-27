@@ -5,6 +5,7 @@
 #import point_light.frag
 #import sphere.frag
 #import plane.frag
+#import cylinder.frag
 #import trace_ray.frag
 #import vec3_rotations.frag
 #import random.frag
