@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shader_program.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 15:59:55 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/27 14:49:25 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 
 void	create_shader_program(t_rt *rt)
 {
-	const char	*vert_files[] = {
-		"shaders/vertex/screen.vert",
-		NULL};
-	const char	*frag_files[] = {
-		"shaders/fragment/fragment.frag",
-		"shaders/fragment/vec3_rotations.frag",
-		NULL};
 	GLuint		shader_program;
 	GLuint		shaders[2];
 	char		*vert_src;
@@ -30,9 +23,8 @@ void	create_shader_program(t_rt *rt)
 	shaders[1] = 0;
 
 	// LOAD & ASSEMBLE SHADER SOURCES
-
-	vert_src = assemble_shader_source(vert_files);
-	frag_src = assemble_shader_source(frag_files);
+	vert_src = assemble_shader_source("shaders/vertex/screen.vert");
+	frag_src = assemble_shader_source("shaders/fragment/fragment.frag");
 
 	// printf("%s\n", frag_src);
 
