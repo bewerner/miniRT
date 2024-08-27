@@ -110,15 +110,19 @@ out vec4 FragColor;
 t_point_light	get_point_light(int offset);
 
 // get_diffuse_color.frag
-vec4	get_diffuse_color(t_hitpoint hitpoint);
+vec4			get_diffuse_color(t_hitpoint hitpoint);
 
 // sphere.frag
-t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere);
-t_sphere	get_sphere(int offset);
+t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere);
+t_sphere		get_sphere(int offset);
+
+// plane.frag
+t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane);
+t_plane			get_plane(int offset);
 
 // trace_ray.frag
-bool	is_obstructed(t_ray ray);
-vec4		trace_ray(t_ray ray);
+bool			is_obstructed(t_ray ray);
+vec4			trace_ray(t_ray ray);
 
 // ┌───────────┐
 // │ Utilities │
