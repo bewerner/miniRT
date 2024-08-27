@@ -1,7 +1,7 @@
 
 bool	is_near_zero(float value)
 {
-	return (value > -0.0001 && value < 0.0001);
+	return (value > -EPSILON && value < EPSILON);
 }
 
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)

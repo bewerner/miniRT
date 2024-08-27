@@ -49,12 +49,6 @@ t_sphere	get_sphere(int offset)
 {
 	t_sphere	sphere;
 
-	// sphere.type = int(texelFetch(objects, offset).r);
-	// sphere.next_offset = int(texelFetch(objects, offset + 1).r);
-	// sphere.origin = vec3(texelFetch(objects, offset + 2).r, texelFetch(objects, offset + 3).r, texelFetch(objects, offset + 4).r);
-	// sphere.base_color = vec4(texelFetch(objects, offset + 5).r, texelFetch(objects, offset + 6).r, texelFetch(objects, offset + 7).r, texelFetch(objects, offset + 8).r);
-	// sphere.radius = texelFetch(objects, offset + 9).r;
-
 	sphere.type = int(texelFetch(objects, offset++).r);
 	sphere.next_offset = int(texelFetch(objects, offset++).r);
 	sphere.origin = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
