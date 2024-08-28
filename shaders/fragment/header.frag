@@ -129,6 +129,7 @@ t_cylinder	get_cylinder(int offset);
 
 
 // trace_ray.frag
+vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
 bool			is_obstructed(t_ray ray);
 vec4			trace_ray(t_ray ray);
 
