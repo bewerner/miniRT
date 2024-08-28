@@ -3,46 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   shader_program.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 16:00:40 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:05:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-void	create_shader_program(t_rt *rt)
+static int	create_shader_sources(char **dst_vert, char **dst_frag, const char *vert, const char *frag)
 {
-	GLuint		shader_program;
-	GLuint		shaders[2];
-	char		*vert_src;
-	char		*frag_src;
+	*dst_vert = assemble_shader_source(vert);
+	*dst_frag = assemble_shader_source(frag);
 
-	shaders[0] = 0;
-	shaders[1] = 0;
-
-	// LOAD & ASSEMBLE SHADER SOURCES
-	vert_src = assemble_shader_source("shaders/vertex/screen.vert");
-	frag_src = assemble_shader_source("shaders/fragment/raytracer.frag");
-
+	// SAVE DEBUG FRAG-SHADER-SRC
 	int fd = open("debug.frag", O_CREAT | O_RDWR, 0644);
-	write(fd, frag_src, ft_strlen(frag_src));
+	write(fd, *dst_frag, ft_strlen(*dst_frag));
 	close(fd);
 
-	// printf("%s\n", frag_src);
-
-	if (vert_src == NULL || frag_src == NULL)
+	if (*dst_vert == NULL || *dst_frag == NULL)
 	{
-		if (vert_src)
-			free(vert_src);
-		if (frag_src)
-			free(frag_src);
-		terminate("failed to assemble shader sources" ,1, rt);
+		if (*dst_vert)
+			free(*dst_vert);
+		if (*dst_frag)
+			free(*dst_frag);
+		return (1);
 	}
+	return (0);
+}
 
-	// CREATE SHADERS FROM SOURCE_STRING
-
+static int	compile_shader_srcs(GLuint *shaders, char *vert_src, char *frag_src)
+{
+	shaders[0] = 0;
+	shaders[1] = 0;
 	shaders[0] = compile_shader_src(GL_VERTEX_SHADER, vert_src);
 	shaders[1] = compile_shader_src(GL_FRAGMENT_SHADER, frag_src);
 	free(vert_src);
@@ -53,38 +47,61 @@ void	create_shader_program(t_rt *rt)
 			glDeleteShader(shaders[0]);
 		if (shaders[1] > 0)
 			glDeleteShader(shaders[1]);
-		terminate("failed to compile shaders", 1, rt);
+		return (1);
 	}
+	return (0);
+}
 
-	// CREATE SHADER PROGRAM AND ATTACH SHADERS
-
-	shader_program = glCreateProgram();
-	glAttachShader(shader_program, shaders[0]);
-	glAttachShader(shader_program, shaders[1]);
-
-	// COMPILE SHADER PROGRAM
-
+static int	link_shader_program(GLuint *shaders, GLuint *shader_program)
+{
 	int		success;
-	// char	errorlog[512];
-	glLinkProgram(shader_program);
-	glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		GLint log_length;
-		glGetProgramiv(shader_program, GL_INFO_LOG_LENGTH, &log_length);
-		char *errorlog = malloc(log_length);
-		glGetProgramInfoLog(shader_program, log_length, NULL, errorlog);
-		printf("ERROR SHADER PROGRAMM LINK FAILED\n%s\n", errorlog);
-		free(errorlog);
+	GLint	log_size;
+	char 	*errorlog;
 
-		glDeleteShader(shaders[0]);
-		glDeleteShader(shaders[1]);
-		terminate("failed to create shader program", 1, rt);
-	}
+	// ATTACH SHADERS
+	*shader_program = glCreateProgram();
+	glAttachShader(*shader_program, shaders[0]);
+	glAttachShader(*shader_program, shaders[1]);
 
-	// USE SHADER_PROGRAM && DELETE SHADER OBJECTS
-	glUseProgram(shader_program);
+	// LINK SHADERS AND PROGRAM
+	glLinkProgram(*shader_program);
 	glDeleteShader(shaders[0]);
 	glDeleteShader(shaders[1]);
-	rt->shader_program = shader_program;
+	glGetProgramiv(*shader_program, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramiv(*shader_program, GL_INFO_LOG_LENGTH, &log_size);
+		errorlog = malloc(log_size);
+		glGetProgramInfoLog(*shader_program, 512, NULL, errorlog);
+		printf("ERROR SHADER PROGRAMM LINK FAILED\n%s\n", errorlog);
+		free(errorlog);
+		return (1);
+	}
+	return (0);
+}
+
+GLuint	create_shader_program(const char *vert, const char *frag, t_rt *rt)
+{
+	GLuint		shader_program;
+	GLuint		shaders[2];
+	char		*vert_src;
+	char		*frag_src;
+
+	shader_program = 0;
+
+	// LOAD & ASSEMBLE SHADER SOURCES
+	if (create_shader_sources(&vert_src, &frag_src, vert, frag))
+		terminate("failed to assemble shader sources" , 1, rt);
+
+	// CREATE SHADERS FROM SOURCE_STRING
+	if (compile_shader_srcs(shaders, vert_src, frag_src))
+		terminate("failed to compile shaders", 1, rt);
+
+	// CREATE SHADER PROGRAM
+	if (link_shader_program(shaders, &shader_program))
+		terminate("failed to create shader program", 1, rt);
+
+	// USE SHADER_PROGRAM
+	glUseProgram(shader_program);
+	return (shader_program);
 }

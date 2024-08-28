@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/27 16:53:39 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 15:50:12 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,7 +342,9 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	init_glfw(argv[1], rt);
 	init_camera(&rt->camera);
 	init_hooks(rt);
-	create_shader_program(rt);
+	rt->solid_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/solid/solid.frag", rt);
+	rt->normal_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/normal/normal.frag", rt);
+	rt->shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/fragment/raytracer.frag", rt);
 	create_screen_vertices(rt);
 	create_ubo_rt(rt);
 	create_tbo_objects(rt);

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 21:17:07 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:52:04 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	terminate(char *msg, uint8_t exit_code, t_rt *rt)
 		error(msg);
 	if (rt->window)
 		glfwDestroyWindow(rt->window);
-	glfwTerminate();;
+	glfwTerminate();
 	cleanup(rt);
 	exit (exit_code);
 }
