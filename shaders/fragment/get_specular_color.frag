@@ -24,5 +24,5 @@ vec4	get_specular_color(t_hitpoint hitpoint)
 		}
 		type = next_light_type(i);
 	}
-	return (col);
+	return (col * hitpoint.color * 1.0);
 }

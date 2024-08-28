@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/28 20:50:26 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 21:05:32 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	update(t_rt *rt)
 	glfwPollEvents();
 	// usleep(100000);
 	// glfwWaitEventsTimeout(0.2);
-	if (i == 10)
+	if (i == 60)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;
