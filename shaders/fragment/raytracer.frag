@@ -16,7 +16,7 @@ void main()
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 
-	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 10);
+	g_seed = int(sin(dot(coord.xy, vec2(12.9898, 78.233))) * 43758.5453);
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;

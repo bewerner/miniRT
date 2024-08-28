@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:06 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 16:39:44 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:40:42 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,8 @@ void	cursor_hook(GLFWwindow* window, double cursor_x, double cursor_y)
 	distance.y = cursor_y - rt->initial_cursor_pos.y;
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		set_rotation(distance, rt);
-	glfwSetCursorPos(window, rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
+	if (rt->cursor_is_settable)
+		glfwSetCursorPos(window, rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
+	else
+		rt->initial_cursor_pos = (t_vec2){cursor_x, cursor_y};
 }

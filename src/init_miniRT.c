@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/28 15:50:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:56:15 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,11 +336,34 @@ void	create_tbo_lights(t_rt *rt)
 	glUniform1i(uniform_location, 2);
 }
 
+void	init_cursor_is_settable(t_rt *rt)
+{
+	double	x;
+	double	y;
+	double	new_x;
+
+	glfwGetCursorPos(rt->window, &x, &y);
+	x = (int)x;
+	y = (int)y;
+	if (x > 0)
+		new_x = x - 1;
+	else
+		new_x = x + 1;
+	glfwPollEvents();
+	glfwSetCursorPos(rt->window, new_x, y);
+	glfwGetCursorPos(rt->window, &x, &y);
+	if (x == new_x)
+		rt->cursor_is_settable = 1;
+	else
+		rt->cursor_is_settable = 0;
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	load_scene(argv[1], rt);
 	init_glfw(argv[1], rt);
 	init_camera(&rt->camera);
+	init_cursor_is_settable(rt);
 	init_hooks(rt);
 	rt->solid_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/solid/solid.frag", rt);
 	rt->normal_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/normal/normal.frag", rt);
