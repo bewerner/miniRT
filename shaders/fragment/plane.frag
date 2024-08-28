@@ -38,7 +38,7 @@ t_plane	get_plane(int offset)
 	plane.origin = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	plane.base_color = vec4(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	plane.normal = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
-	plane.dist = int(texelFetch(objects, offset++).r);
+	plane.dist = texelFetch(objects, offset++).r;
 
 	return (plane);
 }
