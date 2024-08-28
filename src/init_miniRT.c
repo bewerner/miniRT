@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/28 16:56:15 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 20:58:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	init_camera(t_camera *camera)
 	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
 	camera->yaw = atan2f(dir.x, dir.y) * -1;
 	rad = camera->fov * (M_PI / 180);
-	camera->focal_length = 0.5f / tanf(rad * 0.5f);
+	camera->focal_length = 1.0f / tanf(rad * 0.5f);
 	reset_camera(camera);
 }
 
