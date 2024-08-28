@@ -2,6 +2,8 @@
 
 #import header.frag
 #import get_diffuse_color.frag
+#import get_reflection_color.frag
+#import get_specular_color.frag
 #import point_light.frag
 #import sphere.frag
 #import plane.frag

@@ -113,7 +113,14 @@ out vec4 FragColor;
 t_point_light	get_point_light(int offset);
 
 // get_diffuse_color.frag
+vec4			illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint);
 vec4			get_diffuse_color(t_hitpoint hitpoint);
+
+// get_reflection_color.frag
+vec4			get_reflection_color(t_hitpoint hp);
+
+// get_specualar_color.frag
+vec4			get_specular_color(t_hitpoint hitpoint);
 
 // sphere.frag
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere);
@@ -124,11 +131,12 @@ t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane);
 t_plane			get_plane(int offset);
 
 // cylinder.frag
-t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder);
-t_cylinder	get_cylinder(int offset);
+t_hitpoint		get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder);
+t_cylinder		get_cylinder(int offset);
 
 
 // trace_ray.frag
+t_hitpoint		get_closest_hitpoint(t_ray ray);
 vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
 bool			is_obstructed(t_ray ray);
 vec4			trace_ray(t_ray ray);
