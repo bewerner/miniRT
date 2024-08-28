@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 16:41:24 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:49:41 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	update(t_rt *rt)
 	static double	start;
 	static double	oldstart;
 
+	// glfwSetCursorPos(rt->window, 123, 123);
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
 	oldstart = start;

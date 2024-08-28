@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/28 15:50:27 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:42:43 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ typedef struct s_rt
 	t_vec2			initial_cursor_pos;
 	int				mode;
 	int				fd;
+	bool			cursor_is_settable;
 }	t_rt;
 
 static const t_ivec2		g_ivec2_zero = (t_ivec2){0, 0};
