@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/28 16:49:41 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 20:50:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ void	update_ubo_rt(t_rt *rt)
 void	update(t_rt *rt)
 {
 	static int	i;
+	i++;
+	if (i == 1)
+		ft_timer(TIMER_START, NULL);
 	static double	start;
 	static double	oldstart;
 
@@ -60,9 +63,6 @@ void	update(t_rt *rt)
 	move_camera(rt);
 	// update_screen(rt);
 
-	i++;
-	if (i == 1)
-		ft_timer(TIMER_START, NULL);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -82,12 +82,14 @@ void	update(t_rt *rt)
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
-	if (i == 60)
+	glFinish();
+	glfwSwapBuffers(rt->window);
+	glfwPollEvents();
+	// usleep(100000);
+	// glfwWaitEventsTimeout(0.2);
+	if (i == 10)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;
 	}
-
-	glfwSwapBuffers(rt->window);
-	glfwPollEvents();
 }
