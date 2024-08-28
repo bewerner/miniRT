@@ -87,7 +87,7 @@ vec4	trace_ray(t_ray ray)
 	// col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_refl));		// lerp between diff - refl with metallicness factor (0.0 - 1.0)
 
 	// col = col_diff;
-	col = col_diff + col_spec;
-	col = 0.5 * (col + col_refl);
+	col = 0.5 * (col_diff + col_spec);
+	col = (col + col_refl);
 	return (col);
 }
