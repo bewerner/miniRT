@@ -1,3 +1,8 @@
+vec3	create_bounce_dir(vec3 incoming_dir, vec3 normal)
+{
+	return (incoming_dir - (2.0 * dot(incoming_dir, normal) * normal));
+}
+
 int	next_object_type(inout int i)
 {
 	if (i == -1)
