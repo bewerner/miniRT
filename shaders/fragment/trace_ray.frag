@@ -77,16 +77,17 @@ vec4	trace_ray(t_ray ray)
 		return (rt.ambient);
 
 	col_diff = get_diffuse_color(hitpoint);
-	// col_spec = get_specular_color(hitpoint);
-	// col_diff = vec4_add(col_diff, col_spec);
+	col_spec = get_specular_color(hitpoint);
+	col_refl = get_reflection_color(hitpoint);
 
 	// col_diff = col_spec;
 	// col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_spec));
 
 	// reflection
-	// col_refl = get_reflection_color(hitpoint);
 	// col_diff = vec4_scale(0.5f, vec4_add(col_diff, col_refl));		// lerp between diff - refl with metallicness factor (0.0 - 1.0)
 
-	col = col_diff;
+	// col = col_diff;
+	col = col_diff + col_spec;
+	col = 0.5 * (col + col_refl);
 	return (col);
 }
