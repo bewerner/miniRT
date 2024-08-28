@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 18:25:19 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:50:27 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,8 @@ typedef struct s_rt
 	GLFWwindow		*window;
 	double			delta_time;
 	GLuint			shader_program;
+	GLuint			solid_shader_program;
+	GLuint			normal_shader_program;
 	GLuint			vertex_array_object;
 	GLuint			ubo_rt_id;
 	GLuint			tbo_objects_id;
@@ -403,7 +405,7 @@ void			prepares_import_filename(char *filename, char *str, char *shader_path);
 GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 
 // shader/shader_program.c
-void			create_shader_program(t_rt *rt);
+GLuint			create_shader_program(const char *vert, const char *freg, t_rt *rt);
 
 // ┌───────────┐
 // │ Utilities │

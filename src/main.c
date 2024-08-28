@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/25 18:51:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:37:07 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int argc, char **argv)
 	errno = 0;
 	validate_args(argc, argv, rt);
 	init_mini_rt(argv, rt);
+	rt->mode = MODE_PREVIEW;
 	while (!glfwWindowShouldClose(rt->window))
 		update(rt);
 	terminate(NULL, 0, rt);

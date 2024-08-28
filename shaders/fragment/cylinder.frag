@@ -1,4 +1,4 @@
-float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, out float t0, out float t1)
+float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, inout float t0, inout float t1)
 {
 	vec3		ap;
 	float		a;
@@ -10,13 +10,13 @@ float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, out float t0, ou
 	ap = ap - (dot(ap, cylinder.orientation) * cylinder.orientation);
 	ray.dir = ray.dir - (dot(ray.dir, cylinder.orientation) * cylinder.orientation);
 	a = dot(ray.dir, ray.dir);
-	b = 2 * dot(ap, ray.dir);
+	b = 2.0 * dot(ap, ray.dir);
 	discriminant = b * b - 4 * a * (dot(ap, ap) - cylinder.radius * cylinder.radius);
 	if (discriminant < 0)
 		return (discriminant);
 	sqrt_discriminant = sqrt(discriminant);
-	t0 = (-b + sqrt_discriminant) / (2 * a);
-	t1 = (-b - sqrt_discriminant) / (2 * a);
+	t0 = (-b + sqrt_discriminant) / (2.0 * a);
+	t1 = (-b - sqrt_discriminant) / (2.0 * a);
 	return (discriminant);
 }
 
@@ -33,6 +33,8 @@ t_hitpoint	get_hitpoint_cap(t_ray ray, t_cylinder cylinder, t_plane cap, bool in
 	else
 	{
 		hitpoint = get_hitpoint_plane(ray, cap);
+		hitpoint.hit = true;
+		hitpoint.color = cylinder.base_color;
 		if (distance(hitpoint.pos, cap.origin) > cylinder.radius)
 			return (HP_INF);
 		return (hitpoint);
@@ -75,7 +77,7 @@ t_hitpoint	get_hitpoint_inside(t_ray ray, t_cylinder cylinder, t_hitpoint hitpoi
 	hitpoint.normal = hitpoint.pos - cylinder.origin;
 	hitpoint.normal = cross(hitpoint.normal, cylinder.orientation);
 	hitpoint.normal = cross(cylinder.orientation, hitpoint.normal);
-	hitpoint.normal = -1 * normalize(hitpoint.normal);
+	hitpoint.normal = -1.0 * normalize(hitpoint.normal);
 	return (hitpoint);
 }
 

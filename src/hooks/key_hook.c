@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/25 18:52:48 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:18:57 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,23 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 		rt->mode++;
 		if (rt->mode > MODE_PREVIEW)
 			rt->mode = MODE_SOLID;
+
+		if (rt->mode == MODE_SOLID)
+			glUseProgram(rt->solid_shader_program);
+		if (rt->mode == MODE_NORMAL)
+		{
+			glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
+	
+			glActiveTexture(GL_TEXTURE0 + 1);
+			
+			glUseProgram(rt->normal_shader_program);
+		}
+		else if (rt->mode == MODE_PREVIEW)
+		{
+
+			glUseProgram(rt->shader_program);
+		}
+		
 	}
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
 	{
