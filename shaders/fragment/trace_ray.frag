@@ -68,14 +68,14 @@ vec4	trace_ray(t_ray ray)
 {
 	t_hitpoint	hitpoint;
 	vec4		col;
-	vec4		col_diff;
-	vec4		col_spec;
-	vec4		col_refl;
+	vec4		col_diff = VEC4_BLACK;
+	vec4		col_spec = VEC4_BLACK;
+	vec4		col_refl = vec4(1,1,1,1);
 
 	int bounce_count = 0;
 
-	while (bounce_count < 1)
-	{
+	// while (bounce_count <= 0)
+	// {
 		hitpoint = get_closest_hitpoint(ray);
 		if (!hitpoint.hit)
 			return (rt.ambient);
@@ -84,13 +84,14 @@ vec4	trace_ray(t_ray ray)
 		col_spec = get_specular_color(hitpoint);
 		col_refl = get_reflection_color(hitpoint);
 
-		col = col_diff + col_spec * 0;
-		col = (1.0 - g_metallic) * col + g_metallic * col_refl;
 
-		ray.origin = hitpoint.pos + 0.001 * hitpoint.normal;
-		ray.dir = create_bounce_dir(hitpoint.ray, hitpoint.normal);
+	// 	ray.origin = hitpoint.pos + 0.001 * hitpoint.normal;
+	// 	ray.dir = create_bounce_dir(hitpoint.ray, hitpoint.normal);
 
-		bounce_count++;
-	}
+	// 	bounce_count++;
+	// }
+	// col = col_diff + col_spec * 0;
+	col = (1.0 - g_metallic) * col_diff + g_metallic * col_refl;
+	// col += (1.0 - g_metallic) * col_diff + g_metallic * col_refl;
 	return (col);
 }
