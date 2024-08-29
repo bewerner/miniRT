@@ -1,4 +1,4 @@
-float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, inout float t0, inout float t1)
+float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, out float t0, out float t1)
 {
 	vec3		ap;
 	float		a;
