@@ -17,29 +17,22 @@ vec4	shoot_ray(t_ray ray, inout t_hitpoint hitpoint)
 vec4	get_reflection_color(t_hitpoint hitpoint)
 {
 	vec4	col;
-	vec4	col_refl;
 	t_ray	bounce_ray;
+	int		MAX_BOUNCES = 10;
+	int		bounce_count = 0;
+	float	bounce_value = g_metallic;
 
-	bounce_ray.origin = hitpoint.pos + 0.001f * hitpoint.normal;
-	bounce_ray.dir = create_bounce_dir(hitpoint.ray, hitpoint.normal);
+	col = VEC4_BLACK;
 
-	col = shoot_ray(bounce_ray, hitpoint);
-
-	int bounce_count = 1;
-	while (bounce_count < 4)
+	while (bounce_count < MAX_BOUNCES && hitpoint.hit)
 	{
 		bounce_ray.origin = hitpoint.pos + 0.001 * hitpoint.normal;
 		bounce_ray.dir = create_bounce_dir(hitpoint.ray, hitpoint.normal);
+		
+		col += shoot_ray(bounce_ray, hitpoint) * bounce_value;
+
+		bounce_value *= g_metallic;
 		bounce_count++;
-
-		col_refl = shoot_ray(bounce_ray, hitpoint);
-		if (bounce_count == 4)
-			col = col * (1 - g_metallic) + col_refl * g_metallic;
-		else
-			col = col * (1 - g_metallic) + col_refl * g_metallic * g_metallic;
 	}
-
-	// include the base_color as meteallic materials do it like this is it mul, or add???
-
 	return (col);
 }
