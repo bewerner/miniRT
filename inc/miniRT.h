@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/29 16:01:17 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:56:35 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,17 @@ typedef struct s_ray
 	t_vec3			origin;
 	t_vec3			dir;
 }	t_ray;
+
+typedef struct s_material
+{
+	t_vec4	color;
+	float	metallic;
+	float	roughness;
+	float	ior;
+	float	transmission;
+	float	emission_strength;
+	t_vec4	emission_color;
+}	t_material;
 
 typedef enum e_obj_type
 {
