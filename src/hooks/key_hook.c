@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/28 16:18:57 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/28 20:31:22 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,14 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
 	
 			glActiveTexture(GL_TEXTURE0 + 1);
+			glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
+			GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+			glUniform1i(uniform_location, 1);
+
+			glActiveTexture(GL_TEXTURE0 + 2);
+			glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
+			uniform_location = glGetUniformLocation(rt->shader_program, "lightss");
+			glUniform1i(uniform_location, 2);
 			
 			glUseProgram(rt->normal_shader_program);
 		}

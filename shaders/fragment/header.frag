@@ -153,3 +153,5 @@ vec4	dither(vec4 col);
 vec3	vec3_rotate_x(vec3 v, float rad);
 vec3	vec3_rotate_y(vec3 v, float rad);
 vec3	vec3_rotate_z(vec3 v, float rad);
+
+float	g_metallic = 0.3;
