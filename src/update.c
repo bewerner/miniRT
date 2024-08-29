@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/29 16:03:54 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:32:42 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,6 @@ void	update(t_rt *rt)
 		ft_timer(TIMER_START, NULL);
 	static double	start;
 	static double	oldstart;
-
-	i++;
-	if (i == 1)
-		ft_timer(TIMER_START, NULL);
 
 	// glfwSetCursorPos(rt->window, 123, 123);
 	start = glfwGetTime();
