@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/28 20:51:24 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:03:54 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ void	update_ubo_rt(t_rt *rt)
 void	update(t_rt *rt)
 {
 	static int	i;
+	i++;
+	if (i == 1)
+		ft_timer(TIMER_START, NULL);
 	static double	start;
 	static double	oldstart;
 
