@@ -25,5 +25,5 @@ vec4	get_reflection_color(t_hitpoint hitpoint)
 		
 	// include the base_color as meteallic materials do it like this is it mul, or add???
 
-	return (col);
+	return (col * hitpoint.color * 1.0);
 }
