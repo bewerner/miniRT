@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/28 16:56:15 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 20:22:48 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	init_camera(t_camera *camera)
 	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
 	camera->yaw = atan2f(dir.x, dir.y) * -1;
 	rad = camera->fov * (M_PI / 180);
-	camera->focal_length = 0.5f / tanf(rad * 0.5f);
+	camera->focal_length = 1.0f / tanf(rad * 0.5f);
 	reset_camera(camera);
 }
 
@@ -251,6 +251,7 @@ void	create_tbo_objects(t_rt *rt)
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
+	rt->objects_texture_id = texture_id;
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
@@ -327,6 +328,7 @@ void	create_tbo_lights(t_rt *rt)
 
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 2);
+	rt->lights_texture_id = texture_id;
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/28 16:49:41 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/28 20:51:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ void	update(t_rt *rt)
 	static double	start;
 	static double	oldstart;
 
+	i++;
+	if (i == 1)
+		ft_timer(TIMER_START, NULL);
+
 	// glfwSetCursorPos(rt->window, 123, 123);
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
@@ -60,9 +64,6 @@ void	update(t_rt *rt)
 	move_camera(rt);
 	// update_screen(rt);
 
-	i++;
-	if (i == 1)
-		ft_timer(TIMER_START, NULL);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -82,12 +83,14 @@ void	update(t_rt *rt)
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
-	if (i == 60)
+
+	glFinish();
+	glfwSwapBuffers(rt->window);
+	glfwPollEvents();
+
+	if (i == 1)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;
 	}
-
-	glfwSwapBuffers(rt->window);
-	glfwPollEvents();
 }
