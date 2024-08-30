@@ -18,7 +18,8 @@ void main()
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 
-	g_seed = int(sin(dot(coord.xy, vec2(12.9898, 78.233))) * 43758.5453);
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
+	// g_metallic = rt.debug/10.0;
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
@@ -28,8 +29,9 @@ void main()
 	vec4 col = trace_ray(camera_ray);
 	col = dither(col);
 
-	col.r = rand();
-	col.g = col.r;
-	col.b = col.r;
+	// for (int i = 0; i < rt.debug; i++)
+	// 	col.r = rand();
+	// col.g = col.r;
+	// col.b = col.r;
 	FragColor = col;
 }
