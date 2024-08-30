@@ -90,6 +90,7 @@ struct t_rt
 	t_camera		camera;
 	vec4			ambient;
 	float			aspect_ratio;
+	float			debug;
 };
 
 

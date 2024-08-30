@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/29 16:32:42 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/30 17:40:09 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	update_ubo_rt(t_rt *rt)
 {
 	t_ubo	ubo_rt;
 
+	ubo_rt.debug = rt->debug;
 	ubo_rt.ambient = rt->ambient;
 	glfwGetWindowSize(rt->window, &rt->width, &rt->height);
 	ubo_rt.aspect_ratio = (float)rt->width / (float)rt->height;
@@ -87,7 +88,7 @@ void	update(t_rt *rt)
 	glfwSwapBuffers(rt->window);
 	glfwPollEvents();
 
-	if (i == 1)
+	if (i == 60)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;
