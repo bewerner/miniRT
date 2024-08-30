@@ -93,6 +93,7 @@ vec4	trace_ray(t_ray ray)
 
 	col = col_diff + col_spec * 0.0;
 	// col = (1.0 - g_metallic) * (col_diff + col_spec) + g_metallic * col_refl;
+	// col = (1.0 - g_metallic) * (1.0 - g_metallic) * col_diff + g_metallic * col_refl;
 	col = (1.0 - g_metallic) * col_diff + g_metallic * col_refl;
 
 	return (col);
