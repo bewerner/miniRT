@@ -28,8 +28,8 @@ void main()
 	vec4 col = trace_ray(camera_ray);
 	col = dither(col);
 
-	// col.r = rand();
-	// col.g = col.r;
-	// col.b = col.r;
+	col.r = rand();
+	col.g = col.r;
+	col.b = col.r;
 	FragColor = col;
 }

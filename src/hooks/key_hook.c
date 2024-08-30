@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/29 16:36:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:39:49 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,16 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
 		reset_camera(&rt->camera);
 		rt->move.vel = g_vec3_zero;
+	}
+	else if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+	{
+		rt->debug++;
+		printf("debug is %f\n", rt->debug);
+	}
+	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	{
+		rt->debug--;
+		printf("debug is %f\n", rt->debug);
 	}
 	else
 		key_hook_axial_view(key, action, rt);
