@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/29 21:57:50 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/31 11:03:55 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int	create_shader_sources(char **dst_vert, char **dst_frag, const char *v
 
 	// SAVE DEBUG FRAG-SHADER-SRC
 	int fd = open("debug.frag", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	write(fd, *dst_frag, ft_strlen(*dst_frag));
+	int x = write(fd, *dst_frag, ft_strlen(*dst_frag));
+	(void)x;
 	close(fd);
 
 	if (*dst_vert == NULL || *dst_frag == NULL)

@@ -107,6 +107,7 @@ layout(std140) uniform u_rt
 in vec4 coord;
 uniform samplerBuffer objects;
 uniform samplerBuffer lights;
+uniform samplerBuffer agx_lut;
 
 out vec4 FragColor;
 

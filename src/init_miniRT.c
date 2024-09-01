@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/29 16:03:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/01 00:41:00 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,6 +360,60 @@ void	init_cursor_is_settable(t_rt *rt)
 		rt->cursor_is_settable = 0;
 }
 
+void	init_agx_lut2_buffer(float *agx_lut, char *filepath, t_rt *rt)
+{
+	int		fd;
+	char	*line;
+	size_t	i;
+
+	fd = open(filepath, O_RDONLY);
+	if (fd == -1)
+		terminate(filepath, 1, rt);
+	i = 0;
+	while (i < 165001)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			terminate("get_next_line failed\n", 1, rt);
+		line[1] = '\0';
+		line[8] = '\0';
+		agx_lut[i] = ft_atoi(line);
+		agx_lut[i] += (float)ft_atoi(line + 2) / 1000000;
+		free(line);
+		i++;
+	}
+}
+
+void	create_tbo_agx_lut(char *filepath, t_rt *rt)
+{
+	size_t	size;
+	float	buffer[165001];
+	GLuint	texture_id;
+	GLuint	tbo_agx_lut_id;
+
+	size = 165001 * sizeof(float);
+	init_agx_lut2_buffer(buffer, filepath, rt);
+
+	// for (size_t i = 0; i < 165001; i++)
+	// 	printf("%f\n", buffer[i]);
+
+	glGenBuffers(1, &tbo_agx_lut_id);
+	glBindBuffer(GL_TEXTURE_BUFFER, tbo_agx_lut_id);
+	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
+	glBindBuffer(GL_TEXTURE_BUFFER, 0);
+
+	glGenTextures(1, &texture_id);
+	glActiveTexture(GL_TEXTURE0 + 3);
+	// rt->lights_texture_id = texture_id;
+	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, tbo_agx_lut_id);
+
+	GLint uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+	if (uniform_location == -1)
+		terminate("agx_lut not found in shader program", 1, rt);
+	glUniform1i(uniform_location, 3);
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	load_scene(argv[1], rt);
@@ -374,4 +428,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_rt(rt);
 	create_tbo_objects(rt);
 	create_tbo_lights(rt);
+	create_tbo_agx_lut("inc/AgX.lut", rt);
 }
