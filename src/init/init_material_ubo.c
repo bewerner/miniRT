@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 12:45:03 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:38:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	create_ubo_materials(t_rt *rt)
 
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_materials_id);
 	glBufferData(GL_UNIFORM_BUFFER, size, buffer, GL_STATIC_DRAW);
+
+	free(buffer);
 
 	blockIndex = glGetUniformBlockIndex(rt->shader_program, "u_materials");
 	if (blockIndex == GL_INVALID_INDEX)

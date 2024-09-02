@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 14:32:38 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:37:32 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,6 @@ void	create_tbo_objects(t_rt *rt)
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
-	// rt->objects_texture_id = texture_id;
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
@@ -328,7 +327,6 @@ void	create_tbo_lights(t_rt *rt)
 
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 2);
-	// rt->lights_texture_id = texture_id;
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
 
