@@ -35,6 +35,7 @@ t_hitpoint	get_hitpoint_cap(t_ray ray, t_cylinder cylinder, t_plane cap, bool in
 		hitpoint = get_hitpoint_plane(ray, cap);
 		hitpoint.hit = true;
 		hitpoint.color = cylinder.base_color;
+		hitpoint.material_idx = cylinder.material_idx;
 		if (distance(hitpoint.pos, cap.origin) > cylinder.radius)
 			return (HP_INF);
 		return (hitpoint);

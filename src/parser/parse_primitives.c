@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 19:18:57 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:31:40 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,13 @@ static t_material	*get_next_material(char *line, t_rt *rt)
 {
 	t_material	*material;
 
-// printf("before: |%s|\n", line);
 	ft_skipspace(&line);
 	ft_terminate_after_word(line);
-
-
 	if (*line == '\0')
 		return (rt->materials);
 	material = rt->materials;
 	while (material && ft_strcmp(material->name, line) != 0)
-	{
-printf("\033[91mmat: |%s|=|%s| :line\033[0m\n", material->name, line);
 		material = material->next;
-	}
-printf("\033[92mmat: |%s|=|%s| :line\033[0m\n", material->name, line);
-printf("-----------------\n");
 	if (material == NULL)
 		terminate("invalid material name detected", 1, rt);		// terminate if we find an ivalid material name
 		// return (rt->materials);								// invalid material name defaults to default material
@@ -102,7 +94,9 @@ static void	init_caps(t_cylinder *cy)
 	cy->cap1.dist = vec3_dot(cy->cap1.origin, cy->cap1.normal);
 	cy->cap2.dist = vec3_dot(cy->cap2.origin, cy->cap2.normal);
 	cy->cap1.base_color = cy->base_color;
+	cy->cap1.material = cy->material;
 	cy->cap2.base_color = cy->base_color;
+	cy->cap2.material = cy->material;
 }
 
 t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
@@ -121,7 +115,7 @@ t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
 	cy->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	cy->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	cy->base_color.a = 1.0f;
-	init_caps(cy);
 	cy->material = get_next_material(line, rt);
+	init_caps(cy);
 	return (RT_SUCCESS);
 }

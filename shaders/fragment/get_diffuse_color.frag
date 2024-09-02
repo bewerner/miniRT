@@ -40,7 +40,8 @@ vec4	get_diffuse_color(t_hitpoint hitpoint)
 			light_col += illuminate_from_point_light(get_point_light(i), hitpoint);
 		type = next_light_type(i);
 	}
-	return (hitpoint.color * (light_col + rt.ambient));
+	// return (hitpoint.color * (light_col + rt.ambient));
+	return (materials[hitpoint.material_idx].color * (light_col + rt.ambient));
 }
 
 // vec4	get_diffuse_color(t_hitpoint hitpoint)
