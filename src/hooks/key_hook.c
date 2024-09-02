@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 14:15:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:31:37 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,16 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			// glUniform1i(uniform_location, 3);
 			// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 
+			// RE-BIND AGX
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
+			glActiveTexture(GL_TEXTURE0 + 3);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
+			uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+			if (uniform_location == -1)
+				terminate("agx_lut not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 3);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
 		}
 		if (rt->mode == MODE_NORMAL)
 		{
@@ -141,6 +151,16 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			// glUniform1i(uniform_location, 3);
 			// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 
+			// RE-BIND AGX
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
+			glActiveTexture(GL_TEXTURE0 + 3);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
+			uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+			if (uniform_location == -1)
+				terminate("agx_lut not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 3);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
 		}
 		else if (rt->mode == MODE_PREVIEW)
 		{
@@ -178,6 +198,16 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			// 	terminate("lights not found in shader program", 1, rt);
 			// glUniform1i(uniform_location, 3);
 			// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+			// RE-BIND AGX
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
+			glActiveTexture(GL_TEXTURE0 + 3);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
+			uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+			if (uniform_location == -1)
+				terminate("agx_lut not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 3);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 
 		}
 		

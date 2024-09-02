@@ -24,17 +24,16 @@ void main()
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
 
-	// if (texelFetch(materials, 0).r == 0.0)		// && texelFetch(lights, 0).r == 0.0
-	// 	;
-	if (materials[0].ior == 0)
-		;
 
-	if (is_ligth_gizmo(camera_ray))
+	if (is_ligth_gizmo(camera_ray) == true)
 	{
 		FragColor = VEC4_BLACK;
 		return ;
 	}
-
+	
+	// Dump unused samplerBuffer 
+	// Dump here, so that the conditions (is_ligth_gizmo) is executed correctly
+	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
 
 	vec4 col = trace_ray_solid(camera_ray);
 	// col = dither(col);
