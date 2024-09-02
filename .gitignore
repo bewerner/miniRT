@@ -13,7 +13,8 @@
 !inc
 !inc/**
 !scenes
-!scenes/*.rt
+!scenes/raw
+!scenes/**/*.rt
 !shaders
 !shaders/*
 !shaders/**/*.frag
