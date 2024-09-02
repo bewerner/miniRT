@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/31 20:27:03 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 19:18:57 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,21 @@ static t_material	*get_next_material(char *line, t_rt *rt)
 {
 	t_material	*material;
 
+// printf("before: |%s|\n", line);
 	ft_skipspace(&line);
 	ft_terminate_after_word(line);
+
+
 	if (*line == '\0')
 		return (rt->materials);
 	material = rt->materials;
 	while (material && ft_strcmp(material->name, line) != 0)
+	{
+printf("\033[91mmat: |%s|=|%s| :line\033[0m\n", material->name, line);
 		material = material->next;
+	}
+printf("\033[92mmat: |%s|=|%s| :line\033[0m\n", material->name, line);
+printf("-----------------\n");
 	if (material == NULL)
 		terminate("invalid material name detected", 1, rt);		// terminate if we find an ivalid material name
 		// return (rt->materials);								// invalid material name defaults to default material

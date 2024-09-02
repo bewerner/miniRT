@@ -26,6 +26,8 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 	hitpoint.ray = t * ray.dir;
 	hitpoint.pos = ray.origin + hitpoint.ray;
 	hitpoint.color = plane.base_color;
+	hitpoint.material_idx = plane.material_idx;
+
 	return (hitpoint);
 }
 
@@ -39,6 +41,7 @@ t_plane	get_plane(int offset)
 	plane.base_color = vec4(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	plane.normal = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	plane.dist = texelFetch(objects, offset++).r;
+	plane.material_idx = int(texelFetch(objects, offset).r);
 
 	return (plane);
 }

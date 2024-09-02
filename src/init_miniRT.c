@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 15:37:32 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 20:08:23 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ void	init_gpu_sphere(float *buffer, size_t *i, t_sphere *sphere)
 	gpu_sphere.origin = sphere->origin;
 	gpu_sphere.base_color = sphere->base_color;
 	gpu_sphere.radius = sphere->radius;
+	gpu_sphere.material_idx = (float)sphere->material->index;
 	ft_memmove(&buffer[*i], &gpu_sphere, sizeof(t_gpu_sphere));
 	*i = gpu_sphere.next_offset;
 }
@@ -184,6 +185,9 @@ void	init_gpu_plane(float *buffer, size_t *i, t_plane *plane)
 	gpu_plane.base_color = plane->base_color;
 	gpu_plane.normal = plane->normal;
 	gpu_plane.dist = plane->dist;
+	gpu_plane.material_idx = 0;
+	if (plane->material != NULL)
+		gpu_plane.material_idx = (float)plane->material->index;
 	ft_memmove(&buffer[*i], &gpu_plane, sizeof(t_gpu_plane));
 	*i = gpu_plane.next_offset;
 }
@@ -202,6 +206,7 @@ void	init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder)
 	gpu_cylinder.orientation = cylinder->orientation;
 	gpu_cylinder.radius = cylinder->radius;
 	gpu_cylinder.height = cylinder->height;
+	gpu_cylinder.material_idx = (float)cylinder->material->index;
 	ft_memmove(&buffer[*i], &gpu_cylinder, size_without_caps);
 	i_cap = *i + size_without_caps / sizeof(float);
 	init_gpu_plane(buffer, &i_cap, &cylinder->cap1);

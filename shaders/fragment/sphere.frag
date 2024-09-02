@@ -42,6 +42,7 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 	}
 	hitpoint.hit = true;
 	hitpoint.color = sphere.base_color;
+	hitpoint.material_idx = sphere.material_idx;
 	return (hitpoint);
 }
 
@@ -54,6 +55,7 @@ t_sphere	get_sphere(int offset)
 	sphere.origin = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	sphere.base_color = vec4(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	sphere.radius = texelFetch(objects, offset++).r;
+	sphere.material_idx = int(texelFetch(objects, offset).r);
 
 	return (sphere);
 }

@@ -3,7 +3,7 @@
 #define INF			(1.0 / 0.0)
 #define VEC3_INF	vec3(INF, INF, INF)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
-#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC4_BLACK)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC4_BLACK, 0)
 
 int	g_seed = 0;
 
@@ -20,6 +20,7 @@ struct t_hitpoint
 	vec3			pos;
 	vec3			normal;
 	vec4			color;
+	int				material_idx;
 };
 
 #define OBJ_NONE		0
@@ -34,6 +35,7 @@ struct t_sphere
 	vec3			origin;
 	vec4			base_color;
 	float			radius;
+	int				material_idx;
 };
 
 struct t_plane
@@ -44,6 +46,7 @@ struct t_plane
 	vec4			base_color;
 	vec3			normal;
 	float			dist;
+	int				material_idx;
 };
 
 struct t_cylinder
@@ -55,6 +58,7 @@ struct t_cylinder
 	vec3			orientation;
 	float			radius;
 	float			height;
+	int				material_idx;
 	t_plane			cap1;
 	t_plane			cap2;
 };
@@ -175,4 +179,4 @@ vec3	vec3_rotate_x(vec3 v, float rad);
 vec3	vec3_rotate_y(vec3 v, float rad);
 vec3	vec3_rotate_z(vec3 v, float rad);
 
-float	g_metallic = 0.5;
+// float	g_metallic = 0.5;
