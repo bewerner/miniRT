@@ -5,7 +5,7 @@ C	0,-5,0	0,1,0	90
 
 #m	name 		| color 	| metallic | roughness | ior | transmission | emission_strength | emission_color
 mat	matt		255,255,255 	0.0			1.0		1.45		0.0				0.0				255,255,255
-mat	gloss		255,255,255 	0.85			0.5		1.45		0.0				0.0				255,255,255
+mat	gloss		255,255,255 	0.85		0.5		1.45		0.0				0.0				255,255,255
 
 pl	0, 0,-1		 0,-1, 1	204,204,204	gloss
 pl	1, 0,-0		-1,-1,-1	204,204,204 gloss
