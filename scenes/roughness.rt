@@ -1,0 +1,12 @@
+A	0		0,0,0
+C	0,-3,0	0,1,0	90
+
+sp	-1.5,0,0 1 255,255,255 mat1
+sp	 1.5,0,0 1 255,255,255 mat1
+pl	0,0,-0.5 0,0,1 255,255,255
+
+#m	name 	| color 		| metallic | roughness | ior | transmission | emission_strength | emission_color
+mat	mat1 	 255,255,255		0.0			1.0		1.45		0.0				0.0				255,255,255
+
+l	-1.5,0,3		0.01		255,0,0
+l	 1.5,0,3		0.01		0,0,255
