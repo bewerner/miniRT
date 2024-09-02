@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 10:56:34 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:15:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,16 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
 		reset_camera(&rt->camera);
 		rt->move.vel = g_vec3_zero;
+	}
+	else if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+	{
+		rt->debug++;
+		printf("debug is %f\n", rt->debug);
+	}
+	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	{
+		rt->debug--;
+		printf("debug is %f\n", rt->debug);
 	}
 	else
 		key_hook_axial_view(key, action, rt);

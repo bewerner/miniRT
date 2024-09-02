@@ -104,6 +104,7 @@ struct t_rt
 	t_camera		camera;
 	vec4			ambient;
 	float			aspect_ratio;
+	float			debug;
 };
 
 
@@ -125,7 +126,7 @@ layout(std140) uniform u_materials
 in vec4 coord;
 uniform samplerBuffer objects;
 uniform samplerBuffer lights;
-// uniform samplerBuffer materials;
+uniform samplerBuffer agx_lut;
 
 out vec4 FragColor;
 

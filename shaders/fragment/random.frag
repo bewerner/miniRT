@@ -27,6 +27,7 @@ vec4	dither(vec4 col)
 	newcol.r = r / 255;
 	newcol.g = g / 255;
 	newcol.b = b / 255;
+	newcol.a = 1;
 
 	return (newcol);
 }

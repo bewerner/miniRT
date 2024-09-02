@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 11:47:49 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:17:59 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	update_ubo_rt(t_rt *rt)
 {
 	t_ubo	ubo_rt;
 
+	ubo_rt.debug = rt->debug;
 	ubo_rt.ambient = rt->ambient;
 	glfwGetWindowSize(rt->window, &rt->width, &rt->height);
 	ubo_rt.aspect_ratio = (float)rt->width / (float)rt->height;

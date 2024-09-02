@@ -30,21 +30,36 @@ int	next_light_type(inout int i)
 
 vec4	get_diffuse_color(t_hitpoint hitpoint)
 {
-	vec4	final_col;
-	vec4	light_col;
-
-	final_col = VEC4_BLACK;
+	vec4 light_col = VEC4_BLACK;
 
 	int i = -1;
 	int type = next_light_type(i);
 	while (type != LIGHT_NONE)
 	{
 		if (type == LIGHT_POINT)
-			light_col = illuminate_from_point_light(get_point_light(i), hitpoint);
-		final_col = final_col + light_col;
+			light_col += illuminate_from_point_light(get_point_light(i), hitpoint);
 		type = next_light_type(i);
 	}
-	final_col = final_col + rt.ambient;
-	final_col = hitpoint.color * final_col;
-	return (final_col);
+	return (hitpoint.color * (light_col + rt.ambient));
 }
+
+// vec4	get_diffuse_color(t_hitpoint hitpoint)
+// {
+// 	vec4	final_col;
+// 	vec4	light_col;
+
+// 	final_col = VEC4_BLACK;
+
+// 	int i = -1;
+// 	int type = next_light_type(i);
+// 	while (type != LIGHT_NONE)
+// 	{
+// 		if (type == LIGHT_POINT)
+// 			light_col = illuminate_from_point_light(get_point_light(i), hitpoint);
+// 		final_col = final_col + light_col;
+// 		type = next_light_type(i);
+// 	}
+// 	final_col = final_col + rt.ambient;
+// 	final_col = hitpoint.color * final_col;
+// 	return (final_col);
+// }

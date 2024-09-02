@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 10:55:43 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:07:14 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,7 @@ typedef struct s_ubo
 	t_camera		camera;
 	t_vec4			ambient;
 	float			aspect_ratio;
+	float			debug;
 }	t_ubo;
 
 typedef struct s_rt
@@ -291,6 +292,7 @@ typedef struct s_rt
 	int				mode;
 	int				fd;
 	bool			cursor_is_settable;
+	float			debug;
 }	t_rt;
 
 static const t_ivec2		g_ivec2_zero = (t_ivec2){0, 0};
