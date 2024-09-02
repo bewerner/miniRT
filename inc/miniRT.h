@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 18:41:14 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:08:09 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ typedef struct s_rt
 	GLuint			shader_program;
 	GLuint			solid_shader_program;
 	GLuint			normal_shader_program;
+	char			*filename;
 
 	GLuint			vertex_array_object;
 	GLuint			ubo_rt_id;

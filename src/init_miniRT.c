@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 20:08:23 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:09:36 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@
 // 		terminate("mlx_new_image failed", 1, rt);
 // }
 
-static void	init_glfw(char *filename, t_rt *rt)
+static void	init_glfw(t_rt *rt)
 {
-	char	*win_title;
-
 	if (glfwInit() == GLFW_FALSE)
 		terminate("glfw_init failed", 1, rt);
 
@@ -30,11 +28,7 @@ static void	init_glfw(char *filename, t_rt *rt)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	win_title = ft_strjoin("miniRT - ", filename);
-	if (win_title == NULL)
-		terminate("fatal", 1, rt);
-	rt->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, win_title, NULL, NULL);
-	free(win_title);
+	rt->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT - LOADING...", NULL, NULL);
 	if (!rt->window)
 		terminate("glfw window creation failed", 1, rt);
 	glfwGetWindowSize(rt->window, &rt->width, &rt->height);
@@ -418,8 +412,9 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 
 void	init_mini_rt(char **argv, t_rt *rt)
 {
+	rt->filename = argv[1];
 	load_scene(argv[1], rt);
-	init_glfw(argv[1], rt);
+	init_glfw(rt);
 	init_camera(&rt->camera);
 	init_cursor_is_settable(rt);
 	init_hooks(rt);
