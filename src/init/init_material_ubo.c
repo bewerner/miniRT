@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 15:38:24 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:47:07 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	create_ubo_materials(t_rt *rt)
 	GLuint	blockIndex;
 	float	*buffer;
 
-	// should we limit materials to a specific size ???
-	// Needs to be checked in the parser if so…
+	// SHOULD WE LIMIT MATERIALS TO A SPECIFIC SIZE ???
+	// NEEDS TO BE CHECKED IN THE PARSER IF SO…
 	size = get_gpu_material_size(rt->materials);
 	buffer = (float *)ft_calloc(1, size);
 	if (!buffer)
@@ -61,7 +61,6 @@ void	create_ubo_materials(t_rt *rt)
 	init_ubo_materials(buffer, rt->materials);
 
 	glGenBuffers(1, &rt->ubo_materials_id);
-
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_materials_id);
 	glBufferData(GL_UNIFORM_BUFFER, size, buffer, GL_STATIC_DRAW);
 

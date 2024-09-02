@@ -1,0 +1,16 @@
+A	0		0,0,0
+C	0,-2.5,0	0,1,0	90
+
+#m	name | color | metallic | roughness | ior | transmission | emission_strength | emission_color
+
+#m	name 	| color 		| metallic | roughness | ior | transmission | emission_strength | emission_color
+mat	mat_sp  255,  0,  0			1.0			0.5		1.45		0.0				0.0				255,255,255
+mat	mat_cy    0,255,  0			1.0 		0.5		1.45		0.0				0.0				255,255,255
+mat	mat_pl  255,255,255 		1.0 		0.5		1.45		0.0				0.0				255,255,255
+
+pl	0,0,-1	0,0,1 				255,255,255	mat_pl
+sp	-1,0,0				1.0		255,255,255	mat_sp
+cy	 1,0,0	-1,-1,1	1.0	1.0		255,255,255	mat_cy
+
+l	0,0,3		0.07	255,255,255
+l	0,5,0		0.07	255,255,255
