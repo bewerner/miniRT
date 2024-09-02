@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/29 16:56:35 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 10:55:43 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@
 # define LIGHT_POWER	0.575f
 # define EPSILON		0.000001f
 
+#define MAX_MATERIAL_NAME 256 
+
 typedef enum e_timeraction
 {
 	TIMER_START,
@@ -60,6 +62,7 @@ typedef enum e_identifier
 	ID_COMMENT,
 	ID_AMBIENT,
 	ID_CAMERA,
+	ID_MATERIAL,
 	ID_POINT_LIGHT,
 	ID_SPHERE,
 	ID_PLANE,
@@ -72,6 +75,7 @@ typedef struct s_scene_size
 	size_t		objs_size;
 	size_t		light_cnt;
 	size_t		light_size;
+	size_t		mat_cnt;
 }	t_scene_size;
 
 typedef enum e_mode
@@ -99,15 +103,20 @@ typedef struct s_ray
 	t_vec3			dir;
 }	t_ray;
 
-typedef struct s_material
+typedef struct s_material	t_material;
+
+typedef struct	s_material
 {
-	t_vec4	color;
-	float	metallic;
-	float	roughness;
-	float	ior;
-	float	transmission;
-	float	emission_strength;
-	t_vec4	emission_color;
+	size_t		index;
+	t_material	*next;
+	char		name[MAX_MATERIAL_NAME];
+	t_vec4		color;
+	float		metallic;
+	float		roughness;
+	float		ior;
+	float		transmission;
+	float		emission_strength;
+	t_vec4		emission_color;
 }	t_material;
 
 typedef enum e_obj_type
@@ -126,6 +135,7 @@ typedef struct s_object
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	t_material		*material;
 	bool			is_selected;
 }	t_object;
 
@@ -135,6 +145,7 @@ typedef struct s_sphere
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	t_material		*material;
 	bool			is_selected;
 	float			radius;
 }	t_sphere;
@@ -145,6 +156,7 @@ typedef struct s_plane
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	t_material		*material;
 	bool			is_selected;
 	t_vec3			normal;
 	float			dist;
@@ -156,6 +168,7 @@ typedef struct s_cylinder
 	t_object		*next;
 	t_vec3			origin;
 	t_vec4			base_color;
+	t_material		*material;
 	bool			is_selected;
 	t_vec3			orientation;
 	float			radius;
@@ -243,7 +256,6 @@ typedef struct s_ubo
 	float			aspect_ratio;
 }	t_ubo;
 
-
 typedef struct s_rt
 {
 	int				width;
@@ -255,15 +267,21 @@ typedef struct s_rt
 	GLuint			normal_shader_program;
 	GLuint			vertex_array_object;
 	GLuint			ubo_rt_id;
-	GLuint			objects_texture_id;
+	
+	// GLuint			materials_texture_id;	// optional
+	GLuint			ubo_materials_id;
+
+	GLuint			objects_texture_id;		// optional
 	GLuint			tbo_objects_id;
-	GLuint			lights_texture_id;
+
+	GLuint			lights_texture_id;		// optional
 	GLuint			tbo_lights_id;
 
 	t_list			*line;
 	t_movement		move;
 	t_camera		camera;
 	t_screen		screen;
+	t_material		*materials;
 	t_object		*objects;
 	t_light			*lights;
 	t_vec4			ambient;
@@ -334,6 +352,13 @@ void			resize_hook(GLFWwindow *window, int width, int height);
 // hooks/loop_hook.c
 void			loop_hook(void *param);
 
+// ┌──────┐
+// │ Init │
+// └──────┘
+
+// init/init_material_tbo.c
+void			create_ubo_materials(t_rt *rt);
+
 // ┌────────┐
 // │ Parser │
 // └────────┘
@@ -342,7 +367,12 @@ void			loop_hook(void *param);
 void			load_scene(char *file, t_rt *rt);
 
 // parser/parser.c
-t_error			parse_scene(size_t obj_cnt, size_t light_cnt, t_rt *rt);
+t_error			parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt);
+
+// parser/parse_material.c
+void			verify_material_uniqueness(t_rt *rt);
+void			create_default_material(size_t mat_cnt, t_material *mat);
+t_error			parse_material(t_material *mat, t_rt *rt);
 
 // parser/parse_default_objs.c
 t_error			parse_ambient(t_rt *rt);
@@ -357,9 +387,8 @@ t_error			parse_plane(t_plane *plane, t_rt *rt);
 t_error			parse_cylinder(t_cylinder *cylinder, t_rt *rt);
 
 // parser/parser_utils1.c
-void			whitespace_to_space(char *str);
-void			ft_skipspace(char **str);
 float			ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3]);
+void			next_lst_item(t_list **lst);
 
 // parser/parser_utils2.c
 t_identifier	get_identifier(char *line);
@@ -432,6 +461,12 @@ uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
 
 // utils/ray_utils.c
 t_vec3			create_bounce_dir(t_vec3 incoming_dir, t_vec3 normal);
+
+// utils/string_utils.c
+void			whitespace_to_space(char *str);
+void			ft_skipspace(char **str);
+int				ft_strcmp(const char *s1, const char *s2);
+void			ft_terminate_after_word(char *str);
 
 // utils/vec3_rotate.c
 t_vec3			vec3_rotate_x(t_vec3 p, float rad);

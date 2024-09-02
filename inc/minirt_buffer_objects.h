@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_buffer_objects.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/26 21:30:33 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/02 11:24:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 # define MINIRT_BUFFER_OBJECTS_H
 
 # include "minirt_vec_types.h"
+
+typedef struct s_gpu_material
+{
+	t_vec4		color;
+	float		metallic;
+	float		roughness;
+	float		ior;
+	float		transmission;
+	t_vec4		emission_color;	
+	float		emission_strength;
+	float		padding1;
+	float		padding2;
+	float		padding3;
+}	t_gpu_material;
 
 typedef struct s_gpu_sphere
 {
