@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/29 16:32:42 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/02 11:47:49 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,18 @@ void	update_ubo_rt(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 }
 
 void	update(t_rt *rt)
 {
 	static int	i;
+	static double	start;
+	static double	oldstart;
+
 	i++;
 	if (i == 1)
 		ft_timer(TIMER_START, NULL);
-	static double	start;
-	static double	oldstart;
 
 	// glfwSetCursorPos(rt->window, 123, 123);
 	start = glfwGetTime();
@@ -87,7 +89,7 @@ void	update(t_rt *rt)
 	glfwSwapBuffers(rt->window);
 	glfwPollEvents();
 
-	if (i == 1)
+	if (i == 60)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;

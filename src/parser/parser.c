@@ -6,39 +6,53 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 21:56:19 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:05:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-static void	next_lst_item(t_list **lst)
+typedef struct s_pobjs
 {
-	t_list			*tmp;
+	t_material	*curr_mat;
+	t_object	*curr_obj;
+	t_light		*curr_light;
+}				t_pobjs;
 
-	tmp = *lst;
-	*lst = tmp->next;
-	ft_lstdelone(tmp, free);
-}
-
-static t_error	evaluate_id(t_identifier id, t_object *curr_obj,
-	t_light *curr_light, t_rt *rt)
+static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 {
 	if (id == ID_AMBIENT)
 		return (parse_ambient(rt));
 	else if (id == ID_CAMERA)
 		return (parse_camera(rt));
+	else if (id == ID_MATERIAL)
+		return (parse_material((t_material *)objs.curr_mat, rt));
 	else if (id == ID_POINT_LIGHT)
-		return (parse_point_light((t_point_light *)curr_light, rt));
+		return (parse_point_light((t_point_light *)objs.curr_light, rt));
 	else if (id == ID_SPHERE)
-		return (parse_sphere((t_sphere *)curr_obj, rt));
+		return (parse_sphere((t_sphere *)objs.curr_obj, rt));
 	else if (id == ID_PLANE)
-		return (parse_plane((t_plane *)curr_obj, rt));
+		return (parse_plane((t_plane *)objs.curr_obj, rt));
 	else if (id == ID_CYLINDER)
-		return (parse_cylinder((t_cylinder *)curr_obj, rt));
+		return (parse_cylinder((t_cylinder *)objs.curr_obj, rt));
 	else if (id != ID_COMMENT)
 		return (RT_ERROR_INVALID_IDENTIFIER);
 	return (RT_SUCCESS);
+}
+
+static void	evaluate_material_id(t_identifier id, size_t mat_cnt,
+	t_material **curr_mat)
+{
+	static size_t	count;
+
+	if (id == ID_MATERIAL)
+	{
+		count++;
+		if (count >= mat_cnt)
+			(*curr_mat)->next = NULL;
+		else
+			*curr_mat = (*curr_mat)->next;
+	}
 }
 
 static void	evaluate_object_id(t_identifier id, size_t obj_cnt,
@@ -71,25 +85,31 @@ static void	evaluate_light_id(t_identifier id, size_t light_cnt,
 	}
 }
 
-t_error	parse_scene(size_t obj_cnt, size_t light_cnt, t_rt *rt)
+t_error	parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt)
 {
 	t_identifier	id;
 	t_error			error;
+	t_material		*curr_mat;
 	t_object		*curr_obj;
 	t_light			*curr_light;
 
 	error = RT_SUCCESS;
+	curr_mat = rt->materials;
 	curr_obj = rt->objects;
 	curr_light = rt->lights;
+	create_default_material(mat_cnt, curr_mat);
+	curr_mat = curr_mat->next;
 	while (rt->line)
 	{
 		id = get_identifier(rt->line->content);
-		error = evaluate_id(id, curr_obj, curr_light, rt);
+		error = evaluate_id(id, (t_pobjs){curr_mat, curr_obj, curr_light}, rt);
 		if (error)
 			return (error);
+		evaluate_material_id(id, mat_cnt, &curr_mat);
 		evaluate_object_id(id, obj_cnt, &curr_obj);
 		evaluate_light_id(id, light_cnt, &curr_light);
 		next_lst_item(&rt->line);
 	}
+	verify_material_uniqueness(rt);
 	return (RT_SUCCESS);
 }

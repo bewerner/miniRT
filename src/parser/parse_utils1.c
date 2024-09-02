@@ -6,26 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:56:53 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 19:26:23 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:10:19 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-void	whitespace_to_space(char *str)
-{
-	int		i;
-
-	if (str == NULL)
-		return ;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (ft_isspace(str[i]))
-			str[i] = ' ';
-		i++;
-	}
-}
 
 static int	get_sign(char **str)
 {
@@ -37,12 +22,6 @@ static int	get_sign(char **str)
 	else if (**str == '+')
 		(*str)++;
 	return (1);
-}
-
-void	ft_skipspace(char **str)
-{
-	while (*str && ft_isspace(**str))
-		(*str)++;
 }
 
 // sign_dpoint_dplaces[1] = -1;
@@ -76,4 +55,13 @@ float	ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3])
 	while (sign_dpoint_dplaces[2]-- > 0)
 		nbr /= 10;
 	return (nbr * sign_dpoint_dplaces[0]);
+}
+
+void	next_lst_item(t_list **lst)
+{
+	t_list			*tmp;
+
+	tmp = *lst;
+	*lst = tmp->next;
+	ft_lstdelone(tmp, free);
 }
