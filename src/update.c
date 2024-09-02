@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 14:17:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 23:04:02 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,32 @@ void	update_ubo_rt(t_rt *rt)
 
 }
 
+void	update_window_title(t_rt *rt)
+{
+	static size_t	i;
+	static float	time;
+	char			title[8000];
+	char			*fps;
+
+	title[0] = '\0';
+	i++;
+	time += rt->delta_time;
+	if (time < 0.5f)
+		return ;
+	fps = ft_itoa((1 / (time / i)));
+	if (fps)
+	{
+		ft_strlcat(title, fps, 8000);
+		ft_strlcat(title, " FPS - ", 8000);
+	}
+	ft_strlcat(title, "miniRT - ", 8000);
+	ft_strlcat(title, rt->filename, 8000);
+	glfwSetWindowTitle(rt->window, title);
+	free(fps);
+	i = 0;
+	time = 0;
+}
+
 void	update(t_rt *rt)
 {
 	static int	i;
@@ -61,6 +87,7 @@ void	update(t_rt *rt)
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
 	oldstart = start;
+	update_window_title(rt);
 
 	handle_move_input(rt);
 	move_camera(rt);
