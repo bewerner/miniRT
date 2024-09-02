@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:31:54 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 21:54:05 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/03 01:29:00 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_error	parse_point_light(t_point_light *pl, t_rt *rt)
 	pl->origin.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	pl->ratio = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt) * LIGHT_POWER;
 	pl->power = pl->ratio * MAX_POWER;
-	pl->intensity = pl->power / 22.86f;
+	pl->intensity = pl->power / 22.6337f;
 	pl->color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	pl->color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	pl->color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
