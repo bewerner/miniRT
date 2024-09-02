@@ -137,15 +137,17 @@ out vec4 FragColor;
 // point_light.frag
 t_point_light	get_point_light(int offset);
 
+// get_illumination_color.frag
+vec4			get_illumination_color(t_hitpoint hitpoint);
+
 // get_diffuse_color.frag
-vec4			illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint);
 vec4			get_diffuse_color(t_hitpoint hitpoint);
 
 // get_reflection_color.frag
 vec4			get_reflection_color(t_hitpoint hp);
 
 // get_specualar_color.frag
-vec4			get_specular_color(t_hitpoint hitpoint);
+vec4			get_specular_color(t_hitpoint hitpoint, vec4 col_illumination);
 
 // sphere.frag
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere);

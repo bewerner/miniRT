@@ -1,4 +1,4 @@
-vec4	get_specular_color(t_hitpoint hitpoint)
+vec4	get_specular_color(t_hitpoint hitpoint, vec4 col_illumination)
 {
 	vec4	col;
 	float	intensity;
@@ -19,7 +19,7 @@ vec4	get_specular_color(t_hitpoint hitpoint)
 			if (intensity > 0)
 			{
 				intensity = 1 * pow(intensity, 10); // multiply with specular value (0.0 - 1.0) and to the power of some roughness calculation
-				col += intensity * illuminate_from_point_light(light, hitpoint);
+				col += intensity * col_illumination;
 			}
 		}
 		type = next_light_type(i);
