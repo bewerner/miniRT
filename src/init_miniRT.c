@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 14:17:53 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:32:38 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void	create_tbo_objects(t_rt *rt)
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
-	rt->objects_texture_id = texture_id;
+	// rt->objects_texture_id = texture_id;
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
@@ -328,7 +328,7 @@ void	create_tbo_lights(t_rt *rt)
 
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 2);
-	rt->lights_texture_id = texture_id;
+	// rt->lights_texture_id = texture_id;
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
 
@@ -389,7 +389,7 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	size_t	size;
 	float	buffer[165001];
 	GLuint	texture_id;
-	GLuint	tbo_agx_lut_id;
+	// GLuint	tbo_agx_lut_id;
 
 	size = 165001 * sizeof(float);
 	init_agx_lut2_buffer(buffer, filepath, rt);
@@ -397,16 +397,15 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	// for (size_t i = 0; i < 165001; i++)
 	// 	printf("%f\n", buffer[i]);
 
-	glGenBuffers(1, &tbo_agx_lut_id);
-	glBindBuffer(GL_TEXTURE_BUFFER, tbo_agx_lut_id);
+	glGenBuffers(1, &rt->tbo_agx_lut_id);
+	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
 	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);
 
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 3);
-	// rt->lights_texture_id = texture_id;
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, tbo_agx_lut_id);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
 	if (uniform_location == -1)
