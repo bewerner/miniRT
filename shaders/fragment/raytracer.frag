@@ -18,6 +18,11 @@ void main()
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 
+	// if (texelFetch(materials, 0).r == 0)
+	// 	;
+	// if (materials[0].ior == 0)
+	// 	;
+
 	g_seed = int(sin(dot(coord.xy, vec2(12.9898, 78.233))) * 43758.5453);
 
 	t_ray camera_ray;
