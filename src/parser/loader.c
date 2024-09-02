@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/26 21:41:53 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/01 13:05:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static void	evaluate_id(t_identifier id, char *line, t_scene_size *sz, t_rt *rt)
 		free(line);
 		terminate(error_msg(RT_ERROR_INVALID_IDENTIFIER), 1, rt);
 	}
+	else if (id == ID_MATERIAL)
+		sz->mat_cnt++;
 	else if (id == ID_POINT_LIGHT)
 	{
 		sz->light_cnt++;
@@ -49,7 +51,7 @@ static void	load_elements(t_scene_size *scene_size, t_rt *rt)
 	char			*line;
 	t_identifier	id;
 
-	*scene_size = (t_scene_size){0, 0, 0, 0};
+	*scene_size = (t_scene_size){0, 0, 0, 0, 0};
 	line = prep_line(get_next_line(rt->fd));
 	while (line)
 	{
@@ -61,6 +63,36 @@ static void	load_elements(t_scene_size *scene_size, t_rt *rt)
 			ft_delete_line(&line);
 		line = prep_line(get_next_line(rt->fd));
 	}
+}
+
+static void	print_mats(t_rt *rt)
+{
+	t_material	*mat;
+
+	// THIS IS FOR DEBUG MATERIAL REMOVE ME LATER
+	mat = rt->materials;
+	return ;
+	while (mat)
+	{
+		printf("------------------------------------------\n");
+		printf("index: %zu\n", mat->index);
+		printf("name: %s\n", mat->name);
+		printf("color r: %f\n", mat->color.r);
+		printf("color g: %f\n", mat->color.g);
+		printf("color b: %f\n", mat->color.b);
+		printf("color a: %f\n", mat->color.a);
+		printf("metallic: %f\n", mat->metallic);
+		printf("roughness: %f\n", mat->roughness);
+		printf("ior: %f\n", mat->ior);
+		printf("transmission: %f\n", mat->transmission);
+		printf("emission_strength: %f\n", mat->emission_strength);
+		printf("emission_color r: %f\n", mat->emission_color.r);
+		printf("emission_color g: %f\n", mat->emission_color.g);
+		printf("emission_color b: %f\n", mat->emission_color.b);
+		printf("emission_color a: %f\n", mat->emission_color.a);
+		mat = mat->next;
+	}
+	printf("------------------------------------------\n");
 }
 
 void	load_scene(char *file, t_rt *rt)
@@ -79,10 +111,15 @@ void	load_scene(char *file, t_rt *rt)
 	rt->objects = (t_object *)ft_calloc(1, scn_sze.objs_size);
 	if (scn_sze.light_cnt > 0)
 		rt->lights = (t_light *)ft_calloc(1, scn_sze.light_size);
-	if (rt->objects == NULL || (scn_sze.light_cnt > 0 && rt->lights == NULL))
+	rt->materials
+		= (t_material *)ft_calloc(scn_sze.mat_cnt + 1, sizeof(t_material));
+	if (rt->objects == NULL || (scn_sze.light_cnt > 0
+			&& rt->lights == NULL) || rt->materials == NULL)
 		terminate(error_msg(RT_ERROR_MALLOC), 1, rt);
-	error = parse_scene(scn_sze.obj_cnt, scn_sze.light_cnt, rt);
+	error
+		= parse_scene(scn_sze.mat_cnt, scn_sze.obj_cnt, scn_sze.light_cnt, rt);
 	if (error)
 		terminate(error_msg(error), 1, rt);
 	// unselect_all(rt->objects);
+	print_mats(rt);
 }

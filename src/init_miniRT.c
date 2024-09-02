@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/29 16:03:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:05:00 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,4 +374,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_rt(rt);
 	create_tbo_objects(rt);
 	create_tbo_lights(rt);
+	create_ubo_materials(rt);
 }

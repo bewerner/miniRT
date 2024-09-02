@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   parse_primitives.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 21:21:45 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/31 20:27:03 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
+
+static t_material	*get_next_material(char *line, t_rt *rt)
+{
+	t_material	*material;
+
+	ft_skipspace(&line);
+	ft_terminate_after_word(line);
+	if (*line == '\0')
+		return (rt->materials);
+	material = rt->materials;
+	while (material && ft_strcmp(material->name, line) != 0)
+		material = material->next;
+	if (material == NULL)
+		terminate("invalid material name detected", 1, rt);		// terminate if we find an ivalid material name
+		// return (rt->materials);								// invalid material name defaults to default material
+	return (material);
+}
 
 t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 {
@@ -27,6 +44,7 @@ t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 	sp->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	sp->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	sp->base_color.a = 1.0f;
+	sp->material = get_next_material(line, rt);
 	return (RT_SUCCESS);
 }
 
@@ -49,6 +67,7 @@ t_error	parse_plane(t_plane *pl, t_rt *rt)
 	pl->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	pl->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	pl->base_color.a = 1.0f;
+	pl->material = get_next_material(line, rt);
 	return (RT_SUCCESS);
 }
 
@@ -95,5 +114,6 @@ t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
 	cy->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	cy->base_color.a = 1.0f;
 	init_caps(cy);
+	cy->material = get_next_material(line, rt);
 	return (RT_SUCCESS);
 }

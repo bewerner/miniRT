@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/28 15:52:04 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:46:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	cleanup(t_rt *rt)
 	rt->objects = NULL;
 	free(rt->lights);
 	rt->lights = NULL;
+	free(rt->materials);
+	rt->materials = NULL;
 }
 
 void	terminate(char *msg, uint8_t exit_code, t_rt *rt)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 23:13:31 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/08/30 16:11:52 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_identifier	get_identifier(char *line)
 		return (ID_PLANE);
 	else if (ft_strncmp(line, "cy ", 3) == 0)
 		return (ID_CYLINDER);
+	else if (ft_strncmp(line, "mat ", 4) == 0)
+		return (ID_MATERIAL);
 	return (ID_INVALID);
 }
 
