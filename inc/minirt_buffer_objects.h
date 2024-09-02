@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 11:24:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 20:18:45 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_gpu_sphere
 	t_vec3			origin;
 	t_vec4			base_color;
 	float			radius;
+	float			material_idx;
 }	t_gpu_sphere;
 
 typedef struct s_gpu_plane
@@ -46,6 +47,7 @@ typedef struct s_gpu_plane
 	t_vec4			base_color;
 	t_vec3			normal;
 	float			dist;
+	float			material_idx;
 }	t_gpu_plane;
 
 typedef struct s_gpu_cylinder
@@ -57,6 +59,7 @@ typedef struct s_gpu_cylinder
 	t_vec3			orientation;
 	float			radius;
 	float			height;
+	float			material_idx;
 	t_gpu_plane		cap1;
 	t_gpu_plane		cap2;
 }	t_gpu_cylinder;

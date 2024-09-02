@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 15:36:49 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:41:14 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,7 +370,8 @@ t_error			parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt
 // parser/parse_material.c
 void			verify_material_uniqueness(t_rt *rt);
 void			create_default_material(size_t mat_cnt, t_material *mat);
-t_error			parse_material(t_material *mat, t_rt *rt);
+// t_error			parse_material(t_material *mat, t_rt *rt);
+t_error			create_materials(size_t mat_cnt, t_rt *rt);
 
 // parser/parse_default_objs.c
 t_error			parse_ambient(t_rt *rt);

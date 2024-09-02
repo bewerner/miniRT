@@ -22,7 +22,8 @@ vec4	get_reflection_color(t_hitpoint hitpoint)
 	t_ray	bounce_ray;
 	int		MAX_BOUNCES = 10;
 	int		bounce_count = 0;
-	float	bounce_value = g_metallic;
+	// float	bounce_value = g_metallic;
+	float	bounce_value = materials[hitpoint.material_idx].metallic;
 	vec4	mult_col = hitpoint.color;
 
 	col = VEC4_BLACK;
@@ -39,7 +40,7 @@ vec4	get_reflection_color(t_hitpoint hitpoint)
 		col += shoot_ray(bounce_ray, hitpoint, mult_col, bounce_value) * (1 - bounce_value) * bounce_value;
 		// col += shoot_ray(bounce_ray, hitpoint, mult_col) * (1 - bounce_value);
 		// col += shoot_ray(bounce_ray, hitpoint, mult_col) * bounce_value;
-		bounce_value *= g_metallic;
+		bounce_value *= materials[hitpoint.material_idx].metallic;
 		bounce_count++;
 	}
 	return (col);

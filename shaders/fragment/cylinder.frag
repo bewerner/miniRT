@@ -89,6 +89,7 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
 
 	hitpoint.hit = true;
 	hitpoint.color = cylinder.base_color;
+	hitpoint.material_idx = cylinder.material_idx;
 	if (get_cylinder_discriminant(ray, cylinder, t0, t1) < 0 || (t1 < 0 && t0 < 0))
 		return (HP_INF);
 	if (t1 < 0)
@@ -117,9 +118,11 @@ t_cylinder	get_cylinder(int offset)
 	cylinder.orientation = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	cylinder.radius = texelFetch(objects, offset++).r;
 	cylinder.height = texelFetch(objects, offset++).r;
+	cylinder.material_idx = int(texelFetch(objects, offset++).r);
 	cylinder.cap1 = get_plane(offset);
 	offset = cylinder.cap1.next_offset;
 	cylinder.cap2 = get_plane(offset);
+	// offset = cylinder.cap2.next_offset;
 
 	return (cylinder);
 }

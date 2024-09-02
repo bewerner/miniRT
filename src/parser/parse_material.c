@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/31 20:15:48 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 20:22:58 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,13 @@ void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->emission_color.a = 0.0f;
 }
 
-t_error	parse_material(t_material *mat, t_rt *rt)
+t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 {
-	char			*line;
+	// char			*line;
 	static size_t	index;
 
-	line = (char *)rt->line->content + 4;
+	// line = (char *)rt->line->content + 4;
+	line += 4;
 	mat->index = ++index;
 	mat->next = (void *)mat + sizeof(t_material);
 	gnv_name(mat->name, &line, rt);
@@ -103,6 +104,44 @@ t_error	parse_material(t_material *mat, t_rt *rt)
 	mat->emission_color.a = 1.0f;
 	return (RT_SUCCESS);
 }
+
+static void	evaluate_material_id(size_t mat_cnt, t_material **curr_mat)
+{
+	static size_t	count;
+
+	count++;
+	if (count >= mat_cnt)
+		(*curr_mat)->next = NULL;
+	else
+		*curr_mat = (*curr_mat)->next;
+}
+
+t_error	create_materials(size_t mat_cnt, t_rt *rt)
+{
+	t_identifier	id;
+	t_list			*line;
+	t_material		*curr_mat;
+
+	curr_mat = rt->materials;
+	create_default_material(mat_cnt++, curr_mat);
+	evaluate_material_id(mat_cnt, &curr_mat);
+	line = rt->line;
+	while (line)
+	{
+		id = get_identifier(line->content);
+		if (id == ID_MATERIAL)
+		{
+			// printf("LINE: |%s|\n", line->content);
+			parse_material(curr_mat, line->content, rt);
+			// printf("name: %s%s%s\n", "\033[91m", curr_mat->name, "\033[0m");
+			evaluate_material_id(mat_cnt, &curr_mat);
+			// printf("LINE: %s\n", line->content);
+		}
+		line = line->next;
+	}
+	return (RT_SUCCESS);
+}
+
 
 // t_material	*next;
 // char			name[MAX_MATERIAL_NAME];

@@ -15,8 +15,8 @@ SRC					=	main.c glad.c cleanup.c \
 #						render.c plane.c sphere.c cylinder.c get_diffuse_color.c get_specular_color.c get_reflection_color.c get_hitpoint.c 
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
-CFLAGS				=	-Wall -Wextra -Werror -flto -Ofast -march=native
-LDFLAGS				=	-lm -ldl -lglfw -flto
+CFLAGS				=	-Wall -Wextra -Werror #-flto -Ofast -march=native
+LDFLAGS				=	-lm -ldl -lglfw #-flto
 INCLUDES			=	-I./inc/
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
@@ -59,8 +59,8 @@ fclean: clean
 
 re: fclean all
 
-f: LDFLAGS += $(FSANITIZE)
-f: CFLAGS += $(FSANITIZE)
+f: LDFLAGS = -lm -ldl -lglfw -g -fsanitize=address
+f: CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 f: re
 	# ./$(NAME)
 
