@@ -73,6 +73,20 @@ struct t_point_light
 	float			intensity;
 };
 
+struct t_material
+{
+	vec4		color;
+	float		metallic;
+	float		roughness;
+	float		ior;
+	float		transmission;
+	vec4		emission_color;
+	float		emission_strength;
+	float		padding1;
+	float		padding2;
+	float		padding3;
+};
+
 struct t_camera
 {
 	vec3			origin;
@@ -103,9 +117,15 @@ layout(std140) uniform u_rt
 	t_rt			rt;
 };
 
+layout(std140) uniform u_materials
+{
+	t_material		materials[100];
+};
+
 in vec4 coord;
 uniform samplerBuffer objects;
 uniform samplerBuffer lights;
+// uniform samplerBuffer materials;
 
 out vec4 FragColor;
 

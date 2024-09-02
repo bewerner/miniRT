@@ -23,7 +23,17 @@ void main()
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
 
+	// if (texelFetch(materials, 0).r == 0.0 && texelFetch(lights, 0).r == 0.0)
+	// 	;
+	if (texelFetch(lights, 0).r == 0.0)
+		;
+	// if (materials[0].ior == 0)
+	// 	;
+
 	vec4 col = trace_ray_normal(camera_ray);
+
+	// col = vec4(col.r * 0.5 + 0.5, col.g * 0.5 + 0.5, col.b * 0.5 + 0.5, 1.0);
+	// col = vec4(col.rgb, 1.0);
 
 	FragColor = col;
 }
