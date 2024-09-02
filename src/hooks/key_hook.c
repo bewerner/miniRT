@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/29 16:36:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 10:56:34 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,34 +67,118 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			rt->mode = MODE_SOLID;
 
 		if (rt->mode == MODE_SOLID)
-			glUseProgram(rt->solid_shader_program);
-		if (rt->mode == MODE_NORMAL)
 		{
+			glUseProgram(rt->solid_shader_program);
+
 			glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
-	
+			glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind
+			
 			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
 			glActiveTexture(GL_TEXTURE0 + 1);
-			glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
-			
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
-
 			GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+			if (uniform_location == -1)
+				terminate("objects not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 1);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 
 			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
 			glActiveTexture(GL_TEXTURE0 + 2);
-			glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
-
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-
-			uniform_location = glGetUniformLocation(rt->shader_program, "lightss");
+			uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+			if (uniform_location == -1)
+				terminate("lights not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 2);
-			
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+			// glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_materials_id);
+			// glActiveTexture(GL_TEXTURE0 + 3);
+			// // glBindTexture(GL_TEXTURE_BUFFER, rt->materials_texture_id);
+			// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
+			// uniform_location = glGetUniformLocation(rt->shader_program, "materials");
+			// if (uniform_location == -1)
+			// 	terminate("lights not found in shader program", 1, rt);
+			// glUniform1i(uniform_location, 3);
+			// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+		}
+		if (rt->mode == MODE_NORMAL)
+		{
 			glUseProgram(rt->normal_shader_program);
+
+			glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
+			glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind
+			
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
+			glActiveTexture(GL_TEXTURE0 + 1);
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
+			GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+			if (uniform_location == -1)
+				terminate("objects not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 1);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
+			glActiveTexture(GL_TEXTURE0 + 2);
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
+			uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+			if (uniform_location == -1)
+				terminate("lights not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 2);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+			// glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_materials_id);
+			// glActiveTexture(GL_TEXTURE0 + 3);
+			// // glBindTexture(GL_TEXTURE_BUFFER, rt->materials_texture_id);
+			// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
+			// uniform_location = glGetUniformLocation(rt->shader_program, "materials");
+			// if (uniform_location == -1)
+			// 	terminate("lights not found in shader program", 1, rt);
+			// glUniform1i(uniform_location, 3);
+			// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
 		}
 		else if (rt->mode == MODE_PREVIEW)
 		{
 			glUseProgram(rt->shader_program);
+
+			glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
+			glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind
+			
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
+			glActiveTexture(GL_TEXTURE0 + 1);
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
+			GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+			if (uniform_location == -1)
+				terminate("objects not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 1);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
+			glActiveTexture(GL_TEXTURE0 + 2);
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
+			uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+			if (uniform_location == -1)
+				terminate("lights not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 2);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+			// glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_materials_id);
+			// glActiveTexture(GL_TEXTURE0 + 3);
+			// // glBindTexture(GL_TEXTURE_BUFFER, rt->materials_texture_id);
+			// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
+			// uniform_location = glGetUniformLocation(rt->shader_program, "materials");
+			// if (uniform_location == -1)
+			// 	terminate("lights not found in shader program", 1, rt);
+			// glUniform1i(uniform_location, 3);
+			// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
 		}
 		
 	}
