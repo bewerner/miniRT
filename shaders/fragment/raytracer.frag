@@ -1,6 +1,7 @@
 #version 330 core
 
 #import header.frag
+#import get_illumination_color.frag
 #import get_diffuse_color.frag
 #import get_reflection_color.frag
 #import get_specular_color.frag

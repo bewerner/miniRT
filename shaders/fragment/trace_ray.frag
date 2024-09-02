@@ -68,9 +68,10 @@ vec4	trace_ray(t_ray ray)
 {
 	t_hitpoint	hitpoint;
 	vec4		col;
-	vec4		col_diff = VEC4_BLACK;
-	vec4		col_spec = VEC4_BLACK;
-	vec4		col_refl = vec4(1,1,1,1);
+	vec4		col_illumination = VEC4_BLACK;
+	vec4		col_diffuse = VEC4_BLACK;
+	vec4		col_specular = VEC4_BLACK;
+	vec4		col_reflection = vec4(1,1,1,1);
 
 	int bounce_count = 0;
 
@@ -80,9 +81,10 @@ vec4	trace_ray(t_ray ray)
 		if (!hitpoint.hit)
 			return (rt.ambient);
 
-		col_diff = get_diffuse_color(hitpoint);
-		col_spec = get_specular_color(hitpoint);
-		col_refl = get_reflection_color(hitpoint);
+		col_illumination = get_illumination_color(hitpoint);
+		col_diffuse = get_diffuse_color(hitpoint);
+		col_specular = get_specular_color(hitpoint, col_illumination);
+		col_reflection = get_reflection_color(hitpoint);
 
 
 	// 	ray.origin = hitpoint.pos + 0.001 * hitpoint.normal;
@@ -91,15 +93,14 @@ vec4	trace_ray(t_ray ray)
 	// 	bounce_count++;
 	// }
 
-	col = col_diff + col_spec * 0.0;
-	// col = (1.0 - g_metallic) * (col_diff + col_spec) + g_metallic * col_refl;
-	// col = (1.0 - g_metallic) * (1.0 - g_metallic) * col_diff + g_metallic * col_refl;
+	col = col_diffuse + col_specular * 0.0;
+	// col = (1.0 - g_metallic) * (col_diffuse + col_specular) + g_metallic * col_reflection;
+	// col = (1.0 - g_metallic) * (1.0 - g_metallic) * col_diffuse + g_metallic * col_reflection;
 
 	// original::
-	// col = (1.0 - g_metallic) * col_diff + g_metallic * col_refl;
+	// col = (1.0 - g_metallic) * col_diffuse + g_metallic * col_reflection;
 	// WITH MATERIAL ::
-	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diff + materials[hitpoint.material_idx].metallic * col_refl;
-
+	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diffuse * col_illumination + materials[hitpoint.material_idx].metallic * col_reflection;
 
 	return (col);
 }

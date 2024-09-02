@@ -1,7 +1,7 @@
 vec4	shoot_ray(t_ray ray, inout t_hitpoint hitpoint, inout vec4 mult_col, float bounce_value)
 {
 	// t_hitpoint	hitpoint;
-	vec4		col_diff;
+	vec4		col;
 
 	// mult_col += hitpoint.color * (1 - bounce_value) * (bounce_value);
 	mult_col *= hitpoint.color;
@@ -10,9 +10,9 @@ vec4	shoot_ray(t_ray ray, inout t_hitpoint hitpoint, inout vec4 mult_col, float 
 	if (!hitpoint.hit)
 		return (rt.ambient * mult_col);
 
-	col_diff = get_diffuse_color(hitpoint);
+	col = get_diffuse_color(hitpoint) * get_illumination_color(hitpoint);
 
-	return (col_diff * mult_col);
+	return (col * mult_col);
 }
 
 
