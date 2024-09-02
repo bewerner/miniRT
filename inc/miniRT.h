@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 14:28:28 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:36:49 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,18 +266,12 @@ typedef struct s_rt
 	GLuint			shader_program;
 	GLuint			solid_shader_program;
 	GLuint			normal_shader_program;
+
 	GLuint			vertex_array_object;
 	GLuint			ubo_rt_id;
-	
-	// GLuint			materials_texture_id;	// optional
 	GLuint			ubo_materials_id;
-
-	// GLuint			objects_texture_id;		// optional
 	GLuint			tbo_objects_id;
-
-	// GLuint			lights_texture_id;		// optional
-	GLuint			tbo_lights_id;
-	
+	GLuint			tbo_lights_id;	
 	GLuint			tbo_agx_lut_id;
 
 	t_list			*line;
