@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:06 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/03 13:39:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:40:51 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	set_rotation(t_dvec2 distance, t_rt *rt)
 	rt->camera.pitch = fmaxf(fminf(rt->camera.pitch, M_PI), 0);
 }
 
-void	cursor_hook(GLFWwindow* window, double cursor_x, double cursor_y)
+void	cursor_hook(GLFWwindow *window, double cursor_x, double cursor_y)
 {
 	t_rt	*rt;
 	t_dvec2	distance;
@@ -39,7 +39,8 @@ void	cursor_hook(GLFWwindow* window, double cursor_x, double cursor_y)
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		set_rotation(distance, rt);
 	if (rt->cursor_is_settable)
-		glfwSetCursorPos(window, rt->initial_cursor_pos.x, rt->initial_cursor_pos.y);
+		glfwSetCursorPos(window, rt->initial_cursor_pos.x,
+			rt->initial_cursor_pos.y);
 	else
 		rt->initial_cursor_pos = (t_dvec2){cursor_x, cursor_y};
 }
