@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 22:08:09 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/03 13:27:49 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ typedef struct s_rt
 	t_vec4			ambient;
 	float			clicked;
 	int8_t			mouse_buttons_pressed;
-	t_vec2			initial_cursor_pos;
+	t_dvec2			initial_cursor_pos;
 	int				mode;
 	int				fd;
 	bool			cursor_is_settable;
@@ -322,8 +322,8 @@ void			handle_move_input(t_rt *rt);
 void			move_camera(t_rt *rt);
 
 // render.c
-t_vec3			get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt);
-void			render(t_rt *rt);
+// t_vec3			get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt);
+// void			render(t_rt *rt);
 
 // update.c
 void			update(t_rt *rt);
@@ -403,7 +403,7 @@ void			ft_delete_line(char **str);
 
 // select.c
 // void			unselect_all(t_object *obj);
-// void			rt_select(t_rt *rt);
+// void			rt_select(GLFWwindow* window, t_rt *rt);
 
 // ┌────────────┐
 // │ Primitives │
