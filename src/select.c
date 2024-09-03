@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 00:38:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 12:20:04 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:18:33 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,18 @@ void	unselect_all(t_object *obj)
 	}
 }
 
-void	rt_select(t_rt *rt)
+void	rt_select(GLFWwindow* window, t_rt *rt)
 {
-	t_ivec2		mpos;
+	t_dvec2		mpos;
 	t_ray		ray;
 	t_hitpoint	hp;
 
 	if (rt->mode != MODE_SOLID)
 		return ;
-	mlx_get_mouse_pos(rt->mlx, &mpos.x, &mpos.y);
+
+	glfwGetCursorPos(window, &mpos.x, &mpos.y);
 	ray.origin = rt->camera.origin;
-	ray.dir = get_pixel_ray(mpos.x, mpos.y, rt);
+	ray.dir = get_pixel_ray((uint32_t)mpos.x, (uint32_t)mpos.y, rt);
 	hp = get_closest_hitpoint(ray, rt);
 	if (hp.object)
 	{
