@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 17:31:55 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 19:22:27 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	print_mats(t_rt *rt)
 
 	// THIS IS FOR DEBUG MATERIAL REMOVE ME LATER
 	mat = rt->materials;
-	// return ;
+	return ;
 	while (mat)
 	{
 		printf("------------------------------------------\n");

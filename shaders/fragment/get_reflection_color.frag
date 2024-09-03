@@ -32,7 +32,7 @@ vec4	get_reflection_color(t_hitpoint hitpoint)
 	// if (rt.debug > 0)
 	// 	bounce_value = 1;
 
-	while (bounce_count < MAX_BOUNCES && hitpoint.hit == true && materials[hitpoint.material_idx].metallic > 0.0 + rt.debug)
+	while (bounce_count < MAX_BOUNCES && hitpoint.hit == true && materials[hitpoint.material_idx].metallic > 0.0)
 	{
 		bounce_ray.origin = hitpoint.pos + 0.001 * hitpoint.normal;
 		bounce_ray.dir = create_bounce_dir(hitpoint.ray, hitpoint.normal);
