@@ -6,11 +6,13 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:06 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/03 13:30:27 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:39:10 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
+
+#define MOUSE_SCREEN_DELTA 0.500000000000000000001f
 
 static void	set_rotation(t_dvec2 distance, t_rt *rt)
 {
@@ -32,8 +34,8 @@ void	cursor_hook(GLFWwindow* window, double cursor_x, double cursor_y)
 	rt->clicked = 0;
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) != GLFW_PRESS)
 		return ;
-	distance.x = cursor_x - rt->initial_cursor_pos.x;
-	distance.y = cursor_y - rt->initial_cursor_pos.y;
+	distance.x = cursor_x - rt->initial_cursor_pos.x + MOUSE_SCREEN_DELTA;
+	distance.y = cursor_y - rt->initial_cursor_pos.y + MOUSE_SCREEN_DELTA;
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		set_rotation(distance, rt);
 	if (rt->cursor_is_settable)
