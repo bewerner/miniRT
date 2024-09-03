@@ -6,18 +6,30 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 19:01:11 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:51:26 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-typedef struct s_pobjs
+static void	verify_material_uniqueness(t_rt *rt)
 {
-	t_material	*curr_mat;
-	t_object	*curr_obj;
-	t_light		*curr_light;
-}				t_pobjs;
+	t_material	*curr;
+	t_material	*next;
+
+	curr = rt->materials;
+	while (curr->next)
+	{
+		next = curr->next;
+		while (next)
+		{
+			if (ft_strcmp(curr->name, next->name) == 0)
+				terminate("duplicate material names", 1, rt);
+			next = next->next;
+		}
+		curr = curr->next;
+	}
+}
 
 static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 {
@@ -25,8 +37,6 @@ static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 		return (parse_ambient(rt));
 	else if (id == ID_CAMERA)
 		return (parse_camera(rt));
-	// else if (id == ID_MATERIAL)
-	// 	return (parse_material((t_material *)objs.curr_mat, rt));
 	else if (id == ID_POINT_LIGHT)
 		return (parse_point_light((t_point_light *)objs.curr_light, rt));
 	else if (id == ID_SPHERE)
@@ -82,7 +92,6 @@ t_error	parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt)
 	curr_mat = rt->materials;
 	curr_obj = rt->objects;
 	curr_light = rt->lights;
-	// create_default_material(mat_cnt, curr_mat);
 	create_materials(mat_cnt, rt);
 	curr_mat = curr_mat->next;
 	while (rt->line)
@@ -91,7 +100,6 @@ t_error	parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt)
 		error = evaluate_id(id, (t_pobjs){curr_mat, curr_obj, curr_light}, rt);
 		if (error)
 			return (error);
-		// evaluate_material_id(id, mat_cnt, &curr_mat);
 		evaluate_object_id(id, obj_cnt, &curr_obj);
 		evaluate_light_id(id, light_cnt, &curr_light);
 		next_lst_item(&rt->line);
