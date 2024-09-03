@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 14:53:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:09:18 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define LIGHT_POWER	0.575f
 # define EPSILON		0.000001f
 
-#define MAX_MATERIAL_NAME 256 
+# define MAX_MATERIAL_NAME 256 
 
 typedef enum e_timeraction
 {
@@ -116,7 +116,7 @@ typedef struct s_ray
 	t_vec3			dir;
 }	t_ray;
 
-typedef struct	s_material
+typedef struct s_material
 {
 	size_t		index;
 	t_material	*next;
@@ -347,7 +347,7 @@ void			reset_camera(t_camera *camera);
 void			key_hook(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 // hooks/cursor_hook.c
-void			cursor_hook(GLFWwindow* window, double cursor_x, double cursor_y);
+void			cursor_hook(GLFWwindow *window, double cursor_x, double cursor_y);
 
 // hooks/mouse_hook.c
 void			mouse_hook(GLFWwindow* window, int button, int action, int mods);
@@ -356,7 +356,7 @@ void			mouse_hook(GLFWwindow* window, int button, int action, int mods);
 void			resize_hook(GLFWwindow *window, int width, int height);
 
 // hooks/loop_hook.c
-void			loop_hook(void *param);
+// void			loop_hook(void *param);
 
 // ┌──────┐
 // │ Init │
