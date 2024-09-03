@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 21:31:40 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 20:43:01 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,26 @@ static t_material	*get_next_material(char *line, t_rt *rt)
 	return (material);
 }
 
+static void	set_color_and_material(t_vec4 *col, t_material **mat, char *line, t_rt *rt)
+{
+	ft_skipspace(&line);
+	if (ft_isalpha(*line))
+	{
+		printf("No COLOR -> MAT only\n");
+		*mat = get_next_material(line, rt);
+		*col = (t_vec4){{(*mat)->color.r, (*mat)->color.g, (*mat)->color.b, 1.0f}};
+	}
+	else
+	{
+		col->r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		col->g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		col->b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		col->a = 1.0f;
+		// *mat = rt->materials;
+		*mat = get_next_material(line, rt);
+	}
+}
+
 t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 {
 	char			*line;
@@ -40,11 +60,12 @@ t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 	sp->origin.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	sp->origin.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	sp->radius = vr(gnv(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
-	sp->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	sp->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	sp->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	sp->base_color.a = 1.0f;
-	sp->material = get_next_material(line, rt);
+	// sp->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// sp->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// sp->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// sp->base_color.a = 1.0f;
+	// sp->material = get_next_material(line, rt);
+	set_color_and_material(&sp->base_color, &sp->material, line, rt);
 	return (RT_SUCCESS);
 }
 
@@ -63,11 +84,12 @@ t_error	parse_plane(t_plane *pl, t_rt *rt)
 	pl->normal.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	pl->normal = vec3_normalize(pl->normal);
 	pl->dist = vec3_dot(pl->origin, pl->normal);
-	pl->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	pl->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	pl->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	pl->base_color.a = 1.0f;
-	pl->material = get_next_material(line, rt);
+	// pl->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// pl->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// pl->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// pl->base_color.a = 1.0f;
+	// pl->material = get_next_material(line, rt);
+	set_color_and_material(&pl->base_color, &pl->material, line, rt);
 	return (RT_SUCCESS);
 }
 
@@ -111,11 +133,12 @@ t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
 	cy->orientation = vec3_normalize(cy->orientation);
 	cy->radius = vr(gnv(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
 	cy->height = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	cy->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	cy->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	cy->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	cy->base_color.a = 1.0f;
-	cy->material = get_next_material(line, rt);
+	// cy->base_color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// cy->base_color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// cy->base_color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	// cy->base_color.a = 1.0f;
+	// cy->material = get_next_material(line, rt);
+	set_color_and_material(&cy->base_color, &cy->material, line, rt);
 	init_caps(cy);
 	return (RT_SUCCESS);
 }

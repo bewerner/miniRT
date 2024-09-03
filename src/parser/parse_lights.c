@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_lights.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:31:54 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 01:29:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/03 18:52:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,3 @@ t_error	parse_point_light(t_point_light *pl, t_rt *rt)
 	pl->color.a = 1.0f;
 	return (RT_SUCCESS);
 }
-
-// printf("l.x -> %f \n", pl->origin.x);
-// printf("l.y -> %f \n", pl->origin.y);
-// printf("l.z -> %f \n", pl->origin.z);
