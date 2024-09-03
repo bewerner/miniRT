@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 20:22:58 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:51:04 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,7 @@ an alphanumeric character", 1, rt);
 		(*line)++;
 }
 
-void	verify_material_uniqueness(t_rt *rt)
-{
-	t_material	*curr;
-	t_material	*next;
-
-	curr = rt->materials;
-	while (curr->next)
-	{
-		next = curr->next;
-		while (next)
-		{
-			if (ft_strcmp(curr->name, next->name) == 0)
-				terminate("duplicate material names", 1, rt);
-			next = next->next;
-		}
-		curr = curr->next;
-	}
-}
-
-void	create_default_material(size_t mat_cnt, t_material *mat)
+static void	create_default_material(size_t mat_cnt, t_material *mat)
 {
 	mat->index = 0;
 	if (mat_cnt == 0)
@@ -76,12 +57,10 @@ void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->emission_color.a = 0.0f;
 }
 
-t_error	parse_material(t_material *mat, char *line, t_rt *rt)
+static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 {
-	// char			*line;
 	static size_t	index;
 
-	// line = (char *)rt->line->content + 4;
 	line += 4;
 	mat->index = ++index;
 	mat->next = (void *)mat + sizeof(t_material);
@@ -131,17 +110,13 @@ t_error	create_materials(size_t mat_cnt, t_rt *rt)
 		id = get_identifier(line->content);
 		if (id == ID_MATERIAL)
 		{
-			// printf("LINE: |%s|\n", line->content);
 			parse_material(curr_mat, line->content, rt);
-			// printf("name: %s%s%s\n", "\033[91m", curr_mat->name, "\033[0m");
 			evaluate_material_id(mat_cnt, &curr_mat);
-			// printf("LINE: %s\n", line->content);
 		}
 		line = line->next;
 	}
 	return (RT_SUCCESS);
 }
-
 
 // t_material	*next;
 // char			name[MAX_MATERIAL_NAME];

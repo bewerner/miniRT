@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 13:27:49 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:53:59 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,12 @@ typedef enum e_timeraction
 	TIMER_STOP
 }	t_timeraction;
 
-// identifiers for parsing
+// Typedef Prototypes
+typedef struct s_material	t_material;
+typedef struct s_object		t_object;
+typedef struct s_light		t_light;
+
+// Identifiers for parsing
 typedef enum e_identifier
 {
 	ID_EOF,
@@ -68,6 +73,14 @@ typedef enum e_identifier
 	ID_PLANE,
 	ID_CYLINDER
 }	t_identifier;
+
+// Parser Objects for parser.c
+typedef struct s_pobjs
+{
+	t_material	*curr_mat;
+	t_object	*curr_obj;
+	t_light		*curr_light;
+}				t_pobjs;
 
 typedef struct s_scene_size
 {
@@ -103,8 +116,6 @@ typedef struct s_ray
 	t_vec3			dir;
 }	t_ray;
 
-typedef struct s_material	t_material;
-
 typedef struct	s_material
 {
 	size_t		index;
@@ -126,8 +137,6 @@ typedef enum e_obj_type
 	OBJ_PLANE,
 	OBJ_CYLINDER
 }	t_obj_type;
-
-typedef struct s_object		t_object;
 
 typedef struct s_object
 {
@@ -201,8 +210,6 @@ typedef enum e_light_type
 	LIGHT_NONE,
 	LIGHT_POINT
 }	t_light_type;
-
-typedef struct s_light		t_light;
 
 typedef struct s_light
 {
@@ -369,9 +376,6 @@ void			load_scene(char *file, t_rt *rt);
 t_error			parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt);
 
 // parser/parse_material.c
-void			verify_material_uniqueness(t_rt *rt);
-void			create_default_material(size_t mat_cnt, t_material *mat);
-// t_error			parse_material(t_material *mat, t_rt *rt);
 t_error			create_materials(size_t mat_cnt, t_rt *rt);
 
 // parser/parse_default_objs.c
