@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 22:09:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/04 23:57:04 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,41 +357,50 @@ void	init_cursor_is_settable(t_rt *rt)
 		rt->cursor_is_settable = 0;
 }
 
-void	init_agx_lut2_buffer(float *agx_lut, char *filepath, t_rt *rt)
+static float	get_next_value(int fd)
+{
+	char	str[9];
+	float	value;
+
+	read(fd, str, 9);
+	str[1] = '\0';
+	str[8] = '\0';
+	value = ft_atoi(str);
+	value += (float)ft_atoi(str + 2) / 1000000;
+	return (value);
+}
+
+void	init_agx_lut_buffer(t_vec3 *buffer, char *filepath, size_t len, t_rt *rt)
 {
 	int		fd;
-	char	*line;
 	size_t	i;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd == -1)
 		terminate(filepath, 1, rt);
 	i = 0;
-	while (i < 165001)
+	while (i < len)
 	{
-		line = get_next_line(fd);
-		if (!line)
-			terminate("get_next_line failed\n", 1, rt);
-		line[1] = '\0';
-		line[8] = '\0';
-		agx_lut[i] = ft_atoi(line);
-		agx_lut[i] += (float)ft_atoi(line + 2) / 1000000;
-		free(line);
+		buffer[i].x = get_next_value(fd);
+		buffer[i].y = get_next_value(fd);
+		buffer[i].z = get_next_value(fd);
 		i++;
 	}
+	close(fd);
 }
 
 void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 {
-	size_t	size;
-	float	buffer[165001];
-	GLuint	texture_id;
+	static const size_t	resolution = 64 * 64 * 64;
+	size_t				size;
+	t_vec3				buffer[resolution];
+	GLuint				texture_id;
 	// GLuint	tbo_agx_lut_id;
 
-	size = 165001 * sizeof(float);
-	init_agx_lut2_buffer(buffer, filepath, rt);
+	size = resolution * sizeof(t_vec3);
+	init_agx_lut_buffer(buffer, filepath, resolution, rt);
 
-	// for (size_t i = 0; i < 165001; i++)
+	// for (size_t i = 0; i < resolution; i++)
 	// 	printf("%f\n", buffer[i]);
 
 	glGenBuffers(1, &rt->tbo_agx_lut_id);
@@ -402,7 +411,7 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 3);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
 	if (uniform_location == -1)
@@ -426,5 +435,8 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_tbo_objects(rt);
 	create_tbo_lights(rt);
 	create_ubo_materials(rt);
-	create_tbo_agx_lut("inc/AgX.lut", rt);
+	if (MAC_OS)
+		create_tbo_agx_lut("inc/AgX_Display_P3.lut", rt);
+	else
+		create_tbo_agx_lut("inc/AgX_sRGB.lut", rt);
 }

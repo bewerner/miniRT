@@ -134,6 +134,9 @@ uniform samplerBuffer agx_lut;
 
 out vec4 FragColor;
 
+// AgX.frag
+vec3			to_agx(vec3 col);
+
 // point_light.frag
 t_point_light	get_point_light(int offset);
 
