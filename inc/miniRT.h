@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 15:09:18 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/05 00:41:43 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
+# if defined(__APPLE__) && defined(__MACH__)
+#  define MAC_OS 1
+# else
+#  define MAC_OS 0
+# endif
 
 # include "../libft/libft.h"
 # include "glad/glad.h"

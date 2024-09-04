@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 14:31:37 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/05 00:42:10 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			// RE-BIND AGX
 			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
 			glActiveTexture(GL_TEXTURE0 + 3);
-			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
 			uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
 			if (uniform_location == -1)
 				terminate("agx_lut not found in shader program", 1, rt);
@@ -217,14 +217,14 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 		reset_camera(&rt->camera);
 		rt->move.vel = g_vec3_zero;
 	}
-	else if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+	else if (key == GLFW_KEY_UP && action)
 	{
-		rt->debug++;
+		rt->debug += 1;
 		printf("debug is %f\n", rt->debug);
 	}
-	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	else if (key == GLFW_KEY_DOWN && action)
 	{
-		rt->debug--;
+		rt->debug -= 1;
 		printf("debug is %f\n", rt->debug);
 	}
 	else
