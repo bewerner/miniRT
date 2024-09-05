@@ -6,48 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 20:43:01 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:24:51 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-static t_material	*get_next_material(char *line, t_rt *rt)
-{
-	t_material	*material;
-
-	ft_skipspace(&line);
-	ft_terminate_after_word(line);
-	if (*line == '\0')
-		return (rt->materials);
-	material = rt->materials;
-	while (material && ft_strcmp(material->name, line) != 0)
-		material = material->next;
-	if (material == NULL)
-		terminate("invalid material name detected", 1, rt);		// terminate if we find an ivalid material name
-		// return (rt->materials);								// invalid material name defaults to default material
-	return (material);
-}
-
-static void	set_color_and_material(t_vec4 *col, t_material **mat, char *line, t_rt *rt)
-{
-	ft_skipspace(&line);
-	if (ft_isalpha(*line))
-	{
-		printf("No COLOR -> MAT only\n");
-		*mat = get_next_material(line, rt);
-		*col = (t_vec4){{(*mat)->color.r, (*mat)->color.g, (*mat)->color.b, 1.0f}};
-	}
-	else
-	{
-		col->r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		col->g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		col->b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		col->a = 1.0f;
-		// *mat = rt->materials;
-		*mat = get_next_material(line, rt);
-	}
-}
 
 t_error	parse_sphere(t_sphere *sp, t_rt *rt)
 {

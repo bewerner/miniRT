@@ -8,6 +8,7 @@
 #import ../fragment/sphere.frag
 #import ../fragment/plane.frag
 #import ../fragment/cylinder.frag
+#import ../fragment/hyperboloid.frag
 #import trace_ray_solid.frag
 #import ../fragment/vec3_rotations.frag
 #import ../fragment/random.frag

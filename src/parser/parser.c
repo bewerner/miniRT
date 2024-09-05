@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 14:51:26 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:40:32 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 		return (parse_plane((t_plane *)objs.curr_obj, rt));
 	else if (id == ID_CYLINDER)
 		return (parse_cylinder((t_cylinder *)objs.curr_obj, rt));
+	else if (id == ID_HYPERBOLOID)
+		return (parse_hyperboloid((t_hyperboloid *)objs.curr_obj, rt));
 	else if (id != ID_COMMENT && id != ID_MATERIAL)
 		return (RT_ERROR_INVALID_IDENTIFIER);
 	return (RT_SUCCESS);

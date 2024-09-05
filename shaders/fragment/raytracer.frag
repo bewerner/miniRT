@@ -9,6 +9,7 @@
 #import sphere.frag
 #import plane.frag
 #import cylinder.frag
+#import hyperboloid.frag
 #import trace_ray.frag
 #import vec3_rotations.frag
 #import random.frag

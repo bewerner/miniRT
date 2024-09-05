@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 15:09:18 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:25:42 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ typedef enum e_identifier
 	ID_POINT_LIGHT,
 	ID_SPHERE,
 	ID_PLANE,
-	ID_CYLINDER
+	ID_CYLINDER,
+	ID_HYPERBOLOID
 }	t_identifier;
 
 // Parser Objects for parser.c
@@ -135,7 +136,8 @@ typedef enum e_obj_type
 	OBJ_NONE,
 	OBJ_SPHERE,
 	OBJ_PLANE,
-	OBJ_CYLINDER
+	OBJ_CYLINDER,
+	OBJ_HYPERBOLOID
 }	t_obj_type;
 
 typedef struct s_object
@@ -185,6 +187,20 @@ typedef struct s_cylinder
 	t_plane			cap1;
 	t_plane			cap2;
 }	t_cylinder;
+
+typedef struct s_hyperboloid
+{
+	t_obj_type		type;
+	t_object		*next;
+	t_vec3			origin;
+	t_vec4			base_color;
+	t_material		*material;
+	bool			is_selected;
+	float			a;
+	float			b;
+	float			c;
+	float			shape;			
+}	t_hyperboloid;
 
 typedef struct s_hitpoint
 {
@@ -389,6 +405,11 @@ t_error			parse_point_light(t_point_light *pl, t_rt *rt);
 t_error			parse_sphere(t_sphere *sphere, t_rt *rt);
 t_error			parse_plane(t_plane *plane, t_rt *rt);
 t_error			parse_cylinder(t_cylinder *cylinder, t_rt *rt);
+
+// parser/parse_primitives2.c
+t_material		*get_next_material(char *line, t_rt *rt);
+void			set_color_and_material(t_vec4 *col, t_material **mat, char *line, t_rt *rt);
+t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 
 // parser/parser_utils1.c
 float			ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3]);
