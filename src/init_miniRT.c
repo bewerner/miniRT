@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/05 12:31:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:17:16 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,8 +458,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_tbo_objects(rt);
 	create_tbo_lights(rt);
 	create_ubo_materials(rt);
-	if (MAC_OS)
-		create_tbo_agx_lut("inc/AgX_Display_P3.lut", rt);
-	else
-		create_tbo_agx_lut("inc/AgX_sRGB.lut", rt);
+	create_tbo_agx_lut(LUT_PATH, rt);
 }

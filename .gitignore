@@ -4,6 +4,8 @@
 
 # whitelist
 
+!assets
+!assets/**
 !libft
 !libft/**
 !lib
