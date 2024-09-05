@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:39:29 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/13 20:57:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:30:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ size_t	obj_size(t_identifier id)
 		return (sizeof(t_plane));
 	else if (id == ID_CYLINDER)
 		return (sizeof(t_cylinder));
+	else if (id == ID_HYPERBOLOID)
+		return (sizeof(t_hyperboloid));
 	return (0);
 }
 

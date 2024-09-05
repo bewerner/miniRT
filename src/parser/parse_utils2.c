@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/30 16:11:52 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:28:47 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_identifier	get_identifier(char *line)
 		return (ID_PLANE);
 	else if (ft_strncmp(line, "cy ", 3) == 0)
 		return (ID_CYLINDER);
+	else if (ft_strncmp(line, "hb ", 3) == 0)
+		return (ID_HYPERBOLOID);
 	else if (ft_strncmp(line, "mat ", 4) == 0)
 		return (ID_MATERIAL);
 	return (ID_INVALID);

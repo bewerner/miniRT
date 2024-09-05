@@ -27,6 +27,7 @@ struct t_hitpoint
 #define OBJ_SPHERE		1
 #define OBJ_PLANE		2
 #define OBJ_CYLINDER	3
+#define OBJ_HYPERBOLOID	4
 
 struct t_sphere
 {
@@ -61,6 +62,19 @@ struct t_cylinder
 	int				material_idx;
 	t_plane			cap1;
 	t_plane			cap2;
+};
+
+struct t_hyperboloid
+{
+	int				type;
+	int				next_offset;
+	vec3			origin;
+	vec4			base_color;
+	float			a;
+	float			b;
+	float			c;
+	float			shape;
+	int				material_idx;
 };
 
 #define LIGHT_NONE		0
@@ -160,6 +174,10 @@ t_plane			get_plane(int offset);
 // cylinder.frag
 t_hitpoint		get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder);
 t_cylinder		get_cylinder(int offset);
+
+// hyperboloid.frag
+t_hitpoint		get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid);
+t_hyperboloid	get_hyperboloid(int offset);
 
 
 // trace_ray.frag

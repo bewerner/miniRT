@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/02 22:09:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/04 16:40:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,8 @@ size_t	get_gpu_objects_size(t_object *object)
 			size += sizeof(t_gpu_plane);
 		else if (object->type == OBJ_CYLINDER)
 			size += sizeof(t_gpu_cylinder);
+		else if (object->type == OBJ_HYPERBOLOID)
+			size += sizeof(t_gpu_hyperboloid);
 		object = object->next;
 	}
 	return (size + sizeof(float));
@@ -208,6 +210,25 @@ void	init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder)
 	*i = gpu_cylinder.next_offset;
 }
 
+void	init_gpu_hyperboloid(float *buffer, size_t *i, t_hyperboloid *hyperboloid)
+{
+	t_gpu_hyperboloid	gpu_hyperboloid;
+	size_t				size;
+
+	size = sizeof(t_gpu_hyperboloid);
+	gpu_hyperboloid.type = (float)hyperboloid->type;
+	gpu_hyperboloid.next_offset = (float)(*i + sizeof(t_gpu_hyperboloid) / sizeof(float));
+	gpu_hyperboloid.origin = hyperboloid->origin;
+	gpu_hyperboloid.base_color = hyperboloid->base_color;
+	gpu_hyperboloid.a = hyperboloid->a;
+	gpu_hyperboloid.b = hyperboloid->b;
+	gpu_hyperboloid.c = hyperboloid->c;
+	gpu_hyperboloid.shape = hyperboloid->shape;
+	gpu_hyperboloid.material_idx = (float)hyperboloid->material->index;
+	ft_memmove(&buffer[*i], &gpu_hyperboloid, size);
+	*i = gpu_hyperboloid.next_offset;
+}
+
 void	init_tbo_objects(float *buffer, t_object *object)
 {
 	size_t i;
@@ -221,6 +242,8 @@ void	init_tbo_objects(float *buffer, t_object *object)
 			init_gpu_plane(buffer, &i, (t_plane *)object);
 		else if (object->type == OBJ_CYLINDER)
 			init_gpu_cylinder(buffer, &i, (t_cylinder *)object);
+		else if (object->type == OBJ_HYPERBOLOID)
+			init_gpu_hyperboloid(buffer, &i, (t_hyperboloid *)object);
 		object = object->next;
 	}
 }
