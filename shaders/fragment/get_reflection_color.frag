@@ -1,10 +1,19 @@
+
+vec4	make_mul_col(vec4 col)
+{
+	col.r = max(col.r, .3);
+	col.g = max(col.g, .3);
+	col.b = max(col.b, .3);
+	return (col);
+}
+
 vec4	shoot_ray(t_ray ray, inout t_hitpoint hitpoint, inout vec4 mult_col, float bounce_value)
 {
 	// t_hitpoint	hitpoint;
 	vec4		col;
 
 	// mult_col += hitpoint.color * (1 - bounce_value) * (bounce_value);
-	mult_col *= hitpoint.color;
+	mult_col *= make_mul_col(hitpoint.color);
 	// mult_col *= (1 - bounce_value);
 	hitpoint = get_closest_hitpoint(ray);
 	if (!hitpoint.hit)
@@ -24,7 +33,7 @@ vec4	get_reflection_color(t_hitpoint hitpoint)
 	int		bounce_count = 0;
 	// float	bounce_value = g_metallic;
 	float	bounce_value = materials[hitpoint.material_idx].metallic;
-	vec4	mult_col = hitpoint.color;
+	vec4	mult_col = make_mul_col(hitpoint.color);
 
 	col = VEC4_BLACK;
 	// mult_col = VEC4_BLACK;
