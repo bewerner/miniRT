@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/05 12:30:37 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:17:18 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define MINIRT_H
 
 # if defined(__APPLE__) && defined(__MACH__)
-#  define MAC_OS 1
+#  define LUT_PATH "assets/AgX_Display_P3.lut"
 # else
-#  define MAC_OS 0
+#  define LUT_PATH "assets/AgX_sRGB.lut"
 # endif
 
 # include "../libft/libft.h"
