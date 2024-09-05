@@ -45,6 +45,14 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	float		t0;
 	float		t1;
 
+	float dbg = rt.debug;
+	if (dbg == 0)
+		dbg = EPSILON;
+
+	hyperboloid.a = dbg / 100;
+	hyperboloid.b = dbg / 100;
+	
+
 	discriminant = get_hyperboloid_discriminant(ray, hyperboloid, t0, t1);
 
 	if (discriminant < 0 || (t1 < 0 && t0 < 0))

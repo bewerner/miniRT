@@ -17,7 +17,7 @@ float	get_light_gizmo_discriminant(t_ray ray, vec3 point)
 	float t1 = (-b - sqrt_discriminant) / (2 * a);
 	if (t1 > 0)
 		return (t1);
-	return (0);
+	return (0.0);
 }
 
 int	next_light_type(inout int i)
