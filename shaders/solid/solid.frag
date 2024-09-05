@@ -20,6 +20,8 @@ void main()
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
+
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
@@ -37,7 +39,7 @@ void main()
 	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
 
 	vec4 col = trace_ray_solid(camera_ray);
-	// col = dither(col);
+	col = dither(col);
 
 	FragColor = vec4(col.r, col.g, col.b, 1);
 }

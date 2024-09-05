@@ -18,6 +18,7 @@ void main()
 	vec2 uv = coord.xy;
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
@@ -29,6 +30,7 @@ void main()
 	float dump_value_lights = texelFetch(lights, 0).r;
 
 	vec4 col = trace_ray_normal(camera_ray);
+	col = dither(col);
 
 	// col = vec4(col.r * 0.5 + 0.5, col.g * 0.5 + 0.5, col.b * 0.5 + 0.5, 1.0);
 	// col = vec4(col.rgb, 1.0);
