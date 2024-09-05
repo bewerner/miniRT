@@ -6,12 +6,18 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/04 16:25:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/05 12:30:37 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
+# if defined(__APPLE__) && defined(__MACH__)
+#  define MAC_OS 1
+# else
+#  define MAC_OS 0
+# endif
 
 # include "../libft/libft.h"
 # include "glad/glad.h"

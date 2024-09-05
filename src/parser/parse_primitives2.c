@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:41:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/05 09:09:27 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/05 12:43:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ t_error	parse_hyperboloid(t_hyperboloid *hb, t_rt *rt)
 	hb->shape = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	// if (hb->shape != -1.0f && hb->shape != 0.0f && hb->shape != 1.0f)
 	// 	terminate("Hyperboloid wrong shape value, should be [-1, 0, 1]", 1, rt);
+	if (hb->a == 0.0f || hb->b == 0.0f || hb->c == 0.0f)
+		terminate("Hyperboloid parameters a,b and c are not allowed to be 0", 1, rt);
 	set_color_and_material(&hb->base_color, &hb->material, line, rt);
 	return (RT_SUCCESS);
 }
