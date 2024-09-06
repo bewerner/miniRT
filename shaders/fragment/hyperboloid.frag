@@ -23,20 +23,20 @@ float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out flo
 	b = 2 * dot(doth * ad, bd);
 	c = dot(doth * ad, ad) - hyperboloid.shape;
 	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
-		return (discriminant);
+	// if (discriminant < 0)
+	// 	return (discriminant);
 	sqrt_discriminant = sqrt(discriminant);
 	t0 = (-b + sqrt_discriminant) / (2 * a);
 	t1 = (-b - sqrt_discriminant) / (2 * a);
 	return (discriminant);
 }
 
-float	in_or_out(t_ray ray, t_hyperboloid hyperboloid)
-{
-	return ((ray.origin.x * ray.origin.x) / (hyperboloid.a * hyperboloid.a) +
-			(ray.origin.y * ray.origin.y) / (hyperboloid.b * hyperboloid.b) -
-			(ray.origin.z * ray.origin.z) / (hyperboloid.c * hyperboloid.c));
-}
+// float	in_or_out(t_ray ray, t_hyperboloid hyperboloid)
+// {
+// 	return ((ray.origin.x * ray.origin.x) / (hyperboloid.a * hyperboloid.a) +
+// 			(ray.origin.y * ray.origin.y) / (hyperboloid.b * hyperboloid.b) -
+// 			(ray.origin.z * ray.origin.z) / (hyperboloid.c * hyperboloid.c));
+// }
 
 t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 {
@@ -54,7 +54,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	// float shape = rt.debug;
 	// if (shape == 0)
 	// 	shape = EPSILON;
-	// hyperboloid.shape = shape * 10;
+	// hyperboloid.shape = shape / 100;
 	
 
 	discriminant = get_hyperboloid_discriminant(ray, hyperboloid, t0, t1);
@@ -63,21 +63,11 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		// 1. If (t0 < 0) and (t1 < 0) : then the ray does not intersect the hyperboloid.
 		return (HP_INF);
 
-	if (t0 - t1 <= EPSILON)
-	{
-		// tangent ray
-		// hitpoint.ray = 1 / EPSILON * ray.dir;
-		hitpoint.ray = 1.0 / 0.0 * ray.dir;
-		hitpoint.pos = ray.origin + hitpoint.ray;
-		hitpoint.normal = normalize(vec3
-		(
-			-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-			-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-			 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-		));
-	}
 	if (t0 < 0 && t1 > 0)
 	{	// 2. If (t0 < 0) and (t1 > 0) : then the ray intersects the hyperboloid at a single point, which is located at a distance t1 along the ray.
+		// Renders the INF-DISC from outside
+		if (t1 == INF || t1 == -INF)
+			t1 = t0;
 		hitpoint.ray = t1 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
 		hitpoint.normal = normalize(vec3
@@ -89,11 +79,14 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	}
 	else if (t0 > 0 && t1 > 0)
 	{	// 3. If (t0 > 0) and (t1 > 0) : then the ray intersects the hyperboloid at two points, which are located at distances t0 and t1 along the ray.
-		float outside = in_or_out(ray, hyperboloid);
+		float outside = (ray.origin.x * ray.origin.x) / (hyperboloid.a * hyperboloid.a) +
+						(ray.origin.y * ray.origin.y) / (hyperboloid.b * hyperboloid.b) -
+						(ray.origin.z * ray.origin.z) / (hyperboloid.c * hyperboloid.c);
 		if (outside > hyperboloid.shape)
 		{	// OUTSIDE
 			if (t0 - t1 < EPSILON)
 			{
+				// tangent
 				hitpoint.ray = t0 * ray.dir;
 				hitpoint.pos = ray.origin + hitpoint.ray;
 				hitpoint.normal = normalize(vec3
@@ -117,17 +110,70 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		}
 		else
 		{	// INSIDE
-			hitpoint.ray = t0 * ray.dir;
-			hitpoint.pos = ray.origin + hitpoint.ray;
-			hitpoint.normal = normalize(vec3(	-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-												-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-												 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)));
+			if (t0 - t1 < EPSILON)
+			{
+				hitpoint.ray = t0 * ray.dir;
+				hitpoint.pos = ray.origin + hitpoint.ray;
+				hitpoint.normal = normalize(vec3
+				(
+					-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+					-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+					2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+				));
+// hitpoint.normal = vec3(1,0,1);
+			}
+			else
+			{
+				// hitpoint.ray = t1 * ray.dir;
+				// hitpoint.pos = ray.origin + hitpoint.ray;
+				// hitpoint.normal = normalize(vec3
+				// (
+				// 	2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+				// 	2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+				// 	-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+				// ));
+			}
+
 		}
 	}
-	else if (t1 < 0)
+	else if (t1 < 0 && t0 > 0)
 	{
 		// INSIDE
-		hitpoint.ray = t0 * ray.dir;
+		if (t0 - t1 < EPSILON)
+		{
+			// hitpoint.ray = t1 * ray.dir;
+			// hitpoint.pos = ray.origin + hitpoint.ray;
+			// hitpoint.normal = normalize(vec3
+			// (
+			// 	 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+			// 	 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+			// 	-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+			// ));
+hitpoint.normal = vec3(0,0,1);
+		}
+		else
+		{
+			hitpoint.ray = t0 * ray.dir;
+			hitpoint.pos = ray.origin + hitpoint.ray;
+			hitpoint.normal = normalize(vec3
+			(
+				-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+				-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+				 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+			));
+// hitpoint.normal = vec3(0,1,1);
+		}
+
+	}
+	else //if (t0 - t1 <= EPSILON)
+	{
+		// tangent ray
+		// hitpoint.ray = 1 / EPSILON * ray.dir;
+		
+		// hitpoint.ray = INF * ray.dir;
+		
+		hitpoint.ray = t1 * ray.dir;
+
 		hitpoint.pos = ray.origin + hitpoint.ray;
 		hitpoint.normal = normalize(vec3
 		(
@@ -135,6 +181,8 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 			-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
 			 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
 		));
+// hitpoint.normal = vec3(0,1,1);
+
 	}
 	hitpoint.hit = true;
 	hitpoint.color = hyperboloid.base_color;

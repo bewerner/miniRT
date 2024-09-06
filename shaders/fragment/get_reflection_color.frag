@@ -1,9 +1,9 @@
 
 vec4	make_mul_col(vec4 col)
 {
-	col.r = max(col.r, .3);
-	col.g = max(col.g, .3);
-	col.b = max(col.b, .3);
+	col.r = max(col.r, .35);
+	col.g = max(col.g, .35);
+	col.b = max(col.b, .35);
 	return (col);
 }
 

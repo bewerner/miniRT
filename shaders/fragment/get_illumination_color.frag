@@ -4,8 +4,22 @@ vec4	illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
 	float	distance;
 	float	intensity;
 
+	// light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
+
 	light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
+
+	// float len = length(hitpoint.ray);
+	// if (len >= 10)
+	// 	light_ray.dir = (hitpoint.pos + (len * 0.01) * hitpoint.normal) - point_light.origin;
+	// else
+	// 	light_ray.dir = (hitpoint.pos + (10 * 0.0001) * hitpoint.normal) - point_light.origin;
+	// light_ray.dir = (hitpoint.pos + (max(10, len) * 0.0001) * hitpoint.normal) - point_light.origin;
+
 	// light_ray.dir = (hitpoint.pos + 0.0001 * hitpoint.normal) - point_light.origin;
+
+	// light_ray.dir = hitpoint.pos - point_light.origin;	// naive version
+
+
 	light_ray.origin = point_light.origin;
 	intensity = -dot(hitpoint.normal, normalize(light_ray.dir));
 	if (intensity <= 0)
