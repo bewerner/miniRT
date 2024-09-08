@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/05 20:17:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/08 19:15:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,7 +303,6 @@ void	init_gpu_point_light(float *buffer, size_t *i, t_point_light *light)
 	gpu_light.next_offset = (float)(*i + sizeof(t_gpu_point_light) / sizeof(float));
 	gpu_light.origin = light->origin;
 	gpu_light.color = light->color;
-	gpu_light.ratio = light->ratio; // remove light ratio for bonus!
 	gpu_light.power = light->power;
 	gpu_light.intensity = light->intensity;
 	ft_memmove(&buffer[*i], &gpu_light, sizeof(t_gpu_point_light));
