@@ -86,7 +86,7 @@ struct t_point_light
 	int				next_offset;
 	vec3			origin;
 	vec4			color;
-	float			ratio;
+	// float			ratio;
 	float			power;
 	float			intensity;
 };

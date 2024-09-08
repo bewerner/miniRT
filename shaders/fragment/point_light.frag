@@ -6,7 +6,6 @@ t_point_light	get_point_light(int offset)
 	point_light.next_offset = int(texelFetch(lights, offset++).r);
 	point_light.origin = vec3(texelFetch(lights, offset++).r, texelFetch(lights, offset++).r, texelFetch(lights, offset++).r);
 	point_light.color = vec4(texelFetch(lights, offset++).r, texelFetch(lights, offset++).r, texelFetch(lights, offset++).r, texelFetch(lights, offset++).r);
-	point_light.ratio = texelFetch(lights, offset++).r;
 	point_light.power = texelFetch(lights, offset++).r;
 	point_light.intensity = texelFetch(lights, offset++).r;
 

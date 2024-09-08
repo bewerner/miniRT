@@ -58,14 +58,12 @@ vec4	trace_ray_solid(t_ray ray)
 	t_point_light light01;
 	light01.origin = hitpoint.pos + rt.camera.viewport_light * 4.0;
 	light01.color = vec4(0.8, 0.8, 0.8, 1.0);
-	light01.ratio = 5.0;
 	light01.power = 8.0;
 	light01.intensity = 2.5;
 
 	t_point_light light02;
 	light02.origin = hitpoint.pos + rt.camera.viewport_light * -8.0;
 	light02.color = vec4(0.8, 0.7, 0.6, 1.0);
-	light02.ratio = 15.0;
 	light02.power = 500.0;
 	light02.intensity = 50;
 
