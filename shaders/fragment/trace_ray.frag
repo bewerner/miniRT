@@ -73,6 +73,7 @@ vec4	trace_ray(t_ray ray)
 	t_hitpoint	hitpoint;
 	vec4		col;
 	vec4		col_illumination = VEC4_BLACK;
+	vec4		col_sky = VEC4_BLACK;
 	vec4		col_diffuse = VEC4_BLACK;
 	vec4		col_specular = VEC4_BLACK;
 	vec4		col_reflection = vec4(1,1,1,1);
@@ -86,6 +87,7 @@ vec4	trace_ray(t_ray ray)
 			return (rt.ambient);
 
 		col_illumination = get_illumination_color(hitpoint);
+		col_sky = get_sky_color(hitpoint);
 		col_diffuse = get_diffuse_color(hitpoint);
 		col_specular = get_specular_color(hitpoint, col_illumination);
 		col_reflection = get_reflection_color(hitpoint);
@@ -104,7 +106,7 @@ vec4	trace_ray(t_ray ray)
 	// original::
 	// col = (1.0 - g_metallic) * col_diffuse + g_metallic * col_reflection;
 	// WITH MATERIAL ::
-	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diffuse * col_illumination + materials[hitpoint.material_idx].metallic * col_reflection;
+	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diffuse * (col_illumination + col_sky) + materials[hitpoint.material_idx].metallic * col_reflection;
 
 	return (col);
 }

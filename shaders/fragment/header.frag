@@ -157,6 +157,9 @@ t_point_light	get_point_light(int offset);
 // get_illumination_color.frag
 vec4			get_illumination_color(t_hitpoint hitpoint);
 
+// get_sky_color.frag
+vec4			get_sky_color(t_hitpoint hitpoint);
+
 // get_diffuse_color.frag
 vec4			get_diffuse_color(t_hitpoint hitpoint);
 
@@ -184,6 +187,7 @@ t_hyperboloid	get_hyperboloid(int offset);
 
 
 // trace_ray.frag
+int				next_object_type(inout int i);
 t_hitpoint		get_closest_hitpoint(t_ray ray);
 vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
 bool			is_obstructed(t_ray ray);
