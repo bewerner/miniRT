@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/09 16:00:31 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/09 17:59:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,8 @@ typedef struct s_hyperboloid
 	t_vec4			base_color;
 	t_material		*material;
 	bool			is_selected;
+	t_vec3			orientation;
+	float			height;
 	float			a;
 	float			b;
 	float			c;
