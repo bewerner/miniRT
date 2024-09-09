@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/06 17:41:52 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/08 16:27:44 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,8 @@ typedef struct s_hyperboloid
 	t_vec4			base_color;
 	t_material		*material;
 	bool			is_selected;
+	t_vec3			orientation;
+	float			height;
 	float			a;
 	float			b;
 	float			c;

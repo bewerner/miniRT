@@ -70,6 +70,8 @@ struct t_hyperboloid
 	int				next_offset;
 	vec3			origin;
 	vec4			base_color;
+	vec3			orientation;
+	float			height;
 	float			a;
 	float			b;
 	float			c;
@@ -171,6 +173,7 @@ t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere);
 t_sphere		get_sphere(int offset);
 
 // plane.frag
+bool			is_near_zero(float value);
 t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane);
 t_plane			get_plane(int offset);
 

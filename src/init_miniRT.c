@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/05 20:17:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/09 16:59:12 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,8 @@ void	init_gpu_hyperboloid(float *buffer, size_t *i, t_hyperboloid *hyperboloid)
 	gpu_hyperboloid.next_offset = (float)(*i + sizeof(t_gpu_hyperboloid) / sizeof(float));
 	gpu_hyperboloid.origin = hyperboloid->origin;
 	gpu_hyperboloid.base_color = hyperboloid->base_color;
+	gpu_hyperboloid.orientation = hyperboloid->orientation;
+	gpu_hyperboloid.height = hyperboloid->height;
 	gpu_hyperboloid.a = hyperboloid->a;
 	gpu_hyperboloid.b = hyperboloid->b;
 	gpu_hyperboloid.c = hyperboloid->c;
