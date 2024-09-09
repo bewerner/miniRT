@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/08 19:15:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/09 15:49:22 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,7 +413,7 @@ void	init_agx_lut_buffer(t_vec3 *buffer, char *filepath, size_t len, t_rt *rt)
 
 void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 {
-	static const size_t	resolution = 64 * 64 * 64;
+	static const size_t	resolution = 32 * 32 * 32;
 	size_t				size;
 	t_vec3				buffer[resolution];
 	GLuint				texture_id;
