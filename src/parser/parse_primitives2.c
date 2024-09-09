@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:41:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/06 17:42:35 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:21:26 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ t_error	parse_hyperboloid(t_hyperboloid *hb, t_rt *rt)
 	hb->origin.x = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	hb->origin.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	hb->origin.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	hb->orientation.x = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	hb->orientation.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	hb->orientation.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+	hb->orientation = vec3_normalize(hb->orientation);
+	hb->height = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	hb->a = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	hb->b = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	hb->c = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);

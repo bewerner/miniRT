@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/06 17:42:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/08 16:29:50 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ typedef struct s_gpu_hyperboloid
 	float			next_offset;
 	t_vec3			origin;
 	t_vec4			base_color;
+	t_vec3			orientation;
+	float			height;
 	float			a;
 	float			b;
 	float			c;

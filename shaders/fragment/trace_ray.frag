@@ -97,14 +97,15 @@ vec4	trace_ray(t_ray ray)
 	// 	bounce_count++;
 	// }
 
-	col = col_diffuse + col_specular * 0.0;
+	// col = col_diffuse + col_specular * 0.0;
+
 	// col = (1.0 - g_metallic) * (col_diffuse + col_specular) + g_metallic * col_reflection;
 	// col = (1.0 - g_metallic) * (1.0 - g_metallic) * col_diffuse + g_metallic * col_reflection;
 
 	// original::
 	// col = (1.0 - g_metallic) * col_diffuse + g_metallic * col_reflection;
 	// WITH MATERIAL ::
-	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diffuse * col_illumination + materials[hitpoint.material_idx].metallic * col_reflection;
+	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diffuse * col_illumination + col_specular * 0.0 + materials[hitpoint.material_idx].metallic * col_reflection;
 
 	return (col);
 }

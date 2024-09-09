@@ -1,4 +1,3 @@
-
 float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out float t0, out float t1)
 {
 	vec3		ap;		// origin - point_offset
@@ -14,7 +13,12 @@ float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out flo
 
 	// setup denominator(coefficients) and the other variables
 	d = vec3(1 / hyperboloid.a, 1 / hyperboloid.b, 1 / hyperboloid.c);
+
 	ap = ray.origin - hyperboloid.origin;
+	// rotate ap
+	// ap = ap - (dot(ap, hyperboloid.orientation) * hyperboloid.orientation);
+	// ray.dir = ray.dir - (dot(ray.dir, hyperboloid.orientation) * hyperboloid.orientation);
+
 	ad = ap * d;
 	bd = ray.dir * d;
 	doth = vec3(1, 1, -1);
@@ -23,20 +27,26 @@ float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out flo
 	b = 2 * dot(doth * ad, bd);
 	c = dot(doth * ad, ad) - hyperboloid.shape;
 	discriminant = b * b - 4 * a * c;
-	// if (discriminant < 0)
-	// 	return (discriminant);
+	if (discriminant < 0)
+		return (discriminant);
 	sqrt_discriminant = sqrt(discriminant);
 	t0 = (-b + sqrt_discriminant) / (2 * a);
 	t1 = (-b - sqrt_discriminant) / (2 * a);
 	return (discriminant);
 }
 
-// float	in_or_out(t_ray ray, t_hyperboloid hyperboloid)
+// bool is_on_surface(vec3 point, t_hyperboloid hyperboloid)
 // {
-// 	return ((ray.origin.x * ray.origin.x) / (hyperboloid.a * hyperboloid.a) +
-// 			(ray.origin.y * ray.origin.y) / (hyperboloid.b * hyperboloid.b) -
-// 			(ray.origin.z * ray.origin.z) / (hyperboloid.c * hyperboloid.c));
+// 	float x = point.x - hyperboloid.origin.x;
+// 	float y = point.y - hyperboloid.origin.y;
+// 	float z = point.z - hyperboloid.origin.z;
+
+// 	float left = x * x / (hyperboloid.a * hyperboloid.a) + y * y / (hyperboloid.b * hyperboloid.b) - z * z / (hyperboloid.c * hyperboloid.c);
+// 	float right = hyperboloid.shape;
+
+// 	return ( abs(left - right) < EPSILON );
 // }
+
 
 t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 {
@@ -45,153 +55,240 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	float		t0;
 	float		t1;
 
-	// float dbg = rt.debug;
-	// if (dbg == 0)
-	// 	dbg = EPSILON;
-	// hyperboloid.a = dbg / 100;
-	// hyperboloid.b = dbg / 100;
-
-	// float shape = rt.debug;
-	// if (shape == 0)
-	// 	shape = EPSILON;
-	// hyperboloid.shape = shape / 100;
-	
-
 	discriminant = get_hyperboloid_discriminant(ray, hyperboloid, t0, t1);
 
-	if (discriminant < 0 || (t1 < 0 && t0 < 0))
-		// 1. If (t0 < 0) and (t1 < 0) : then the ray does not intersect the hyperboloid.
+	if (discriminant < 0)
 		return (HP_INF);
 
-	if (t0 < 0 && t1 > 0)
-	{	// 2. If (t0 < 0) and (t1 > 0) : then the ray intersects the hyperboloid at a single point, which is located at a distance t1 along the ray.
-		// Renders the INF-DISC from outside
-		if (t1 == INF || t1 == -INF)
-			t1 = t0;
-		hitpoint.ray = t1 * ray.dir;
-		hitpoint.pos = ray.origin + hitpoint.ray;
-		hitpoint.normal = normalize(vec3
-		(
-			 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-			 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-			-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-		));
-	}
-	else if (t0 > 0 && t1 > 0)
-	{	// 3. If (t0 > 0) and (t1 > 0) : then the ray intersects the hyperboloid at two points, which are located at distances t0 and t1 along the ray.
-		float outside = (ray.origin.x * ray.origin.x) / (hyperboloid.a * hyperboloid.a) +
-						(ray.origin.y * ray.origin.y) / (hyperboloid.b * hyperboloid.b) -
-						(ray.origin.z * ray.origin.z) / (hyperboloid.c * hyperboloid.c);
-		if (outside > hyperboloid.shape)
-		{	// OUTSIDE
-			if (t0 - t1 < EPSILON)
-			{
-				// tangent
-				hitpoint.ray = t0 * ray.dir;
-				hitpoint.pos = ray.origin + hitpoint.ray;
-				hitpoint.normal = normalize(vec3
-				(
-					-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-					-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-					 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-				));
-			}
-			else
-			{
-				hitpoint.ray = t1 * ray.dir;
-				hitpoint.pos = ray.origin + hitpoint.ray;
-				hitpoint.normal = normalize(vec3
-				(
-					 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-					 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-					-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-				));
-			}
-		}
-		else
-		{	// INSIDE
-			if (t0 - t1 < EPSILON)
-			{
-				hitpoint.ray = t0 * ray.dir;
-				hitpoint.pos = ray.origin + hitpoint.ray;
-				hitpoint.normal = normalize(vec3
-				(
-					-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-					-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-					2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-				));
-// hitpoint.normal = vec3(1,0,1);
-			}
-			else
-			{
-				// hitpoint.ray = t1 * ray.dir;
-				// hitpoint.pos = ray.origin + hitpoint.ray;
-				// hitpoint.normal = normalize(vec3
-				// (
-				// 	2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-				// 	2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-				// 	-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-				// ));
-			}
+	hitpoint.hit = true;
+	hitpoint.color = hyperboloid.base_color;
+	hitpoint.material_idx = hyperboloid.material_idx;
 
-		}
-	}
-	else if (t1 < 0 && t0 > 0)
+	if (t0 > 0 && (t0 < t1 || t1 < 0))
 	{
 		// INSIDE
-		if (t0 - t1 < EPSILON)
+		hitpoint.ray = t0 * ray.dir;
+		hitpoint.pos = ray.origin + hitpoint.ray;
+
+		// check for height
+		if (abs(hitpoint.pos.z) > hyperboloid.height)
 		{
-			// hitpoint.ray = t1 * ray.dir;
-			// hitpoint.pos = ray.origin + hitpoint.ray;
-			// hitpoint.normal = normalize(vec3
-			// (
-			// 	 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-			// 	 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-			// 	-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-			// ));
-hitpoint.normal = vec3(0,0,1);
+			// get outside HP
+			hitpoint.ray = t1 * ray.dir;
+			hitpoint.pos = ray.origin + hitpoint.ray;
+
+			if (t1 < 0 || abs(hitpoint.pos.z) > hyperboloid.height)
+				return (HP_INF);
+			// WE ARE IN HEIGHT RANGE GET OUTSIDE HP and NORMAL
+			hitpoint.normal = normalize(vec3
+			(
+				 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+				 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+				-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+			));
 		}
 		else
 		{
-			hitpoint.ray = t0 * ray.dir;
-			hitpoint.pos = ray.origin + hitpoint.ray;
 			hitpoint.normal = normalize(vec3
 			(
 				-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
 				-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
 				 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
 			));
-// hitpoint.normal = vec3(0,1,1);
 		}
 
 	}
-	else //if (t0 - t1 <= EPSILON)
+	else if (t1 > 0 && (t1 < t0 || t0 < 0))
 	{
-		// tangent ray
-		// hitpoint.ray = 1 / EPSILON * ray.dir;
-		
-		// hitpoint.ray = INF * ray.dir;
-		
+		// OUTSIDE
 		hitpoint.ray = t1 * ray.dir;
-
 		hitpoint.pos = ray.origin + hitpoint.ray;
-		hitpoint.normal = normalize(vec3
-		(
-			-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-			-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-			 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-		));
-// hitpoint.normal = vec3(0,1,1);
-
+		
+		// check for height
+		if (abs(hitpoint.pos.z) > hyperboloid.height)
+		{
+			// get inside HP
+			hitpoint.ray = t0 * ray.dir;
+			hitpoint.pos = ray.origin + hitpoint.ray;
+			if (t0 < 0 || abs(hitpoint.pos.z) > hyperboloid.height)
+				return (HP_INF);
+			// WE ARE ABOVE HEIGHT GET INSIDE HP and NORMAL
+			hitpoint.normal = normalize(vec3
+			(
+				-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+				-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+				 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+			));
+		}
+		else
+		{
+			// WE ARE BELOW HEIGHT GET OUTSIDE HP
+			hitpoint.normal = normalize(vec3
+			(
+				 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+				 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+				-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+			));
+		}
 	}
-	hitpoint.hit = true;
-	hitpoint.color = hyperboloid.base_color;
-	hitpoint.material_idx = hyperboloid.material_idx;
+	else
+		return (HP_INF);
+
+	hitpoint.pos += hitpoint.normal * (0.000001 * max(abs(t0), abs(t1)));
 	return (hitpoint);
 }
 
-// 4. If (t0 > 0) and (t1 < 0) : then this is an indication of an error in the calculation, and it should be investigated further.
-// 5. If (t0 == t1) then the ray is tangent to the hyperboloid at a single point, which is located at a distance t0 (or t1) along the ray.
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+// t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
+// {
+// 	t_hitpoint	hitpoint;
+// 	float		discriminant;
+// 	float		t0;
+// 	float		t1;
+
+// 	discriminant = get_hyperboloid_discriminant(ray, hyperboloid, t0, t1);
+
+// 	if (discriminant < 0)
+// 		return (HP_INF);
+
+// 	hitpoint.hit = true;
+// 	hitpoint.color = hyperboloid.base_color;
+// 	hitpoint.material_idx = hyperboloid.material_idx;
+
+// 	if (t0 > 0 && (t0 < t1 || t1 < 0))
+// 	{
+// 		// INSIDE
+// 		hitpoint.ray = t0 * ray.dir;
+// 		hitpoint.pos = ray.origin + hitpoint.ray;
+// 		hitpoint.normal = normalize(vec3
+// 		(
+// 			-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+// 			-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+// 			 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+// 		));
+// 		// if (t1 > 0)
+// 		// {
+// 		// 	// INSIDE INF_DISC
+// 		// 	hitpoint.ray = t0 * ray.dir;
+// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
+// 		// 	hitpoint.normal = normalize(vec3
+// 		// 	(
+// 		// 		-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+// 		// 		-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+// 		// 		 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+// 		// 	));
+// 		// }
+// 		// else
+// 		// {
+// 		// 	// INSIDE CONE_PART
+// 		// 	hitpoint.ray = t0 * ray.dir;
+// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
+// 		// 	hitpoint.normal = normalize(vec3
+// 		// 	(
+// 		// 		-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+// 		// 		-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+// 		// 		 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+// 		// 	));
+// 		// }
+// 	}
+// 	else if (t1 > 0 && (t1 < t0 || t0 < 0))
+// 	{
+// 		// OUTSIDE
+// 		hitpoint.ray = t1 * ray.dir;
+// 		hitpoint.pos = ray.origin + hitpoint.ray;
+// 		hitpoint.normal = normalize(vec3
+// 		(
+// 			 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+// 			 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+// 			-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+// 		));
+// 		// if (t0 > 0)
+// 		// {
+// 		// 	// OUTSIDE CONE_PART
+// 		// 	hitpoint.ray = t1 * ray.dir;
+// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
+// 		// 	hitpoint.normal = normalize(vec3
+// 		// 	(
+// 		// 		 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+// 		// 		 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+// 		// 		-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+// 		// 	));
+// 		// }
+// 		// else
+// 		// {
+// 		// 	// OUTSIDE INF_DISC
+// 		// 	hitpoint.ray = t1 * ray.dir;
+// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
+// 		// 	hitpoint.normal = normalize(vec3
+// 		// 	(
+// 		// 		 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+// 		// 		 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+// 		// 		-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+// 		// 	));
+// 		// }
+// 	}
+// 	else
+// 		return (HP_INF);
+
+// 	// check if we are on the surface
+// 	// if (is_on_surface(rt.camera.origin, hyperboloid) == true)
+// 	// {
+// 	// 	hitpoint.ray = vec3(0, 0, 0);
+// 	// 	hitpoint.pos = rt.camera.origin;
+// 	// 	hitpoint.normal = normalize(vec3
+// 	// 	(
+// 	// 			2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
+// 	// 			2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
+// 	// 		-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
+// 	// 	));
+// 	// }
+
+
+// 	// check for height
+// 	if (abs(hitpoint.pos.z) > hyperboloid.height)
+// 		return (HP_INF);
+
+
+// 	// hitpoint.pos += hitpoint.normal * 0.02;
+// 	hitpoint.ray -= hitpoint.normal * 0.02;
+// 	return (hitpoint);
+// }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
 
 t_hyperboloid	get_hyperboloid(int offset)
 {
@@ -201,6 +298,8 @@ t_hyperboloid	get_hyperboloid(int offset)
 	hyperboloid.next_offset = int(texelFetch(objects, offset++).r);
 	hyperboloid.origin = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	hyperboloid.base_color = vec4(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
+	hyperboloid.orientation = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
+	hyperboloid.height = texelFetch(objects, offset++).r;
 	hyperboloid.a = texelFetch(objects, offset++).r;
 	hyperboloid.b = texelFetch(objects, offset++).r;
 	hyperboloid.c = texelFetch(objects, offset++).r;

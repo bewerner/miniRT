@@ -6,7 +6,10 @@ vec4	illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
 
 	// light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
 
-	light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
+	// if (rt.debug == 0)
+		light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
+	// else
+		// light_ray.dir = (hitpoint.pos - point_light.origin) * 0.987654321;
 
 	// float len = length(hitpoint.ray);
 	// if (len >= 10)
