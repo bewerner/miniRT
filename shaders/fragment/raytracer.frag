@@ -3,6 +3,7 @@
 #import header.frag
 #import AgX.frag
 #import get_illumination_color.frag
+#import get_sky_color.frag
 #import get_diffuse_color.frag
 #import get_reflection_color.frag
 #import get_specular_color.frag

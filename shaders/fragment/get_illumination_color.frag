@@ -11,6 +11,13 @@ vec4	illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
 	// else
 		// light_ray.dir = (hitpoint.pos - point_light.origin) * 0.987654321;
 
+	// if (rt.debug == 0)
+	// 	light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
+	// if (rt.debug == -1)
+	// 	light_ray.dir = (hitpoint.pos - point_light.origin) * 0.99;
+	// 	// light_ray.dir *= 0.99;
+		// light_ray.dir -= normalize(light_ray.dir) * 0.1;
+
 	// float len = length(hitpoint.ray);
 	// if (len >= 10)
 	// 	light_ray.dir = (hitpoint.pos + (len * 0.01) * hitpoint.normal) - point_light.origin;
@@ -54,9 +61,8 @@ vec4	get_illumination_color(t_hitpoint hitpoint)
 	int type = next_light_type(i);
 	while (type != LIGHT_NONE)
 	{
-		if (type == LIGHT_POINT)
-			col += illuminate_from_point_light(get_point_light(i), hitpoint);
+		col += illuminate_from_point_light(get_point_light(i), hitpoint);
 		type = next_light_type(i);
 	}
-	return (col + rt.ambient);
+	return (col);
 }

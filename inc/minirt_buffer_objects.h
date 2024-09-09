@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/08 16:29:50 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:59:09 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ typedef struct s_gpu_point_light
 	float			next_offset;
 	t_vec3			origin;
 	t_vec4			color;
-	float			ratio;
 	float			power;
 	float			intensity;
 }	t_gpu_point_light;
