@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/08 16:27:44 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:59:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,6 @@ typedef struct s_point_light
 	t_light			*next;
 	t_vec3			origin;
 	t_vec4			color;
-	float			ratio;
 	float			power;
 	float			intensity;
 }	t_point_light;

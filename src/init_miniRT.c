@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/09 16:59:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:01:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,6 @@ void	init_gpu_point_light(float *buffer, size_t *i, t_point_light *light)
 	gpu_light.next_offset = (float)(*i + sizeof(t_gpu_point_light) / sizeof(float));
 	gpu_light.origin = light->origin;
 	gpu_light.color = light->color;
-	gpu_light.ratio = light->ratio; // remove light ratio for bonus!
 	gpu_light.power = light->power;
 	gpu_light.intensity = light->intensity;
 	ft_memmove(&buffer[*i], &gpu_light, sizeof(t_gpu_point_light));
@@ -416,7 +415,7 @@ void	init_agx_lut_buffer(t_vec3 *buffer, char *filepath, size_t len, t_rt *rt)
 
 void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 {
-	static const size_t	resolution = 64 * 64 * 64;
+	static const size_t	resolution = 32 * 32 * 32;
 	size_t				size;
 	t_vec3				buffer[resolution];
 	GLuint				texture_id;
