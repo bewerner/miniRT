@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 22:04:33 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/16 23:11:24 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/10 20:06:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static uint8_t	rand_dither(float value)
 // 	return 0;
 // }
 
-// t_vec4	rgb_to_srgb(t_vec4 rgb)
+// t_vec3	rgb_to_srgb(t_vec3 rgb)
 // {
-// 	t_vec4	srgb;
+// 	t_vec3	srgb;
 
 // 	srgb.a = rgb.a;
 // 	srgb.r = rgb.r * 3.2406 + rgb.g * -1.5372 + rgb.b * -0.4986;
@@ -59,7 +59,7 @@ static uint8_t	rand_dither(float value)
 // 	return (srgb);
 // }
 
-void	raw_to_standard(t_vec4 *col)
+void	raw_to_standard(t_vec3 *col)
 {
 	static const float	gamma = 1 / 2.2f;
 

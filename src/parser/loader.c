@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/05 09:10:40 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:02:39 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static void	print_mats(t_rt *rt)
 		printf("color r: %f\n", mat->color.r);
 		printf("color g: %f\n", mat->color.g);
 		printf("color b: %f\n", mat->color.b);
-		printf("color a: %f\n", mat->color.a);
 		printf("metallic: %f\n", mat->metallic);
 		printf("roughness: %f\n", mat->roughness);
 		printf("ior: %f\n", mat->ior);
@@ -89,7 +88,6 @@ static void	print_mats(t_rt *rt)
 		printf("emission_color r: %f\n", mat->emission_color.r);
 		printf("emission_color g: %f\n", mat->emission_color.g);
 		printf("emission_color b: %f\n", mat->emission_color.b);
-		printf("emission_color a: %f\n", mat->emission_color.a);
 		mat = mat->next;
 	}
 	printf("------------------------------------------\n");

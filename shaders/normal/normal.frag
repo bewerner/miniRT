@@ -12,8 +12,8 @@
 #import ../fragment/utils/vec3_rotations.frag
 #import ../fragment/utils/random.frag
 
-vec4	get_normal_color(t_hitpoint hitpoint);
-vec4	trace_ray_normal(t_ray ray);
+vec3	get_normal_color(t_hitpoint hitpoint);
+vec3	trace_ray_normal(t_ray ray);
  
 void main()
 {
@@ -31,11 +31,11 @@ void main()
 	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
 	float dump_value_lights = texelFetch(lights, 0).r;
 
-	vec4 col = trace_ray_normal(camera_ray);
+	vec3 col = trace_ray_normal(camera_ray);
 	col = dither(col);
 
-	// col = vec4(col.r * 0.5 + 0.5, col.g * 0.5 + 0.5, col.b * 0.5 + 0.5, 1.0);
-	// col = vec4(col.rgb, 1.0);
+	// col = vec3(col.r * 0.5 + 0.5, col.g * 0.5 + 0.5, col.b * 0.5 + 0.5, 1.0);
+	// col = vec3(col.rgb, 1.0);
 
 	FragColor = col;
 }

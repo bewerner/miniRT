@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:56:20 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 15:04:15 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/10 19:52:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void	trace_ray(t_ivec2 pixel, t_rt *rt)
 {
 	t_ray		pixel_ray;
 	t_hitpoint	hitpoint;
-	t_vec4		col_diff;
-	t_vec4		col_spec;
-	t_vec4		col_refl;
+	t_vec3		col_diff;
+	t_vec3		col_spec;
+	t_vec3		col_refl;
 
 	pixel_ray.origin = rt->camera.origin;
 	pixel_ray.dir = get_pixel_ray(pixel.x, pixel.y, rt);

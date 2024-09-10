@@ -1,8 +1,8 @@
-vec4	get_solid_color(t_hitpoint hitpoint)
+vec3	get_solid_color(t_hitpoint hitpoint)
 {
-	vec4	col;
-	vec4	solid_ambient = vec4(0.25, 0.25, 0.25, 1);
-	vec4	solid_light   = vec4(0.55, 0.55, 0.55, 1);
+	vec3	col;
+	vec3	solid_ambient = vec3(0.25, 0.25, 0.25);
+	vec3	solid_light   = vec3(0.55, 0.55, 0.55);
 	float	my_dot;
 
 	if (hitpoint.hit == false)

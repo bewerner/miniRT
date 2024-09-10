@@ -12,7 +12,7 @@
 
 #include "../../inc/miniRT.h"
 
-static t_vec4	illuminate_from_point_light(
+static t_vec3	illuminate_from_point_light(
 	t_point_light *point_light, t_hitpoint *hitpoint, t_rt *rt)
 {
 	t_ray	light_ray;
@@ -33,9 +33,9 @@ static t_vec4	illuminate_from_point_light(
 	return (vec4_scale(intensity, point_light->color));
 }
 
-t_vec4	get_specular_color(t_hitpoint hitpoint, t_rt *rt)
+t_vec3	get_specular_color(t_hitpoint hitpoint, t_rt *rt)
 {
-	t_vec4	col;
+	t_vec3	col;
 	t_light	*light;
 	float	intensity;
 	t_vec3	bounce_dir;

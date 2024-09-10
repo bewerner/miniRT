@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   select.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 00:38:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 13:18:33 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 19:52:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	rt_select(GLFWwindow* window, t_rt *rt)
 	// 	t_obj_type		type;
 	// 	t_object		*next;
 	// 	t_vec3			origin;
-	// 	t_vec4			base_color;
+	// 	t_vec3			base_color;
 	// 	bool			is_selected;
 	// }					t_object;
 

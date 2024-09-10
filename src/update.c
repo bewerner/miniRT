@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 01:30:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/10 19:52:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ void	update(t_rt *rt)
 	update_ubo_rt(rt);
 
 	// if (rt->mode == MODE_SOLID)
-	// 	fill_image(rt->canvas, (t_vec4){{0.25, 0.25, 0.25, 1}});
+	// 	fill_image(rt->canvas, (t_vec3){{0.25, 0.25, 0.25, 1}});
 	// else if (rt->mode == MODE_NORMAL)
-	// 	fill_image(rt->canvas, (t_vec4){{0, 0, 0, 1}});
+	// 	fill_image(rt->canvas, (t_vec3){{0, 0, 0, 1}});
 	// else
 	// 	fill_image(rt->canvas, rt->ambient);
 	// render(rt);

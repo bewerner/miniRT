@@ -1,11 +1,11 @@
-vec4	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint)
+vec3	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint)
 {
-	vec4	col;
+	vec3	col;
 	float	intensity;
 	vec3	bounce_dir;
 	vec3	light_dir;
 
-	col = VEC4_BLACK;
+	col = VEC3_BLACK;
 
 	bounce_dir = normalize(create_bounce_dir(hitpoint.ray, hitpoint.normal));
 	light_dir = normalize(light.origin - hitpoint.pos);

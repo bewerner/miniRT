@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   get_reflection_color.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 09:44:46 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/16 16:39:51 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 19:52:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-t_vec4	shoot_ray(t_ray ray, t_rt *rt)
+t_vec3	shoot_ray(t_ray ray, t_rt *rt)
 {
 	t_hitpoint	hitpoint;
-	t_vec4		col_diff;
+	t_vec3		col_diff;
 
 	hitpoint = get_closest_hitpoint(ray, rt);
 	if (!hitpoint.object)
@@ -26,9 +26,9 @@ t_vec4	shoot_ray(t_ray ray, t_rt *rt)
 }
 
 
-t_vec4	get_reflection_color(t_hitpoint hp, t_rt *rt)
+t_vec3	get_reflection_color(t_hitpoint hp, t_rt *rt)
 {
-	t_vec4	col;
+	t_vec3	col;
 	t_ray	bounce_ray;
 
 	bounce_ray.origin = vec3_add(hp.pos, vec3_scale(0.001f, hp.normal));

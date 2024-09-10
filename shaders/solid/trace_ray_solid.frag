@@ -1,10 +1,10 @@
-vec4	trace_ray_solid(t_ray ray)
+vec3	trace_ray_solid(t_ray ray)
 {
 	t_hitpoint	hitpoint;
-	vec4		col;
-	vec4		col_diff = VEC4_BLACK;
-	vec4		col_spec = VEC4_BLACK;
-	vec4		solid_ambient = vec4(0.25, 0.25, 0.25, 1);
+	vec3		col;
+	vec3		col_diff = VEC3_BLACK;
+	vec3		col_spec = VEC3_BLACK;
+	vec3		solid_ambient = vec3(0.25, 0.25, 0.25);
 
 	int bounce_count = 0;
 
@@ -14,13 +14,13 @@ vec4	trace_ray_solid(t_ray ray)
 
 	t_point_light light01;
 	light01.origin = hitpoint.pos + rt.camera.viewport_light * 4.0;
-	light01.color = vec4(0.8, 0.8, 0.8, 1.0);
+	light01.color = vec3(0.8, 0.8, 0.8);
 	light01.power = 8.0;
 	light01.intensity = 2.5;
 
 	t_point_light light02;
 	light02.origin = hitpoint.pos + rt.camera.viewport_light * -8.0;
-	light02.color = vec4(0.8, 0.7, 0.6, 1.0);
+	light02.color = vec3(0.8, 0.7, 0.6);
 	light02.power = 500.0;
 	light02.intensity = 50;
 
@@ -40,7 +40,7 @@ vec4	trace_ray_solid(t_ray ray)
 	// float fresnel_intensity = 1.0;
 	// float  fresnel = (abs(dot(ray.dir, hitpoint.normal)) * 0.5 + 0.5) * fresnel_intensity;
 	// col *= fresnel;
-	// col = vec4(fresnel,fresnel,fresnel,1); // DEBUG: Display Fresnel Color
+	// col = vec3(fresnel,fresnel,fresnel,1); // DEBUG: Display Fresnel Color
 
 	return (col);
 }

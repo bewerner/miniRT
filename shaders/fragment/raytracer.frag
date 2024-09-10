@@ -23,7 +23,7 @@
 
 void	main(void)
 {
-	vec2 uv = coord.xy;
+	vec2 uv = coord;
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 
@@ -34,8 +34,8 @@ void	main(void)
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
 
-	vec4 col = trace_ray(camera_ray);
-	col = vec4(to_agx(col.rgb), 1);
+	vec3 col = trace_ray(camera_ray);
+	col = to_agx(col.rgb);
 	col = dither(col);
 
 	FragColor = col;

@@ -3,8 +3,10 @@
 #define INF			(1.0 / 0.0)
 #define VEC2_INF	vec2(INF, INF)
 #define VEC3_INF	vec3(INF, INF, INF)
+#define VEC3_BLACK	vec3(0, 0, 0)
+#define VEC3_WHITE	vec3(1, 1, 1)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
-#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC4_BLACK, 0)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, 0)
 
 int	g_seed = 0;
 
@@ -21,7 +23,7 @@ struct t_hitpoint
 	vec3			pos;
 	vec3			normal;
 	vec2			uv;
-	vec4			color;
+	vec3			color;
 	int				material_idx;
 };
 
@@ -36,7 +38,7 @@ struct t_sphere
 	int				type;
 	int				next_offset;
 	vec3			origin;
-	vec4			base_color;
+	vec3			base_color;
 	float			radius;
 	int				material_idx;
 };
@@ -46,7 +48,7 @@ struct t_plane
 	int				type;
 	int				next_offset;
 	vec3			origin;
-	vec4			base_color;
+	vec3			base_color;
 	vec3			normal;
 	float			dist;
 	int				material_idx;
@@ -57,7 +59,7 @@ struct t_cylinder
 	int				type;
 	int				next_offset;
 	vec3			origin;
-	vec4			base_color;
+	vec3			base_color;
 	vec3			orientation;
 	float			radius;
 	float			height;
@@ -71,7 +73,7 @@ struct t_hyperboloid
 	int				type;
 	int				next_offset;
 	vec3			origin;
-	vec4			base_color;
+	vec3			base_color;
 	vec3			orientation;
 	float			height;
 	float			a;
@@ -89,7 +91,7 @@ struct t_point_light
 	int				type;
 	int				next_offset;
 	vec3			origin;
-	vec4			color;
+	vec3			color;
 	// float			ratio;
 	float			power;
 	float			intensity;
@@ -97,16 +99,14 @@ struct t_point_light
 
 struct t_material
 {
-	vec4		color;
+	vec3		color;
 	float		metallic;
 	float		roughness;
 	float		ior;
 	float		transmission;
-	vec4		emission_color;
 	float		emission_strength;
+	vec3		emission_color;
 	float		padding1;
-	float		padding2;
-	float		padding3;
 };
 
 struct t_camera
@@ -124,7 +124,7 @@ struct t_camera
 struct t_rt
 {
 	t_camera		camera;
-	vec4			ambient;
+	vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
 };
@@ -145,33 +145,33 @@ layout(std140) uniform u_materials
 	t_material		materials[100];
 };
 
-in vec4 coord;
+in vec2 coord;
 uniform samplerBuffer objects;
 uniform samplerBuffer lights;
 uniform samplerBuffer agx_lut;
 
-out vec4 FragColor;
+out vec3 FragColor;
 
 // AgX.frag
 vec3			to_agx(vec3 col);
 
 // get_illumination_color.frag
-vec4			get_illumination_color(t_hitpoint hitpoint);
+vec3			get_illumination_color(t_hitpoint hitpoint);
 
 // get_sky_color.frag
-vec4			get_sky_color(t_hitpoint hitpoint);
+vec3			get_sky_color(t_hitpoint hitpoint);
 
 // get_diffuse_color.frag
-vec4			get_diffuse_color(t_hitpoint hitpoint);
+vec3			get_diffuse_color(t_hitpoint hitpoint);
 
 // get_reflection_color.frag
-vec4			get_reflection_color(t_hitpoint hp);
+vec3			get_reflection_color(t_hitpoint hp);
 
 // get_specualar_color.frag
-vec4			get_specular_color(t_hitpoint hitpoint, vec4 col_illumination);
+vec3			get_specular_color(t_hitpoint hitpoint, vec3 col_illumination);
 
 // trace_ray.frag
-vec4			trace_ray(t_ray ray);
+vec3			trace_ray(t_ray ray);
 
 // ┌─────────┐
 // │ Objects │
@@ -215,7 +215,7 @@ t_hitpoint		get_closest_hitpoint(t_ray ray);
 
 // utils/random.frag
 float	rand();
-vec4	dither(vec4 col);
+vec3	dither(vec3 col);
 
 // utils/vec3_rotations.frag
 vec3	vec3_rotate_x(vec3 v, float rad);
