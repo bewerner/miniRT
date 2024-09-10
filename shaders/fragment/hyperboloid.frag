@@ -57,7 +57,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 
 	discriminant = get_hyperboloid_discriminant(ray, hyperboloid, t0, t1);
 
-	if (discriminant < 0)
+	if (discriminant < EPSILON)
 		return (HP_INF);
 
 	hitpoint.hit = true;
@@ -69,6 +69,9 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		// INSIDE
 		hitpoint.ray = t0 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
+
+		// ap = ap - (dot(ap, hyperboloid.orientation) * hyperboloid.orientation);
+		// vec3	rot_height = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
 
 		// check for height
 		if (abs(hitpoint.pos.z) > hyperboloid.height)
@@ -96,6 +99,9 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 				 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
 			));
 		}
+
+		// rotate normal
+		// hitpoint.normal = hitpoint.normal - (dot(hitpoint.normal, hyperboloid.orientation) * hyperboloid.orientation);
 
 	}
 	else if (t1 > 0 && (t1 < t0 || t0 < 0))
@@ -134,7 +140,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	else
 		return (HP_INF);
 
-	hitpoint.pos += hitpoint.normal * (0.000001 * max(abs(t0), abs(t1)));
+	// hitpoint.pos += hitpoint.normal * (0.000001 * max(abs(t0), abs(t1)));
 	return (hitpoint);
 }
 
@@ -263,12 +269,12 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 
 
 // 	// check for height
-// 	if (abs(hitpoint.pos.z) > hyperboloid.height)
-// 		return (HP_INF);
+// 	// if (abs(hitpoint.pos.z) > hyperboloid.height)
+// 	// 	return (HP_INF);
 
 
 // 	// hitpoint.pos += hitpoint.normal * 0.02;
-// 	hitpoint.ray -= hitpoint.normal * 0.02;
+// 	// hitpoint.ray -= hitpoint.normal * 0.02;
 // 	return (hitpoint);
 // }
 
