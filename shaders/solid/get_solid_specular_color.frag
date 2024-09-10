@@ -1,26 +1,3 @@
-vec4	illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
-{
-	t_ray	light_ray;
-	float	distance;
-	float	intensity;
-
-	light_ray.dir = (hitpoint.pos + 0.001 * hitpoint.normal) - point_light.origin;
-	light_ray.origin = point_light.origin;
-
-	intensity = -dot(hitpoint.normal, normalize(light_ray.dir));
-	if (intensity <= 0)
-		return (VEC4_BLACK);
-
-	distance = length(light_ray.dir);
-
-	intensity = intensity / (distance * distance);
-	if (intensity <= 0.000005)
-		return (VEC4_BLACK);
-
-	intensity *= point_light.intensity;
-	return (intensity * point_light.color);
-}
-
 vec4	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint)
 {
 	vec4	col;

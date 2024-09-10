@@ -43,7 +43,7 @@ vec4	get_reflection_color(t_hitpoint hitpoint)
 
 	while (bounce_count < MAX_BOUNCES && hitpoint.hit == true && materials[hitpoint.material_idx].metallic > 0.0)
 	{
-		bounce_ray.origin = hitpoint.pos + 0.001 * hitpoint.normal;
+		bounce_ray.origin = get_offset_hitpoint_pos(hitpoint);
 		bounce_ray.dir = create_bounce_dir(hitpoint.ray, hitpoint.normal);
 		
 		col += shoot_ray(bounce_ray, hitpoint, mult_col, bounce_value) * (1 - bounce_value) * bounce_value;

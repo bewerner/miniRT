@@ -155,9 +155,6 @@ out vec4 FragColor;
 // AgX.frag
 vec3			to_agx(vec3 col);
 
-// point_light.frag
-t_point_light	get_point_light(int offset);
-
 // get_illumination_color.frag
 vec4			get_illumination_color(t_hitpoint hitpoint);
 
@@ -173,42 +170,54 @@ vec4			get_reflection_color(t_hitpoint hp);
 // get_specualar_color.frag
 vec4			get_specular_color(t_hitpoint hitpoint, vec4 col_illumination);
 
-// sphere.frag
+// trace_ray.frag
+vec4			trace_ray(t_ray ray);
+
+// ┌─────────┐
+// │ Objects │
+// └─────────┘
+
+// objects/object_utils.frag
+int				next_object_type(inout int i);
+int				next_light_type(inout int i);
+
+// objects/sphere.frag
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere);
 t_sphere		get_sphere(int offset);
 
-// plane.frag
+// objects/plane.frag
 bool			is_near_zero(float value);
 t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane);
 t_plane			get_plane(int offset);
 
-// cylinder.frag
+// objects/cylinder.frag
 t_hitpoint		get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder);
 t_cylinder		get_cylinder(int offset);
 
-// hyperboloid.frag
+// objects/hyperboloid.frag
 t_hitpoint		get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid);
 t_hyperboloid	get_hyperboloid(int offset);
 
-
-// trace_ray.frag
-int				next_object_type(inout int i);
-t_hitpoint		get_closest_hitpoint(t_ray ray);
-vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
-bool			is_obstructed(t_ray ray);
-vec4			trace_ray(t_ray ray);
+// point_light.frag
+t_point_light	get_point_light(int offset);
 
 // ┌───────────┐
 // │ Utilities │
 // └───────────┘
 
-// random.frag
+// utils/ray_utils.frag
+vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
+bool			is_obstructed(t_ray ray);
+
+// utils/hitpoint_utils.frag
+vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
+t_hitpoint		get_closest_hitpoint(t_ray ray);
+
+// utils/random.frag
 float	rand();
 vec4	dither(vec4 col);
 
-// vec3_rotations.frag
+// utils/vec3_rotations.frag
 vec3	vec3_rotate_x(vec3 v, float rad);
 vec3	vec3_rotate_y(vec3 v, float rad);
 vec3	vec3_rotate_z(vec3 v, float rad);
-
-// float	g_metallic = 0.5;

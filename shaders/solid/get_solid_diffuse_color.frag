@@ -1,4 +1,3 @@
-
 vec4	get_solid_color(t_hitpoint hitpoint)
 {
 	vec4	col;

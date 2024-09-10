@@ -4,32 +4,7 @@ vec4	illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
 	float	distance;
 	float	intensity;
 
-	// light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
-
-	// if (rt.debug == 0)
-		light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
-	// else
-		// light_ray.dir = (hitpoint.pos - point_light.origin) * 0.987654321;
-
-	// if (rt.debug == 0)
-	// 	light_ray.dir = (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal) - point_light.origin;
-	// if (rt.debug == -1)
-	// 	light_ray.dir = (hitpoint.pos - point_light.origin) * 0.99;
-	// 	// light_ray.dir *= 0.99;
-		// light_ray.dir -= normalize(light_ray.dir) * 0.1;
-
-	// float len = length(hitpoint.ray);
-	// if (len >= 10)
-	// 	light_ray.dir = (hitpoint.pos + (len * 0.01) * hitpoint.normal) - point_light.origin;
-	// else
-	// 	light_ray.dir = (hitpoint.pos + (10 * 0.0001) * hitpoint.normal) - point_light.origin;
-	// light_ray.dir = (hitpoint.pos + (max(10, len) * 0.0001) * hitpoint.normal) - point_light.origin;
-
-	// light_ray.dir = (hitpoint.pos + 0.0001 * hitpoint.normal) - point_light.origin;
-
-	// light_ray.dir = hitpoint.pos - point_light.origin;	// naive version
-
-
+	light_ray.dir = get_offset_hitpoint_pos(hitpoint) - point_light.origin;
 	light_ray.origin = point_light.origin;
 	intensity = -dot(hitpoint.normal, normalize(light_ray.dir));
 	if (intensity <= 0)
@@ -40,17 +15,6 @@ vec4	illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
 		return (VEC4_BLACK);
 	intensity *= point_light.intensity;
 	return (intensity * point_light.color);
-}
-
-int	next_light_type(inout int i)
-{
-	if (i == -1)
-	{
-		i++;
-		return (int(texelFetch(lights, i).r));
-	}
-	i = int(texelFetch(lights, i + 1).r);
-	return (int(texelFetch(lights, i).r));
 }
 
 vec4	get_illumination_color(t_hitpoint hitpoint)

@@ -7,14 +7,19 @@
 #import get_diffuse_color.frag
 #import get_reflection_color.frag
 #import get_specular_color.frag
-#import point_light.frag
-#import sphere.frag
-#import plane.frag
-#import cylinder.frag
-#import hyperboloid.frag
 #import trace_ray.frag
-#import vec3_rotations.frag
-#import random.frag
+
+#import objects/object_utils.frag
+#import objects/point_light.frag
+#import objects/sphere.frag
+#import objects/plane.frag
+#import objects/cylinder.frag
+#import objects/hyperboloid.frag
+
+#import utils/ray_utils.frag
+#import utils/hitpoint_utils.frag
+#import utils/vec3_rotations.frag
+#import utils/random.frag
 
 void	main(void)
 {

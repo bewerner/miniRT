@@ -2,13 +2,15 @@
 
 #import ../fragment/header.frag
 #import get_normal_color.frag
-#import ../fragment/sphere.frag
-#import ../fragment/plane.frag
-#import ../fragment/cylinder.frag
-#import ../fragment/hyperboloid.frag
+#import ../fragment/objects/object_utils.frag
+#import ../fragment/objects/sphere.frag
+#import ../fragment/objects/plane.frag
+#import ../fragment/objects/cylinder.frag
+#import ../fragment/objects/hyperboloid.frag
 #import trace_ray_normal.frag
-#import ../fragment/vec3_rotations.frag
-#import ../fragment/random.frag
+#import ../fragment/utils/hitpoint_utils.frag
+#import ../fragment/utils/vec3_rotations.frag
+#import ../fragment/utils/random.frag
 
 vec4	get_normal_color(t_hitpoint hitpoint);
 vec4	trace_ray_normal(t_ray ray);
