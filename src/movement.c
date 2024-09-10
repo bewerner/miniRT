@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/25 19:08:27 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:46:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	handle_move_input(t_rt *rt)
 		rt->move.acc.y += ACC * rt->delta_time;
 	if (glfwGetKey(rt->window, GLFW_KEY_C))
 		rt->move.acc.y -= ACC * rt->delta_time;
+	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
 }
 
 void	move_camera(t_rt *rt)
@@ -44,8 +45,11 @@ void	move_camera(t_rt *rt)
 		= vec3_rotate_x(rt->camera.direction, rt->camera.pitch);
 	rt->camera.direction
 		= vec3_rotate_z(rt->camera.direction, rt->camera.yaw);
-	rt->move.vel = vec3_add(rt->move.vel, rt->move.acc);
-	rt->move.vel = vec3_scale(DAMP, rt->move.vel);
+
+	rt->move.vel = rt->move.acc;
+	// rt->move.vel = vec3_add(rt->move.vel, rt->move.acc);
+	// rt->move.vel = vec3_scale(DAMP, rt->move.vel);
+
 	rt->camera.origin = vec3_add(rt->camera.origin,
 			vec3_scale(rt->move.vel.x, rt->camera.right));
 	rt->camera.origin = vec3_add(rt->camera.origin,

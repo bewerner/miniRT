@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/09 17:59:30 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:17:00 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,7 @@ typedef struct s_movement
 {
 	t_vec3			acc;
 	t_vec3			vel;
+	float			speed;
 }	t_movement;
 
 typedef struct s_camera
@@ -377,6 +378,9 @@ void			mouse_hook(GLFWwindow* window, int button, int action, int mods);
 
 // hooks/resize_hook.c
 void			resize_hook(GLFWwindow *window, int width, int height);
+
+// hooks/scroll_hook.c
+void 			scroll_hook(GLFWwindow* window, double xoffset, double yoffset);
 
 // hooks/loop_hook.c
 // void			loop_hook(void *param);
