@@ -1,9 +1,10 @@
 #define M_PI		3.1415926535897932384626433832795
 #define EPSILON		0.0001
 #define INF			(1.0 / 0.0)
+#define VEC2_INF	vec2(INF, INF)
 #define VEC3_INF	vec3(INF, INF, INF)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
-#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC4_BLACK, 0)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC4_BLACK, 0)
 
 int	g_seed = 0;
 
@@ -19,6 +20,7 @@ struct t_hitpoint
 	vec3			ray;
 	vec3			pos;
 	vec3			normal;
+	vec2			uv;
 	vec4			color;
 	int				material_idx;
 };

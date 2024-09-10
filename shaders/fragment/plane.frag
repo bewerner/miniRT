@@ -1,7 +1,28 @@
-
 bool	is_near_zero(float value)
 {
 	return (value > -EPSILON && value < EPSILON);
+}
+
+vec2	get_uv_plane(t_plane plane, vec3 pos)
+{
+	vec2	uv;
+	float	scale = 5;
+
+	if (plane.normal.z == 1.0)
+		plane.normal.y = -EPSILON;
+
+	vec3 norm_u = normalize(cross(plane.normal, vec3(plane.normal.xy, 0)));
+	vec3 norm_v = cross(plane.normal, norm_u);
+
+	norm_u /= scale;
+	norm_v /= scale;
+
+	vec3 relative_pos = pos - plane.origin;
+	uv.x = dot(relative_pos, norm_u);
+	uv.y = dot(relative_pos, norm_v);
+
+	uv = fract(uv);
+	return (uv);
 }
 
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
@@ -25,7 +46,9 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 	hitpoint.hit = true;
 	hitpoint.ray = t * ray.dir;
 	hitpoint.pos = ray.origin + hitpoint.ray;
+	hitpoint.uv = get_uv_plane(plane, hitpoint.pos);
 	hitpoint.color = plane.base_color;
+	// hitpoint.color = vec4(hitpoint.uv, 0, 1);
 	hitpoint.material_idx = plane.material_idx;
 
 	return (hitpoint);
