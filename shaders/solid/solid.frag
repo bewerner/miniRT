@@ -17,9 +17,9 @@
 #import ../fragment/utils/vec3_rotations.frag
 #import ../fragment/utils/random.frag
 
-vec4	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint);
-vec4	get_solid_color(t_hitpoint hitpoint);
-vec4	trace_ray_solid(t_ray ray);
+vec3	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint);
+vec3	get_solid_color(t_hitpoint hitpoint);
+vec3	trace_ray_solid(t_ray ray);
 
 void main()
 {
@@ -37,7 +37,7 @@ void main()
 
 	if (is_ligth_gizmo(camera_ray) == true)
 	{
-		FragColor = VEC4_BLACK;
+		FragColor = VEC3_BLACK;
 		return ;
 	}
 	
@@ -45,8 +45,8 @@ void main()
 	// Dump here, so that the conditions (is_ligth_gizmo) is executed correctly
 	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
 
-	vec4 col = trace_ray_solid(camera_ray);
+	vec3 col = trace_ray_solid(camera_ray);
 	col = dither(col);
 
-	FragColor = vec4(col.r, col.g, col.b, 1);
+	FragColor = col;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_vec_types.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 20:52:10 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/03 13:03:15 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:00:59 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,20 @@ typedef struct s_dvec2
 	double			y;
 }	t_dvec2;
 
-typedef struct s_vec3
+typedef union s_vec3
 {
-	float			x;
-	float			y;
-	float			z;
+	struct
+	{
+		float		x;
+		float		y;
+		float		z;
+	};
+	struct
+	{
+		float		r;
+		float		g;
+		float		b;
+	};
 }	t_vec3;
 
 typedef union s_vec4

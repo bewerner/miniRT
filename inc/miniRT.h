@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 16:17:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:01:54 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,13 @@ typedef struct s_material
 	size_t		index;
 	t_material	*next;
 	char		name[MAX_MATERIAL_NAME];
-	t_vec4		color;
+	t_vec3		color;
 	float		metallic;
 	float		roughness;
 	float		ior;
 	float		transmission;
 	float		emission_strength;
-	t_vec4		emission_color;
+	t_vec3		emission_color;
 }	t_material;
 
 typedef enum e_obj_type
@@ -151,7 +151,7 @@ typedef struct s_object
 	t_obj_type		type;
 	t_object		*next;
 	t_vec3			origin;
-	t_vec4			base_color;
+	t_vec3			base_color;
 	t_material		*material;
 	bool			is_selected;
 }	t_object;
@@ -161,7 +161,7 @@ typedef struct s_sphere
 	t_obj_type		type;
 	t_object		*next;
 	t_vec3			origin;
-	t_vec4			base_color;
+	t_vec3			base_color;
 	t_material		*material;
 	bool			is_selected;
 	float			radius;
@@ -172,7 +172,7 @@ typedef struct s_plane
 	t_obj_type		type;
 	t_object		*next;
 	t_vec3			origin;
-	t_vec4			base_color;
+	t_vec3			base_color;
 	t_material		*material;
 	bool			is_selected;
 	t_vec3			normal;
@@ -184,7 +184,7 @@ typedef struct s_cylinder
 	t_obj_type		type;
 	t_object		*next;
 	t_vec3			origin;
-	t_vec4			base_color;
+	t_vec3			base_color;
 	t_material		*material;
 	bool			is_selected;
 	t_vec3			orientation;
@@ -199,7 +199,7 @@ typedef struct s_hyperboloid
 	t_obj_type		type;
 	t_object		*next;
 	t_vec3			origin;
-	t_vec4			base_color;
+	t_vec3			base_color;
 	t_material		*material;
 	bool			is_selected;
 	t_vec3			orientation;
@@ -240,7 +240,7 @@ typedef struct s_light
 	t_light_type	type;
 	t_light			*next;
 	t_vec3			origin;
-	t_vec4			color;
+	t_vec3			color;
 }	t_light;
 
 typedef struct s_point_light
@@ -248,7 +248,7 @@ typedef struct s_point_light
 	t_light_type	type;
 	t_light			*next;
 	t_vec3			origin;
-	t_vec4			color;
+	t_vec3			color;
 	float			power;
 	float			intensity;
 }	t_point_light;
@@ -283,7 +283,7 @@ typedef struct s_screen
 typedef struct s_ubo
 {
 	t_camera		camera;
-	t_vec4			ambient;
+	t_vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
 }	t_ubo;
@@ -313,7 +313,7 @@ typedef struct s_rt
 	t_material		*materials;
 	t_object		*objects;
 	t_light			*lights;
-	t_vec4			ambient;
+	t_vec3			ambient;
 	float			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_dvec2			initial_cursor_pos;
@@ -325,17 +325,24 @@ typedef struct s_rt
 
 static const t_ivec2		g_ivec2_zero = (t_ivec2){0, 0};
 static const t_vec2			g_vec2_zero = (t_vec2){0, 0};
-static const t_vec3			g_vec3_zero = (t_vec3){0, 0, 0};
-static const t_vec3			g_vec3_inf = (t_vec3){INFINITY, INFINITY, INFINITY};
+static const t_vec3			g_vec3_zero = (t_vec3){{0, 0, 0}};
+static const t_vec3			g_vec3_inf = (t_vec3){{INFINITY, INFINITY, INFINITY}};
+
+
+static const t_vec3			g_vec3_white = (t_vec3){{1, 1, 1}};
+static const t_vec3			g_vec3_black = (t_vec3){{0, 0, 0}};
+static const t_vec3			g_vec3_transparent = (t_vec3){{0, 0, 0}};
+static const t_vec3			g_vec3_mg = (t_vec3){{0.05, 0.05, 0.05}};
+
 static const t_vec4			g_vec4_zero = (t_vec4){{0, 0, 0, 0}};
 static const t_vec4			g_vec4_white = (t_vec4){{1, 1, 1, 1}};
 static const t_vec4			g_vec4_black = (t_vec4){{0, 0, 0, 1}};
 static const t_vec4			g_vec4_transparent = (t_vec4){{0, 0, 0, 0}};
 static const t_vec4			g_vec4_mg = (t_vec4){{0.05, 0.05, 0.05, 0}};
 static const t_hitpoint		g_hp_inf = ((((((((t_hitpoint){
-							{INFINITY, INFINITY, INFINITY},
-							{INFINITY, INFINITY, INFINITY},
-							{0, 0, 0}, NULL})))))));
+							{{INFINITY, INFINITY, INFINITY}},
+							{{INFINITY, INFINITY, INFINITY}},
+							{{0, 0, 0}}, NULL})))))));
 
 // main.c
 t_rt			*get_rt(void);
@@ -419,7 +426,7 @@ t_error			parse_cylinder(t_cylinder *cylinder, t_rt *rt);
 
 // parser/parse_primitives2.c
 t_material		*get_next_material(char *line, t_rt *rt);
-void			set_color_and_material(t_vec4 *col, t_material **mat, char *line, t_rt *rt);
+void			set_color_and_material(t_vec3 *col, t_material **mat, char *line, t_rt *rt);
 t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 
 // parser/parser_utils1.c
@@ -454,17 +461,6 @@ t_hitpoint		get_hitpoint_cylinder(t_ray ray, t_cylinder *cylinder);
 // primitives/sphere.c
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere *sphere);
 
-// primitives/get_diffuse_color.c
-t_vec4			get_diffuse_color(t_hitpoint hitpoint, t_rt *rt);
-t_vec4			get_solid_color(t_hitpoint hitpoint, t_rt *rt);
-t_vec4			get_normal_color(t_hitpoint hitpoint, t_rt *rt);
-
-// primitives/get_specular_color.c
-t_vec4			get_specular_color(t_hitpoint hp, t_rt *rt);
-
-// primitives/get_reflection_color.c
-t_vec4			get_reflection_color(t_hitpoint hp, t_rt *rt);
-
 // primitives/get_hitpoint.c
 bool			is_obstructed(t_ray ray, t_rt *rt);
 t_hitpoint		get_closest_hitpoint(t_ray ray, t_rt *rt);
@@ -489,11 +485,6 @@ GLuint			create_shader_program(const char *vert, const char *freg, t_rt *rt);
 // ┌───────────┐
 // │ Utilities │
 // └───────────┘
-
-// utils/color_convert.c
-uint32_t		rgba(int r, int g, int b, int a);
-uint32_t		vec4_to_abgr(t_vec4	col, bool dither);
-uint32_t		vec4_to_rgba(t_vec4	col, bool dither);
 
 // utils/ray_utils.c
 t_vec3			create_bounce_dir(t_vec3 incoming_dir, t_vec3 normal);
@@ -521,12 +512,6 @@ float			vec3_len(const t_vec3 a);
 float			vec3_dist(const t_vec3 a, const t_vec3 b);
 t_vec3			vec3_normalize(const t_vec3 a);
 t_vec3			vec3_cross(const t_vec3 a, const t_vec3 b);
-
-// utils/vec4_utils1.c
-t_vec4			vec4_add(const t_vec4 a, const t_vec4 b);
-t_vec4			vec4_sub(const t_vec4 a, const t_vec4 b);
-t_vec4			vec4_mul(const t_vec4 a, const t_vec4 b);
-t_vec4			vec4_scale(const float s, const t_vec4 a);
 
 // utils/time.c
 void			ft_timer(t_timeraction action, char *msg);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_primitives2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:41:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 12:33:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:03:50 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,19 @@ t_material	*get_next_material(char *line, t_rt *rt)
 	return (material);
 }
 
-void	set_color_and_material(t_vec4 *col, t_material **mat, char *line, t_rt *rt)
+void	set_color_and_material(t_vec3 *col, t_material **mat, char *line, t_rt *rt)
 {
 	ft_skipspace(&line);
 	if (ft_isalpha(*line))
 	{
 		*mat = get_next_material(line, rt);
-		*col = (t_vec4){{(*mat)->color.r, (*mat)->color.g, (*mat)->color.b, 1.0f}};
+		*col = (t_vec3){{(*mat)->color.r, (*mat)->color.g, (*mat)->color.b}};
 	}
 	else
 	{
 		col->r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 		col->g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 		col->b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		col->a = 1.0f;
 		*mat = get_next_material(line, rt);
 	}
 }

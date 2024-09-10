@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_material.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/03 14:51:04 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:03:02 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->color.r = 204.0f / 255.0f;
 	mat->color.g = 204.0f / 255.0f;
 	mat->color.b = 204.0f / 255.0f;
-	mat->color.a = 1.0f;
 	mat->metallic = 0.0f;
 	mat->roughness = 0.5f;
 	mat->ior = 1.45f;
@@ -54,7 +53,6 @@ static void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->emission_color.r = 0.0f;
 	mat->emission_color.g = 0.0f;
 	mat->emission_color.b = 0.0f;
-	mat->emission_color.a = 0.0f;
 }
 
 static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
@@ -68,7 +66,6 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 	mat->color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	mat->color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	mat->color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	mat->color.a = 1.0f;
 	mat->metallic = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->roughness = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->ior = vr(gnv(&line, rt), (t_vec2){1.0f, INFINITY}, rt);
@@ -80,7 +77,6 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	mat->emission_color.b
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	mat->emission_color.a = 1.0f;
 	return (RT_SUCCESS);
 }
 
@@ -120,10 +116,10 @@ t_error	create_materials(size_t mat_cnt, t_rt *rt)
 
 // t_material	*next;
 // char			name[MAX_MATERIAL_NAME];
-// t_vec4		color;
+// t_vec3		color;
 // float		metallic;
 // float		roughness;
 // float		ior;
 // float		transmission;
 // float		emission_strength;
-// t_vec4		emission_color;
+// t_vec3		emission_color;

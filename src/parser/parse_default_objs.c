@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/14 23:17:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/10 20:03:20 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ t_error	parse_ambient(t_rt *rt)
 	rt->ambient.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->ambient.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	rt->ambient.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	rt->ambient = vec4_scale(ratio, rt->ambient);
-	rt->ambient.a = 1.0f;
+	rt->ambient = vec3_scale(ratio, rt->ambient);
 	return (RT_SUCCESS);
 }
 

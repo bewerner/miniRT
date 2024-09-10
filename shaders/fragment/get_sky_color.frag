@@ -42,11 +42,11 @@ vec3	get_random_hemisphere_direction(vec3 hemisphere_normal)
 	return (direction);
 }
 
-vec4	get_sky_color(t_hitpoint hitpoint)
+vec3	get_sky_color(t_hitpoint hitpoint)
 {
 	if (1 == 1)
 		return (rt.ambient);
-	vec4	col = VEC4_BLACK;
+	vec3	col = VEC3_BLACK;
 	t_ray	ray;
 	// int samples = int(rt.debug) * 10;
 	int samples = 128;
@@ -59,6 +59,5 @@ vec4	get_sky_color(t_hitpoint hitpoint)
 			col += rt.ambient;
 	}
 	col /= samples;
-	col.a = 1.0;
 	return (col);
 }

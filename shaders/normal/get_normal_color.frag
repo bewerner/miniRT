@@ -1,13 +1,12 @@
-
-vec4	get_normal_color(t_hitpoint hitpoint)
+vec3	get_normal_color(t_hitpoint hitpoint)
 {
-	vec4	final_col;
-	vec4	light_col;
+	vec3	final_col;
+	vec3	light_col;
 
-	final_col = VEC4_BLACK;
+	final_col = VEC3_BLACK;
 
 	// int i = -1;
 	// int type = next_light_type(i);
-	final_col = vec4(hitpoint.normal, 1);
+	final_col = hitpoint.normal;
 	return (final_col);
 }

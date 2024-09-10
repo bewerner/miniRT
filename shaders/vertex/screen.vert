@@ -3,10 +3,10 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aCol;
 
-out vec4	coord;
+out vec2	coord;
 
 void main()
 {
 	gl_Position = vec4(aPos, 1.0);
-	coord = vec4(aCol, 1.0);
+	coord = aCol.rg;
 }
