@@ -1,18 +1,25 @@
 #version 330 core
 
 #import ../fragment/header.frag
-#import ../fragment/point_light.frag
+#import ../fragment/get_illumination_color.frag
 #import get_solid_diffuse_color.frag
 #import get_solid_specular_color.frag
 #import light_gizmo.frag
-#import ../fragment/sphere.frag
-#import ../fragment/plane.frag
-#import ../fragment/cylinder.frag
-#import ../fragment/hyperboloid.frag
+#import ../fragment/objects/object_utils.frag
+#import ../fragment/objects/sphere.frag
+#import ../fragment/objects/plane.frag
+#import ../fragment/objects/cylinder.frag
+#import ../fragment/objects/hyperboloid.frag
+#import ../fragment/objects/point_light.frag
 #import trace_ray_solid.frag
-#import ../fragment/vec3_rotations.frag
-#import ../fragment/random.frag
+#import ../fragment/utils/ray_utils.frag
+#import ../fragment/utils/hitpoint_utils.frag
+#import ../fragment/utils/vec3_rotations.frag
+#import ../fragment/utils/random.frag
 
+vec4	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint);
+vec4	get_solid_color(t_hitpoint hitpoint);
+vec4	trace_ray_solid(t_ray ray);
 
 void main()
 {

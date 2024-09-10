@@ -20,17 +20,6 @@ float	get_light_gizmo_discriminant(t_ray ray, vec3 point)
 	return (0.0);
 }
 
-int	next_light_type(inout int i)
-{
-	if (i == -1)
-	{
-		i++;
-		return (int(texelFetch(lights, i).r));
-	}
-	i = int(texelFetch(lights, i + 1).r);
-	return (int(texelFetch(lights, i).r));
-}
-
 bool	is_ligth_gizmo(t_ray ray)
 {
 	t_point_light	light;
