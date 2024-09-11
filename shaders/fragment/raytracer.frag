@@ -2,6 +2,7 @@
 
 #import header.frag
 #import AgX.frag
+#import checker_texture.frag
 #import get_illumination_color.frag
 #import get_sky_color.frag
 #import get_diffuse_color.frag
