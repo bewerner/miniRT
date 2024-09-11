@@ -155,6 +155,9 @@ out vec3 FragColor;
 // AgX.frag
 vec3			to_agx(vec3 col);
 
+// checker_texture.frag
+vec3			get_checker_color(t_hitpoint hitpoint);
+
 // get_illumination_color.frag
 vec3			get_illumination_color(t_hitpoint hitpoint);
 
