@@ -5,7 +5,7 @@ vec3	get_checker_color(t_hitpoint hitpoint)
 	vec3	col_a = VEC3_BLACK;
 	vec3	col_b = VEC3_WHITE;
 	vec3	col = col_a;
-	ivec3	pos = ivec3(abs(floor(hitpoint.pos / scale)));
+	ivec3	pos = ivec3(abs(floor(get_offset_hitpoint_pos(hitpoint) / scale)));
 
 	if ((pos.x + pos.y + pos.z) % 2 == 1)
 		col = col_b;
