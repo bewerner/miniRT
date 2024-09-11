@@ -1,5 +1,6 @@
 #define M_PI		3.1415926535897932384626433832795
 #define EPSILON		0.0001
+#define MIN_FLOAT	1.175494351e-38
 #define INF			(1.0 / 0.0)
 #define VEC2_INF	vec2(INF, INF)
 #define VEC3_INF	vec3(INF, INF, INF)
