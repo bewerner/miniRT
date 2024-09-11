@@ -1,52 +1,106 @@
 float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out float t0, out float t1)
 {
-	vec3		ap;		// origin - point_offset
-	float		a;
-	float		b;
-	float		c;
-	vec3		d;		// denominator
-	vec3		ad;		// ray: a + bt -> a * d
-	vec3		bd;		// ray: a + bt -> b * d
-	vec3		doth;	// hyperboloid dot_product -> where (dot = x*x + y*y - z*z)
+	float	A;
+	float	B;
+	float	C;
+	float	aa;
+	float	bb;
+	float	cc;
+	// vec3		doth;	// hyperboloid dot_product -> where (dot = x*x + y*y - z*z)
 	float		discriminant;
 	float		sqrt_discriminant;
 
-	// setup denominator(coefficients) and the other variables
-	d = vec3(1 / hyperboloid.a, 1 / hyperboloid.b, 1 / hyperboloid.c);
+	vec3	v = ray.dir;					// ray dir
+	vec3	va = hyperboloid.orientation;	// orientation
 
-	hyperboloid.orientation = hyperboloid.orientation - vec3(0, 0, 1);
+	//wa is another unit vector orthogonal to va (for constructing the equation)
+	// vec3	wa = normalize(cross(va, va != vec3(0, 0, 1) ? vec3(0, 0, 1) : vec3(0, 0, 1)));
 
-	ap = ray.origin - hyperboloid.origin;
-	// rotate ap
-	ap = ap - (dot(ap, hyperboloid.orientation) * hyperboloid.orientation);
-	ray.dir = ray.dir - (dot(ray.dir, hyperboloid.orientation) * hyperboloid.orientation);
+	vec3	wa = normalize(cross(va, vec3(0, 1, 0)));
+	// vec3	wa = vec3(0, 1, 0);
+	vec3	dp = ray.origin - hyperboloid.origin;	// delta p
 
-	ad = ap * d;
-	bd = ray.dir * d;
-	doth = vec3(1, 1, -1);
+	// dp = dp - (dot(dp, hyperboloid.orientation) * hyperboloid.orientation);
+	// v = v - (dot(v, hyperboloid.orientation) * hyperboloid.orientation);
 
-	a = dot(doth * bd, bd);
-	b = 2 * dot(doth * ad, bd);
-	c = dot(doth * ad, ad) - hyperboloid.shape;
-	
-	discriminant = b * b - 4 * a * c;
+	aa = hyperboloid.a * hyperboloid.a;
+	bb = hyperboloid.b * hyperboloid.b;
+	cc = hyperboloid.c * hyperboloid.c;
+
+	A = dot(v - (dot(v, va) * va), v - (dot(v, va) * va)) / aa - pow(dot(v, va), 2) / bb + pow(dot(v, wa), 2) / cc;
+	B = 2 * ( (dot(dp - (dot(dp, va) * va), v - dot(v, va) * va)) / aa - (dot(dp, va) * dot(v, va)) / bb + (dot(dp, wa) * dot(v, wa)) / cc );
+	C = dot(dp - dot(dp, va) * va, dp - dot(dp, va) * va) / aa - pow(dot(dp, va), 2) / bb + pow(dot(dp, wa), 2) / cc - hyperboloid.shape;
+
+	discriminant = B * B - 4 * A * C;
 	if (discriminant < 0)
 		return (discriminant);
 	
 	sqrt_discriminant = sqrt(discriminant);
-	if (b > 0)
+	if (B >= 0)
 	{
-		t0 = (2 * c) / (-b - sqrt_discriminant);
-		t1 = (-b - sqrt_discriminant) / (2 * a);
+		t0 = (2 * C) / (-B - sqrt_discriminant);
+		t1 = (-B - sqrt_discriminant) / (2 * A);
 	}
 	else
 	{
-		t0 = (-b + sqrt_discriminant) / (2 * a);
-		t1 = (2 * c) / (-b + sqrt_discriminant);
+		t0 = (-B + sqrt_discriminant) / (2 * A);
+		t1 = (2 * C) / (-B + sqrt_discriminant);
 	}
 
 	return (discriminant);
+
 }
+
+
+// float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out float t0, out float t1)
+// {
+// 	vec3		ap;		// origin - point_offset
+// 	float		a;
+// 	float		b;
+// 	float		c;
+// 	vec3		d;		// denominator
+// 	vec3		ad;		// ray: a + bt -> a * d
+// 	vec3		bd;		// ray: a + bt -> b * d
+// 	vec3		doth;	// hyperboloid dot_product -> where (dot = x*x + y*y - z*z)
+// 	float		discriminant;
+// 	float		sqrt_discriminant;
+
+// 	// setup denominator(coefficients) and the other variables
+// 	d = vec3(1 / hyperboloid.a, 1 / hyperboloid.b, 1 / hyperboloid.c);
+
+// 	hyperboloid.orientation = hyperboloid.orientation - vec3(0, 0, 1);
+
+// 	ap = ray.origin - hyperboloid.origin;
+// 	// rotate ap
+// 	// ap = ap - (dot(ap, hyperboloid.orientation) * hyperboloid.orientation);
+// 	// ray.dir = ray.dir - (dot(ray.dir, hyperboloid.orientation) * hyperboloid.orientation);
+
+// 	ad = ap * d;
+// 	bd = ray.dir * d;
+// 	doth = vec3(1, 1, -1);
+
+// 	a = dot(doth * bd, bd);
+// 	b = 2 * dot(doth * ad, bd);
+// 	c = dot(doth * ad, ad) - hyperboloid.shape;
+	
+// 	discriminant = b * b - 4 * a * c;
+// 	if (discriminant < 0)
+// 		return (discriminant);
+	
+// 	sqrt_discriminant = sqrt(discriminant);
+// 	if (b >= 0)
+// 	{
+// 		t0 = (2 * c) / (-b - sqrt_discriminant);
+// 		t1 = (-b - sqrt_discriminant) / (2 * a);
+// 	}
+// 	else
+// 	{
+// 		t0 = (-b + sqrt_discriminant) / (2 * a);
+// 		t1 = (2 * c) / (-b + sqrt_discriminant);
+// 	}
+
+// 	return (discriminant);
+// }
 
 // bool is_on_surface(vec3 point, t_hyperboloid hyperboloid)
 // {
@@ -83,7 +137,8 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		hitpoint.pos = ray.origin + hitpoint.ray;
 
 		// rot pos
-		hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+		// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+
 
 		// check for height
 		if (abs(hitpoint.pos.z) > hyperboloid.height)
@@ -93,7 +148,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 			hitpoint.pos = ray.origin + hitpoint.ray;
 
 			// rot pos
-			hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+			// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
 
 			if (t1 < 0 || abs(hitpoint.pos.z) > hyperboloid.height)
 				return (HP_INF);
@@ -126,7 +181,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		hitpoint.pos = ray.origin + hitpoint.ray;
 
 		// rot pos
-		hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+		// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
 
 		// check for height
 		if (abs(hitpoint.pos.z) > hyperboloid.height)
@@ -136,7 +191,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 			hitpoint.pos = ray.origin + hitpoint.ray;
 
 			// rot pos
-			hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+			// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
 
 			if (t0 < 0 || abs(hitpoint.pos.z) > hyperboloid.height)
 				return (HP_INF);
