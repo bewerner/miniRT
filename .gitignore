@@ -19,6 +19,7 @@
 !scenes/**/*.rt
 !shaders
 !shaders/*
+!shaders/**/
 !shaders/**/*.frag
 !shaders/**/*.vert
 !Makefile
