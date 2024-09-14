@@ -1,39 +1,88 @@
-float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out float t0, out float t1)
+// float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out float t0, out float t1)
+// {
+// 	float		discriminant;
+// 	float		sqrt_discriminant;
+
+// 	vec3	v = ray.dir;					// ray dir
+	
+// 	vec3	va = hyperboloid.orientation;	// orientation
+// 	vec3	wa = normalize(cross(va, (va != vec3(0, 0, 1)) ? vec3(0, 0, 1) : vec3(0, 1, 0)));
+//   	vec3	ua = normalize(cross(va, wa));
+
+// 	vec3	dp = ray.origin - hyperboloid.origin;	// delta p
+
+// 	float aa = hyperboloid.a * hyperboloid.a;
+// 	float bb = hyperboloid.b * hyperboloid.b;
+// 	float cc = hyperboloid.c * hyperboloid.c;
+
+// 	float dot_v_wa = dot(v, wa);
+// 	float dot_dp_wa = dot(dp, wa);
+// 	float dot_v_ua = dot(v, ua);
+// 	float dot_dp_ua = dot(dp, ua);
+// 	float dot_v_va = dot(v, va);
+// 	float dot_dp_va = dot(dp, va);
+
+// 	// version IV 
+//     float A = pow(dot_v_wa, 2) / aa				+	pow(dot_v_ua, 2) / bb		-	pow(dot_v_va, 2) / cc;
+//     float B = 2 * (dot_dp_wa * dot_v_wa / aa	+	dot_dp_ua * dot_v_ua / bb	-	dot_dp_va * dot_v_va / cc);
+//     float C = pow(dot_dp_wa, 2) / aa			+	pow(dot_dp_ua, 2) / bb		-	pow(dot_dp_va, 2) / cc - hyperboloid.shape;
+
+// 	discriminant = B * B - 4 * A * C;
+// 	if (discriminant < 0)
+// 		return (discriminant);
+	
+// 	sqrt_discriminant = sqrt(discriminant);
+// 	if (B >= 0)
+// 	{
+// 		t0 = (2 * C) / (-B - sqrt_discriminant);
+// 		t1 = (-B - sqrt_discriminant) / (2 * A);
+// 	}
+// 	else
+// 	{
+// 		t0 = (-B + sqrt_discriminant) / (2 * A);
+// 		t1 = (2 * C) / (-B + sqrt_discriminant);
+// 	}
+// 	return (discriminant);
+// }
+
+
+t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 {
-	float	A;
-	float	B;
-	float	C;
-	float	aa;
-	float	bb;
-	float	cc;
-	// vec3		doth;	// hyperboloid dot_product -> where (dot = x*x + y*y - z*z)
+	t_hitpoint	hitpoint;
 	float		discriminant;
 	float		sqrt_discriminant;
+	float		t0;
+	float		t1;
+	float		t_height;
 
-	vec3	v = ray.dir;					// ray dir
+	// hyperboloid.orientation = vec3_rotate_x(hyperboloid.orientation, rt.debug / 50);
+	
 	vec3	va = hyperboloid.orientation;	// orientation
+	vec3	wa = normalize(cross(va, (va != vec3(0, 0, 1)) ? vec3(0, 0, 1) : vec3(0, 1, 0)));
+  	vec3	ua = normalize(cross(va, wa));
 
-	//wa is another unit vector orthogonal to va (for constructing the equation)
-	// vec3	wa = normalize(cross(va, va != vec3(0, 0, 1) ? vec3(0, 0, 1) : vec3(0, 0, 1)));
-
-	vec3	wa = normalize(cross(va, vec3(0, 1, 0)));
-	// vec3	wa = vec3(0, 1, 0);
 	vec3	dp = ray.origin - hyperboloid.origin;	// delta p
 
-	// dp = dp - (dot(dp, hyperboloid.orientation) * hyperboloid.orientation);
-	// v = v - (dot(v, hyperboloid.orientation) * hyperboloid.orientation);
+	float	aa = hyperboloid.a * hyperboloid.a;
+	float	bb = hyperboloid.b * hyperboloid.b;
+	float	cc = hyperboloid.c * hyperboloid.c;
 
-	aa = hyperboloid.a * hyperboloid.a;
-	bb = hyperboloid.b * hyperboloid.b;
-	cc = hyperboloid.c * hyperboloid.c;
+	vec3	v = ray.dir;					// ray dir
+	float	dot_v_wa = dot(v, wa);
+	float	dot_dp_wa = dot(dp, wa);
+	float	dot_v_ua = dot(v, ua);
+	float	dot_dp_ua = dot(dp, ua);
+	float	dot_v_va = dot(v, va);
+	float	dot_dp_va = dot(dp, va);
 
-	A = dot(v - (dot(v, va) * va), v - (dot(v, va) * va)) / aa - pow(dot(v, va), 2) / bb + pow(dot(v, wa), 2) / cc;
-	B = 2 * ( (dot(dp - (dot(dp, va) * va), v - dot(v, va) * va)) / aa - (dot(dp, va) * dot(v, va)) / bb + (dot(dp, wa) * dot(v, wa)) / cc );
-	C = dot(dp - dot(dp, va) * va, dp - dot(dp, va) * va) / aa - pow(dot(dp, va), 2) / bb + pow(dot(dp, wa), 2) / cc - hyperboloid.shape;
+	// version IV Coefficents
+    float A = pow(dot_v_wa, 2) / aa				+	pow(dot_v_ua, 2) / bb		-	pow(dot_v_va, 2) / cc;
+    float B = 2 * (dot_dp_wa * dot_v_wa / aa	+	dot_dp_ua * dot_v_ua / bb	-	dot_dp_va * dot_v_va / cc);
+    float C = pow(dot_dp_wa, 2) / aa			+	pow(dot_dp_ua, 2) / bb		-	pow(dot_dp_va, 2) / cc - hyperboloid.shape;
 
 	discriminant = B * B - 4 * A * C;
 	if (discriminant < 0)
-		return (discriminant);
+		return (HP_INF);
 	
 	sqrt_discriminant = sqrt(discriminant);
 	if (B >= 0)
@@ -47,85 +96,6 @@ float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out flo
 		t1 = (2 * C) / (-B + sqrt_discriminant);
 	}
 
-	return (discriminant);
-
-}
-
-
-// float	get_hyperboloid_discriminant(t_ray ray, t_hyperboloid hyperboloid, out float t0, out float t1)
-// {
-// 	vec3		ap;		// origin - point_offset
-// 	float		a;
-// 	float		b;
-// 	float		c;
-// 	vec3		d;		// denominator
-// 	vec3		ad;		// ray: a + bt -> a * d
-// 	vec3		bd;		// ray: a + bt -> b * d
-// 	vec3		doth;	// hyperboloid dot_product -> where (dot = x*x + y*y - z*z)
-// 	float		discriminant;
-// 	float		sqrt_discriminant;
-
-// 	// setup denominator(coefficients) and the other variables
-// 	d = vec3(1 / hyperboloid.a, 1 / hyperboloid.b, 1 / hyperboloid.c);
-
-// 	hyperboloid.orientation = hyperboloid.orientation - vec3(0, 0, 1);
-
-// 	ap = ray.origin - hyperboloid.origin;
-// 	// rotate ap
-// 	// ap = ap - (dot(ap, hyperboloid.orientation) * hyperboloid.orientation);
-// 	// ray.dir = ray.dir - (dot(ray.dir, hyperboloid.orientation) * hyperboloid.orientation);
-
-// 	ad = ap * d;
-// 	bd = ray.dir * d;
-// 	doth = vec3(1, 1, -1);
-
-// 	a = dot(doth * bd, bd);
-// 	b = 2 * dot(doth * ad, bd);
-// 	c = dot(doth * ad, ad) - hyperboloid.shape;
-	
-// 	discriminant = b * b - 4 * a * c;
-// 	if (discriminant < 0)
-// 		return (discriminant);
-	
-// 	sqrt_discriminant = sqrt(discriminant);
-// 	if (b >= 0)
-// 	{
-// 		t0 = (2 * c) / (-b - sqrt_discriminant);
-// 		t1 = (-b - sqrt_discriminant) / (2 * a);
-// 	}
-// 	else
-// 	{
-// 		t0 = (-b + sqrt_discriminant) / (2 * a);
-// 		t1 = (2 * c) / (-b + sqrt_discriminant);
-// 	}
-
-// 	return (discriminant);
-// }
-
-// bool is_on_surface(vec3 point, t_hyperboloid hyperboloid)
-// {
-// 	float x = point.x - hyperboloid.origin.x;
-// 	float y = point.y - hyperboloid.origin.y;
-// 	float z = point.z - hyperboloid.origin.z;
-
-// 	float left = x * x / (hyperboloid.a * hyperboloid.a) + y * y / (hyperboloid.b * hyperboloid.b) - z * z / (hyperboloid.c * hyperboloid.c);
-// 	float right = hyperboloid.shape;
-
-// 	return ( abs(left - right) < EPSILON );
-// }
-
-t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
-{
-	t_hitpoint	hitpoint;
-	float		discriminant;
-	float		t0;
-	float		t1;
-	
-	discriminant = get_hyperboloid_discriminant(ray, hyperboloid, t0, t1);
-
-	if (discriminant < 0)
-		return (HP_INF);
-
 	hitpoint.hit = true;
 	hitpoint.color = hyperboloid.base_color;
 	hitpoint.material_idx = hyperboloid.material_idx;
@@ -136,43 +106,32 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		hitpoint.ray = t0 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
 
-		// rot pos
-		// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
-
+		// height
+		t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
 
 		// check for height
-		if (abs(hitpoint.pos.z) > hyperboloid.height)
+		if (t_height > hyperboloid.height / 2)
 		{
 			// get outside HP
 			hitpoint.ray = t1 * ray.dir;
 			hitpoint.pos = ray.origin + hitpoint.ray;
 
-			// rot pos
-			// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+			// new height
+			t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
 
-			if (t1 < 0 || abs(hitpoint.pos.z) > hyperboloid.height)
+			if (t1 < 0 || t_height > hyperboloid.height / 2)
 				return (HP_INF);
 			// WE ARE IN HEIGHT RANGE GET OUTSIDE HP and NORMAL
-			hitpoint.normal = normalize(vec3
-			(
-				 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-				 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-				-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-			));
+			hitpoint.normal = normalize(  dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
+										+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
+										- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
 		}
 		else
 		{
-			hitpoint.normal = normalize(vec3
-			(
-				-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-				-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-				 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-			));
+			hitpoint.normal = -1 * normalize( dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
+											+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
+											- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
 		}
-
-		// rotate normal
-		// hitpoint.normal = hitpoint.normal - (dot(hitpoint.normal, hyperboloid.orientation) * hyperboloid.orientation);
-
 	}
 	else if (t1 > 0 && (t1 < t0 || t0 < 0))
 	{
@@ -180,38 +139,32 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		hitpoint.ray = t1 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
 
-		// rot pos
-		// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+		// height
+		t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
 
 		// check for height
-		if (abs(hitpoint.pos.z) > hyperboloid.height)
+		if (t_height > hyperboloid.height / 2)
 		{
 			// get inside HP
 			hitpoint.ray = t0 * ray.dir;
 			hitpoint.pos = ray.origin + hitpoint.ray;
 
-			// rot pos
-			// hitpoint.pos = hitpoint.pos - (dot(hitpoint.pos, hyperboloid.orientation) * hyperboloid.orientation);
+			// new height
+			t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
 
-			if (t0 < 0 || abs(hitpoint.pos.z) > hyperboloid.height)
+			if (t0 < 0 || t_height > hyperboloid.height / 2)
 				return (HP_INF);
 			// WE ARE ABOVE HEIGHT GET INSIDE HP and NORMAL
-			hitpoint.normal = normalize(vec3
-			(
-				-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-				-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-				 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-			));
+			hitpoint.normal = -1 * normalize( dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
+											+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
+											- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
 		}
 		else
 		{
 			// WE ARE BELOW HEIGHT GET OUTSIDE HP
-			hitpoint.normal = normalize(vec3
-			(
-				 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-				 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-				-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-			));
+			hitpoint.normal = normalize(  dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
+										+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
+										- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
 		}
 	}
 	else
@@ -220,158 +173,6 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	// hitpoint.pos += hitpoint.normal * (0.000001 * max(abs(t0), abs(t1)));	// original: 0.000001
 	return (hitpoint);
 }
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
-
-// t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
-// {
-// 	t_hitpoint	hitpoint;
-// 	float		discriminant;
-// 	float		t0;
-// 	float		t1;
-
-// 	discriminant = get_hyperboloid_discriminant(ray, hyperboloid, t0, t1);
-
-// 	if (discriminant < 0)
-// 		return (HP_INF);
-
-// 	hitpoint.hit = true;
-// 	hitpoint.color = hyperboloid.base_color;
-// 	hitpoint.material_idx = hyperboloid.material_idx;
-
-// 	if (t0 > 0 && (t0 < t1 || t1 < 0))
-// 	{
-// 		// INSIDE
-// 		hitpoint.ray = t0 * ray.dir;
-// 		hitpoint.pos = ray.origin + hitpoint.ray;
-// 		hitpoint.normal = normalize(vec3
-// 		(
-// 			-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-// 			-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-// 			 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-// 		));
-// 		// if (t1 > 0)
-// 		// {
-// 		// 	// INSIDE INF_DISC
-// 		// 	hitpoint.ray = t0 * ray.dir;
-// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
-// 		// 	hitpoint.normal = normalize(vec3
-// 		// 	(
-// 		// 		-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-// 		// 		-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-// 		// 		 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-// 		// 	));
-// 		// }
-// 		// else
-// 		// {
-// 		// 	// INSIDE CONE_PART
-// 		// 	hitpoint.ray = t0 * ray.dir;
-// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
-// 		// 	hitpoint.normal = normalize(vec3
-// 		// 	(
-// 		// 		-2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-// 		// 		-2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-// 		// 		 2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-// 		// 	));
-// 		// }
-// 	}
-// 	else if (t1 > 0 && (t1 < t0 || t0 < 0))
-// 	{
-// 		// OUTSIDE
-// 		hitpoint.ray = t1 * ray.dir;
-// 		hitpoint.pos = ray.origin + hitpoint.ray;
-// 		hitpoint.normal = normalize(vec3
-// 		(
-// 			 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-// 			 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-// 			-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-// 		));
-// 		// if (t0 > 0)
-// 		// {
-// 		// 	// OUTSIDE CONE_PART
-// 		// 	hitpoint.ray = t1 * ray.dir;
-// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
-// 		// 	hitpoint.normal = normalize(vec3
-// 		// 	(
-// 		// 		 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-// 		// 		 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-// 		// 		-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-// 		// 	));
-// 		// }
-// 		// else
-// 		// {
-// 		// 	// OUTSIDE INF_DISC
-// 		// 	hitpoint.ray = t1 * ray.dir;
-// 		// 	hitpoint.pos = ray.origin + hitpoint.ray;
-// 		// 	hitpoint.normal = normalize(vec3
-// 		// 	(
-// 		// 		 2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-// 		// 		 2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-// 		// 		-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-// 		// 	));
-// 		// }
-// 	}
-// 	else
-// 		return (HP_INF);
-
-// 	// check if we are on the surface
-// 	// if (is_on_surface(rt.camera.origin, hyperboloid) == true)
-// 	// {
-// 	// 	hitpoint.ray = vec3(0, 0, 0);
-// 	// 	hitpoint.pos = rt.camera.origin;
-// 	// 	hitpoint.normal = normalize(vec3
-// 	// 	(
-// 	// 			2 * (hitpoint.pos.x - hyperboloid.origin.x) / (hyperboloid.a * hyperboloid.a),
-// 	// 			2 * (hitpoint.pos.y - hyperboloid.origin.y) / (hyperboloid.b * hyperboloid.b),
-// 	// 		-2 * (hitpoint.pos.z - hyperboloid.origin.z) / (hyperboloid.c * hyperboloid.c)
-// 	// 	));
-// 	// }
-
-
-// 	// check for height
-// 	// if (abs(hitpoint.pos.z) > hyperboloid.height)
-// 	// 	return (HP_INF);
-
-
-// 	// hitpoint.pos += hitpoint.normal * 0.02;
-// 	// hitpoint.ray -= hitpoint.normal * 0.02;
-// 	return (hitpoint);
-// }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
 
 t_hyperboloid	get_hyperboloid(int offset)
 {
