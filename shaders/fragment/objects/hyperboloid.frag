@@ -53,13 +53,18 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	float		sqrt_discriminant;
 	float		t0;
 	float		t1;
+	vec3		delta_hp;	// delta_HitPoint
 	float		t_height;
 
 	// hyperboloid.orientation = vec3_rotate_x(hyperboloid.orientation, rt.debug / 50);
-	
-	vec3	va = hyperboloid.orientation;	// orientation
-	vec3	wa = normalize(cross(va, (va != vec3(0, 0, 1)) ? vec3(0, 0, 1) : vec3(0, 1, 0)));
-  	vec3	ua = normalize(cross(va, wa));
+
+	// orientation vectors for each axis	
+	vec3	va = hyperboloid.orientation;														// 	z-axis
+	vec3	wa = normalize(cross(va, (va != vec3(0, 0, 1)) ? vec3(0, 0, 1) : vec3(0, 1, 0)));	// 	x-axis
+  	vec3	ua = normalize(cross(va, wa));														// 	y-axis
+
+	// orientation length
+	float	orientation_len = dot(hyperboloid.orientation, hyperboloid.orientation);
 
 	vec3	dp = ray.origin - hyperboloid.origin;	// delta p
 
@@ -105,9 +110,10 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		// INSIDE
 		hitpoint.ray = t0 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
+		delta_hp = hitpoint.pos - hyperboloid.origin;
 
 		// height
-		t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
+		t_height = abs(dot(delta_hp, hyperboloid.orientation) / orientation_len);
 
 		// check for height
 		if (t_height > hyperboloid.height / 2)
@@ -115,22 +121,23 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 			// get outside HP
 			hitpoint.ray = t1 * ray.dir;
 			hitpoint.pos = ray.origin + hitpoint.ray;
+			delta_hp = hitpoint.pos - hyperboloid.origin;
 
 			// new height
-			t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
+			t_height = abs(dot(delta_hp, hyperboloid.orientation) / orientation_len);
 
 			if (t1 < 0 || t_height > hyperboloid.height / 2)
 				return (HP_INF);
 			// WE ARE IN HEIGHT RANGE GET OUTSIDE HP and NORMAL
-			hitpoint.normal = normalize(  dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
-										+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
-										- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
+			hitpoint.normal = normalize(  dot(delta_hp, wa) * wa / aa
+										+ dot(delta_hp, ua) * ua / bb
+										- dot(delta_hp, va) * va / cc);
 		}
 		else
 		{
-			hitpoint.normal = -1 * normalize( dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
-											+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
-											- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
+			hitpoint.normal = -1 * normalize( dot(delta_hp, wa) * wa / aa
+											+ dot(delta_hp, ua) * ua / bb
+											- dot(delta_hp, va) * va / cc);
 		}
 	}
 	else if (t1 > 0 && (t1 < t0 || t0 < 0))
@@ -138,9 +145,10 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 		// OUTSIDE
 		hitpoint.ray = t1 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
+		delta_hp = hitpoint.pos - hyperboloid.origin;
 
 		// height
-		t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
+		t_height = abs(dot(delta_hp, hyperboloid.orientation) / orientation_len);
 
 		// check for height
 		if (t_height > hyperboloid.height / 2)
@@ -148,23 +156,24 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 			// get inside HP
 			hitpoint.ray = t0 * ray.dir;
 			hitpoint.pos = ray.origin + hitpoint.ray;
+			delta_hp = hitpoint.pos - hyperboloid.origin;
 
 			// new height
-			t_height = abs(dot(hitpoint.pos - hyperboloid.origin, hyperboloid.orientation) / dot(hyperboloid.orientation, hyperboloid.orientation));
+			t_height = abs(dot(delta_hp, hyperboloid.orientation) / orientation_len);
 
 			if (t0 < 0 || t_height > hyperboloid.height / 2)
 				return (HP_INF);
 			// WE ARE ABOVE HEIGHT GET INSIDE HP and NORMAL
-			hitpoint.normal = -1 * normalize( dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
-											+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
-											- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
+			hitpoint.normal = -1 * normalize( dot(delta_hp, wa) * wa / aa
+											+ dot(delta_hp, ua) * ua / bb
+											- dot(delta_hp, va) * va / cc);
 		}
 		else
 		{
 			// WE ARE BELOW HEIGHT GET OUTSIDE HP
-			hitpoint.normal = normalize(  dot((hitpoint.pos - hyperboloid.origin), wa) * wa / aa
-										+ dot((hitpoint.pos - hyperboloid.origin), ua) * ua / bb
-										- dot((hitpoint.pos - hyperboloid.origin), va) * va / cc);
+			hitpoint.normal = normalize(  dot(delta_hp, wa) * wa / aa
+										+ dot(delta_hp, ua) * ua / bb
+										- dot(delta_hp, va) * va / cc);
 		}
 	}
 	else
