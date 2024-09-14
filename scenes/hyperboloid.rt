@@ -14,6 +14,9 @@ sp	-3, 3,0 	3	mat_hp
 sp	 3,-3,0 	3	mat_hp
 sp	-3,-3,0 	3	mat_hp
 
+# center
+sp	0,0,0 	0.25	mat_hp
+
 # OUTSIDE
 l	-10,   0,0		0.08		255,0,0
 l	 10,   0,0		0.08		0,255,0

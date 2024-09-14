@@ -4,8 +4,8 @@ C	0,-2.5,0	0,1,0	90
 #m	name 	| color 		| metallic | roughness | ior | transmission | emission_strength | emission_color
 mat	mat_hp    204,204,204 		0.0 		0.5		1.45		0.0				0.0				255,255,255
 
-#	origin	A	B	C	shape	col
-hb 	0,0,0	.5	.5	1	-0.01		204,204,204 mat_hp
+#	origin	orientation	height	A	B	C	shape		col
+hb 	0,0,0	0,0,1		100		.5	.5	1	-0.01		204,204,204 mat_hp
 
 pl	 0,3,0		0,1,0	204,204,204
 sp	 0,-2,0		0.5		204,204,204
