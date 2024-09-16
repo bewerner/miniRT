@@ -82,22 +82,24 @@ t_hitpoint	get_hitpoint_inside(t_ray ray, t_cylinder cylinder, t_hitpoint hitpoi
 	return (hitpoint);
 }
 
-vec2	get_uv_cylinder(t_cylinder cylinder, vec3 normal, vec3 pos)
+vec2	get_uv_cylinder(t_cylinder cylinder, vec3 cap1_normal, vec3 normal, vec3 pos)
 {
 	vec2	uv;
 
-	if (cylinder.cap1.normal.z == 1.0)
-		cylinder.cap1.normal.y = -EPSILON;
-	if (cylinder.cap1.normal.z == -1.0)
-		cylinder.cap1.normal.y = EPSILON;
+	if (cap1_normal.z == 1.0)
+		cap1_normal.y = -0.000001;
+	if (cap1_normal.z == -1.0)
+		cap1_normal.y = 0.000001;
 
-	vec3 cap_u = normalize(cross(cylinder.cap1.normal, vec3(cylinder.cap1.normal.xy, 0)));
-	vec3 cap_v = cross(cylinder.cap1.normal, cap_u);
+	if (dot(cylinder.origin - pos, normal) > 0)
+		normal *= -1;
+	vec3 cap_u = normalize(cross(cap1_normal, vec3(cap1_normal.xy, 0)));
+	vec3 cap_v = cross(cap1_normal, cap_u);
 	uv.x = dot(normal, cap_v) * 0.25 + 0.25;
 	if (dot(normal, cap_u) > 0)
-		uv.x = -uv.x + 1;
+		uv.x = 1 - uv.x;
 
-	uv.y = distance(cylinder.origin - cylinder.orientation * (cylinder.height / 2), pos - normal * cylinder.radius);
+	uv.y = distance(cylinder.cap1.origin, pos - normal * cylinder.radius);
 	uv.y = uv.y / cylinder.height / 2 + 0.5;
 	return (uv);
 }
@@ -109,13 +111,13 @@ vec2	get_uv_cap(t_cylinder cylinder, vec3 pos)
 	float	scale = 2 * cylinder.radius;
 
 	if (plane.normal.z == 1.0)
-		plane.normal.y = -EPSILON;
+		plane.normal.y = -0.000001;
 	if (plane.normal.z == -1.0)
-		plane.normal.y = EPSILON;
+		plane.normal.y = 0.000001;
 
 	vec3 norm_u = normalize(cross(plane.normal, vec3(plane.normal.xy, 0)));
 	vec3 norm_v = cross(plane.normal, norm_u);
-	plane.origin -= norm_u + norm_v;
+	plane.origin -= (norm_u + norm_v) * cylinder.radius;
 
 	norm_u /= scale;
 	norm_v /= -scale;
@@ -151,9 +153,9 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
 	}
 	hitpoint.hit = true;
 	// if (hitpoint.normal == cylinder.orientation || hitpoint.normal == cylinder.orientation * -1)
-	// 	hitpoint.uv = get_uv_cylinder(cylinder, hitpoint.normal, hitpoint.pos);
-	// else
 	// 	hitpoint.uv = get_uv_cap(cylinder, hitpoint.pos);
+	// else
+	// 	hitpoint.uv = get_uv_cylinder(cylinder, cylinder.cap1.normal, hitpoint.normal, hitpoint.pos);
 	hitpoint.color = cylinder.base_color;
 	// hitpoint.color = vec3(hitpoint.uv, 0);
 	hitpoint.material_idx = cylinder.material_idx;

@@ -9,9 +9,9 @@ vec2	get_uv_plane(t_plane plane, vec3 pos)
 	float	scale = 5;
 
 	if (plane.normal.z == 1.0)
-		plane.normal.y = -EPSILON;
+		plane.normal.y = -0.000001;
 	if (plane.normal.z == -1.0)
-		plane.normal.y = EPSILON;
+		plane.normal.y = 0.000001;
 
 	vec3 norm_u = normalize(cross(plane.normal, vec3(plane.normal.xy, 0)));
 	vec3 norm_v = cross(plane.normal, norm_u);
