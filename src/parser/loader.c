@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 20:02:39 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/15 14:27:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,33 +65,33 @@ static void	load_elements(t_scene_size *scene_size, t_rt *rt)
 	}
 }
 
-static void	print_mats(t_rt *rt)
-{
-	t_material	*mat;
+// static void	print_mats(t_rt *rt)
+// {
+// 	t_material	*mat;
 
-	// THIS IS FOR DEBUG MATERIAL REMOVE ME LATER
-	mat = rt->materials;
-	return ;
-	while (mat)
-	{
-		printf("------------------------------------------\n");
-		printf("index: %zu\n", mat->index);
-		printf("name: %s\n", mat->name);
-		printf("color r: %f\n", mat->color.r);
-		printf("color g: %f\n", mat->color.g);
-		printf("color b: %f\n", mat->color.b);
-		printf("metallic: %f\n", mat->metallic);
-		printf("roughness: %f\n", mat->roughness);
-		printf("ior: %f\n", mat->ior);
-		printf("transmission: %f\n", mat->transmission);
-		printf("emission_strength: %f\n", mat->emission_strength);
-		printf("emission_color r: %f\n", mat->emission_color.r);
-		printf("emission_color g: %f\n", mat->emission_color.g);
-		printf("emission_color b: %f\n", mat->emission_color.b);
-		mat = mat->next;
-	}
-	printf("------------------------------------------\n");
-}
+// 	// THIS IS FOR DEBUG MATERIAL REMOVE ME LATER
+// 	mat = rt->materials;
+// 	return ;
+// 	while (mat)
+// 	{
+// 		printf("------------------------------------------\n");
+// 		printf("index: %zu\n", mat->index);
+// 		printf("name: %s\n", mat->name);
+// 		printf("color r: %f\n", mat->color.r);
+// 		printf("color g: %f\n", mat->color.g);
+// 		printf("color b: %f\n", mat->color.b);
+// 		printf("metallic: %f\n", mat->metallic);
+// 		printf("roughness: %f\n", mat->roughness);
+// 		printf("ior: %f\n", mat->ior);
+// 		printf("transmission: %f\n", mat->transmission);
+// 		printf("emission_strength: %f\n", mat->emission_strength);
+// 		printf("emission_color r: %f\n", mat->emission_color.r);
+// 		printf("emission_color g: %f\n", mat->emission_color.g);
+// 		printf("emission_color b: %f\n", mat->emission_color.b);
+// 		mat = mat->next;
+// 	}
+// 	printf("------------------------------------------\n");
+// }
 
 void	load_scene(char *file, t_rt *rt)
 {
@@ -115,9 +115,9 @@ void	load_scene(char *file, t_rt *rt)
 			&& rt->lights == NULL) || rt->materials == NULL)
 		terminate(error_msg(RT_ERROR_MALLOC), 1, rt);
 	error
-		= parse_scene(scn_sze	.mat_cnt, scn_sze.obj_cnt, scn_sze.light_cnt, rt);
+		= parse_scene(scn_sze.mat_cnt, scn_sze.obj_cnt, scn_sze.light_cnt, rt);
 	if (error)
 		terminate(error_msg(error), 1, rt);
-	// unselect_all(rt->objects);
-	print_mats(rt);	// DELETE ME
 }
+	// unselect_all(rt->objects);
+	// print_mats(rt);	// DELETE ME
