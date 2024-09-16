@@ -31,8 +31,8 @@ void	main(void)
 	g_seed = int(fract(sin(dot(vec2(coord.xy) * rt.frame_count, vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
 
 	// Add pixel randomization to the rays for color accumulation (bouncelight, antialiasing, transmission, emission)
-	uv.x += (1 / rt.screen_size.x) * rand();
-	uv.y += (1 / rt.screen_size.y) * rand();
+	// uv.x += (1 / rt.screen_size.x) * rand();
+	// uv.y += (1 / rt.screen_size.y) * rand();
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
