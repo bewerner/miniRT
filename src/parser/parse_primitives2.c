@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_primitives2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:41:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 20:03:50 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/16 21:43:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ t_material	*get_next_material(char *line, t_rt *rt)
 	while (material && ft_strcmp(material->name, line) != 0)
 		material = material->next;
 	if (material == NULL)
-		terminate("invalid material name detected", 1, rt);		// terminate if we find an ivalid material name
-		// return (rt->materials);								// invalid material name defaults to default material
+		terminate("invalid material name detected", 1, rt);
 	return (material);
 }
 
-void	set_color_and_material(t_vec3 *col, t_material **mat, char *line, t_rt *rt)
+void	set_color_and_material(t_vec3 *col, t_material **mat,
+			char *line, t_rt *rt)
 {
 	ft_skipspace(&line);
 	if (ft_isalpha(*line))
@@ -65,10 +65,10 @@ t_error	parse_hyperboloid(t_hyperboloid *hb, t_rt *rt)
 	hb->b = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	hb->c = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	hb->shape = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	// if (hb->shape != -1.0f && hb->shape != 0.0f && hb->shape != 1.0f)
-	// 	terminate("Hyperboloid wrong shape value, should be [-1, 0, 1]", 1, rt);
-	if (fabsf(hb->a) <= EPSILON || fabsf(hb->b) == EPSILON || fabsf(hb->c) == EPSILON)
-		terminate("Hyperboloid parameters a,b and c are not allowed to be 0", 1, rt);
+	if (fabsf(hb->a) <= EPSILON
+		|| fabsf(hb->b) == EPSILON
+		|| fabsf(hb->c) == EPSILON)
+		terminate("Hyperboloid parameters a,b,c have to be != 0", 1, rt);
 	set_color_and_material(&hb->base_color, &hb->material, line, rt);
 	return (RT_SUCCESS);
 }
