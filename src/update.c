@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 19:52:48 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/16 21:44:57 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ void	update_ubo_rt(t_rt *rt)
 {
 	t_ubo	ubo_rt;
 
+	ubo_rt.frame_count = rt->frame_count;
 	ubo_rt.debug = rt->debug;
 	ubo_rt.ambient = rt->ambient;
 	glfwGetWindowSize(rt->window, &rt->width, &rt->height);
 	ubo_rt.aspect_ratio = (float)rt->width / (float)rt->height;
 	ubo_rt.camera = rt->camera;
+	ubo_rt.screen_size = (t_vec2){rt->width, rt->height};
 
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
@@ -83,6 +85,9 @@ void	update(t_rt *rt)
 	static double	start;
 	static double	oldstart;
 
+	rt->frame_count++;
+	if (rt->frame_count > 100000)
+		rt->frame_count = 0;
 	i++;
 	if (i == 1)
 		ft_timer(TIMER_START, NULL);
@@ -102,14 +107,6 @@ void	update(t_rt *rt)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	update_ubo_rt(rt);
-
-	// if (rt->mode == MODE_SOLID)
-	// 	fill_image(rt->canvas, (t_vec3){{0.25, 0.25, 0.25, 1}});
-	// else if (rt->mode == MODE_NORMAL)
-	// 	fill_image(rt->canvas, (t_vec3){{0, 0, 0, 1}});
-	// else
-	// 	fill_image(rt->canvas, rt->ambient);
-	// render(rt);
 
 	// DRAW SCREEN
 	glBindVertexArray(rt->vertex_array_object);

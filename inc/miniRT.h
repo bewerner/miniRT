@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 22:54:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/16 21:44:28 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,10 +286,13 @@ typedef struct s_ubo
 	t_vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
+	float			frame_count;
+	t_vec2			screen_size;
 }	t_ubo;
 
 typedef struct s_rt
 {
+	float			frame_count;
 	int				width;
 	int				height;
 	GLFWwindow		*window;
@@ -305,6 +308,7 @@ typedef struct s_rt
 	GLuint			tbo_objects_id;
 	GLuint			tbo_lights_id;	
 	GLuint			tbo_agx_lut_id;
+	GLuint			fbo_id;
 
 	t_list			*line;
 	t_movement		move;

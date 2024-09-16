@@ -128,6 +128,8 @@ struct t_rt
 	vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
+	float			frame_count;
+	vec2			screen_size;
 };
 
 
@@ -150,6 +152,7 @@ in vec2 coord;
 uniform samplerBuffer objects;
 uniform samplerBuffer lights;
 uniform samplerBuffer agx_lut;
+uniform sampler2D frameTexture;
 
 out vec3 FragColor;
 

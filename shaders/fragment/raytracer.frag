@@ -28,7 +28,11 @@ void	main(void)
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 
-	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
+	g_seed = int(fract(sin(dot(vec2(coord.xy) * rt.frame_count, vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
+
+	// Add pixel randomization to the rays for color accumulation (bouncelight, antialiasing, transmission, emission)
+	uv.x += (1 / rt.screen_size.x) * rand();
+	uv.y += (1 / rt.screen_size.y) * rand();
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
