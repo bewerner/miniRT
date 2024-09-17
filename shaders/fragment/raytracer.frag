@@ -68,8 +68,8 @@ void	main(void)
 	camera_ray.origin = rt.camera.origin;
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
-	camera_ray.dir.x = camera_ray.dir.x - (2.0 / 1280 / 2.0) + (2.0 / 1280 * rand() * 1);
-	camera_ray.dir.y = camera_ray.dir.y - (2.0 /  720 / 2.0) + (2.0 /  720 * rand() * 1);
+	camera_ray.dir.x = camera_ray.dir.x - (2.0 / rt.width  / 2.0) + (2.0 / rt.width  * rand() * 1);
+	camera_ray.dir.y = camera_ray.dir.y - (2.0 / rt.height / 2.0) + (2.0 / rt.height * rand() * 1);
 
 	vec3 col;
 	col = trace_ray(camera_ray);

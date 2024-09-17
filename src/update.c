@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/17 20:28:11 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/17 20:57:31 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	update_ubo_rt(t_rt *rt)
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 	ubo_rt.aspect_ratio = (float)rt->width / (float)rt->height;
 	ubo_rt.camera = rt->camera;
+	ubo_rt.width = rt->width;
+	ubo_rt.height = rt->height;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
@@ -121,6 +123,8 @@ void	update(t_rt *rt)
 
 
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->framebuffer);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+	update_ubo_rt(rt);
 	glViewport(0, 0, rt->width, rt->height);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, rt->frameTexture);
@@ -133,6 +137,8 @@ void	update(t_rt *rt)
 
 	// After rendering to the texture, unbind the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+	update_ubo_rt(rt);
 	glViewport(0, 0, rt->width, rt->height);
 
 	if (rt->debug >= -1)
