@@ -29,22 +29,40 @@ void	main(void)
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 	vec2 tmp = vec2(coord.x, 1.0 - coord.y);
 	// vec2 tmp = coord;
+
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.frame + 1)) + rt.frame * 9823;
+	g_seed += int(rand() * 943 * rt.frame);
+
+	if (rt.frame >= rt.max_samples)
+	{
+		vec3 col = texture(prevFrameTexture, tmp).rgb;
+		if (rt.frame < rt.max_samples)
+		col = to_agx(col.rgb);
+		col = dither(col);
+		FragColor = col;
+		return ;
+	}
 	if (rt.debug == -1 || rt.frame >= rt.max_samples)
 	{
+		vec3 col = texture(prevFrameTexture, tmp).rgb;
+		if (rt.frame < rt.max_samples)
+		col = to_agx(col.rgb);
+		col = dither(col);
+		FragColor = col;
 		// FragColor = vec3(tmp , 0);
-		FragColor = texture(prevFrameTexture, tmp).rgb;
 		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.1);
-		return;
+		return ;
 	}
 	if (rt.debug == -2)
 	{
 		// FragColor = vec3(tmp , 0);
-		FragColor = texture(prevFrameTexture, tmp).rgb;
+		// vec3 col = texture(prevFrameTexture, tmp).rgb;
+		// col = to_agx(col.rgb);
+		// col = dither(col);
+		// FragColor = col;
 		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.99);
-		return;
+		return ;
 	}
-
-	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.frame + 1));
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
@@ -53,16 +71,18 @@ void	main(void)
 	camera_ray.dir.x = camera_ray.dir.x - (2.0 / 1280 / 2.0) + (2.0 / 1280 * rand() * 1);
 	camera_ray.dir.y = camera_ray.dir.y - (2.0 /  720 / 2.0) + (2.0 /  720 * rand() * 1);
 
-	vec3 col = trace_ray(camera_ray);
-	col = to_agx(col.rgb);
-	col = dither(col);
+	vec3 col;
+	col = trace_ray(camera_ray);
+	// col = to_agx(col.rgb);
+	// col = dither(col);
 
 	FragColor = col;
+	// col = vec3(rand());
 	// if (uv.x > 0.9)
 	// 	FragColor = texture(prevFrameTexture, vec2(0.5, 0.5)).rgb;
 	// 	// FragColor = texture(prevFrameTexture, uv).rgb;
 
-	if (rt.frame > 1)
+	if (rt.frame > 0)
 		FragColor = mix(texture(prevFrameTexture, tmp).rgb, col, 1.0 / rt.frame);
 		// FragColor = mix(col, texture(prevFrameTexture, tmp).rgb, 0.5);
 		// FragColor = texture(prevFrameTexture, tmp).rgb;
