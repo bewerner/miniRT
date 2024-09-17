@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/10 20:37:24 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/17 04:26:16 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	init_glfw(t_rt *rt)
 	rt->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT - LOADING...", NULL, NULL);
 	if (!rt->window)
 		terminate("glfw window creation failed", 1, rt);
-	glfwGetWindowSize(rt->window, &rt->width, &rt->height);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 	glfwMakeContextCurrent(rt->window);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -443,8 +443,37 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	glUniform1i(uniform_location, 3);
 }
 
+void	create_fbo(t_rt *rt)
+{
+	// Create texture for the framebuffer
+	glGenTextures(1, &rt->frameTexture);
+	glBindTexture(GL_TEXTURE_2D, rt->frameTexture);
+	printf("%d\n", rt->width);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+	printf("%d\n", rt->width);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, rt->width, rt->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Create framebuffer and attach the texture
+	glGenFramebuffers(1, &rt->framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, rt->framebuffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->frameTexture, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		printf("Framebuffer is not complete!\n");
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);  // Unbind the framebuffer
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
+	rt->max_samples = INT32_MAX;
+	// rt->max_samples = 32;
 	rt->filename = argv[1];
 	load_scene(argv[1], rt);
 	init_glfw(rt);
@@ -460,4 +489,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_tbo_lights(rt);
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
+	create_fbo(rt);
 }

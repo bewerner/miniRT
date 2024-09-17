@@ -128,6 +128,8 @@ struct t_rt
 	vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
+	int				frame;
+	int				max_samples;
 };
 
 
@@ -150,6 +152,7 @@ in vec2 coord;
 uniform samplerBuffer objects;
 uniform samplerBuffer lights;
 uniform samplerBuffer agx_lut;
+uniform sampler2D prevFrameTexture;
 
 out vec3 FragColor;
 
