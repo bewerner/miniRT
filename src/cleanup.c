@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/08/30 17:46:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/17 18:43:28 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ void	cleanup(t_rt *rt)
 
 void	terminate(char *msg, uint8_t exit_code, t_rt *rt)
 {
+	glUseProgram(0);
+	glLinkProgram(rt->shader_program);
+	glDeleteProgram(rt->shader_program);
+	glLinkProgram(rt->normal_shader_program);
+	glDeleteProgram(rt->normal_shader_program);
+	glLinkProgram(rt->solid_shader_program);
+	glDeleteProgram(rt->solid_shader_program);
 	if (rt->fd != -1)
 		close(rt->fd);
 	if (msg)
