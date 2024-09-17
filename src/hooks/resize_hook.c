@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 19:46:24 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/17 00:55:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/17 18:54:19 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	resize_hook(GLFWwindow *window, int width, int height)
 	// glfwGetWindowSize(window, &rt->width, &rt->height);
 	// glfwGetWindowContentScale(window, &xscale, &yscale);
 	glfwGetFramebufferSize(window, &rt->width, &rt->height);
+	rt->frame = 0;
 }
 
 // void	resize_hook(int width, int height, void *param)
