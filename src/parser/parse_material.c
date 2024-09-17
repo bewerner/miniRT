@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_material.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 20:03:02 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/17 18:28:42 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ t_error	create_materials(size_t mat_cnt, t_rt *rt)
 	t_list			*line;
 	t_material		*curr_mat;
 
+	if (mat_cnt > 100)
+		terminate("Too many materials, a maximum of 100 is supported", 1, rt);
 	curr_mat = rt->materials;
 	create_default_material(mat_cnt++, curr_mat);
 	evaluate_material_id(mat_cnt, &curr_mat);
