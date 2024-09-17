@@ -27,18 +27,45 @@ void	main(void)
 	vec2 uv = coord;
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
+	vec2 tmp = vec2(coord.x, 1.0 - coord.y);
+	// vec2 tmp = coord;
+	if (rt.debug == -1 || rt.frame >= rt.max_samples)
+	{
+		// FragColor = vec3(tmp , 0);
+		FragColor = texture(prevFrameTexture, tmp).rgb;
+		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.1);
+		return;
+	}
+	if (rt.debug == -2)
+	{
+		// FragColor = vec3(tmp , 0);
+		FragColor = texture(prevFrameTexture, tmp).rgb;
+		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.99);
+		return;
+	}
 
-	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.frame + 1));
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
+	camera_ray.dir.x = camera_ray.dir.x - (2.0 / 1280 / 2.0) + (2.0 / 1280 * rand() * 1);
+	camera_ray.dir.y = camera_ray.dir.y - (2.0 /  720 / 2.0) + (2.0 /  720 * rand() * 1);
 
 	vec3 col = trace_ray(camera_ray);
-	if (rt.debug == -1)
-		col = to_agx(col.rgb);
+	col = to_agx(col.rgb);
 	col = dither(col);
 
 	FragColor = col;
+	// if (uv.x > 0.9)
+	// 	FragColor = texture(prevFrameTexture, vec2(0.5, 0.5)).rgb;
+	// 	// FragColor = texture(prevFrameTexture, uv).rgb;
+
+	if (rt.frame > 1)
+		FragColor = mix(texture(prevFrameTexture, tmp).rgb, col, 1.0 / rt.frame);
+		// FragColor = mix(col, texture(prevFrameTexture, tmp).rgb, 0.5);
+		// FragColor = texture(prevFrameTexture, tmp).rgb;
+		// FragColor = vec3(1,0,0);
+	// FragColor = (col + texture(prevFrameTexture, tmp).rgb) / 2;
 }

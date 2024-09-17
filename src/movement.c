@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 20:04:35 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/17 03:54:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,15 @@ void	handle_move_input(t_rt *rt)
 	if (glfwGetKey(rt->window, GLFW_KEY_C))
 		rt->move.acc.y -= ACC * rt->delta_time;
 	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
+	// if (rt->move.acc.x || rt->move.acc.y || rt->move.acc.z)
+	// 	rt->frame = 0;
 }
 
 void	move_camera(t_rt *rt)
 {
+	t_camera	initial_camera;
+	
+	initial_camera = rt->camera;
 	rt->camera.right = (t_vec3){{1, 0, 0}};
 	rt->camera.right = vec3_rotate_z(rt->camera.right, rt->camera.yaw);
 	rt->camera.direction = (t_vec3){{0, 0, -1}};
@@ -61,4 +66,6 @@ void	move_camera(t_rt *rt)
 		= vec3_rotate_x(rt->camera.viewport_light, rt->camera.pitch);
 	rt->camera.viewport_light
 		= vec3_rotate_z(rt->camera.viewport_light, rt->camera.yaw);
+	if (ft_memcmp(&initial_camera, &rt->camera, sizeof(t_camera)))
+		rt->frame = 0;
 }
