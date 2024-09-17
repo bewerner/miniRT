@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/17 20:22:04 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/17 21:38:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,9 +463,8 @@ void	create_fbo(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->framebuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->frameTexture, 0);
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		printf("Framebuffer is not complete!\n");
-	}
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		terminate("Framebuffer is not complete!\n", 1, rt);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);  // Unbind the framebuffer
 }
