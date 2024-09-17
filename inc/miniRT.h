@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/17 18:55:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/17 20:57:27 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,6 +288,8 @@ typedef struct s_ubo
 	float			debug;
 	int				frame;
 	int				max_samples;
+	int				width;
+	int				height;
 }	t_ubo;
 
 typedef struct s_rt

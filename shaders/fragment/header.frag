@@ -130,6 +130,8 @@ struct t_rt
 	float			debug;
 	int				frame;
 	int				max_samples;
+	int				width;
+	int				height;
 };
 
 
