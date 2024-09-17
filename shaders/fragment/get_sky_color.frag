@@ -33,9 +33,9 @@ vec3	get_random_hemisphere_direction(vec3 hemisphere_normal)
 {
 	vec3	direction;
 
-	if (rt.debug == 2)
-		direction = vec3(RandomValueNormalDistribution(), RandomValueNormalDistribution(), RandomValueNormalDistribution());
-	else
+	// if (rt.debug == 2)
+		// direction = vec3(RandomValueNormalDistribution(), RandomValueNormalDistribution(), RandomValueNormalDistribution());
+	// else
 		direction = vec3(rand() - 0.5, rand() - 0.5, rand() - 0.5);
 	if (dot(direction, hemisphere_normal) <= 0)
 		direction *= -1;
