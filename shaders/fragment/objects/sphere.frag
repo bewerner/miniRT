@@ -1,7 +1,9 @@
-vec2	get_uv_sphere(t_sphere sphere, vec3 normal)
+vec2	get_uv_sphere(t_sphere sphere, vec3 normal, bool inside)
 {
 	vec2	uv;
 
+	if (inside == true)
+		normal *= -1;
 	uv.x = dot(normalize(normal.xy), vec2(1, 0)) * 0.25 + 0.25;
 	if (normal.y > 0)
 		uv.x = -uv.x + 1;
@@ -15,6 +17,7 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 	float		discriminant;
 	float		t0;
 	float		t1;
+	bool		inside = false;
 
 	vec3 ap = ray.origin - sphere.origin;
 	float a = dot(ray.dir, ray.dir);
@@ -30,6 +33,7 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 		t0 = (-b + sqrt_discriminant) / (2 * a);
 		if (t0 < 0)
 			return (HP_INF);
+		inside = true;
 		hitpoint.ray = t0 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
 		hitpoint.normal = normalize(sphere.origin - hitpoint.pos);
@@ -41,7 +45,7 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 		hitpoint.normal = normalize(hitpoint.pos - sphere.origin);
 	}
 	hitpoint.hit = true;
-	// hitpoint.uv = get_uv_sphere(sphere, hitpoint.normal);
+	// hitpoint.uv = get_uv_sphere(sphere, hitpoint.normal, inside);
 	hitpoint.color = sphere.base_color;
 	// hitpoint.color = vec3(hitpoint.uv, 0);
 	hitpoint.material_idx = sphere.material_idx;
