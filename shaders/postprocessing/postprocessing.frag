@@ -12,11 +12,11 @@ void	main(void)
 	float dump_value_objects = texelFetch(objects, 0).r;
 	float dump_value_lights = texelFetch(lights, 0).r;
 
-	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.sample_count + 1)) + rt.sample_count * 9823;
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
 
 	vec3 col = texture(raw_render_image, uv).rgb;
-	// if (rt.sample_count < rt.max_samples)
-	col = to_agx(col.rgb);
+	if (rt.mode == MODE_PREVIEW)
+		col = to_agx(col.rgb);
 	col = dither(col);
 	FragColor = col;
 }

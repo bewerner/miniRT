@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 15:51:32 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:46:19 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-// static void	update_screen(t_rt *rt)
-// {
-// 	float		half_w;
-// 	float		half_h;
-// 	t_screen	*screen;
-
-// 	half_w = (rt->width - 1) / 2;
-// 	half_h = (rt->height - 1) / 2;
-// 	screen = &rt->screen;
-// 	screen->x_dir = rt->camera.right;
-// 	screen->y_dir = vec3_cross(rt->camera.direction, rt->camera.right);
-// 	screen->origin = vec3_scale(rt->camera.focal_lenth, rt->camera.direction);
-// 	screen->pos_null = screen->origin;
-// 	screen->pos_null
-// 		= vec3_sub(screen->pos_null, vec3_scale(half_w, screen->x_dir));
-// 	screen->pos_null
-// 		= vec3_sub(screen->pos_null, vec3_scale(half_h, screen->y_dir));
-// }
 
 void	update_ubo_rt(t_rt *rt)
 {
@@ -44,6 +25,7 @@ void	update_ubo_rt(t_rt *rt)
 	ubo_rt.camera = rt->camera;
 	ubo_rt.width = rt->width;
 	ubo_rt.height = rt->height;
+	ubo_rt.mode = (int)rt->mode;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
@@ -100,9 +82,6 @@ void	update(t_rt *rt)
 	static double	start;
 	static double	oldstart;
 
-	rt->sample_count++;
-	if (rt->sample_count > 100000)
-		rt->sample_count = 0;
 	i++;
 	handle_move_input(rt);
 	move_camera(rt);
@@ -125,81 +104,55 @@ void	update(t_rt *rt)
 
 
 
-	glUseProgram(rt->preview_shader_program);
 
+	if (rt->mode == MODE_SOLID)
+		use_shader_program(rt->solid_shader_program, rt);
+	else if (rt->mode == MODE_NORMAL)
+		use_shader_program(rt->normal_shader_program, rt);
+	else if (rt->mode == MODE_PREVIEW)
+		use_shader_program(rt->preview_shader_program, rt);
+
+	// USE OUR FRAMEBUFFER
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
-	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
-	update_ubo_rt(rt);
-	glViewport(0, 0, rt->width, rt->height);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(rt->preview_shader_program, "raw_render_image"), 0);  // Bind the texture to the uniform
-	// DRAW SCREEN
+
+	// RUN SHADER
 	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glFinish();
 
-	// After rendering to the texture, unbind the framebuffer
+
+
+
+
+
+
+
+	use_shader_program(rt->postprocessing_shader_program, rt);
+	// USE DEFAULT FRAMEBUFFER
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
-
-
-	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
-	update_ubo_rt(rt);
-	glViewport(0, 0, rt->width, rt->height);
-
-	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	// glClear(GL_COLOR_BUFFER_BIT);
-
-
-
-
-	// Activate the shader program
-	glUseProgram(rt->postprocessing_shader_program);
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind
-
-	// Bind the texture from the previous frame
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(rt->postprocessing_shader_program, "raw_render_image"), 0);  // Bind the texture to the uniform
-
-
-			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
-			glActiveTexture(GL_TEXTURE0 + 1);
-			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
-			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
-			GLint uniform_location = glGetUniformLocation(rt->postprocessing_shader_program, "objects");
-			if (uniform_location == -1)
-				terminate("objects not found in shader program", 1, rt);
-			glUniform1i(uniform_location, 1);
-			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
-
-			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
-			glActiveTexture(GL_TEXTURE0 + 2);
-			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
-			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-			uniform_location = glGetUniformLocation(rt->postprocessing_shader_program, "lights");
-			if (uniform_location == -1)
-				terminate("lights not found in shader program", 1, rt);
-			glUniform1i(uniform_location, 2);
-			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
-
-
-	// DRAW SCREEN
+	// RUN SHADER
 	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-
 	glFinish();
-		
+
+
+
+
+
+
+
+	// DISPLAY DEFAULT FRAMEBUFFER (postprocessed image)
 	glfwSwapBuffers(rt->window);
 	glfwPollEvents();
-	if (rt->debug >= -1)
-		rt->debug = 0;
 
-	// sleep(1);
+
+
+
+
+
+
+
 	if (i == 60)
 	{
 		ft_timer(TIMER_STOP, NULL);
