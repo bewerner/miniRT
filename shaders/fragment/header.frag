@@ -151,10 +151,10 @@ layout(std140) uniform u_materials
 };
 
 in vec2 coord;
-uniform samplerBuffer objects;
-uniform samplerBuffer lights;
-uniform samplerBuffer agx_lut;
-uniform sampler2D prevFrameTexture;
+uniform samplerBuffer	objects;
+uniform samplerBuffer	lights;
+uniform samplerBuffer	agx_lut;
+uniform sampler2D		raw_render_image;
 
 out vec3 FragColor;
 

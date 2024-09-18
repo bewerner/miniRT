@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 14:56:46 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:08:58 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,9 +298,10 @@ typedef struct s_rt
 	int				height;
 	GLFWwindow		*window;
 	double			delta_time;
-	GLuint			shader_program;
 	GLuint			solid_shader_program;
 	GLuint			normal_shader_program;
+	GLuint			preview_shader_program;
+	GLuint			postprocessing_shader_program;
 	char			*filename;
 
 	GLuint			vao_screen_id;
