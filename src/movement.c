@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 14:49:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:25:35 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // #define ACC  0.15f
 // #define DAMP 0.65f
 #define ACC  4.5f
-#define DAMP 0.65f
+// #define DAMP 0.65f
 
 void	handle_move_input(t_rt *rt)
 {
@@ -34,8 +34,6 @@ void	handle_move_input(t_rt *rt)
 	if (glfwGetKey(rt->window, GLFW_KEY_C))
 		rt->move.acc.y -= ACC * rt->delta_time;
 	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
-	// if (rt->move.acc.x || rt->move.acc.y || rt->move.acc.z)
-	// 	rt->sample_count = 0;
 }
 
 void	move_camera(t_rt *rt)
@@ -50,11 +48,7 @@ void	move_camera(t_rt *rt)
 		= vec3_rotate_x(rt->camera.direction, rt->camera.pitch);
 	rt->camera.direction
 		= vec3_rotate_z(rt->camera.direction, rt->camera.yaw);
-
 	rt->move.vel = rt->move.acc;
-	// rt->move.vel = vec3_add(rt->move.vel, rt->move.acc);
-	// rt->move.vel = vec3_scale(DAMP, rt->move.vel);
-
 	rt->camera.origin = vec3_add(rt->camera.origin,
 			vec3_scale(rt->move.vel.x, rt->camera.right));
 	rt->camera.origin = vec3_add(rt->camera.origin,

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/10 16:18:30 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:12:26 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,4 @@ void	init_hooks(t_rt *rt)
 	glfwSetCursorPosCallback(rt->window, cursor_hook);
 	glfwSetScrollCallback(rt->window, scroll_hook);
 	rt->move.speed = 1;
-	//D mlx_key_hook(rt->mlx, key_hook, rt);
-	//D mlx_mouse_hook(rt->mlx, mouse_hook, rt);
-	//D mlx_cursor_hook(rt->mlx, cursor_hook, rt);
-	//D mlx_resize_hook(rt->mlx, resize_hook, rt);
-	// mlx_loop_hook(rt->mlx, loop_hook, rt);
 }
