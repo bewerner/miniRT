@@ -42,5 +42,5 @@ void	cursor_hook(GLFWwindow *window, double cursor_x, double cursor_y)
 		glfwSetCursorPos(window, rt->initial_cursor_pos.x,
 			rt->initial_cursor_pos.y);
 	else
-		rt->initial_cursor_pos = (t_dvec2){cursor_x, cursor_y};
+		rt->initial_cursor_pos = (t_dvec2){cursor_x + MOUSE_SCREEN_DELTA, cursor_y + MOUSE_SCREEN_DELTA};
 }
