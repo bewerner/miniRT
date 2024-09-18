@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 17:46:19 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:35:18 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,13 @@ void	update(t_rt *rt)
 		glfwSwapInterval(0);
 	}
 	else
-		glfwSwapInterval(1);
+		glfwSwapInterval(SWAP_INTERVAL);
 
 
 
+
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	if (rt->mode == MODE_SOLID)
 		use_shader_program(rt->solid_shader_program, rt);
@@ -125,8 +128,6 @@ void	update(t_rt *rt)
 
 
 
-
-
 	use_shader_program(rt->postprocessing_shader_program, rt);
 	// USE DEFAULT FRAMEBUFFER
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -135,6 +136,26 @@ void	update(t_rt *rt)
 	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glFinish();
+
+
+
+
+
+
+
+
+	glUseProgram(rt->gizmo_shader_program);
+
+	// Get the locations of the uniforms in the shader
+	GLint gizmo_pitch = glGetUniformLocation(rt->gizmo_shader_program, "u_pitch");
+	GLint gizmo_yaw = glGetUniformLocation(rt->gizmo_shader_program, "u_yaw");
+	// Set the values of the uniforms
+	glUniform1f(gizmo_pitch, rt->camera.pitch);
+	glUniform1f(gizmo_yaw, rt->camera.yaw);
+
+	glBindVertexArray(rt->vao_gizmo_id);
+	glDrawArrays(GL_TRIANGLES, 0, 18);
+
 
 
 
