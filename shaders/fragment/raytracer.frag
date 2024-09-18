@@ -27,22 +27,65 @@ void	main(void)
 	vec2 uv = coord;
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
+	vec2 tmp = vec2(coord.x, 1.0 - coord.y);
+	// vec2 tmp = coord;
 
-	g_seed = int(fract(sin(dot(vec2(coord.xy) * rt.frame_count, vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.frame + 1)) + rt.frame * 9823;
+	g_seed += int(rand() * 943 * rt.frame);
 
-	// Add pixel randomization to the rays for color accumulation (bouncelight, antialiasing, transmission, emission)
-	// uv.x += (1 / rt.screen_size.x) * rand();
-	// uv.y += (1 / rt.screen_size.y) * rand();
+	if (rt.frame >= rt.max_samples)
+	{
+		vec3 col = texture(prevFrameTexture, tmp).rgb;
+		if (rt.frame < rt.max_samples)
+		col = to_agx(col.rgb);
+		col = dither(col);
+		FragColor = col;
+		return ;
+	}
+	if (rt.debug == -1 || rt.frame >= rt.max_samples)
+	{
+		vec3 col = texture(prevFrameTexture, tmp).rgb;
+		if (rt.frame < rt.max_samples)
+		col = to_agx(col.rgb);
+		col = dither(col);
+		FragColor = col;
+		// FragColor = vec3(tmp , 0);
+		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.1);
+		return ;
+	}
+	if (rt.debug == -2)
+	{
+		// FragColor = vec3(tmp , 0);
+		// vec3 col = texture(prevFrameTexture, tmp).rgb;
+		// col = to_agx(col.rgb);
+		// col = dither(col);
+		// FragColor = col;
+		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.99);
+		return ;
+	}
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
+	camera_ray.dir.x = camera_ray.dir.x - (2.0 / rt.width  / 2.0) + (2.0 / rt.width  * rand() * 1);
+	camera_ray.dir.y = camera_ray.dir.y - (2.0 / rt.height / 2.0) + (2.0 / rt.height * rand() * 1);
 
-	vec3 col = trace_ray(camera_ray);
-	if (rt.debug == -1)
-		col = to_agx(col.rgb);
-	col = dither(col);
+	vec3 col;
+	col = trace_ray(camera_ray);
+	// col = to_agx(col.rgb);
+	// col = dither(col);
 
 	FragColor = col;
+	// col = vec3(rand());
+	// if (uv.x > 0.9)
+	// 	FragColor = texture(prevFrameTexture, vec2(0.5, 0.5)).rgb;
+	// 	// FragColor = texture(prevFrameTexture, uv).rgb;
+
+	if (rt.frame > 0)
+		FragColor = mix(texture(prevFrameTexture, tmp).rgb, col, 1.0 / rt.frame);
+		// FragColor = mix(col, texture(prevFrameTexture, tmp).rgb, 0.5);
+		// FragColor = texture(prevFrameTexture, tmp).rgb;
+		// FragColor = vec3(1,0,0);
+	// FragColor = (col + texture(prevFrameTexture, tmp).rgb) / 2;
 }
