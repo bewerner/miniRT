@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/18 15:45:15 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:43:10 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,49 @@ static void	create_screen_vertices(t_rt *rt)
 {
 	GLuint	VBO;
 	static const float	vertices[] = {
-		 1,  1, 0,  1,  0, 0,
-		 1, -1, 0,  1,  1, 0,
-		-1, -1, 0,  0,  1, 0,
+		 1,  1, 0,  1, 0, 0,
+		 1, -1, 0,  1, 1, 0,
+		-1, -1, 0,  0, 1, 0,
 
-		-1, -1, 0,  0,  1, 0,
-		-1,  1, 0,  0,  0, 0,
-		 1,  1, 0,  1,  0, 0
+		-1, -1, 0,  0, 1, 0,
+		-1,  1, 0,  0, 0, 0,
+		 1,  1, 0,  1, 0, 0
 	};
 
 	glGenVertexArrays(1, &rt->vao_screen_id);
 	glBindVertexArray(rt->vao_screen_id);
+
+	glGenBuffers(1, &VBO);
+
+	// Bind VBO to GL_ARRAY_BUFFER && copy Vertex buffer to GPU
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// LINKING VERTEX ATTRIBUTES
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+}
+
+static void	create_gizmo(t_rt *rt)
+{
+	GLuint	VBO;
+	static const float	vertices[] = {
+		 0,  1, 0,  1, 0, 0,
+		10,  1, 0,  1, 0, 0,
+		 0, -1, 0,  1, 0, 0,
+
+		10,  1, 0,  1, 0, 0,
+		10, -1, 0,  1, 0, 0,
+		 0, -1, 0,  1, 0, 0
+	};
+
+	glGenVertexArrays(1, &rt->vao_gizmo_id);
+	glBindVertexArray(rt->vao_gizmo_id);
 
 	glGenBuffers(1, &VBO);
 
@@ -480,8 +512,9 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	rt->normal_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/normal/normal.frag", rt);
 	rt->postprocessing_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/postprocessing/postprocessing.frag", rt);
 	rt->preview_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/fragment/raytracer.frag", rt);
-	
+	rt->gizmo_shader_program = create_shader_program("shaders/vertex/gizmo.vert", "shaders/gizmo/gizmo.frag", rt);
 	create_screen_vertices(rt);
+	create_gizmo(rt);
 	create_ubo_rt(rt);
 	create_tbo_objects(rt);
 	create_tbo_lights(rt);

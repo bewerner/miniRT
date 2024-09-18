@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 19:31:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:07:23 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,9 +303,11 @@ typedef struct s_rt
 	GLuint			normal_shader_program;
 	GLuint			preview_shader_program;
 	GLuint			postprocessing_shader_program;
+	GLuint			gizmo_shader_program;
 	char			*filename;
 
 	GLuint			vao_screen_id;
+	GLuint			vao_gizmo_id;
 	GLuint			ubo_rt_id;
 	GLuint			ubo_materials_id;
 	GLuint			tbo_objects_id;
