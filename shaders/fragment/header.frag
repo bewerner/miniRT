@@ -9,6 +9,10 @@
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
 #define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, 0)
 
+#define MODE_SOLID		0
+#define MODE_NORMAL		1
+#define MODE_PREVIEW	2
+
 int	g_seed = 0;
 
 struct	t_ray
@@ -132,6 +136,7 @@ struct t_rt
 	int				max_samples;
 	int				width;
 	int				height;
+	int				mode;
 };
 
 

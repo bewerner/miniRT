@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 15:08:58 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:45:28 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,6 +290,7 @@ typedef struct s_ubo
 	int				max_samples;
 	int				width;
 	int				height;
+	int				mode;
 }	t_ubo;
 
 typedef struct s_rt
@@ -490,6 +491,9 @@ GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 
 // shader/shader_program.c
 GLuint			create_shader_program(const char *vert, const char *freg, t_rt *rt);
+
+// shader/use_shader_program.c
+void			use_shader_program(GLuint shader_program, t_rt *rt);
 
 // ┌───────────┐
 // │ Utilities │

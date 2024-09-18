@@ -6,11 +6,11 @@ VPATH				=	src src/init src/parser src/shader src/primitives src/utils src/hooks
 
 SRC					=	main.c glad.c cleanup.c \
 						init_material_ubo.c \
-						shader_assembler.c shader_compiler.c shader_program.c \
+						shader_assembler.c shader_compiler.c shader_program.c use_shader_program.c \
 						loader.c parser.c parse_utils1.c parse_utils2.c parse_utils3.c parse_material.c parse_default_objs.c parse_lights.c parse_primitives.c parse_primitives2.c \
 						init_hooks.c key_hook.c cursor_hook.c mouse_hook.c resize_hook.c scroll_hook.c \
 						movement.c init_miniRT.c \
-						update.c \
+						update.c\
 						ray_utils.c string_utils.c vec3_utils1.c vec3_utils2.c vec4_utils1.c vec3_rotation.c time.c
 #						render.c plane.c sphere.c cylinder.c get_diffuse_color.c get_specular_color.c get_reflection_color.c get_hitpoint.c 
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
