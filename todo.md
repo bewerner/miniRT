@@ -1,7 +1,6 @@
-
-##########
-mandatory:
-##########
+┌───────────┐
+│ Mandatory │
+└───────────┘
 
 	- init_mini RT
 		* only init textures or bindings
@@ -36,9 +35,9 @@ mandatory:
 
 	- merging of MANDATORY && BONUS
 
-#############
-nice to have:
-#############
+┌──────────────┐
+│ Nice to have │
+└──────────────┘
 
 	- achsen gizmo
 
@@ -73,9 +72,9 @@ nice to have:
 
 	- 3D Noise Texture
 
-################
-if we have time:
-################
+┌─────────────────┐
+│ If we have time │
+└─────────────────┘
 
 	- selectable objects
 		* render outline
@@ -90,3 +89,7 @@ if we have time:
 
 	- parser
 		* BETTER ERROR MSG with line number and more context
+	
+	- render scale
+
+	- viewport navigation like blender (rotate around anchor point)
