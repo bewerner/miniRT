@@ -128,7 +128,7 @@ struct t_rt
 	vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
-	int				frame;
+	int				sample_count;
 	int				max_samples;
 	int				width;
 	int				height;

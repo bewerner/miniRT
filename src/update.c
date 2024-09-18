@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 14:36:05 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 14:57:05 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	update_ubo_rt(t_rt *rt)
 {
 	t_ubo	ubo_rt;
 
-	ubo_rt.frame = rt->frame;
+	ubo_rt.sample_count = rt->sample_count;
 	ubo_rt.max_samples = rt->max_samples;
 	ubo_rt.debug = rt->debug;
 	ubo_rt.ambient = rt->ambient;
@@ -80,7 +80,7 @@ void	update_window_title(t_rt *rt)
 	if (rt->mode == MODE_PREVIEW)
 	{
 		ft_strlcat(title, " - sample ", 1024);
-		frame = ft_itoa(rt->frame);
+		frame = ft_itoa(rt->sample_count);
 		if (frame)
 			ft_strlcat(title, frame, 1024);
 		ft_strlcat(title, "/", 1024);
@@ -100,9 +100,9 @@ void	update(t_rt *rt)
 	static double	start;
 	static double	oldstart;
 
-	rt->frame_count++;
-	if (rt->frame_count > 100000)
-		rt->frame_count = 0;
+	rt->sample_count++;
+	if (rt->sample_count > 100000)
+		rt->sample_count = 0;
 	i++;
 	handle_move_input(rt);
 	move_camera(rt);
@@ -114,10 +114,10 @@ void	update(t_rt *rt)
 	oldstart = start;
 	update_ubo_rt(rt);
 	update_window_title(rt);
-	if (rt->mode == MODE_PREVIEW && rt->frame < rt->max_samples)
+	if (rt->mode == MODE_PREVIEW && rt->sample_count < rt->max_samples)
 	{
-		rt->frame++;
-		if (rt->frame <= 1)
+		rt->sample_count++;
+		if (rt->sample_count <= 1)
 		glfwSwapInterval(0);
 	}
 	else
@@ -125,15 +125,15 @@ void	update(t_rt *rt)
 
 
 
-	glBindFramebuffer(GL_FRAMEBUFFER, rt->framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 	update_ubo_rt(rt);
 	glViewport(0, 0, rt->width, rt->height);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, rt->frameTexture);
+	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
 	glUniform1i(glGetUniformLocation(rt->shader_program, "prevFrameTexture"), 0);  // Bind the texture to the uniform
 	// DRAW SCREEN
-	glBindVertexArray(rt->vertex_array_object);
+	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glFinish();
 
@@ -156,11 +156,11 @@ void	update(t_rt *rt)
 
 	// Bind the texture from the previous frame
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, rt->frameTexture);
+	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
 	glUniform1i(glGetUniformLocation(rt->shader_program, "prevFrameTexture"), 0);  // Bind the texture to the uniform
 
 	// DRAW SCREEN
-	glBindVertexArray(rt->vertex_array_object);
+	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glFinish();
