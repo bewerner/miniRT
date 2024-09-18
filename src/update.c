@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/16 21:44:57 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:36:05 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,15 @@ void	update_ubo_rt(t_rt *rt)
 {
 	t_ubo	ubo_rt;
 
-	ubo_rt.frame_count = rt->frame_count;
+	ubo_rt.frame = rt->frame;
+	ubo_rt.max_samples = rt->max_samples;
 	ubo_rt.debug = rt->debug;
 	ubo_rt.ambient = rt->ambient;
-	glfwGetWindowSize(rt->window, &rt->width, &rt->height);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 	ubo_rt.aspect_ratio = (float)rt->width / (float)rt->height;
 	ubo_rt.camera = rt->camera;
-	ubo_rt.screen_size = (t_vec2){rt->width, rt->height};
+	ubo_rt.width = rt->width;
+	ubo_rt.height = rt->height;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
@@ -55,13 +57,19 @@ void	update_window_title(t_rt *rt)
 	static float	time;
 	char			title[1024];
 	char			*fps;
+	char			*frame;
+	char			*max_samples;
 
+	frame = NULL;
+	max_samples = NULL;
 	title[0] = '\0';
 	i++;
 	time += rt->delta_time;
 	if (time < 0.5f)
 		return ;
 	fps = ft_itoa((1 / (time / i)));
+	i = 0;
+	time = 0;
 	if (fps)
 	{
 		ft_strlcat(title, fps, 1024);
@@ -71,17 +79,24 @@ void	update_window_title(t_rt *rt)
 	ft_strlcat(title, rt->filename, 1024);
 	if (rt->mode == MODE_PREVIEW)
 	{
-		ft_strlcat(title, " - sample 1/1", 1024);
+		ft_strlcat(title, " - sample ", 1024);
+		frame = ft_itoa(rt->frame);
+		if (frame)
+			ft_strlcat(title, frame, 1024);
+		ft_strlcat(title, "/", 1024);
+		max_samples = ft_itoa(rt->max_samples);
+		if (max_samples)
+			ft_strlcat(title, max_samples, 1024);
 	}
 	glfwSetWindowTitle(rt->window, title);
 	free(fps);
-	i = 0;
-	time = 0;
+	free(frame);
+	free(max_samples);
 }
 
 void	update(t_rt *rt)
 {
-	static int	i;
+	static int		i;
 	static double	start;
 	static double	oldstart;
 
@@ -89,38 +104,77 @@ void	update(t_rt *rt)
 	if (rt->frame_count > 100000)
 		rt->frame_count = 0;
 	i++;
+	handle_move_input(rt);
+	move_camera(rt);
 	if (i == 1)
 		ft_timer(TIMER_START, NULL);
-
 	// glfwSetCursorPos(rt->window, 123, 123);
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
 	oldstart = start;
-	update_window_title(rt);
-
-	handle_move_input(rt);
-	move_camera(rt);
-	// update_screen(rt);
-
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
 	update_ubo_rt(rt);
+	update_window_title(rt);
+	if (rt->mode == MODE_PREVIEW && rt->frame < rt->max_samples)
+	{
+		rt->frame++;
+		if (rt->frame <= 1)
+		glfwSwapInterval(0);
+	}
+	else
+		glfwSwapInterval(1);
+
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, rt->framebuffer);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+	update_ubo_rt(rt);
+	glViewport(0, 0, rt->width, rt->height);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, rt->frameTexture);
+	glUniform1i(glGetUniformLocation(rt->shader_program, "prevFrameTexture"), 0);  // Bind the texture to the uniform
+	// DRAW SCREEN
+	glBindVertexArray(rt->vertex_array_object);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glFinish();
+
+
+	// After rendering to the texture, unbind the framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+	update_ubo_rt(rt);
+	glViewport(0, 0, rt->width, rt->height);
+
+	if (rt->debug >= -1)
+		rt->debug = -1;
+	update_ubo_rt(rt);
+
+	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	// glClear(GL_COLOR_BUFFER_BIT);
+
+	// Activate the shader program
+	// glUseProgram(rt->shader_program);
+
+	// Bind the texture from the previous frame
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, rt->frameTexture);
+	glUniform1i(glGetUniformLocation(rt->shader_program, "prevFrameTexture"), 0);  // Bind the texture to the uniform
 
 	// DRAW SCREEN
 	glBindVertexArray(rt->vertex_array_object);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
-
-
 	glFinish();
+		
 	glfwSwapBuffers(rt->window);
 	glfwPollEvents();
+	if (rt->debug >= -1)
+		rt->debug = 0;
 
+	// sleep(1);
 	if (i == 60)
 	{
 		ft_timer(TIMER_STOP, NULL);
 		i = 0;
 	}
+	// usleep(100000);
 }

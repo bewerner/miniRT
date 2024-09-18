@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/16 21:44:28 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:42:42 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
 
-# define SWAP_INTERVAL	1
+# define SWAP_INTERVAL	0
 
 # define MAX_POWER		10000
 # define LIGHT_POWER	0.575f
@@ -286,8 +286,10 @@ typedef struct s_ubo
 	t_vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
-	float			frame_count;
-	t_vec2			screen_size;
+	int				frame;
+	int				max_samples;
+	int				width;
+	int				height;
 }	t_ubo;
 
 typedef struct s_rt
@@ -308,7 +310,8 @@ typedef struct s_rt
 	GLuint			tbo_objects_id;
 	GLuint			tbo_lights_id;	
 	GLuint			tbo_agx_lut_id;
-	GLuint			fbo_id;
+	GLuint			framebuffer;
+	GLuint			frameTexture;
 
 	t_list			*line;
 	t_movement		move;
@@ -325,6 +328,8 @@ typedef struct s_rt
 	int				fd;
 	bool			cursor_is_settable;
 	float			debug;
+	int				frame;
+	int				max_samples;
 }	t_rt;
 
 static const t_ivec2		g_ivec2_zero = (t_ivec2){0, 0};
