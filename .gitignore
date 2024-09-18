@@ -4,6 +4,8 @@
 
 # whitelist
 
+!todo.md
+
 !assets
 !assets/**
 !libft

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   use_shader_program.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:57:50 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/18 17:45:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:04:28 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@ void	use_shader_program(GLuint shader_program, t_rt *rt)
 	// glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
 	// glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind
 
+	// FBO Texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
+	glUniform1i(glGetUniformLocation(shader_program, "raw_render_image"), 0);
+
+	// OBJECTS
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
-	glActiveTexture(GL_TEXTURE0 + 1);
+	glActiveTexture(GL_TEXTURE1);
 	// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
 	GLint uniform_location = glGetUniformLocation(shader_program, "objects");
@@ -29,8 +35,9 @@ void	use_shader_program(GLuint shader_program, t_rt *rt)
 	glUniform1i(uniform_location, 1);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 
+	// LIGHTS
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
-	glActiveTexture(GL_TEXTURE0 + 2);
+	glActiveTexture(GL_TEXTURE2);
 	// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
 	uniform_location = glGetUniformLocation(shader_program, "lights");
@@ -41,15 +48,11 @@ void	use_shader_program(GLuint shader_program, t_rt *rt)
 
 	// RE-BIND AGX
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
-	glActiveTexture(GL_TEXTURE0 + 3);
+	glActiveTexture(GL_TEXTURE3);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
 	uniform_location = glGetUniformLocation(shader_program, "agx_lut");
 	if (uniform_location == -1)
 		terminate("agx_lut not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 3);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(shader_program, "raw_render_image"), 0);  // Bind the texture to the uniform
 }
