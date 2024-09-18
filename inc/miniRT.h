@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 17:45:28 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 19:31:16 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define MINIRT_H
 
 # if defined(__APPLE__) && defined(__MACH__)
-#  define LUT_PATH "assets/AgX_Display_P3.lut"
+#  define LUT_PATH "resources/AgX_Display_P3.lut"
 # else
-#  define LUT_PATH "assets/AgX_sRGB.lut"
+#  define LUT_PATH "resources/AgX_sRGB.lut"
 # endif
 
 # include "../libft/libft.h"
