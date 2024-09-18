@@ -28,6 +28,7 @@ static void	init_glfw(t_rt *rt)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	rt->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT - LOADING...", NULL, NULL);
 	if (!rt->window)
 		terminate("glfw window creation failed", 1, rt);
@@ -123,13 +124,45 @@ static void	create_gizmo(t_rt *rt)
 {
 	GLuint	VBO;
 	static const float	vertices[] = {
-		 0,  1, 0,  1, 0, 0,
-		10,  1, 0,  1, 0, 0,
-		 0, -1, 0,  1, 0, 0,
+		  0,  1.55, 0,		1, 0.212, 0.325,
+		100,  1.55, 0,		1, 0.212, 0.325,
+		  0, -1.55, 0,		1, 0.212, 0.325,
 
-		10,  1, 0,  1, 0, 0,
-		10, -1, 0,  1, 0, 0,
-		 0, -1, 0,  1, 0, 0
+		100,  1.55, 0,		1, 0.212, 0.325,
+		100, -1.55, 0,		1, 0.212, 0.325,
+		  0, -1.55, 0,		1, 0.212, 0.325,
+
+		  0, 0,  1.55,		1, 0.212, 0.325,
+		100, 0,  1.55,		1, 0.212, 0.325,
+		  0, 0, -1.55,		1, 0.212, 0.325,
+
+		100, 0,  1.55,		1, 0.212, 0.325,
+		100, 0, -1.55,		1, 0.212, 0.325,
+		  0, 0, -1.55,		1, 0.212, 0.325,
+
+		  1.55,   0, 0,		0.541, 0.859, 0,
+		  1.55, 100, 0,		0.541, 0.859, 0,
+		 -1.55,   0, 0,		0.541, 0.859, 0,
+
+		  1.55, 100, 0,		0.541, 0.859, 0,
+		 -1.55, 100, 0,		0.541, 0.859, 0,
+		 -1.55,   0, 0,		0.541, 0.859, 0,
+
+		  0,   0, 1.55,		0.541, 0.859, 0,
+		  0, 100, 1.55,		0.541, 0.859, 0,
+		  0,   0,-1.55,		0.541, 0.859, 0,
+
+		  0, 100, 1.55,		0.541, 0.859, 0,
+		  0, 100,-1.55,		0.541, 0.859, 0,
+		  0,   0,-1.55,		0.541, 0.859, 0,
+
+		  1.55, 0,   0,		0.173, 0.561, 1,
+		  1.55, 0, 100,		0.173, 0.561, 1,
+		 -1.55, 0,   0,		0.173, 0.561, 1,
+
+		  1.55, 0, 100,		0.173, 0.561, 1,
+		 -1.55, 0, 100,		0.173, 0.561, 1,
+		 -1.55, 0,   0,		0.173, 0.561, 1
 	};
 
 	glGenVertexArrays(1, &rt->vao_gizmo_id);
@@ -310,8 +343,8 @@ void	create_tbo_objects(t_rt *rt)
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "objects");
-	if (uniform_location == -1)
-		terminate("objects not found in shader program", 1, rt);
+	// if (uniform_location == -1)
+	// 	terminate("objects not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 1);
 }
 
@@ -386,8 +419,8 @@ void	create_tbo_lights(t_rt *rt)
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "lights");
-	if (uniform_location == -1)
-		terminate("lights not found in shader program", 1, rt);
+	// if (uniform_location == -1)
+	// 	terminate("lights not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 2);
 }
 
@@ -470,8 +503,8 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
 
 	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "agx_lut");
-	if (uniform_location == -1)
-		terminate("agx_lut not found in shader program", 1, rt);
+	// if (uniform_location == -1)
+	// 	terminate("agx_lut not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 3);
 }
 
@@ -522,4 +555,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
 	init_cursor_is_settable(rt);
+	rt->cursor_is_settable = false;
 }

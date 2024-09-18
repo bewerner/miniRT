@@ -142,22 +142,24 @@ void	update(t_rt *rt)
 
 
 
+	if (rt->mode == MODE_SOLID)
+	{
+		glUseProgram(rt->gizmo_shader_program);
 
+		// Get the locations of the uniforms in the shader
+		GLint gizmo_pitch = glGetUniformLocation(rt->gizmo_shader_program, "u_pitch");
+		GLint gizmo_yaw = glGetUniformLocation(rt->gizmo_shader_program, "u_yaw");
+		GLint gizmo_aspect = glGetUniformLocation(rt->gizmo_shader_program, "u_aspect_ratio");
+		// Set the values of the uniforms
+		glUniform1f(gizmo_pitch, rt->camera.pitch);
+		glUniform1f(gizmo_yaw, rt->camera.yaw);
+		glUniform1f(gizmo_aspect, (float)rt->width / rt->height);
 
-	glUseProgram(rt->gizmo_shader_program);
-
-	// Get the locations of the uniforms in the shader
-	GLint gizmo_pitch = glGetUniformLocation(rt->gizmo_shader_program, "u_pitch");
-	GLint gizmo_yaw = glGetUniformLocation(rt->gizmo_shader_program, "u_yaw");
-	// Set the values of the uniforms
-	glUniform1f(gizmo_pitch, rt->camera.pitch);
-	glUniform1f(gizmo_yaw, rt->camera.yaw);
-
-	glBindVertexArray(rt->vao_gizmo_id);
-	glDrawArrays(GL_TRIANGLES, 0, 18);
-
-
-
+		glBindVertexArray(rt->vao_gizmo_id);
+		glEnable(GL_MULTISAMPLE);
+		glDrawArrays(GL_TRIANGLES, 0, 30);
+		glDisable(GL_MULTISAMPLE);
+	}
 
 
 
