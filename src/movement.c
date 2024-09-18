@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/17 03:54:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	handle_move_input(t_rt *rt)
 		rt->move.acc.y -= ACC * rt->delta_time;
 	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
 	// if (rt->move.acc.x || rt->move.acc.y || rt->move.acc.z)
-	// 	rt->frame = 0;
+	// 	rt->sample_count = 0;
 }
 
 void	move_camera(t_rt *rt)
@@ -67,5 +67,5 @@ void	move_camera(t_rt *rt)
 	rt->camera.viewport_light
 		= vec3_rotate_z(rt->camera.viewport_light, rt->camera.yaw);
 	if (ft_memcmp(&initial_camera, &rt->camera, sizeof(t_camera)))
-		rt->frame = 0;
+		rt->sample_count = 0;
 }

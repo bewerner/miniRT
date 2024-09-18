@@ -30,22 +30,22 @@ void	main(void)
 	vec2 tmp = vec2(coord.x, 1.0 - coord.y);
 	// vec2 tmp = coord;
 
-	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.frame + 1)) + rt.frame * 9823;
-	g_seed += int(rand() * 943 * rt.frame);
+	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.sample_count + 1)) + rt.sample_count * 9823;
+	g_seed += int(rand() * 943 * rt.sample_count);
 
-	if (rt.frame >= rt.max_samples)
+	if (rt.sample_count >= rt.max_samples)
 	{
 		vec3 col = texture(prevFrameTexture, tmp).rgb;
-		if (rt.frame < rt.max_samples)
+		if (rt.sample_count < rt.max_samples)
 		col = to_agx(col.rgb);
 		col = dither(col);
 		FragColor = col;
 		return ;
 	}
-	if (rt.debug == -1 || rt.frame >= rt.max_samples)
+	if (rt.debug == -1 || rt.sample_count >= rt.max_samples)
 	{
 		vec3 col = texture(prevFrameTexture, tmp).rgb;
-		if (rt.frame < rt.max_samples)
+		if (rt.sample_count < rt.max_samples)
 		col = to_agx(col.rgb);
 		col = dither(col);
 		FragColor = col;
@@ -82,8 +82,8 @@ void	main(void)
 	// 	FragColor = texture(prevFrameTexture, vec2(0.5, 0.5)).rgb;
 	// 	// FragColor = texture(prevFrameTexture, uv).rgb;
 
-	if (rt.frame > 0)
-		FragColor = mix(texture(prevFrameTexture, tmp).rgb, col, 1.0 / rt.frame);
+	if (rt.sample_count > 0)
+		FragColor = mix(texture(prevFrameTexture, tmp).rgb, col, 1.0 / rt.sample_count);
 		// FragColor = mix(col, texture(prevFrameTexture, tmp).rgb, 0.5);
 		// FragColor = texture(prevFrameTexture, tmp).rgb;
 		// FragColor = vec3(1,0,0);

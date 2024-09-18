@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/18 14:46:01 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 {
 	if (key == GLFW_KEY_KP_1 && action == GLFW_PRESS)
 	{
-		rt->frame = 0;
+		rt->sample_count = 0;
 		rt->camera.origin = (t_vec3){{0, -vec3_len(rt->camera.origin), 0}};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = M_PI / 2;
@@ -38,7 +38,7 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 	}
 	else if (key == GLFW_KEY_KP_3 && action == GLFW_PRESS)
 	{
-		rt->frame = 0;
+		rt->sample_count = 0;
 		rt->camera.origin = (t_vec3){{-vec3_len(rt->camera.origin), 0, 0}};
 		rt->camera.yaw = -M_PI / 2;
 		rt->camera.pitch = M_PI / 2;
@@ -46,7 +46,7 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 	}
 	else if (key == GLFW_KEY_KP_7 && action == GLFW_PRESS)
 	{
-		rt->frame = 0;
+		rt->sample_count = 0;
 		rt->camera.origin = (t_vec3){{0, 0, vec3_len(rt->camera.origin)}};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = 0;
@@ -65,7 +65,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 		glfwSetWindowShouldClose(window, true);
 	else if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 	{
-		rt->frame = 0;
+		rt->sample_count = 0;
 		rt->mode++;
 		if (rt->mode > MODE_PREVIEW)
 			rt->mode = MODE_SOLID;

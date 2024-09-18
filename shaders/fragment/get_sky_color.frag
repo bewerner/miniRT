@@ -44,7 +44,7 @@ vec3	get_random_hemisphere_direction(vec3 hemisphere_normal)
 
 vec3	get_sky_color(t_hitpoint hitpoint)
 {
-	// if (rt.frame <= 1)
+	// if (rt.sample_count <= 1)
 	// 	return (rt.ambient);
 	vec3	col = VEC3_BLACK;
 	t_ray	ray;

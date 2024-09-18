@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/17 21:38:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 14:59:22 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ static void	create_screen_vertices(t_rt *rt)
 		 1,  1, 0,  1,  0, 0
 	};
 
-	glGenVertexArrays(1, &rt->vertex_array_object);
-	glBindVertexArray(rt->vertex_array_object);
+	glGenVertexArrays(1, &rt->vao_screen_id);
+	glBindVertexArray(rt->vao_screen_id);
 
 	glGenBuffers(1, &VBO);
 
@@ -446,11 +446,9 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 void	create_fbo(t_rt *rt)
 {
 	// Create texture for the framebuffer
-	glGenTextures(1, &rt->frameTexture);
-	glBindTexture(GL_TEXTURE_2D, rt->frameTexture);
-	printf("%d\n", rt->width);
+	glGenTextures(1, &rt->tex_fbo_id);
+	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
-	printf("%d\n", rt->width);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, rt->width, rt->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -459,9 +457,9 @@ void	create_fbo(t_rt *rt)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Create framebuffer and attach the texture
-	glGenFramebuffers(1, &rt->framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, rt->framebuffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->frameTexture, 0);
+	glGenFramebuffers(1, &rt->fbo_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->tex_fbo_id, 0);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		terminate("Framebuffer is not complete!\n", 1, rt);
@@ -477,7 +475,6 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	load_scene(argv[1], rt);
 	init_glfw(rt);
 	init_camera(&rt->camera);
-	init_cursor_is_settable(rt);
 	init_hooks(rt);
 	rt->solid_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/solid/solid.frag", rt);
 	rt->normal_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/normal/normal.frag", rt);
@@ -489,4 +486,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
+	init_cursor_is_settable(rt);
 }

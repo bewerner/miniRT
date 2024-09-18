@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 14:42:42 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 14:56:46 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,7 @@ typedef struct s_ubo
 	t_vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
-	int				frame;
+	int				sample_count;
 	int				max_samples;
 	int				width;
 	int				height;
@@ -294,7 +294,6 @@ typedef struct s_ubo
 
 typedef struct s_rt
 {
-	float			frame_count;
 	int				width;
 	int				height;
 	GLFWwindow		*window;
@@ -304,14 +303,14 @@ typedef struct s_rt
 	GLuint			normal_shader_program;
 	char			*filename;
 
-	GLuint			vertex_array_object;
+	GLuint			vao_screen_id;
 	GLuint			ubo_rt_id;
 	GLuint			ubo_materials_id;
 	GLuint			tbo_objects_id;
 	GLuint			tbo_lights_id;	
 	GLuint			tbo_agx_lut_id;
-	GLuint			framebuffer;
-	GLuint			frameTexture;
+	GLuint			fbo_id;
+	GLuint			tex_fbo_id;
 
 	t_list			*line;
 	t_movement		move;
@@ -328,7 +327,7 @@ typedef struct s_rt
 	int				fd;
 	bool			cursor_is_settable;
 	float			debug;
-	int				frame;
+	int				sample_count;
 	int				max_samples;
 }	t_rt;
 
