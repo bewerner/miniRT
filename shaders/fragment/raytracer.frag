@@ -40,7 +40,8 @@ void	main(void)
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
 
 	vec3 col = trace_ray(camera_ray);
-	col = to_agx(col.rgb);
+	if (rt.debug == -1)
+		col = to_agx(col.rgb);
 	col = dither(col);
 
 	FragColor = col;
