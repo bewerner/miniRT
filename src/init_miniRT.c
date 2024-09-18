@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/18 14:59:22 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:45:15 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,10 @@ void	create_ubo_rt(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(t_ubo), NULL, GL_STATIC_DRAW);
 
-	blockIndex = glGetUniformBlockIndex(rt->shader_program, "u_rt");
+	blockIndex = glGetUniformBlockIndex(rt->preview_shader_program, "u_rt");
 	if (blockIndex == GL_INVALID_INDEX)
 		terminate("u_rt not found in shader program", 1, rt);
-	glUniformBlockBinding(rt->shader_program, blockIndex, 0);
+	glUniformBlockBinding(rt->preview_shader_program, blockIndex, 0);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
@@ -277,7 +277,7 @@ void	create_tbo_objects(t_rt *rt)
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
 
-	GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "objects");
 	if (uniform_location == -1)
 		terminate("objects not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 1);
@@ -353,7 +353,7 @@ void	create_tbo_lights(t_rt *rt)
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
 
-	GLint uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "lights");
 	if (uniform_location == -1)
 		terminate("lights not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 2);
@@ -437,7 +437,7 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
 
-	GLint uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "agx_lut");
 	if (uniform_location == -1)
 		terminate("agx_lut not found in shader program", 1, rt);
 	glUniform1i(uniform_location, 3);
@@ -478,7 +478,9 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	init_hooks(rt);
 	rt->solid_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/solid/solid.frag", rt);
 	rt->normal_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/normal/normal.frag", rt);
-	rt->shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/fragment/raytracer.frag", rt);
+	rt->postprocessing_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/postprocessing/postprocessing.frag", rt);
+	rt->preview_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/fragment/raytracer.frag", rt);
+	
 	create_screen_vertices(rt);
 	create_ubo_rt(rt);
 	create_tbo_objects(rt);

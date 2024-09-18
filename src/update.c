@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 14:57:05 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:51:32 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,39 +125,68 @@ void	update(t_rt *rt)
 
 
 
+	glUseProgram(rt->preview_shader_program);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 	update_ubo_rt(rt);
 	glViewport(0, 0, rt->width, rt->height);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(rt->shader_program, "prevFrameTexture"), 0);  // Bind the texture to the uniform
+	glUniform1i(glGetUniformLocation(rt->preview_shader_program, "raw_render_image"), 0);  // Bind the texture to the uniform
 	// DRAW SCREEN
 	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glFinish();
 
-
 	// After rendering to the texture, unbind the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
+
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 	update_ubo_rt(rt);
 	glViewport(0, 0, rt->width, rt->height);
 
-	if (rt->debug >= -1)
-		rt->debug = -1;
-	update_ubo_rt(rt);
-
 	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	// glClear(GL_COLOR_BUFFER_BIT);
 
+
+
+
 	// Activate the shader program
-	// glUseProgram(rt->shader_program);
+	glUseProgram(rt->postprocessing_shader_program);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind
 
 	// Bind the texture from the previous frame
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(rt->shader_program, "prevFrameTexture"), 0);  // Bind the texture to the uniform
+	glUniform1i(glGetUniformLocation(rt->postprocessing_shader_program, "raw_render_image"), 0);  // Bind the texture to the uniform
+
+
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
+			glActiveTexture(GL_TEXTURE0 + 1);
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
+			GLint uniform_location = glGetUniformLocation(rt->postprocessing_shader_program, "objects");
+			if (uniform_location == -1)
+				terminate("objects not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 1);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
+			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
+			glActiveTexture(GL_TEXTURE0 + 2);
+			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
+			uniform_location = glGetUniformLocation(rt->postprocessing_shader_program, "lights");
+			if (uniform_location == -1)
+				terminate("lights not found in shader program", 1, rt);
+			glUniform1i(uniform_location, 2);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
+
 
 	// DRAW SCREEN
 	glBindVertexArray(rt->vao_screen_id);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/18 14:49:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:07:20 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glActiveTexture(GL_TEXTURE0 + 1);
 			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
-			GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+			GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "objects");
 			if (uniform_location == -1)
 				terminate("objects not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 1);
@@ -91,7 +91,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glActiveTexture(GL_TEXTURE0 + 2);
 			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-			uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+			uniform_location = glGetUniformLocation(rt->preview_shader_program, "lights");
 			if (uniform_location == -1)
 				terminate("lights not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 2);
@@ -101,7 +101,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			// glActiveTexture(GL_TEXTURE0 + 3);
 			// // glBindTexture(GL_TEXTURE_BUFFER, rt->materials_texture_id);
 			// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-			// uniform_location = glGetUniformLocation(rt->shader_program, "materials");
+			// uniform_location = glGetUniformLocation(rt->preview_shader_program, "materials");
 			// if (uniform_location == -1)
 			// 	terminate("lights not found in shader program", 1, rt);
 			// glUniform1i(uniform_location, 3);
@@ -111,7 +111,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
 			glActiveTexture(GL_TEXTURE0 + 3);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
-			uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+			uniform_location = glGetUniformLocation(rt->preview_shader_program, "agx_lut");
 			if (uniform_location == -1)
 				terminate("agx_lut not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 3);
@@ -129,7 +129,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glActiveTexture(GL_TEXTURE0 + 1);
 			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
-			GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+			GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "objects");
 			if (uniform_location == -1)
 				terminate("objects not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 1);
@@ -139,7 +139,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glActiveTexture(GL_TEXTURE0 + 2);
 			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-			uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+			uniform_location = glGetUniformLocation(rt->preview_shader_program, "lights");
 			if (uniform_location == -1)
 				terminate("lights not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 2);
@@ -149,7 +149,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			// glActiveTexture(GL_TEXTURE0 + 3);
 			// // glBindTexture(GL_TEXTURE_BUFFER, rt->materials_texture_id);
 			// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-			// uniform_location = glGetUniformLocation(rt->shader_program, "materials");
+			// uniform_location = glGetUniformLocation(rt->preview_shader_program, "materials");
 			// if (uniform_location == -1)
 			// 	terminate("lights not found in shader program", 1, rt);
 			// glUniform1i(uniform_location, 3);
@@ -159,7 +159,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
 			glActiveTexture(GL_TEXTURE0 + 3);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_agx_lut_id);
-			uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+			uniform_location = glGetUniformLocation(rt->preview_shader_program, "agx_lut");
 			if (uniform_location == -1)
 				terminate("agx_lut not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 3);
@@ -168,7 +168,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 		}
 		else if (rt->mode == MODE_PREVIEW)
 		{
-			glUseProgram(rt->shader_program);
+			glUseProgram(rt->preview_shader_program);
 
 			glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
 			glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind
@@ -177,7 +177,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glActiveTexture(GL_TEXTURE0 + 1);
 			// glBindTexture(GL_TEXTURE_BUFFER, rt->objects_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
-			GLint uniform_location = glGetUniformLocation(rt->shader_program, "objects");
+			GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "objects");
 			if (uniform_location == -1)
 				terminate("objects not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 1);
@@ -187,7 +187,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glActiveTexture(GL_TEXTURE0 + 2);
 			// glBindTexture(GL_TEXTURE_BUFFER, rt->lights_texture_id);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-			uniform_location = glGetUniformLocation(rt->shader_program, "lights");
+			uniform_location = glGetUniformLocation(rt->preview_shader_program, "lights");
 			if (uniform_location == -1)
 				terminate("lights not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 2);
@@ -197,7 +197,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			// glActiveTexture(GL_TEXTURE0 + 3);
 			// // glBindTexture(GL_TEXTURE_BUFFER, rt->materials_texture_id);
 			// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-			// uniform_location = glGetUniformLocation(rt->shader_program, "materials");
+			// uniform_location = glGetUniformLocation(rt->preview_shader_program, "materials");
 			// if (uniform_location == -1)
 			// 	terminate("lights not found in shader program", 1, rt);
 			// glUniform1i(uniform_location, 3);
@@ -207,7 +207,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 			glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
 			glActiveTexture(GL_TEXTURE0 + 3);
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
-			uniform_location = glGetUniformLocation(rt->shader_program, "agx_lut");
+			uniform_location = glGetUniformLocation(rt->preview_shader_program, "agx_lut");
 			if (uniform_location == -1)
 				terminate("agx_lut not found in shader program", 1, rt);
 			glUniform1i(uniform_location, 3);

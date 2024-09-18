@@ -30,39 +30,13 @@ void	main(void)
 	vec2 tmp = vec2(coord.x, 1.0 - coord.y);
 	// vec2 tmp = coord;
 
+	// Dump unused samplerBuffer 
+	// Dump here, so that the conditions (is_ligth_gizmo) is executed correctly
+	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
+
+
 	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.sample_count + 1)) + rt.sample_count * 9823;
 	g_seed += int(rand() * 943 * rt.sample_count);
-
-	if (rt.sample_count >= rt.max_samples)
-	{
-		vec3 col = texture(prevFrameTexture, tmp).rgb;
-		if (rt.sample_count < rt.max_samples)
-		col = to_agx(col.rgb);
-		col = dither(col);
-		FragColor = col;
-		return ;
-	}
-	if (rt.debug == -1 || rt.sample_count >= rt.max_samples)
-	{
-		vec3 col = texture(prevFrameTexture, tmp).rgb;
-		if (rt.sample_count < rt.max_samples)
-		col = to_agx(col.rgb);
-		col = dither(col);
-		FragColor = col;
-		// FragColor = vec3(tmp , 0);
-		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.1);
-		return ;
-	}
-	if (rt.debug == -2)
-	{
-		// FragColor = vec3(tmp , 0);
-		// vec3 col = texture(prevFrameTexture, tmp).rgb;
-		// col = to_agx(col.rgb);
-		// col = dither(col);
-		// FragColor = col;
-		// FragColor = mix(vec3(0,0,0), texture(prevFrameTexture, tmp).rgb, 0.99);
-		return ;
-	}
 
 	t_ray camera_ray;
 	camera_ray.origin = rt.camera.origin;
@@ -73,19 +47,9 @@ void	main(void)
 
 	vec3 col;
 	col = trace_ray(camera_ray);
-	// col = to_agx(col.rgb);
-	// col = dither(col);
 
 	FragColor = col;
-	// col = vec3(rand());
-	// if (uv.x > 0.9)
-	// 	FragColor = texture(prevFrameTexture, vec2(0.5, 0.5)).rgb;
-	// 	// FragColor = texture(prevFrameTexture, uv).rgb;
 
 	if (rt.sample_count > 0)
-		FragColor = mix(texture(prevFrameTexture, tmp).rgb, col, 1.0 / rt.sample_count);
-		// FragColor = mix(col, texture(prevFrameTexture, tmp).rgb, 0.5);
-		// FragColor = texture(prevFrameTexture, tmp).rgb;
-		// FragColor = vec3(1,0,0);
-	// FragColor = (col + texture(prevFrameTexture, tmp).rgb) / 2;
+		FragColor = mix(texture(raw_render_image, tmp).rgb, col, 1.0 / rt.sample_count);
 }
