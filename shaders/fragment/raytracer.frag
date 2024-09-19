@@ -52,6 +52,4 @@ void	main(void)
 
 	if (rt.sample_count > 0)
 		FragColor = mix(texture(raw_render_image, tmp).rgb, col, 1.0 / rt.sample_count);
-	if (rt.debug == -1)
-		FragColor = vec3(coord, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:06 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/17 03:17:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/19 23:30:38 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ void	cursor_hook(GLFWwindow *window, double cursor_x, double cursor_y)
 		glfwSetCursorPos(window, rt->initial_cursor_pos.x,
 			rt->initial_cursor_pos.y);
 	else
-		rt->initial_cursor_pos = (t_dvec2){cursor_x + MOUSE_SCREEN_DELTA, cursor_y + MOUSE_SCREEN_DELTA};
+		rt->initial_cursor_pos = (t_dvec2){cursor_x, cursor_y};
 }
