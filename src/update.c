@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/19 23:16:41 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/19 23:39:14 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,36 +139,8 @@ void	update(t_rt *rt)
 
 
 
-	// if (rt->mode == MODE_SOLID || rt->mode == MODE_NORMAL)
-	{
-		glClear(GL_DEPTH_BUFFER_BIT);
-		glUseProgram(rt->gizmo_shader_program);
-
-		// Get the locations of the uniforms in the shader
-		GLint gizmo_pitch = glGetUniformLocation(rt->gizmo_shader_program, "u_pitch");
-		GLint gizmo_yaw = glGetUniformLocation(rt->gizmo_shader_program, "u_yaw");
-		GLint gizmo_aspect = glGetUniformLocation(rt->gizmo_shader_program, "u_aspect_ratio");
-		GLint gizmo_scale = glGetUniformLocation(rt->gizmo_shader_program, "u_scale");
-		GLint gizmo_debug = glGetUniformLocation(rt->gizmo_shader_program, "u_debug");
-		// Set the values of the uniforms
-		glUniform1f(gizmo_pitch, rt->camera.pitch);
-		glUniform1f(gizmo_yaw, -rt->camera.yaw);
-		// printf("pitch: %f, yaw %f\n", rt->camera.pitch, rt->camera.yaw);
-		glUniform1f(gizmo_aspect, (float)rt->width / rt->height);
-		glUniform1f(gizmo_scale, 0.6272 * rt->dpi_scale / rt->width);
-		glUniform1f(gizmo_debug, rt->debug);
-
-		glBindVertexArray(rt->vao_gizmo_id);
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_MULTISAMPLE);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		// glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-		glDrawArrays(GL_TRIANGLES, 0, 66);
-		glDisable(GL_BLEND);
-		glDisable(GL_MULTISAMPLE);
-		glDisable(GL_DEPTH_TEST);
-	}
+	if (rt->mode == MODE_SOLID || rt->mode == MODE_NORMAL)
+		draw_gizmo(rt);
 
 
 
