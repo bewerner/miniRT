@@ -33,6 +33,7 @@ static void	init_glfw(t_rt *rt)
 	if (!rt->window)
 		terminate("glfw window creation failed", 1, rt);
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+	rt->aspect_ratio = (float)rt->width / (float)rt->height;
 	glfwMakeContextCurrent(rt->window);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -555,5 +556,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
 	init_cursor_is_settable(rt);
-	rt->cursor_is_settable = false;
+	// rt->cursor_is_settable = false;
 }

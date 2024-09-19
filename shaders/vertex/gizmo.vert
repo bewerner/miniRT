@@ -6,6 +6,7 @@ layout (location = 1) in vec3 aCol;
 uniform float u_pitch;
 uniform float u_yaw;
 uniform float u_aspect_ratio;
+uniform float u_scale;
 
 out vec3	gizmo_col;
 
@@ -31,11 +32,13 @@ void main()
 		0.0,			0.0,			1.0
 	);	
 
-	vec3 pos = aPos * 0.001;
+	vec3 pos = aPos * u_scale;
 	if (aCol.b != 1)
 		pos *= mat_rot_z;
 	pos *= mat_rot_x;
 	gl_Position = vec4(pos, 1.0);
+	gl_Position.xy -= 100 * u_scale;
 	gl_Position.y *= u_aspect_ratio;
+	gl_Position.xy += 1;
 	gizmo_col = aCol;
 }
