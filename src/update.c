@@ -20,8 +20,7 @@ void	update_ubo_rt(t_rt *rt)
 	ubo_rt.max_samples = rt->max_samples;
 	ubo_rt.debug = rt->debug;
 	ubo_rt.ambient = rt->ambient;
-	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
-	ubo_rt.aspect_ratio = (float)rt->width / (float)rt->height;
+	ubo_rt.aspect_ratio = rt->aspect_ratio;
 	ubo_rt.camera = rt->camera;
 	ubo_rt.width = rt->width;
 	ubo_rt.height = rt->height;
@@ -30,7 +29,6 @@ void	update_ubo_rt(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
 }
 
 void	update_window_title(t_rt *rt)
@@ -150,10 +148,12 @@ void	update(t_rt *rt)
 		GLint gizmo_pitch = glGetUniformLocation(rt->gizmo_shader_program, "u_pitch");
 		GLint gizmo_yaw = glGetUniformLocation(rt->gizmo_shader_program, "u_yaw");
 		GLint gizmo_aspect = glGetUniformLocation(rt->gizmo_shader_program, "u_aspect_ratio");
+		GLint gizmo_scale = glGetUniformLocation(rt->gizmo_shader_program, "u_scale");
 		// Set the values of the uniforms
 		glUniform1f(gizmo_pitch, rt->camera.pitch);
 		glUniform1f(gizmo_yaw, -rt->camera.yaw);
 		glUniform1f(gizmo_aspect, (float)rt->width / rt->height);
+		glUniform1f(gizmo_scale, 1280.00 / rt->width * 0.001);
 
 		glBindVertexArray(rt->vao_gizmo_id);
 		glEnable(GL_DEPTH_TEST);

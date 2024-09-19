@@ -297,6 +297,7 @@ typedef struct s_rt
 {
 	int				width;
 	int				height;
+	float			aspect_ratio;
 	GLFWwindow		*window;
 	double			delta_time;
 	GLuint			solid_shader_program;

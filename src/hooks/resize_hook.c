@@ -39,13 +39,11 @@ void resizeFramebufferTexture(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-
 void	resize_hook(GLFWwindow *window, int width, int height)
 {
 	t_rt	*rt;
 	float	rad;
 
-	printf("%d\n", width);
 	rt = get_rt();
 	rad = rt->camera.fov * (M_PI / 180);
 	rt->camera.focal_length = 1.0f / tan(rad * 0.5);
@@ -53,17 +51,7 @@ void	resize_hook(GLFWwindow *window, int width, int height)
 	// glfwGetWindowSize(window, &rt->width, &rt->height);
 	// glfwGetWindowContentScale(window, &xscale, &yscale);
 	glfwGetFramebufferSize(window, &rt->width, &rt->height);
+	rt->aspect_ratio = (float)rt->width / (float)rt->height;
 	resizeFramebufferTexture(rt);
 	rt->sample_count = 0;
 }
-
-// void	resize_hook(int width, int height, void *param)
-// {
-// 	t_rt	*rt;
-// 	float	rad;
-
-// 	rt = (t_rt *)param;
-// 	rad = rt->camera.fov * (M_PI / 180);
-// 	rt->camera.focal_lenth = ((float)width * 0.5) / tanf(rad * 0.5);
-// 	mlx_resize_image(rt->canvas, width, height);
-// }
