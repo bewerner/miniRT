@@ -36,9 +36,10 @@ void main()
 	if (aCol.b != 1)
 		pos *= mat_rot_z;
 	pos *= mat_rot_x;
+	gizmo_col = vec3(clamp((0.5 - pos.z * 3) + 0.3, 0, 1)); // darken factor
 	gl_Position = vec4(pos, 1.0);
 	gl_Position.xy -= 100 * u_scale;
 	gl_Position.y *= u_aspect_ratio;
 	gl_Position.xy += 1;
-	gizmo_col = aCol;
+	gizmo_col *= aCol;
 }
