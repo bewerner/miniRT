@@ -105,8 +105,8 @@ void	update(t_rt *rt)
 
 
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	// glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	// glClear(GL_COLOR_BUFFER_BIT);
 
 	if (rt->mode == MODE_SOLID)
 		use_shader_program(rt->solid_shader_program, rt);
@@ -141,9 +141,9 @@ void	update(t_rt *rt)
 
 
 
-
-	if (rt->mode == MODE_SOLID)
+	if (rt->mode == MODE_SOLID || rt->mode == MODE_NORMAL)
 	{
+		glClear(GL_DEPTH_BUFFER_BIT);
 		glUseProgram(rt->gizmo_shader_program);
 
 		// Get the locations of the uniforms in the shader
@@ -152,16 +152,16 @@ void	update(t_rt *rt)
 		GLint gizmo_aspect = glGetUniformLocation(rt->gizmo_shader_program, "u_aspect_ratio");
 		// Set the values of the uniforms
 		glUniform1f(gizmo_pitch, rt->camera.pitch);
-		glUniform1f(gizmo_yaw, rt->camera.yaw);
+		glUniform1f(gizmo_yaw, -rt->camera.yaw);
 		glUniform1f(gizmo_aspect, (float)rt->width / rt->height);
 
 		glBindVertexArray(rt->vao_gizmo_id);
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_MULTISAMPLE);
 		glDrawArrays(GL_TRIANGLES, 0, 30);
 		glDisable(GL_MULTISAMPLE);
+		glDisable(GL_DEPTH_TEST);
 	}
-
-
 
 
 
