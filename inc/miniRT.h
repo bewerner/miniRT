@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 21:07:23 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/19 15:43:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,6 +298,7 @@ typedef struct s_rt
 	int				width;
 	int				height;
 	float			aspect_ratio;
+	float			dpi_scale;
 	GLFWwindow		*window;
 	double			delta_time;
 	GLuint			solid_shader_program;
