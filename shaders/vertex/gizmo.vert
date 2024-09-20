@@ -10,12 +10,15 @@ uniform float u_scale;
 uniform float u_debug;
 
 out vec3	gizmo_col;
-out float	depth = 0;
-out float	circle = 0;
-out	float	debug = u_debug;
+out float	depth;
+out float	circle;
+out	float	debug;
 
 void main()
 {
+	depth = 0;
+	circle = 0;
+	debug = u_debug;
 	mat3 mat_rot_x = mat3
 	(
 		1.0,	0.0,			0.0,

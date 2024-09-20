@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/19 23:39:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 01:59:41 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,48 +103,18 @@ void	update(t_rt *rt)
 
 
 
+
+
 	// glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	// glClear(GL_COLOR_BUFFER_BIT);
 
-	if (rt->mode == MODE_SOLID)
-		use_shader_program(rt->solid_shader_program, rt);
-	else if (rt->mode == MODE_NORMAL)
-		use_shader_program(rt->normal_shader_program, rt);
-	else if (rt->mode == MODE_PREVIEW)
-		use_shader_program(rt->preview_shader_program, rt);
-
-	// USE OUR FRAMEBUFFER
-	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
-
-	// RUN SHADER
-	glBindVertexArray(rt->vao_screen_id);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glFinish();
-
-
-
-
-
-
-	use_shader_program(rt->postprocessing_shader_program, rt);
-	// USE DEFAULT FRAMEBUFFER
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	// RUN SHADER
-	glBindVertexArray(rt->vao_screen_id);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glFinish();
-
-
-
-
-
-	if (rt->mode == MODE_SOLID || rt->mode == MODE_NORMAL)
+	render_raw_image(rt);
+	postprocess_raw_image(rt);
+	
+	if (rt->mode != MODE_PREVIEW)
 		draw_gizmo(rt);
 
-
-
-	// DISPLAY DEFAULT FRAMEBUFFER (postprocessed image)
+	// DISPLAY DEFAULT FRAMEBUFFER (postprocessed image with gizmo)
 	glfwSwapBuffers(rt->window);
 	glfwPollEvents();
 
