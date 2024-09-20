@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_shader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/20 04:20:55 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:20:06 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,8 @@ void	render_raw_image(t_rt *rt)
 	GLuint	shader_program;
 
 	// CHOOSE RENDER SHADER PROGRAM
-	if (rt->mode == MODE_SOLID)
-		shader_program = rt->solid_shader_program;
-	else if (rt->mode == MODE_NORMAL)
+	shader_program = rt->solid_shader_program;
+	if (rt->mode == MODE_NORMAL)
 		shader_program = rt->normal_shader_program;
 	else if (rt->mode == MODE_PREVIEW)
 		shader_program = rt->preview_shader_program;
