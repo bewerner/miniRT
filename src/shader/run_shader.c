@@ -6,11 +6,31 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/20 02:02:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 04:20:55 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
+
+static double	dvec2_distance(t_dvec2 a, t_dvec2 b)
+{
+	double	distance;
+
+	distance = sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2));
+	return (distance);
+}
+
+bool	gizmo_is_selected(t_rt *rt)
+{
+	t_dvec2	gizmo_pos;
+
+	gizmo_pos.x = rt->width - 50;
+	gizmo_pos.y = 50;
+
+	if (dvec2_distance(rt->cursor_pos, gizmo_pos) <= 40)
+		return (true);
+	return (false);
+}
 
 void	draw_gizmo(t_rt *rt)
 {
@@ -25,6 +45,8 @@ void	draw_gizmo(t_rt *rt)
 	GLint gizmo_yaw = glGetUniformLocation(rt->gizmo_shader_program, "u_yaw");
 	GLint gizmo_aspect = glGetUniformLocation(rt->gizmo_shader_program, "u_aspect_ratio");
 	GLint gizmo_scale = glGetUniformLocation(rt->gizmo_shader_program, "u_scale");
+	GLint gizmo_dpi_scale = glGetUniformLocation(rt->gizmo_shader_program, "u_dpi_scale");
+	GLint gizmo_selected = glGetUniformLocation(rt->gizmo_shader_program, "u_selected");
 	GLint gizmo_debug = glGetUniformLocation(rt->gizmo_shader_program, "u_debug");
 	// Set the values of the uniforms
 	glUniform1f(gizmo_pitch, rt->camera.pitch);
@@ -32,6 +54,8 @@ void	draw_gizmo(t_rt *rt)
 	// printf("pitch: %f, yaw %f\n", rt->camera.pitch, rt->camera.yaw);
 	glUniform1f(gizmo_aspect, (float)rt->width / rt->height);
 	glUniform1f(gizmo_scale, 0.6272 * rt->dpi_scale / rt->width);
+	glUniform1f(gizmo_dpi_scale, rt->dpi_scale);
+	glUniform1i(gizmo_selected, (int)gizmo_is_selected(rt));
 	glUniform1f(gizmo_debug, rt->debug);
 
 	glBindVertexArray(rt->vao_gizmo_id);
@@ -40,7 +64,7 @@ void	draw_gizmo(t_rt *rt)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-	glDrawArrays(GL_TRIANGLES, 0, 66);
+	glDrawArrays(GL_TRIANGLES, 0, 72);
 	glDisable(GL_BLEND);
 	glDisable(GL_MULTISAMPLE);
 	glDisable(GL_DEPTH_TEST);

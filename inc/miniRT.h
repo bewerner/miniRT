@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/20 01:56:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 03:42:15 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,6 +329,7 @@ typedef struct s_rt
 	float			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_dvec2			initial_cursor_pos;
+	t_dvec2			cursor_pos;
 	int				mode;
 	int				fd;
 	bool			cursor_is_settable;
