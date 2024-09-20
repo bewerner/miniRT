@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/18 17:08:06 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 18:38:53 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 	else if (key == GLFW_KEY_KP_3 && action == GLFW_PRESS)
 	{
 		rt->sample_count = 0;
-		rt->camera.origin = (t_vec3){{-vec3_len(rt->camera.origin), 0, 0}};
-		rt->camera.yaw = -M_PI / 2;
+		rt->camera.origin = (t_vec3){{vec3_len(rt->camera.origin), 0, 0}};
+		rt->camera.yaw = M_PI / 2;
 		rt->camera.pitch = M_PI / 2;
 		rt->move.vel = g_vec3_zero;
 	}
