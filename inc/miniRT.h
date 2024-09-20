@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/20 03:42:15 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 18:56:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
 
-# define SWAP_INTERVAL	0
+# define SWAP_INTERVAL	1
 
 # define MAX_POWER		10000
 # define LIGHT_POWER	0.575f
