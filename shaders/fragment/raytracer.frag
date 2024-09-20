@@ -28,12 +28,6 @@ void	main(void)
 	uv.x = uv.x * 2 - 1.0;
 	uv.y = (uv.y * 2 - 1.0) / rt.aspect_ratio;
 	vec2 tmp = vec2(coord.x, 1.0 - coord.y);
-	// vec2 tmp = coord;
-
-	// Dump unused samplerBuffer 
-	// Dump here, so that the conditions (is_ligth_gizmo) is executed correctly
-	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
-
 
 	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.sample_count + 1)) + rt.sample_count * 9823;
 	g_seed += int(rand() * 943 * rt.sample_count);
