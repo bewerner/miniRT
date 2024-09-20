@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_shader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/20 15:20:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:07:05 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	gizmo_is_selected(t_rt *rt)
 {
 	t_dvec2	gizmo_pos;
 
-	gizmo_pos.x = rt->width - 50;
+	gizmo_pos.x = rt->width / rt->dpi_scale - 50;
 	gizmo_pos.y = 50;
 
 	if (dvec2_distance(rt->cursor_pos, gizmo_pos) <= 40)

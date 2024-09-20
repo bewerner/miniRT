@@ -27,10 +27,6 @@ void main()
 	vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
 
-	// Dump unused samplerBuffer 
-	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
-	float dump_value_lights = texelFetch(lights, 0).r;
-
 	vec3 col = trace_ray_normal(camera_ray);
 	col = dither(col);
 

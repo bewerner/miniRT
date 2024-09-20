@@ -40,10 +40,6 @@ void main()
 		FragColor = VEC3_BLACK;
 		return ;
 	}
-	
-	// Dump unused samplerBuffer 
-	// Dump here, so that the conditions (is_ligth_gizmo) is executed correctly
-	float dump_value_agx_lut = texelFetch(agx_lut, 0).r;
 
 	vec3 col = trace_ray_solid(camera_ray);
 	col = dither(col);
