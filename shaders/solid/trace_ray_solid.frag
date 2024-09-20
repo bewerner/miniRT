@@ -4,7 +4,7 @@ vec3	trace_ray_solid(t_ray ray)
 	vec3		col;
 	vec3		col_diff = VEC3_BLACK;
 	vec3		col_spec = VEC3_BLACK;
-	vec3		solid_ambient = vec3(0.25, 0.25, 0.25);
+	vec3		solid_ambient = vec3(0.223529);
 
 	int bounce_count = 0;
 
