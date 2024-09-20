@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/20 01:59:41 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 19:51:13 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	update_window_title(t_rt *rt)
 	static float	time;
 	char			title[1024];
 	char			*fps;
-	char			*frame;
+	char			*sample;
 	char			*max_samples;
 
-	frame = NULL;
+	sample = NULL;
 	max_samples = NULL;
 	title[0] = '\0';
 	i++;
@@ -60,9 +60,9 @@ void	update_window_title(t_rt *rt)
 	if (rt->mode == MODE_PREVIEW)
 	{
 		ft_strlcat(title, " - sample ", 1024);
-		frame = ft_itoa(rt->sample_count);
-		if (frame)
-			ft_strlcat(title, frame, 1024);
+		sample = ft_itoa(ft_imin(rt->sample_count, rt->max_samples));
+		if (sample)
+			ft_strlcat(title, sample, 1024);
 		ft_strlcat(title, "/", 1024);
 		max_samples = ft_itoa(rt->max_samples);
 		if (max_samples)
@@ -70,7 +70,7 @@ void	update_window_title(t_rt *rt)
 	}
 	glfwSetWindowTitle(rt->window, title);
 	free(fps);
-	free(frame);
+	free(sample);
 	free(max_samples);
 }
 
@@ -89,30 +89,27 @@ void	update(t_rt *rt)
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
 	oldstart = start;
-	update_ubo_rt(rt);
-	update_window_title(rt);
-	if (rt->mode == MODE_PREVIEW && rt->sample_count < rt->max_samples)
+	if (rt->mode == MODE_PREVIEW && rt->sample_count <= rt->max_samples)
 	{
-		rt->sample_count++;
-		if (rt->sample_count <= 1)
 		glfwSwapInterval(0);
+		rt->sample_count++;
 	}
 	else
-		glfwSwapInterval(SWAP_INTERVAL);
+		glfwSwapInterval(1);
 
 
+	update_ubo_rt(rt);
+	update_window_title(rt);
 
 
-
-
-	// glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	// glClear(GL_COLOR_BUFFER_BIT);
-
-	render_raw_image(rt);
-	postprocess_raw_image(rt);
+	if (rt->sample_count <= rt->max_samples)
+	{
+		render_raw_image(rt);
+		postprocess_raw_image(rt);
+		if (rt->mode != MODE_PREVIEW)
+			draw_gizmo(rt);
+	}
 	
-	if (rt->mode != MODE_PREVIEW)
-		draw_gizmo(rt);
 
 	// DISPLAY DEFAULT FRAMEBUFFER (postprocessed image with gizmo)
 	glfwSwapBuffers(rt->window);

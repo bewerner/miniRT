@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/20 14:38:13 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:41:23 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -585,8 +585,8 @@ void	create_fbo(t_rt *rt)
 
 void	init_mini_rt(char **argv, t_rt *rt)
 {
-	rt->max_samples = INT32_MAX;
-	// rt->max_samples = 128;
+	// rt->max_samples = INT32_MAX;
+	rt->max_samples = 512;
 	rt->filename = argv[1];
 	load_scene(argv[1], rt);
 	init_glfw(rt);

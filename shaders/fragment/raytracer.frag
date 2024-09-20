@@ -42,8 +42,5 @@ void	main(void)
 	vec3 col;
 	col = trace_ray(camera_ray);
 
-	FragColor = col;
-
-	if (rt.sample_count > 0)
-		FragColor = mix(texture(raw_render_image, tmp).rgb, col, 1.0 / rt.sample_count);
+	FragColor = mix(texture(raw_render_image, tmp).rgb, col, 1.0 / rt.sample_count);
 }
