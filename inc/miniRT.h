@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/19 23:39:11 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 01:56:59 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -496,9 +496,16 @@ GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 // shader/shader_program.c
 GLuint			create_shader_program(const char *vert, const char *freg, t_rt *rt);
 
-// shader/use_shader_program.c
+// shader/activate_buffer.c
+void			activate_framebuffer_texture(GLuint shader_program, t_rt *rt);
+void			activate_objects(GLuint shader_program, t_rt *rt);
+void			activate_lights(GLuint shader_program, t_rt *rt);
+void			activate_agx_lut(GLuint shader_program, t_rt *rt);
+
+// shader/run_shader.c
 void			draw_gizmo(t_rt *rt);
-void			use_shader_program(GLuint shader_program, t_rt *rt);
+void			postprocess_raw_image(t_rt *rt);
+void			render_raw_image(t_rt *rt);
 
 // ┌───────────┐
 // │ Utilities │

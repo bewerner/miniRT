@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/19 23:32:49 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/20 02:06:47 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,11 +395,6 @@ void	create_tbo_objects(t_rt *rt)
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
-
-	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "objects");
-	if (uniform_location == -1)
-		terminate("objects not found in shader program", 1, rt);
-	glUniform1i(uniform_location, 1);
 }
 
 size_t	get_gpu_lights_size(t_light *light)
@@ -471,11 +466,6 @@ void	create_tbo_lights(t_rt *rt)
 	glActiveTexture(GL_TEXTURE0 + 2);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
-
-	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "lights");
-	if (uniform_location == -1)
-		terminate("lights not found in shader program", 1, rt);
-	glUniform1i(uniform_location, 2);
 }
 
 void	init_cursor_is_settable(t_rt *rt)
@@ -555,11 +545,6 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	glActiveTexture(GL_TEXTURE0 + 3);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
-
-	GLint uniform_location = glGetUniformLocation(rt->preview_shader_program, "agx_lut");
-	if (uniform_location == -1)
-		terminate("agx_lut not found in shader program", 1, rt);
-	glUniform1i(uniform_location, 3);
 }
 
 void	create_fbo(t_rt *rt)
