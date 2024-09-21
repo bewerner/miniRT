@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/21 16:26:18 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/21 18:11:12 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,16 @@ static void	init_glfw(t_rt *rt)
 	rt->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT - LOADING...", NULL, NULL);
 	if (!rt->window)
 		terminate("glfw window creation failed", 1, rt);
+	glfwMakeContextCurrent(rt->window);
+	glfwShowWindow(rt->window);
+	glfwPollEvents();
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 	rt->aspect_ratio = (float)rt->width / (float)rt->height;
 	glfwGetWindowContentScale(rt->window, &rt->dpi_scale, NULL);
-	glfwMakeContextCurrent(rt->window);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
 	glfwSwapInterval(SWAP_INTERVAL);
-
 }
 
 // static void	init_mlx(char *filename, t_rt *rt)
@@ -590,6 +591,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	rt->filename = argv[1];
 	load_scene(argv[1], rt);
 	init_glfw(rt);
+	init_cursor_is_settable(rt);
 	init_camera(&rt->camera);
 	init_hooks(rt);
 	rt->solid_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/solid/solid.frag", rt);
@@ -605,6 +607,4 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
-	init_cursor_is_settable(rt);
-	// rt->cursor_is_settable = false;
 }
