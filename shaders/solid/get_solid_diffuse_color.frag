@@ -1,10 +1,12 @@
 vec3	get_solid_color(t_hitpoint hitpoint)
 {
 	vec3	col;
-	vec3	solid_ambient = vec3(0.25, 0.25, 0.25);
+	vec3	solid_ambient = vec3(0.223529);
 	vec3	solid_light   = vec3(0.55, 0.55, 0.55);
 	float	my_dot;
 
+	if (rt.mac_os == true)
+		solid_ambient = vec3(0.247059);
 	if (hitpoint.hit == false)
 		return (rt.ambient);
 
