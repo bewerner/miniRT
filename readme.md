@@ -7,17 +7,19 @@
 - parser
 	- checker texture
 		- IDX, SCALE, COL1, COL2
+		- IN_C TEX_IDX, TYPE, PATH, SCALA, COL1, COL2
+			* IN_SHADER IDX, TYPE, TEX_IDX, SCALA, COL1, COL2
 		- UBO (max 100)
 			- SCALE, COL1, COL2
 				```
 				# TEXTURES
 				tex wood assets/textures/wood.png
-				tex c1 checker	1.0 	0,0,34		05,255,255
-				tex c2 checker	2.0 	0,0,0 		255,255,2550
+				tex tex1 checker	1.0 	0,0,34		05,255,255
+				tex tex2 checker	2.0 	0,0,0 		255,255,2550
 
 				# MATERIALS
-				#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
-				mat	Material                      c1                c2             1.000000       1.450000       0.000000       0.000000            255,255,255
+				#	name                          color             metallic		roughness		ior			transmission	emission_strength	emission_color
+				mat	Material                      tex1				tex2			1.000000		1.450000	0.000000		0.000000			255,255,255
 				```
 
 - random
