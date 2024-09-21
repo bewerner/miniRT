@@ -137,6 +137,7 @@ struct t_rt
 	int				width;
 	int				height;
 	int				mode;
+	bool				mac_os;
 };
 
 

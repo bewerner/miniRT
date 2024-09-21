@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/20 19:54:09 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/21 16:35:49 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	draw_gizmo(t_rt *rt)
 	GLint gizmo_scale = glGetUniformLocation(rt->gizmo_shader_program, "u_scale");
 	GLint gizmo_dpi_scale = glGetUniformLocation(rt->gizmo_shader_program, "u_dpi_scale");
 	GLint gizmo_selected = glGetUniformLocation(rt->gizmo_shader_program, "u_selected");
+	GLint gizmo_mac_os = glGetUniformLocation(rt->gizmo_shader_program, "u_mac_os");
 	GLint gizmo_debug = glGetUniformLocation(rt->gizmo_shader_program, "u_debug");
 	// Set the values of the uniforms
 	glUniform1f(gizmo_pitch, rt->camera.pitch);
@@ -56,6 +57,7 @@ void	draw_gizmo(t_rt *rt)
 	glUniform1f(gizmo_scale, 0.6272 * rt->dpi_scale / rt->width);
 	glUniform1f(gizmo_dpi_scale, rt->dpi_scale);
 	glUniform1i(gizmo_selected, (int)gizmo_is_selected(rt));
+	glUniform1i(gizmo_mac_os, (int)MAC_OS);
 	glUniform1f(gizmo_debug, rt->debug);
 
 	glBindVertexArray(rt->vao_gizmo_id);
