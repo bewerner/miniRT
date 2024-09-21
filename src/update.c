@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/21 16:58:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/21 18:44:13 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,11 @@ void	update(t_rt *rt)
 		postprocess_raw_image(rt);
 		if (rt->mode != MODE_PREVIEW)
 			draw_gizmo(rt);
+		glfwSwapBuffers(rt->window);
 	}
-	
+	else
+		usleep(1000000/60);
 
-	// DISPLAY DEFAULT FRAMEBUFFER (postprocessed image with gizmo)
-	glfwSwapBuffers(rt->window);
 	glfwPollEvents();
 
 
