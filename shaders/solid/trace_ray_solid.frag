@@ -8,6 +8,8 @@ vec3	trace_ray_solid(t_ray ray)
 
 	int bounce_count = 0;
 
+	if (rt.mac_os == true)
+		solid_ambient = vec3(0.247059);
 	hitpoint = get_closest_hitpoint(ray);
 	if (!hitpoint.hit)
 		return (solid_ambient);
