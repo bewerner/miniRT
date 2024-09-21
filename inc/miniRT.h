@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/20 18:56:26 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/21 16:57:25 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 # define MINIRT_H
 
 # if defined(__APPLE__) && defined(__MACH__)
-#  define LUT_PATH "resources/AgX_Display_P3.lut"
+#  define LUT_PATH	"resources/AgX_Display_P3.lut"
+#  define MAC_OS	true
 # else
-#  define LUT_PATH "resources/AgX_sRGB.lut"
+#  define LUT_PATH	"resources/AgX_sRGB.lut"
+#  define MAC_OS	false
 # endif
 
 # include "../libft/libft.h"
@@ -291,6 +293,7 @@ typedef struct s_ubo
 	int				width;
 	int				height;
 	int				mode;
+	bool			mac_os;
 }	t_ubo;
 
 typedef struct s_rt

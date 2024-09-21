@@ -9,6 +9,7 @@ uniform float	u_aspect_ratio;
 uniform float	u_scale;
 uniform float	u_dpi_scale;
 uniform int		u_selected;
+uniform int		u_mac_os;
 uniform float	u_debug;
 
 out vec3	gizmo_col;
@@ -16,6 +17,7 @@ out float	depth;
 out float	circle;
 out float	background;
 out float	dpi_scale;
+out float	mac_os;
 out	float	debug;
 
 void main()
@@ -25,6 +27,7 @@ void main()
 	background = 0;
 	debug = u_debug;
 	dpi_scale = u_dpi_scale;
+	mac_os = u_mac_os;
 
 	if (aCol.b == 0.5)
 		background = 1;
