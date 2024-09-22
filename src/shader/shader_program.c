@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/02 14:16:32 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 12:18:00 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,15 @@ GLuint	create_shader_program(const char *vert, const char *frag, t_rt *rt)
 
 	// LOAD & ASSEMBLE SHADER SOURCES
 	if (create_shader_sources(&vert_src, &frag_src, vert, frag))
-		terminate("failed to assemble shader sources" , 1, rt);
+		terminate("failed to assemble shader sources", NULL, 1, rt);
 
 	// CREATE SHADERS FROM SOURCE_STRING
 	if (compile_shader_srcs(shaders, vert_src, frag_src))
-		terminate("failed to compile shaders", 1, rt);
+		terminate("failed to compile shaders", NULL, 1, rt);
 
 	// CREATE SHADER PROGRAM
 	if (link_shader_program(shaders, &shader_program))
-		terminate("failed to create shader program", 1, rt);
+		terminate("failed to create shader program", NULL, 1, rt);
 
 	// USE SHADER_PROGRAM
 	glUseProgram(shader_program);

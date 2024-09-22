@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/20 15:42:57 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 13:56:09 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*error_msg(t_error error)
 	return ((char *)msgs[error]);
 }
 
-void	error(char *message)
+void	error(char *message, char *add_msg)
 {
 	if (!message)
 		return ;
@@ -37,6 +37,12 @@ void	error(char *message)
 		perror(message);
 	else if (message)
 		ft_putendl_fd(message, STDERR_FILENO);
+	if (add_msg)
+	{
+		ft_putchar_fd('(', STDERR_FILENO);
+		ft_putstr_fd(add_msg, STDERR_FILENO);
+		ft_putendl_fd(")", STDERR_FILENO);
+	}
 	errno = 0;
 }
 
@@ -51,6 +57,8 @@ void	cleanup(t_rt *rt)
 	rt->lights = NULL;
 	free(rt->materials);
 	rt->materials = NULL;
+	free(rt->textures);
+	rt->textures = NULL;
 }
 
 static void	delete_shader_program(GLuint shader_program)
@@ -62,7 +70,7 @@ static void	delete_shader_program(GLuint shader_program)
 	}
 }
 
-void	terminate(char *msg, uint8_t exit_code, t_rt *rt)
+void	terminate(char *msg, char *add_msg, uint8_t exit_code, t_rt *rt)
 {
 	if (rt->window)
 		glUseProgram(0);
@@ -73,7 +81,7 @@ void	terminate(char *msg, uint8_t exit_code, t_rt *rt)
 	if (rt->fd != -1)
 		close(rt->fd);
 	if (msg)
-		error(msg);
+		error(msg, add_msg);
 	if (rt->window)
 		glfwDestroyWindow(rt->window);
 	glfwTerminate();

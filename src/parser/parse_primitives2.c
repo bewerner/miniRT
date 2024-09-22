@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:41:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/16 21:43:05 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 12:34:38 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_material	*get_next_material(char *line, t_rt *rt)
 	while (material && ft_strcmp(material->name, line) != 0)
 		material = material->next;
 	if (material == NULL)
-		terminate("invalid material name detected", 1, rt);
+		terminate("invalid material name detected", line, 1, rt);
 	return (material);
 }
 
@@ -68,7 +68,7 @@ t_error	parse_hyperboloid(t_hyperboloid *hb, t_rt *rt)
 	if (fabsf(hb->a) <= EPSILON
 		|| fabsf(hb->b) == EPSILON
 		|| fabsf(hb->c) == EPSILON)
-		terminate("Hyperboloid parameters a,b,c have to be != 0", 1, rt);
+		terminate("Hyperboloid parameters a,b,c have to be != 0", NULL, 1, rt);
 	set_color_and_material(&hb->base_color, &hb->material, line, rt);
 	return (RT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/21 18:11:12 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/22 12:11:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	init_glfw(t_rt *rt)
 {
 	glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
 	if (glfwInit() == GLFW_FALSE)
-		terminate("glfw_init failed", 1, rt);
+		terminate("glfw_init failed", NULL, 1, rt);
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -32,7 +32,7 @@ static void	init_glfw(t_rt *rt)
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	rt->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT - LOADING...", NULL, NULL);
 	if (!rt->window)
-		terminate("glfw window creation failed", 1, rt);
+		terminate("glfw window creation failed", NULL, 1, rt);
 	glfwMakeContextCurrent(rt->window);
 	glfwShowWindow(rt->window);
 	glfwPollEvents();
@@ -262,7 +262,7 @@ void	create_ubo_rt(t_rt *rt)
 
 	blockIndex = glGetUniformBlockIndex(rt->preview_shader_program, "u_rt");
 	if (blockIndex == GL_INVALID_INDEX)
-		terminate("u_rt not found in shader program", 1, rt);
+		terminate("u_rt not found in shader program", NULL, 1, rt);
 	glUniformBlockBinding(rt->preview_shader_program, blockIndex, 0);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
 
@@ -391,7 +391,7 @@ void	create_tbo_objects(t_rt *rt)
 	size = get_gpu_objects_size(rt->objects);
 	buffer = (float *)ft_calloc(1, size);
 	if (!buffer)
-		terminate("failed to allocate texture buffer", 1, rt);
+		terminate("failed to allocate texture buffer", NULL, 1, rt);
 	init_tbo_objects(buffer, rt->objects);
 
 	// for(size_t i = 0; i < get_gpu_objects_size(rt->objects) / 4; i++)
@@ -460,7 +460,7 @@ void	create_tbo_lights(t_rt *rt)
 	size = get_gpu_lights_size(rt->lights);
 	buffer = (float *)ft_calloc(1, size);
 	if (!buffer)
-		terminate("failed to allocate texture buffer", 1, rt);
+		terminate("failed to allocate texture buffer", NULL, 1, rt);
 	init_tbo_lights(buffer, rt->lights);
 
 	// for (size_t i = 0; i < size / 4; i++)
@@ -523,7 +523,7 @@ void	init_agx_lut_buffer(t_vec3 *buffer, char *filepath, size_t len, t_rt *rt)
 
 	fd = open(filepath, O_RDONLY);
 	if (fd == -1)
-		terminate(filepath, 1, rt);
+		terminate(filepath, NULL, 1, rt);
 	i = 0;
 	while (i < len)
 	{
@@ -579,7 +579,7 @@ void	create_fbo(t_rt *rt)
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->tex_fbo_id, 0);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		terminate("Framebuffer is not complete!\n", 1, rt);
+		terminate("Framebuffer is not complete!\n", NULL, 1, rt);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind the framebuffer
 }

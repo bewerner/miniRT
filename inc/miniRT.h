@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/21 16:57:25 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/22 12:57:01 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 # define LIGHT_POWER	0.575f
 # define EPSILON		0.000001f
 
-# define MAX_MATERIAL_NAME 256 
+# define MAX_NAME 256 
 
 typedef enum e_timeraction
 {
@@ -64,6 +64,7 @@ typedef enum e_timeraction
 
 // Typedef Prototypes
 typedef struct s_material	t_material;
+typedef struct s_texture	t_texture;
 typedef struct s_object		t_object;
 typedef struct s_light		t_light;
 
@@ -76,6 +77,7 @@ typedef enum e_identifier
 	ID_AMBIENT,
 	ID_CAMERA,
 	ID_MATERIAL,
+	ID_TEXTURE,
 	ID_POINT_LIGHT,
 	ID_SPHERE,
 	ID_PLANE,
@@ -86,7 +88,7 @@ typedef enum e_identifier
 // Parser Objects for parser.c
 typedef struct s_pobjs
 {
-	t_material	*curr_mat;
+	// t_material	*curr_mat;
 	t_object	*curr_obj;
 	t_light		*curr_light;
 }				t_pobjs;
@@ -98,6 +100,7 @@ typedef struct s_scene_size
 	size_t		light_cnt;
 	size_t		light_size;
 	size_t		mat_cnt;
+	size_t		tex_cnt;
 }	t_scene_size;
 
 typedef enum e_mode
@@ -129,7 +132,7 @@ typedef struct s_material
 {
 	size_t		index;
 	t_material	*next;
-	char		name[MAX_MATERIAL_NAME];
+	char		name[MAX_NAME];
 	t_vec3		color;
 	float		metallic;
 	float		roughness;
@@ -138,6 +141,26 @@ typedef struct s_material
 	float		emission_strength;
 	t_vec3		emission_color;
 }	t_material;
+
+typedef enum e_texture_type
+{
+	TEX_NONE,
+	TEX_IMAGE,
+	TEX_CHECKER
+}	t_texture_type;
+
+typedef struct s_texture
+{
+	size_t			index;
+	t_texture		*next;
+	char			name[MAX_NAME];
+	t_texture_type	type;
+	char			file[MAX_NAME];
+	float			scale;
+	t_vec3			col1;
+	t_vec3			col2;
+	
+}	t_texture;
 
 typedef enum e_obj_type
 {
@@ -322,10 +345,12 @@ typedef struct s_rt
 	GLuint			tex_fbo_id;
 
 	t_list			*line;
+	char			*curr_line;
 	t_movement		move;
 	t_camera		camera;
 	t_screen		screen;
 	t_material		*materials;
+	t_texture		*textures;
 	t_object		*objects;
 	t_light			*lights;
 	t_vec3			ambient;
@@ -370,8 +395,8 @@ void			init_mini_rt(char **argv, t_rt *rt);
 
 // cleanup.c
 char			*error_msg(t_error error);
-void			error(char *message);
-void			terminate(char *msg, uint8_t exit_code, t_rt *rt);
+void			error(char *message, char *add_msg);
+void			terminate(char *msg, char *add_msg, uint8_t exit_code, t_rt *rt);
 
 // movement.c
 void			handle_move_input(t_rt *rt);
@@ -425,10 +450,13 @@ void			create_ubo_materials(t_rt *rt);
 void			load_scene(char *file, t_rt *rt);
 
 // parser/parser.c
-t_error			parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt);
+t_error			parse_scene(t_scene_size scene_size, t_rt *rt);
 
 // parser/parse_material.c
 t_error			create_materials(size_t mat_cnt, t_rt *rt);
+
+// parser/parse_texture.c
+t_error			create_textures(size_t tex_cnt, t_rt *rt);
 
 // parser/parse_default_objs.c
 t_error			parse_ambient(t_rt *rt);
@@ -455,6 +483,7 @@ void			next_lst_item(t_list **lst);
 t_identifier	get_identifier(char *line);
 float			vr(float nbr, t_vec2 min_max, t_rt *rt);
 float			gnv(char **line, t_rt *rt);
+void			gnv_name(char *name, char **line, t_rt *rt);
 char			*prep_line(char *str);
 
 // parser/parser_utils3.c

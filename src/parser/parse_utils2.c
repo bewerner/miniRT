@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/04 15:28:47 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 12:47:29 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ t_identifier	get_identifier(char *line)
 		return (ID_AMBIENT);
 	else if (ft_strncmp(line, "C ", 2) == 0)
 		return (ID_CAMERA);
+	else if (ft_strncmp(line, "mat ", 4) == 0)
+		return (ID_MATERIAL);
+	else if (ft_strncmp(line, "tex ", 4) == 0)
+		return (ID_TEXTURE);
 	else if (ft_strncmp(line, "L ", 2) == 0)
 		return (ID_POINT_LIGHT);
 	else if (ft_strncmp(line, "l ", 2) == 0)
@@ -34,17 +38,19 @@ t_identifier	get_identifier(char *line)
 		return (ID_CYLINDER);
 	else if (ft_strncmp(line, "hb ", 3) == 0)
 		return (ID_HYPERBOLOID);
-	else if (ft_strncmp(line, "mat ", 4) == 0)
-		return (ID_MATERIAL);
 	return (ID_INVALID);
 }
 
 //	validate_range
 float	vr(float nbr, t_vec2 min_max, t_rt *rt)
 {
+	char	msg[4096];
+
 	if (nbr >= min_max.x - EPSILON && nbr <= min_max.y + EPSILON)
 		return (nbr);
-	terminate("number not in valid range", 1, rt);
+	ft_memset(msg, 0, 4096);
+	ft_memcpy(msg, rt->curr_line, ft_strlen(rt->curr_line));
+	terminate("number not in valid range", msg, 1, rt);
 	return (0);
 }
 
@@ -55,13 +61,36 @@ float	gnv(char **line, t_rt *rt)
 
 	ft_skipspace(line);
 	if (**line == '\0')
-		terminate("Missing value detected", 1, rt);
+		terminate("Missing value detected", *line, 1, rt);
 	value = ft_atod(line, 0, (int [3]){1, -1, 0});
 	if (value == NAN || value == INFINITY || value == -INFINITY)
-		terminate("invalid number", 1, rt);
+		terminate("invalid number", *line, 1, rt);
 	while (*line && (ft_isspace(**line) || **line == ','))
 		(*line)++;
 	return (value);
+}
+
+//	get_next_name_value
+void	gnv_name(char *name, char **line, t_rt *rt)
+{
+	size_t	count;
+
+	count = 0;
+	ft_skipspace(line);
+	if (**line == '\0')
+		terminate("Missing value detected", *line, 1, rt);
+	if (!ft_isalpha(**line))
+		terminate("expecting a name, but name starts not with \
+an alphanumeric character", *line, 1, rt);
+	while (*line && !ft_isspace(**line)
+		&& **line != ',' && count < MAX_NAME - 1)
+	{
+		name[count++] = **line;
+		(*line)++;
+	}
+	name[count] = '\0';
+	while (*line && (ft_isspace(**line) || **line == ','))
+		(*line)++;
 }
 
 char	*prep_line(char *str)

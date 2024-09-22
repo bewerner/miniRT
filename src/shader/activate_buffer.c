@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   activate_buffer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:39:19 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/20 18:03:48 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/22 12:17:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	activate_objects(GLuint shader_program, t_rt *rt)
 	(void)rt;
 	uniform_location = glGetUniformLocation(shader_program, "objects");
 	if (uniform_location == -1)
-		terminate("objects not found in shader program", 1, rt);
+		terminate("objects not found in shader program", NULL, 1, rt);
 	glUniform1i(uniform_location, 1);
 	// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 }
@@ -44,7 +44,7 @@ void	activate_lights(GLuint shader_program, t_rt *rt)
 	(void)rt;
 	uniform_location = glGetUniformLocation(shader_program, "lights");
 	if (uniform_location == -1)
-		terminate("lights not found in shader program", 1, rt);
+		terminate("lights not found in shader program", NULL, 1, rt);
 	glUniform1i(uniform_location, 2);
 	// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 }
@@ -59,7 +59,7 @@ void	activate_agx_lut(GLuint shader_program, t_rt *rt)
 	(void)rt;
 	uniform_location = glGetUniformLocation(shader_program, "agx_lut");
 	if (uniform_location == -1)
-		terminate("agx_lut not found in shader program", 1, rt);
+		terminate("agx_lut not found in shader program", NULL, 1, rt);
 	glUniform1i(uniform_location, 3);
 	// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 }

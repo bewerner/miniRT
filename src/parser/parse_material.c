@@ -6,33 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/17 18:28:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 12:43:07 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-static void	gnv_name(char *name, char **line, t_rt *rt)
-{
-	size_t	count;
-
-	count = 0;
-	ft_skipspace(line);
-	if (**line == '\0')
-		terminate("Missing value detected", 1, rt);
-	if (!ft_isalpha(**line))
-		terminate("material name starts not with \
-an alphanumeric character", 1, rt);
-	while (*line && !ft_isspace(**line)
-		&& **line != ',' && count < MAX_MATERIAL_NAME - 1)
-	{
-		name[count++] = **line;
-		(*line)++;
-	}
-	name[count] = '\0';
-	while (*line && (ft_isspace(**line) || **line == ','))
-		(*line)++;
-}
 
 static void	create_default_material(size_t mat_cnt, t_material *mat)
 {
@@ -41,7 +19,7 @@ static void	create_default_material(size_t mat_cnt, t_material *mat)
 		mat->next = NULL;
 	else
 		mat->next = (void *)mat + sizeof(t_material);
-	ft_strlcat(mat->name, "DEFAULT", MAX_MATERIAL_NAME);
+	ft_strlcat(mat->name, "DEFAULT", MAX_NAME);
 	mat->color.r = 204.0f / 255.0f;
 	mat->color.g = 204.0f / 255.0f;
 	mat->color.b = 204.0f / 255.0f;
@@ -98,13 +76,14 @@ t_error	create_materials(size_t mat_cnt, t_rt *rt)
 	t_material		*curr_mat;
 
 	if (mat_cnt > 100)
-		terminate("Too many materials, a maximum of 100 is supported", 1, rt);
+		terminate("Too many materials, a maximum of 100 is supported", NULL, 1, rt);
 	curr_mat = rt->materials;
 	create_default_material(mat_cnt++, curr_mat);
 	evaluate_material_id(mat_cnt, &curr_mat);
 	line = rt->line;
 	while (line)
 	{
+		rt->curr_line = rt->line->content;
 		id = get_identifier(line->content);
 		if (id == ID_MATERIAL)
 		{
@@ -117,7 +96,7 @@ t_error	create_materials(size_t mat_cnt, t_rt *rt)
 }
 
 // t_material	*next;
-// char			name[MAX_MATERIAL_NAME];
+// char			name[MAX_NAME];
 // t_vec3		color;
 // float		metallic;
 // float		roughness;
