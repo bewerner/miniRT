@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 14:58:13 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 15:00:42 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 15:08:47 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ static size_t	get_gpu_lights_size(t_light *light)
 static void	init_gpu_point_light(float *buffer, size_t *i, t_point_light *light)
 {
 	t_gpu_point_light	gpu_light;
-	
+
 	gpu_light.type = (float)light->type;
-	gpu_light.next_offset = (float)(*i + sizeof(t_gpu_point_light) / sizeof(float));
+	gpu_light.next_offset
+		= (float)(*i + sizeof(t_gpu_point_light) / sizeof(float));
 	gpu_light.origin = light->origin;
 	gpu_light.color = light->color;
 	gpu_light.power = light->power;
@@ -42,7 +43,7 @@ static void	init_gpu_point_light(float *buffer, size_t *i, t_point_light *light)
 
 static void	init_tbo_lights(float *buffer, t_light *light)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (light)
@@ -64,14 +65,11 @@ void	create_tbo_lights(t_rt *rt)
 	if (!buffer)
 		terminate("failed to allocate texture buffer", NULL, 1, rt);
 	init_tbo_lights(buffer, rt->lights);
-
 	glGenBuffers(1, &rt->tbo_lights_id);
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
 	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);
-
 	free(buffer);
-
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 2);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
