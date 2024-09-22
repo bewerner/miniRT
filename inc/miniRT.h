@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 15:28:19 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:23:27 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,6 +440,9 @@ void 			scroll_hook(GLFWwindow* window, double xoffset, double yoffset);
 // ┌──────┐
 // │ Init │
 // └──────┘
+
+// init/init_agx_lut_tbo.c
+void			create_tbo_agx_lut(char *filepath, t_rt *rt);
 
 // init/init_lights_tbo.c
 void			create_tbo_lights(t_rt *rt);
