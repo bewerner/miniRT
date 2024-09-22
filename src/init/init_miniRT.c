@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/22 15:12:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 15:48:33 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -428,6 +428,25 @@ void	create_environment_map(t_rt *rt)
 	free(buffer);
 }
 
+void	init_shader_programs(t_rt *rt)
+{
+	rt->solid_shader_program = create_shader_program(
+			"shaders/vertex/screen.vert",
+			"shaders/solid/solid.frag", rt);
+	rt->normal_shader_program = create_shader_program(
+			"shaders/vertex/screen.vert",
+			"shaders/normal/normal.frag", rt);
+	rt->postprocessing_shader_program = create_shader_program(
+			"shaders/vertex/screen.vert",
+			"shaders/postprocessing/postprocessing.frag", rt);
+	rt->preview_shader_program = create_shader_program(
+			"shaders/vertex/screen.vert",
+			"shaders/fragment/raytracer.frag", rt);
+	rt->gizmo_shader_program = create_shader_program(
+			"shaders/vertex/gizmo.vert",
+			"shaders/gizmo/gizmo.frag", rt);
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	rt->max_samples = INT32_MAX - 1;
@@ -438,11 +457,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	init_cursor_is_settable(rt);
 	init_camera(&rt->camera);
 	init_hooks(rt);
-	rt->solid_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/solid/solid.frag", rt);
-	rt->normal_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/normal/normal.frag", rt);
-	rt->postprocessing_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/postprocessing/postprocessing.frag", rt);
-	rt->preview_shader_program = create_shader_program("shaders/vertex/screen.vert", "shaders/fragment/raytracer.frag", rt);
-	rt->gizmo_shader_program = create_shader_program("shaders/vertex/gizmo.vert", "shaders/gizmo/gizmo.frag", rt);
+	init_shader_programs(rt);
 	create_screen_vertices(rt);
 	create_gizmo(rt);
 	create_ubo_rt(rt);
