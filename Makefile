@@ -1,12 +1,13 @@
 
 NAME				=	miniRT
 LIBFT				=	libft/libft.a
+STB					=	inc/stb
 
 VPATH				=	src src/init src/parser src/shader src/primitives src/utils src/hooks lib
 
 SRC					=	main.c glad.c cleanup.c \
 						init_material_ubo.c \
-						shader_assembler.c shader_compiler.c shader_program.c run_shader.c activate_buffer.c \
+						shader_assembler.c shader_compiler.c shader_program.c run_shader.c bind_buffer.c \
 						loader.c parser.c parse_utils1.c parse_utils2.c parse_utils3.c parse_material.c parse_texture.c \
 						parse_default_objs.c parse_lights.c parse_primitives.c parse_primitives2.c \
 						init_hooks.c key_hook.c cursor_hook.c mouse_hook.c resize_hook.c scroll_hook.c \
@@ -31,7 +32,7 @@ COL_DEFAULT			= 	\033[0m
 
 .SILENT:
 
-all: $(LIBFT) $(NAME)
+all: $(LIBFT) $(STB) $(NAME)
 
 $(NAME): $(OBJ)
 	echo "$(COL_YELLOW)Building $(NAME)...$(COL_DEFAULT)"
@@ -42,6 +43,11 @@ $(LIBFT):
 #	echo "$(COL_YELLOW)Building $(LIBFT)...$(COL_DEFAULT)"
 #	$(MAKE) -C libft
 #	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
+
+$(STB):
+	echo "$(COL_YELLOW)Cloning $(STB)...$(COL_DEFAULT)"
+	git clone git@github.com:nothings/stb.git inc/stb
+	echo "$(COL_GREEN)Successfully cloned $(STB).$(COL_DEFAULT)"
 
 ./obj/%.o: %.c
 	mkdir -p obj
@@ -55,6 +61,8 @@ clean:
 fclean: clean
 #	$(MAKE) -C libft fclean > /dev/null
 #	echo "$(COL_GREEN)$(LIBFT) has been removed.$(COL_DEFAULT)"
+	rm -rf $(STB)
+	echo "$(COL_GREEN)$(STB) has been removed.$(COL_DEFAULT)"
 	rm -f $(NAME)
 	echo "$(COL_GREEN)$(NAME) has been removed.$(COL_DEFAULT)"
 

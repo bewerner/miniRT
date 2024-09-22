@@ -6,10 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 12:11:33 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:38:19 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "../inc/miniRT.h"
 
 void	validate_args(int argc, char **argv, t_rt *rt)
