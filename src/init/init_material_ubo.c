@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 12:11:53 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 15:09:47 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	init_ubo_materials(float *buffer, t_material *material)
 void	create_ubo_materials(t_rt *rt)
 {
 	size_t	size;
-	GLuint	blockIndex;
+	GLuint	block_index;
 	float	*buffer;
 
 	size = get_gpu_material_size(rt->materials);
@@ -61,9 +61,10 @@ void	create_ubo_materials(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_materials_id);
 	glBufferData(GL_UNIFORM_BUFFER, size, buffer, GL_STATIC_DRAW);
 	free(buffer);
-	blockIndex = glGetUniformBlockIndex(rt->preview_shader_program, "u_materials");
-	if (blockIndex == GL_INVALID_INDEX)
+	block_index
+		= glGetUniformBlockIndex(rt->preview_shader_program, "u_materials");
+	if (block_index == GL_INVALID_INDEX)
 		terminate("materials ubo not found in shader program", NULL, 1, rt);
-	glUniformBlockBinding(rt->preview_shader_program, blockIndex, 1);
+	glUniformBlockBinding(rt->preview_shader_program, block_index, 1);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, rt->ubo_materials_id);
 }
