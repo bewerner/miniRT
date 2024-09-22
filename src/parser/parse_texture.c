@@ -6,20 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:55:31 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 14:48:46 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:53:52 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-// size_t			index;
-// t_texture		*next;
-// char			name[MAX_NAME];
-// t_texture_type	type;
-// char			file[MAX_NAME];
-// float			scale;
-// t_vec3			col1;
-// t_vec3			col2;
 
 static void	set_tex_type(t_texture_type *type, char *tex_name)
 {
@@ -30,9 +21,22 @@ static void	set_tex_type(t_texture_type *type, char *tex_name)
 		*type = TEX_CHECKER;
 }
 
+static void	parse_checker_values(t_texture *tex, char *line, t_rt *rt)
+{
+	tex->scale
+		= vr(gnv(&line, rt) / 255.0f, (t_vec2){-INFINITY, INFINITY}, rt);
+	tex->col1.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	tex->col1.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	tex->col1.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	tex->col2.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	tex->col2.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	tex->col2.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+}
+
 static t_error	parse_texture(t_texture *tex, char *line, t_rt *rt)
 {
 	static size_t	index;
+	static size_t	tex_image_count;
 	char			type_name[MAX_NAME];
 
 	line += 4;
@@ -42,18 +46,14 @@ static t_error	parse_texture(t_texture *tex, char *line, t_rt *rt)
 	gnv_name(type_name, &line, rt);
 	set_tex_type(&tex->type, type_name);
 	if (tex->type == TEX_IMAGE)
-		gnv_name(tex->file, &line, rt);
-	else if (tex->type == TEX_CHECKER)
 	{
-		tex->scale
-			= vr(gnv(&line, rt) / 255.0f, (t_vec2){-INFINITY, INFINITY}, rt);
-		tex->col1.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		tex->col1.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		tex->col1.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		tex->col2.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		tex->col2.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		tex->col2.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		gnv_name(tex->file, &line, rt);
+		if (++tex_image_count > MAX_IMAGE_TEXTURES)
+			terminate("too many image textures, \
+a maximum of 24 allowed", rt->curr_line, 1, rt);
 	}
+	else if (tex->type == TEX_CHECKER)
+		parse_checker_values(tex, line, rt);
 	return (RT_SUCCESS);
 }
 
