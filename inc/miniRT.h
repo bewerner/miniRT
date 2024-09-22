@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 16:32:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:14:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@
 # define EPSILON		0.000001f
 
 # define MAX_NAME 256 
+
+# define MAX_IMAGE_TEXTURES 24
 
 typedef enum e_timeraction
 {

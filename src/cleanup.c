@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/22 13:56:09 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:13:26 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	error(char *message, char *add_msg)
 		ft_putendl_fd(message, STDERR_FILENO);
 	if (add_msg)
 	{
-		ft_putchar_fd('(', STDERR_FILENO);
+		ft_putstr_fd("\033[96m-> \033[94m", STDERR_FILENO);
 		ft_putstr_fd(add_msg, STDERR_FILENO);
-		ft_putendl_fd(")", STDERR_FILENO);
+		ft_putendl_fd("\033[0m", STDERR_FILENO);
 	}
 	errno = 0;
 }
