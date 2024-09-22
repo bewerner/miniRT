@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/04 15:40:32 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 13:46:20 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	verify_material_uniqueness(t_rt *rt)
 		while (next)
 		{
 			if (ft_strcmp(curr->name, next->name) == 0)
-				terminate("duplicate material names", 1, rt);
+				terminate("duplicate material names", NULL, 1, rt);
 			next = next->next;
 		}
 		curr = curr->next;
@@ -47,7 +47,7 @@ static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 		return (parse_cylinder((t_cylinder *)objs.curr_obj, rt));
 	else if (id == ID_HYPERBOLOID)
 		return (parse_hyperboloid((t_hyperboloid *)objs.curr_obj, rt));
-	else if (id != ID_COMMENT && id != ID_MATERIAL)
+	else if (id != ID_COMMENT && id != ID_MATERIAL && id != ID_TEXTURE)
 		return (RT_ERROR_INVALID_IDENTIFIER);
 	return (RT_SUCCESS);
 }
@@ -82,28 +82,27 @@ static void	evaluate_light_id(t_identifier id, size_t light_cnt,
 	}
 }
 
-t_error	parse_scene(size_t mat_cnt, size_t obj_cnt, size_t light_cnt, t_rt *rt)
+t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
 {
 	t_identifier	id;
 	t_error			error;
-	t_material		*curr_mat;
 	t_object		*curr_obj;
 	t_light			*curr_light;
 
 	error = RT_SUCCESS;
-	curr_mat = rt->materials;
 	curr_obj = rt->objects;
 	curr_light = rt->lights;
-	create_materials(mat_cnt, rt);
-	curr_mat = curr_mat->next;
+	create_textures(scene_size.tex_cnt, rt);
+	create_materials(scene_size.mat_cnt, rt);
 	while (rt->line)
 	{
+		rt->curr_line = rt->line->content;
 		id = get_identifier(rt->line->content);
-		error = evaluate_id(id, (t_pobjs){curr_mat, curr_obj, curr_light}, rt);
+		error = evaluate_id(id, (t_pobjs){curr_obj, curr_light}, rt);
 		if (error)
 			return (error);
-		evaluate_object_id(id, obj_cnt, &curr_obj);
-		evaluate_light_id(id, light_cnt, &curr_light);
+		evaluate_object_id(id, scene_size.obj_cnt, &curr_obj);
+		evaluate_light_id(id, scene_size.light_cnt, &curr_light);
 		next_lst_item(&rt->line);
 	}
 	verify_material_uniqueness(rt);

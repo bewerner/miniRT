@@ -13,7 +13,7 @@
 			- SCALE, COL1, COL2
 				```
 				# TEXTURES
-				tex wood assets/textures/wood.png
+				tex wood image		assets/textures/wood.png
 				tex tex1 checker	1.0 	0,0,34		05,255,255
 				tex tex2 checker	2.0 	0,0,0 		255,255,2550
 
