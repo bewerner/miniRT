@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 17:14:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:57:06 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
 
 # define MAX_NAME 256 
 
-# define MAX_IMAGE_TEXTURES 24
+# define MAX_IMAGE_TEXTURES 10
 
 typedef enum e_timeraction
 {
@@ -510,6 +510,9 @@ size_t			obj_size(t_identifier id);
 size_t			light_size(t_identifier id);
 void			ft_delete_line(char **str);
 
+// parser/parser_validations.c
+void			verify_material_uniqueness(t_rt *rt);
+void			verify_texture_uniqueness(t_rt *rt);
 // select.c
 // void			unselect_all(t_object *obj);
 // void			rt_select(GLFWwindow* window, t_rt *rt);

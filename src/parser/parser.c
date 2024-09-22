@@ -6,30 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 13:46:20 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 20:10:42 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-static void	verify_material_uniqueness(t_rt *rt)
-{
-	t_material	*curr;
-	t_material	*next;
-
-	curr = rt->materials;
-	while (curr->next)
-	{
-		next = curr->next;
-		while (next)
-		{
-			if (ft_strcmp(curr->name, next->name) == 0)
-				terminate("duplicate material names", NULL, 1, rt);
-			next = next->next;
-		}
-		curr = curr->next;
-	}
-}
 
 static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 {
@@ -82,6 +63,28 @@ static void	evaluate_light_id(t_identifier id, size_t light_cnt,
 	}
 }
 
+// size_t			index;
+// t_texture		*next;
+// char			name[MAX_NAME];
+// t_texture_type	type;
+// char			file[MAX_NAME];
+// float			scale;
+// t_vec3			col1;
+// t_vec3			col2;
+// void	print_textures(t_rt *rt)
+// {
+// 	t_texture *tex;
+
+// 	tex = rt->textures;
+// 	while (tex)
+// 	{
+// 		printf("-------------------------\n");
+// 		printf("INDEX %zu \nNAME %s \nTYPE %i \nFILE %s \nSCALE %f \nCOL1 %f,%f,%f \nCOL2 %f,%f,%f\n", tex->index, tex->name, tex->type, tex->file, tex->scale, tex->col1.r, tex->col1.g, tex->col1.b, tex->col2.r, tex->col2.g, tex->col2.b);
+// 		tex = tex->next;
+// 	}
+// }
+// 	print_textures(rt);
+
 t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
 {
 	t_identifier	id;
@@ -106,5 +109,6 @@ t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
 		next_lst_item(&rt->line);
 	}
 	verify_material_uniqueness(rt);
+	verify_texture_uniqueness(rt);
 	return (RT_SUCCESS);
 }

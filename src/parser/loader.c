@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 14:46:31 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 19:21:37 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	evaluate_id(t_identifier id, char *line, t_scene_size *sz, t_rt *rt)
 	}
 	else if (id == ID_MATERIAL)
 		sz->mat_cnt++;
+	else if (id == ID_TEXTURE)
+		sz->tex_cnt++;
 	else if (id == ID_POINT_LIGHT)
 	{
 		sz->light_cnt++;
