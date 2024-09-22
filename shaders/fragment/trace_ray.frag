@@ -14,7 +14,12 @@ vec3	trace_ray(t_ray ray)
 	// {
 		hitpoint = get_closest_hitpoint(ray);
 		if (!hitpoint.hit)
-			return (rt.ambient);
+		{
+			if (rt.debug == -1)
+				return(get_environment_map_color(ray.dir));
+			else
+				return (rt.ambient);
+		}
 
 		col_illumination = get_illumination_color(hitpoint);
 		col_sky = get_sky_color(hitpoint);
