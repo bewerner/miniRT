@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 12:43:07 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:47:33 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ t_error	create_materials(size_t mat_cnt, t_rt *rt)
 	t_material		*curr_mat;
 
 	if (mat_cnt > 100)
-		terminate("Too many materials, a maximum of 100 is supported", NULL, 1, rt);
+		terminate("Too many materials, a maximum \
+of 100 is supported", NULL, 1, rt);
 	curr_mat = rt->materials;
 	create_default_material(mat_cnt++, curr_mat);
 	evaluate_material_id(mat_cnt, &curr_mat);

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:55:31 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 13:18:48 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:48:46 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static t_error	parse_texture(t_texture *tex, char *line, t_rt *rt)
 		gnv_name(tex->file, &line, rt);
 	else if (tex->type == TEX_CHECKER)
 	{
-		tex->scale = vr(gnv(&line, rt) / 255.0f, (t_vec2){-INFINITY, INFINITY}, rt);
+		tex->scale
+			= vr(gnv(&line, rt) / 255.0f, (t_vec2){-INFINITY, INFINITY}, rt);
 		tex->col1.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 		tex->col1.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 		tex->col1.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
@@ -74,7 +75,8 @@ t_error	create_textures(size_t tex_cnt, t_rt *rt)
 	t_texture		*curr_tex;
 
 	if (tex_cnt > 100)
-		terminate("Too many textures, a maximum of 100 is supported", NULL, 1, rt);
+		terminate("Too many textures, a maximum \
+of 100 is supported", NULL, 1, rt);
 	curr_tex = rt->textures;
 	line = rt->line;
 	while (line)
