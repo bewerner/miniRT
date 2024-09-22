@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/21 16:57:25 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/22 01:40:41 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,16 @@
 
 # if defined(__APPLE__) && defined(__MACH__)
 #  define LUT_PATH	"resources/AgX_Display_P3.lut"
-#  define MAC_OS	true
+#  define MAC_OS	1
 # else
 #  define LUT_PATH	"resources/AgX_sRGB.lut"
-#  define MAC_OS	false
+#  define MAC_OS	0
 # endif
 
 # include "../libft/libft.h"
 # include "glad/glad.h"
 # include <GLFW/glfw3.h>
+# include "stb/stb_image.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -293,7 +294,7 @@ typedef struct s_ubo
 	int				width;
 	int				height;
 	int				mode;
-	bool			mac_os;
+	int				mac_os;
 }	t_ubo;
 
 typedef struct s_rt
@@ -320,6 +321,7 @@ typedef struct s_rt
 	GLuint			tbo_agx_lut_id;
 	GLuint			fbo_id;
 	GLuint			tex_fbo_id;
+	GLuint			environment_map_id;
 
 	t_list			*line;
 	t_movement		move;
@@ -500,11 +502,12 @@ GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 // shader/shader_program.c
 GLuint			create_shader_program(const char *vert, const char *freg, t_rt *rt);
 
-// shader/activate_buffer.c
-void			activate_framebuffer_texture(GLuint shader_program, t_rt *rt);
-void			activate_objects(GLuint shader_program, t_rt *rt);
-void			activate_lights(GLuint shader_program, t_rt *rt);
-void			activate_agx_lut(GLuint shader_program, t_rt *rt);
+// shader/bind_buffer.c
+void			bind_framebuffer_texture(GLuint shader_program, t_rt *rt);
+void			bind_objects(GLuint shader_program, t_rt *rt);
+void			bind_lights(GLuint shader_program, t_rt *rt);
+void			bind_agx_lut(GLuint shader_program, t_rt *rt);
+void			bind_environment_map(GLuint shader_program, t_rt *rt);
 
 // shader/run_shader.c
 void			draw_gizmo(t_rt *rt);

@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/28 16:37:07 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:06:33 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "../inc/miniRT.h"
 
 void	validate_args(int argc, char **argv, t_rt *rt)

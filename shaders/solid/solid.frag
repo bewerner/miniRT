@@ -19,7 +19,8 @@
 
 vec3	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint);
 vec3	get_solid_color(t_hitpoint hitpoint);
-vec3	trace_ray_solid(t_ray ray);
+vec3	trace_ray_solid(t_ray ray, vec2 uv);
+
 
 void main()
 {
@@ -41,7 +42,7 @@ void main()
 		return ;
 	}
 
-	vec3 col = trace_ray_solid(camera_ray);
+	vec3 col = trace_ray_solid(camera_ray, uv);
 	col = dither(col);
 
 	FragColor = col;

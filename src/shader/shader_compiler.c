@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shader_compiler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:31:58 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 18:25:13 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 00:28:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
