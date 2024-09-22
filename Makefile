@@ -6,7 +6,7 @@ STB					=	inc/stb
 VPATH				=	src src/init src/parser src/shader src/primitives src/utils src/hooks lib
 
 SRC					=	main.c glad.c cleanup.c \
-						init_lights_tbo.c init_material_ubo.c init_objects_tbo.c init_objects_utils.c \
+						init_agx_lut_tbo.c init_lights_tbo.c init_material_ubo.c init_objects_tbo.c init_objects_utils.c \
 						shader_assembler.c shader_compiler.c shader_program.c run_shader.c bind_buffer.c \
 						loader.c parser.c parse_utils1.c parse_utils2.c parse_utils3.c parse_material.c parse_texture.c \
 						parse_default_objs.c parse_lights.c parse_primitives.c parse_primitives2.c \
