@@ -42,23 +42,31 @@ vec3	get_random_hemisphere_direction(vec3 hemisphere_normal)
 	return (direction);
 }
 
+vec3	get_environment_map_color(vec3 direction)
+{
+	vec2	uv;
+
+	vec3 normal = normalize(direction);
+	uv.x = 0.5 + atan(normal.y, normal.x) / (2.0 * M_PI);
+	uv.y = 0.5 - asin(normal.z) / M_PI;
+
+	// return (texture(environment_map, uv).rgb);
+	return(clamp(texture(environment_map, uv).rgb, 0, 16));
+}
+
 vec3	get_sky_color(t_hitpoint hitpoint)
 {
-	// if (rt.sample_count <= 1)
-	// 	return (rt.ambient);
 	vec3	col = VEC3_BLACK;
 	t_ray	ray;
-	// int samples = int(rt.debug) * 10;
-	// int samples = 128;
 
 	ray.origin = get_offset_hitpoint_pos(hitpoint);
-	// ray.origin = hitpoint.pos + hitpoint.normal * 0.0001;
-	// for (int i = 0; i < samples; i++)
-	// {
-		ray.dir = get_random_hemisphere_direction(hitpoint.normal);
-		if (reaches_sky(ray) == true)
+	ray.dir = get_random_hemisphere_direction(hitpoint.normal);
+	if (reaches_sky(ray) == true)
+	{
+		if (rt.debug == -1)
+			col = get_environment_map_color(ray.dir);
+		else
 			col = rt.ambient;
-	// }
-	// col /= samples;
+	}
 	return (col);
 }

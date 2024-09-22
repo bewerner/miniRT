@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/21 16:35:49 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/22 01:56:20 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void	postprocess_raw_image(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// ACTIVATE BUFFERS
-	activate_framebuffer_texture(shader_program, rt);
-	activate_agx_lut(shader_program, rt);
+	bind_framebuffer_texture(shader_program, rt);
+	bind_agx_lut(shader_program, rt);
 
 	// RUN SHADER
 	glBindVertexArray(rt->vao_screen_id);
@@ -109,10 +109,12 @@ void	render_raw_image(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
 
 	// ACTIVATE BUFFERS
-	activate_framebuffer_texture(shader_program, rt);
-	activate_objects(shader_program, rt);
+	bind_framebuffer_texture(shader_program, rt);
+	bind_objects(shader_program, rt);
 	if (rt->mode != MODE_NORMAL)
-		activate_lights(shader_program, rt);
+		bind_lights(shader_program, rt);
+	if (rt->mode == MODE_PREVIEW)
+		bind_environment_map(shader_program, rt);
 
 	// RUN SHADER
 	glBindVertexArray(rt->vao_screen_id);

@@ -48,31 +48,19 @@ vec4	draw_background(vec4 col)
 	return (col);
 }
 
-vec3	adjust_for_p3_display(vec3 col)
-{
-	mat3 m = mat3
-	(
-		0.822593,	0.177534,	0.000000,
-		0.033200,	0.966783,	0.000000,
-		0.017085,	0.072396,	0.910301
-	);
-
-	return (col * m);
-}
-
 void	main(void)
 {
-	if (mac_os == 1)
-	{
-		RED		= vec3(1, 0.212, 0.325);
-		GREEN	= vec3(0.541, 0.859, 0);
-		BLUE	= vec3(0.173, 0.561, 1);
-	}
-	else
+	if (mac_os == 1) // redo these values properly
 	{
 		RED		= vec3(0.961, 0.216, 0.216);
 		GREEN	= vec3(0.435, 0.643, 0.102);
 		BLUE	= vec3(0.184, 0.518, 0.890);
+	}
+	else
+	{
+		RED		= vec3(1.000, 0.212, 0.325);
+		GREEN	= vec3(0.541, 0.859, 0.000);
+		BLUE	= vec3(0.173, 0.561, 1.000);
 	}
 	FragColor = vec4(gizmo_col, 1);
 	if (background == 1)
@@ -87,6 +75,4 @@ void	main(void)
 		FragColor.rgb = BLUE;
 	if (background == 0)
 		FragColor.rgb *= 1 - (3.5 * depth);
-	if (debug == 1)
-		FragColor.rgb = adjust_for_p3_display(FragColor.rgb);
 }

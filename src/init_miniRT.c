@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/22 12:11:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:41:32 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -584,10 +584,66 @@ void	create_fbo(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind the framebuffer
 }
 
+void	init_tbo_environment_map(t_vec3 *buffer, float *image, size_t len)
+{
+	size_t	i_buffer;
+	size_t	i_image;
+
+	i_buffer = 0;
+	i_image = 0;
+	while (i_buffer < len)
+	{
+		buffer[i_buffer].r = image[i_image];
+		i_image++;
+		buffer[i_buffer].g = image[i_image];
+		i_image++;
+		buffer[i_buffer].b = image[i_image];
+		i_image++;
+		i_buffer++;
+	}
+}
+
+void	create_environment_map(t_rt *rt)
+{
+	int		width;
+	int		height;
+	float	*image;
+	t_vec3	*buffer;
+	size_t	buffer_size;
+
+	// image = stbi_loadf("assets/kloppenheim_02_1k.hdr", &width, &height, NULL, 3);
+	image = stbi_loadf("assets/syferfontein_18d_clear_2k.hdr", &width, &height, NULL, 3);
+	// image = stbi_loadf("assets/cape_hill_2k.hdr", &width, &height, NULL, 3);
+	if (!image)
+		terminate("stbi_load failed", NULL, 1, rt);
+	buffer_size = width * height * sizeof(t_vec3);
+	buffer = (t_vec3 *)ft_calloc(1, buffer_size);
+	if (!buffer)
+		terminate("failed to allocate environment map texture buffer", NULL, 1, rt);
+	init_tbo_environment_map(buffer, image, width * height);
+
+	glGenTextures(1, &rt->environment_map_id);
+	glActiveTexture(GL_TEXTURE0 + 4);
+	glBindTexture(GL_TEXTURE_2D, rt->environment_map_id);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	// Set texture parameters
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	stbi_image_free(image);
+	free(buffer);
+}
+
 void	init_mini_rt(char **argv, t_rt *rt)
 {
-	// rt->max_samples = INT32_MAX;
-	rt->max_samples = 512;
+	rt->max_samples = INT32_MAX - 1;
+	// rt->max_samples = 4096;
 	rt->filename = argv[1];
 	load_scene(argv[1], rt);
 	init_glfw(rt);
@@ -607,4 +663,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
+	create_environment_map(rt);
 }

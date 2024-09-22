@@ -137,7 +137,7 @@ struct t_rt
 	int				width;
 	int				height;
 	int				mode;
-	bool				mac_os;
+	int				mac_os;
 };
 
 
@@ -161,6 +161,7 @@ uniform samplerBuffer	objects;
 uniform samplerBuffer	lights;
 uniform samplerBuffer	agx_lut;
 uniform sampler2D		raw_render_image;
+uniform sampler2D		environment_map;
 
 out vec3 FragColor;
 
@@ -174,6 +175,7 @@ vec3			get_checker_color(t_hitpoint hitpoint);
 vec3			get_illumination_color(t_hitpoint hitpoint);
 
 // get_sky_color.frag
+vec3			get_environment_map_color(vec3 direction);
 vec3			get_sky_color(t_hitpoint hitpoint);
 
 // get_diffuse_color.frag

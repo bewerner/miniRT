@@ -6,6 +6,8 @@
 
 !readme.md
 
+!assets
+!assets/**
 !resources
 !resources/**
 !libft
@@ -31,4 +33,5 @@
 
 *.o
 *.a
+inc/stb
 .DS_Store
