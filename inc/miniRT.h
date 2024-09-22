@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 14:59:37 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/22 15:28:19 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,6 +446,15 @@ void			create_tbo_lights(t_rt *rt);
 
 // init/init_material_tbo.c
 void			create_ubo_materials(t_rt *rt);
+
+// init/init_objects_tbo.c
+void			create_tbo_objects(t_rt *rt);
+
+// init/init_objects_utils.c
+void			init_gpu_sphere(float *buffer, size_t *i, t_sphere *sphere);
+void			init_gpu_plane(float *buffer, size_t *i, t_plane *plane);
+void			init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder);
+void			init_gpu_hyperboloid(float *buffer, size_t *i, t_hyperboloid *hyperboloid);
 
 // ┌────────┐
 // │ Parser │
