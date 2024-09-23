@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 19:21:37 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:08:52 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	load_scene(char *file, t_rt *rt)
 	rt->materials
 		= (t_material *)ft_calloc(scn_sze.mat_cnt + 1, sizeof(t_material));
 	rt->textures
-		= (t_texture *)ft_calloc(scn_sze.tex_cnt + 1, sizeof(t_texture));
+		= (t_texture *)ft_calloc(scn_sze.tex_cnt, sizeof(t_texture));
 	if (rt->objects == NULL || (scn_sze.light_cnt > 0 && rt->lights == NULL)
-		|| rt->materials == NULL || rt->textures == NULL)
+		|| rt->materials == NULL)
 		terminate(error_msg(RT_ERROR_MALLOC), NULL, 1, rt);
 	error = parse_scene(scn_sze, rt);
 	if (error)

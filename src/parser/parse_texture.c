@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:55:31 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 19:55:52 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:12:31 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ t_error	create_textures(size_t tex_cnt, t_rt *rt)
 	if (tex_cnt > 100)
 		terminate("Too many textures, a maximum \
 of 100 is supported", NULL, 1, rt);
+	if (tex_cnt == 0)
+		return (RT_SUCCESS);
 	curr_tex = rt->textures;
 	line = rt->line;
 	while (line)

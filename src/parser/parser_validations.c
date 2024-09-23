@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 17:27:14 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 19:47:26 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:10:22 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	verify_texture_uniqueness(t_rt *rt)
 	char		add_msg[MAX_NAME];
 
 	curr = rt->textures;
-	while (curr->next)
+	while (curr && curr->next)
 	{
 		next = curr->next;
 		while (next)
