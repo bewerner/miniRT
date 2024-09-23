@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 12:47:29 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:13:10 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ float	gnv(char **line, t_rt *rt)
 }
 
 //	get_next_name_value
+//	parser_utils2.c
 void	gnv_name(char *name, char **line, t_rt *rt)
 {
 	size_t	count;
@@ -81,7 +82,7 @@ void	gnv_name(char *name, char **line, t_rt *rt)
 		terminate("Missing value detected", *line, 1, rt);
 	if (!ft_isalpha(**line))
 		terminate("expecting a name, but name starts not with \
-an alphanumeric character", *line, 1, rt);
+an alphanumeric character", rt->curr_line, 1, rt);
 	while (*line && !ft_isspace(**line)
 		&& **line != ',' && count < MAX_NAME - 1)
 	{
