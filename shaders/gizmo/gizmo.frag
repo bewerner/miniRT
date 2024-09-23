@@ -50,11 +50,11 @@ vec4	draw_background(vec4 col)
 
 void	main(void)
 {
-	if (mac_os == 1) // redo these values properly
+	if (mac_os == 1)
 	{
-		RED		= vec3(0.961, 0.216, 0.216);
-		GREEN	= vec3(0.435, 0.643, 0.102);
-		BLUE	= vec3(0.184, 0.518, 0.890);
+		RED		= vec3(0.961, 0.301, 0.352);
+		GREEN	= vec3(0.618, 0.845, 0.000);
+		BLUE	= vec3(0.301, 0.557, 1.000);
 	}
 	else
 	{
