@@ -46,5 +46,6 @@ vec3	trace_ray(t_ray ray)
 		// + col_specular * 0.0
 		+ materials[hitpoint.material_idx].metallic * col_reflection;
 
+	// return (get_checker_color(hitpoint));
 	return (col);
 }
