@@ -156,8 +156,6 @@ struct t_rt
 	int				mac_os;
 };
 
-
-
 // ┌───────────────────────────┐
 // │ in/out and buffer objects │
 // └───────────────────────────┘
@@ -180,7 +178,7 @@ layout(std140) uniform u_textures
 in vec2 coord;
 uniform samplerBuffer	objects;
 uniform samplerBuffer	lights;
-uniform samplerBuffer	agx_lut;
+uniform sampler3D		agx_lut;
 uniform sampler2D		raw_render_image;
 uniform sampler2D		environment_map;
 
