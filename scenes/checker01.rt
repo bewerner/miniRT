@@ -1,14 +1,25 @@
-A		0.0				0,0,0
-C		0,-3,0			0,1,0	90
+A		0.01				255,255,255
+C		0,-4,0			0,1,0	90
 
 #tex	name			type		path/scale	col1		col2
 #tex		image_tex		image		texture/tex01.png
-tex		checker_tex		checker		1			255,0,0		0,0,255
+tex		tex1		checker		1			255,0,0		0,0,255
+tex		tex2		checker		.5			64,128,255	255,128,64
+tex		tex3		image		some/path.png
 
-#m	name			color 			metallic	roughness	ior		transmission	emission_strength	emission_color
-mat	checker_mat		checker_tex		0.0			0.0			1.45	0.0				0.0					255,255,255
+#m	name			color 			metallic	roughness	ior		transmission	emission_strength	emission_color		color_tex_idx
+mat	mat1		tex1			0.0			0.0			1.45	0.2				0.3					255,128,255
+mat	mat2		tex2			0.0			0.0			1.45	0.2				0.3					255,128,255
+mat	mat3		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255
 
 #pl		0,0,-1		0,0,1	204,204,204
-sp		0,0,0		2			checker_mat
+sp		-2,0,0		2			mat1
+sp		0,0,0		2			mat2
+sp		2,0,0		2			mat3
+pl		0,4,0		1,-1,1		mat1
+
+sp		0,0,1.5		1 			64,64,74 mat1
+
+pl		0,0,-1		0,0,1		mat1
 
 l	1.5,-3,3			.1		204,204,204

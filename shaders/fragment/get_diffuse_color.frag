@@ -1,6 +1,9 @@
 vec3	get_color_from_texture(int tex_idx, t_hitpoint hitpoint)
 {
-	if (textures[tex_idx].type == TEX_CHECKER)
+	// tex_idx = 1;
+	if (textures[tex_idx].type == TEX_IMAGE)
+		return (vec3(0.5, 0, 1));
+	else if (textures[tex_idx].type == TEX_CHECKER)
 		return(get_checker_color(tex_idx, hitpoint));
 	
 	// INTERMEDIATE DEFAULT ERROR COLOR

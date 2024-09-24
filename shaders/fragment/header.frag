@@ -13,9 +13,9 @@
 #define MODE_NORMAL		1
 #define MODE_PREVIEW	2
 
-#define TEX_NONE 0
-#define TEX_IMAGE 1
-#define TEX_CHECKER 2
+#define TEX_NONE		0
+#define TEX_IMAGE		1
+#define TEX_CHECKER		2
 
 int	g_seed = 0;
 
@@ -120,15 +120,24 @@ struct t_material
 
 struct t_texture
 {
+	vec3		col1;
 	int			type;
+	vec3		col2;
 	int			texture_unit;
 	float		scale;
-	vec3		col1;
-	vec3		col2;
-	float		padding1;
-	float		padding2;
-	float		padding3;
+	int			padding1;
+	int			padding2;
+	int			padding3;
 };
+
+	// int			type;
+	// t_vec3		col1;
+	// int			texture_unit;
+	// t_vec3		col2;
+	// float		scale;
+	// int			padding1;
+	// int			padding2;
+	// int			padding3;
 
 struct t_camera
 {
