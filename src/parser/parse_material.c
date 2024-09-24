@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 14:47:33 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:53:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,35 @@ static void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->emission_color.r = 0.0f;
 	mat->emission_color.g = 0.0f;
 	mat->emission_color.b = 0.0f;
+	mat->color_texture_id = -1;
+}
+
+bool	next_is_name(char *line)
+{
+	while (ft_isspace(*line))
+		line++;
+	if (ft_isalpha(*line))
+		return (true);
+	return (false);
+}
+
+static int	texid_from_name(char **line, t_rt *rt)
+{
+	char		name[MAX_NAME];
+	t_texture	*tex;
+	int			id;
+
+	id = 0;
+	gnv_name(&name[0], line, rt);
+	tex = rt->textures;
+	while (tex)
+	{
+		if (ft_strcmp(tex->name, name) == 0)
+			return (id);
+		tex = tex->next;
+		id++;
+	}
+	return (-1);
 }
 
 static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
@@ -41,9 +70,15 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 	mat->index = ++index;
 	mat->next = (void *)mat + sizeof(t_material);
 	gnv_name(mat->name, &line, rt);
-	mat->color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	mat->color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	mat->color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	mat->color_texture_id = -1;
+	if (next_is_name(line))
+		mat->color_texture_id = texid_from_name(&line, rt);
+	else
+	{
+		mat->color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		mat->color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		mat->color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+	}
 	mat->metallic = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->roughness = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->ior = vr(gnv(&line, rt), (t_vec2){1.0f, INFINITY}, rt);
@@ -84,7 +119,7 @@ of 100 is supported", NULL, 1, rt);
 	line = rt->line;
 	while (line)
 	{
-		rt->curr_line = rt->line->content;
+		rt->curr_line = line->content;
 		id = get_identifier(line->content);
 		if (id == ID_MATERIAL)
 		{
@@ -95,13 +130,3 @@ of 100 is supported", NULL, 1, rt);
 	}
 	return (RT_SUCCESS);
 }
-
-// t_material	*next;
-// char			name[MAX_NAME];
-// t_vec3		color;
-// float		metallic;
-// float		roughness;
-// float		ior;
-// float		transmission;
-// float		emission_strength;
-// t_vec3		emission_color;

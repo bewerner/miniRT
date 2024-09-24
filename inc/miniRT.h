@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/23 00:20:38 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/24 14:42:00 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ typedef struct s_material
 	float		transmission;
 	float		emission_strength;
 	t_vec3		emission_color;
+	int			color_texture_id;
 }	t_material;
 
 typedef enum e_texture_type
@@ -341,6 +342,7 @@ typedef struct s_rt
 	GLuint			vao_gizmo_id;
 	GLuint			ubo_rt_id;
 	GLuint			ubo_materials_id;
+	GLuint			ubo_textures_id;
 	GLuint			tbo_objects_id;
 	GLuint			tbo_lights_id;	
 	GLuint			tbo_agx_lut_id;
@@ -460,6 +462,9 @@ void			init_gpu_hyperboloid(float *buffer, size_t *i, t_hyperboloid *hyperboloid
 
 // init/init_objects_tbo.c
 void			create_tbo_objects(t_rt *rt);
+
+// init/init_texture_ubo.c
+void			create_ubo_textures(t_rt *rt);
 
 // ┌────────┐
 // │ Parser │

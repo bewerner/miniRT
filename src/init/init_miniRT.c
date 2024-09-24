@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/23 23:01:54 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/24 10:42:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,6 +376,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_rt(rt);
 	create_tbo_objects(rt);
 	create_tbo_lights(rt);
+	create_ubo_textures(rt);
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);

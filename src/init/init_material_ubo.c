@@ -6,26 +6,27 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 15:09:47 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:18:23 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-static size_t	get_gpu_material_size(t_material *material)
+static size_t	get_gpu_material_count(t_material *material)
 {
-	size_t	size;
+	size_t	count;
 
-	size = 0;
+	count = 0;
 	while (material)
 	{
-		size += sizeof(t_gpu_material);
+		// count += sizeof(t_gpu_material);
+		count++;
 		material = material->next;
 	}
-	return (size);
+	return (count);
 }
 
-static void	init_ubo_materials(float *buffer, t_material *material)
+static void	init_ubo_materials(t_gpu_material *buffer, t_material *material)
 {
 	size_t			i;
 	t_gpu_material	gpu_mat;
@@ -40,8 +41,11 @@ static void	init_ubo_materials(float *buffer, t_material *material)
 		gpu_mat.transmission = material->transmission;
 		gpu_mat.emission_color = material->emission_color;
 		gpu_mat.emission_strength = material->emission_strength;
+		gpu_mat.color_texture_id = material->color_texture_id;
+		// ft_memmove(&buffer[i], &gpu_mat, sizeof(t_gpu_material));
+		// i = i + sizeof(t_gpu_material) / sizeof(float);
 		ft_memmove(&buffer[i], &gpu_mat, sizeof(t_gpu_material));
-		i = i + sizeof(t_gpu_material) / sizeof(float);
+		i++;
 		material = material->next;
 	}
 }
@@ -50,10 +54,10 @@ void	create_ubo_materials(t_rt *rt)
 {
 	size_t	size;
 	GLuint	block_index;
-	float	*buffer;
+	t_gpu_material	*buffer;
 
-	size = get_gpu_material_size(rt->materials);
-	buffer = (float *)ft_calloc(1, size);
+	size = get_gpu_material_count(rt->materials) * sizeof(t_gpu_material);
+	buffer = (t_gpu_material *)ft_calloc(1, size);
 	if (!buffer)
 		terminate("failed to allocate buffer for materials", NULL, 1, rt);
 	init_ubo_materials(buffer, rt->materials);

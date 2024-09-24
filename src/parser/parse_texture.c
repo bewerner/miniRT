@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:55:31 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 19:55:52 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/24 12:30:27 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	set_tex_type(t_texture_type *type, char *tex_name)
 static void	parse_checker_values(t_texture *tex, char *line, t_rt *rt)
 {
 	tex->scale
-		= vr(gnv(&line, rt) / 255.0f, (t_vec2){-INFINITY, INFINITY}, rt);
+		= vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	tex->col1.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	tex->col1.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	tex->col1.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
@@ -77,6 +77,8 @@ t_error	create_textures(size_t tex_cnt, t_rt *rt)
 	if (tex_cnt > 100)
 		terminate("Too many textures, a maximum \
 of 100 is supported", NULL, 1, rt);
+	if (tex_cnt == 0)
+		return (RT_SUCCESS);
 	curr_tex = rt->textures;
 	line = rt->line;
 	while (line)

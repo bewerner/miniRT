@@ -13,6 +13,10 @@
 #define MODE_NORMAL		1
 #define MODE_PREVIEW	2
 
+#define TEX_NONE		0
+#define TEX_IMAGE		1
+#define TEX_CHECKER		2
+
 int	g_seed = 0;
 
 struct	t_ray
@@ -111,8 +115,29 @@ struct t_material
 	float		transmission;
 	float		emission_strength;
 	vec3		emission_color;
-	float		padding1;
+	int			color_tex_idx;
 };
+
+struct t_texture
+{
+	vec3		col1;
+	int			type;
+	vec3		col2;
+	int			texture_unit;
+	float		scale;
+	int			padding1;
+	int			padding2;
+	int			padding3;
+};
+
+	// int			type;
+	// t_vec3		col1;
+	// int			texture_unit;
+	// t_vec3		col2;
+	// float		scale;
+	// int			padding1;
+	// int			padding2;
+	// int			padding3;
 
 struct t_camera
 {
@@ -154,6 +179,11 @@ layout(std140) uniform u_materials
 	t_material		materials[100];
 };
 
+layout(std140) uniform u_textures
+{
+	t_texture		textures[100];
+};
+
 in vec2 coord;
 uniform samplerBuffer	objects;
 uniform samplerBuffer	lights;
@@ -167,7 +197,7 @@ out vec3 FragColor;
 vec3			to_agx(vec3 col);
 
 // checker_texture.frag
-vec3			get_checker_color(t_hitpoint hitpoint);
+vec3			get_checker_color(int tex_idx, t_hitpoint hitpoint);
 
 // get_illumination_color.frag
 vec3			get_illumination_color(t_hitpoint hitpoint);
