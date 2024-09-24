@@ -1,15 +1,13 @@
-vec3	get_checker_color(t_hitpoint hitpoint)
+vec3	get_checker_color(int tex_idx, t_hitpoint hitpoint)
 {
-	// float	scale = rt.debug / 10;
-	float	scale = 0.2;
-	vec3	col_a = VEC3_BLACK;
-	vec3	col_b = VEC3_WHITE;
-	vec3	col = col_a;
-	ivec3	pos = ivec3(abs(floor(mix(hitpoint.pos, get_offset_hitpoint_pos(hitpoint), 0.001) / scale)));
-	// ivec3	pos = ivec3(abs(floor(get_offset_hitpoint_pos(hitpoint) / scale)));
-	// ivec3	pos = ivec3(abs(floor(hitpoint.pos / scale)));
+	ivec3	pos;
+	// if (rt.debug == 0)
+	// 	pos = ivec3(abs(floor(hitpoint.pos / textures[tex_idx].scale)));
+	// else
+		pos = ivec3(abs(floor((hitpoint.pos + hitpoint.normal * 0.000001 * length(hitpoint.ray)) / textures[tex_idx].scale)));
 
 	if ((pos.x + pos.y + pos.z) % 2 == 1)
-		col = col_b;
-	return (col);
+		return (textures[tex_idx].col2);
+
+	return (textures[tex_idx].col1);
 }

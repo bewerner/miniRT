@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_buffer_objects.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/10 22:53:55 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/24 19:04:07 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,22 @@ typedef struct s_gpu_material
 	float		transmission;
 	float		emission_strength;
 	t_vec3		emission_color;	
-	float		padding1;
+	int			color_texture_id;
 }	t_gpu_material;
+
+typedef struct s_gpu_texture
+{
+	// IDX, TYPE, TEX_IDX, SCALA, COL1, COL2
+	// float		index;
+	t_vec3		col1;
+	int			type;
+	t_vec3		col2;
+	int			texture_unit;
+	float		scale;
+	int			padding1;
+	int			padding2;
+	int			padding3;
+}	t_gpu_texture;
 
 typedef struct s_gpu_sphere
 {
