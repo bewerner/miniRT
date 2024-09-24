@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/23 15:11:53 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:38:48 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define MINIRT_H
 
 # if defined(__APPLE__) && defined(__MACH__)
-#  define LUT_PATH	"resources/AgX_Display_P3.lut"
+#  define LUT_PATH	"resources/AgX_LUT3D_P3.png"
 #  define MAC_OS	1
 # else
-#  define LUT_PATH	"resources/AgX_sRGB.lut"
+#  define LUT_PATH	"resources/AgX_LUT3D_sRGB.png"
 #  define MAC_OS	0
 # endif
 
