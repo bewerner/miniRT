@@ -1,11 +1,3 @@
-float	RandomValueNormalDistribution(void)
-{
-	// Thanks to https://stackoverflow.com/a/6178290
-	float theta = 2 * 3.1415926 * rand();
-	float rho = sqrt(-2 * log(rand()));
-	return (rho * cos(theta));
-}
-
 bool	reaches_sky(t_ray ray)
 {
 	t_hitpoint	hitpoint = HP_INF;
@@ -29,19 +21,31 @@ bool	reaches_sky(t_ray ray)
 	return (true);
 }
 
-vec3	get_random_hemisphere_direction(vec3 hemisphere_normal)
+vec3 get_random_hemisphere_direction(vec3 hemisphere_normal)
 {
-	vec3	direction = vec3(1, 1, 1);
+    // Generate random numbers in the range [0, 1]
+    float u = rand();
+    float v = rand();
+    
+    // Convert random numbers to spherical coordinates
+    float theta = acos(sqrt(u)); // Cosine weighted
+    float phi = 2.0 * M_PI * v; // Uniformly distributed in [0, 2π]
+    
+    // Spherical to Cartesian coordinates
+    float x = sin(theta) * cos(phi);
+    float y = sin(theta) * sin(phi);
+    float z = cos(theta);
 
-	// if (rt.debug == 2)
-	// if (rt.debug == 1)
-	// 	direction = vec3(RandomValueNormalDistribution(), RandomValueNormalDistribution(), RandomValueNormalDistribution());
-	// else
-		direction = vec3(rand() - 0.5, rand() - 0.5, rand() - 0.5);
-	// direction = normalize(direction);
-	if (dot(direction, hemisphere_normal) <= 0)
-		direction *= -1;
-	return (direction);
+    // Create a local tangent basis for the hemisphere
+    vec3 tangent = normalize(cross(vec3(0.0, 1.0, 0.0), hemisphere_normal));
+    vec3 bitangent = cross(hemisphere_normal, tangent);
+
+    // Convert local space coordinates to world space
+    vec3 random_direction = x * tangent + y * bitangent + z * hemisphere_normal;
+
+	if (rt.debug == 1)
+	    return (normalize(random_direction));
+    return (random_direction);
 }
 
 vec3	get_environment_map_color(vec3 direction)
@@ -49,7 +53,7 @@ vec3	get_environment_map_color(vec3 direction)
 	vec2	uv;
 
 	vec3 normal = normalize(direction);
-	uv.x = 0.5 + atan(normal.y, normal.x) / (2.0 * M_PI);
+	uv.x = 0.5 + atan(-normal.y, normal.x) / (2.0 * M_PI);
 	uv.y = 0.5 - asin(normal.z) / M_PI;
 
 	// return (texture(environment_map, uv).rgb);
