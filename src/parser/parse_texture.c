@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:55:31 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/23 15:12:31 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/24 12:30:27 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	set_tex_type(t_texture_type *type, char *tex_name)
 static void	parse_checker_values(t_texture *tex, char *line, t_rt *rt)
 {
 	tex->scale
-		= vr(gnv(&line, rt) / 255.0f, (t_vec2){-INFINITY, INFINITY}, rt);
+		= vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	tex->col1.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	tex->col1.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	tex->col1.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);

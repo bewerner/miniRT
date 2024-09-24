@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/23 15:55:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:53:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->emission_color.r = 0.0f;
 	mat->emission_color.g = 0.0f;
 	mat->emission_color.b = 0.0f;
+	mat->color_texture_id = -1;
 }
 
 bool	next_is_name(char *line)
@@ -69,6 +70,7 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 	mat->index = ++index;
 	mat->next = (void *)mat + sizeof(t_material);
 	gnv_name(mat->name, &line, rt);
+	mat->color_texture_id = -1;
 	if (next_is_name(line))
 		mat->color_texture_id = texid_from_name(&line, rt);
 	else
