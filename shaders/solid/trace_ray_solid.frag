@@ -8,11 +8,13 @@ vec3	trace_ray_solid(t_ray ray, vec2 uv)
 
 	int bounce_count = 0;
 
-	if (rt.mac_os == 1)
-		solid_ambient = vec3(0.247059);
 	hitpoint = get_closest_hitpoint(ray);
 	if (!hitpoint.hit)
+	{
+		if (rt.mac_os == 1)
+			return(vec3(0.266059 - length(uv) * 0.019));
 		return (solid_ambient - vec3(length(uv) * 0.039216));
+	}
 
 	t_point_light light01;
 	light01.origin = hitpoint.pos + rt.camera.viewport_light * 4.0;

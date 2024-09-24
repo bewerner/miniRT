@@ -31,12 +31,14 @@ bool	reaches_sky(t_ray ray)
 
 vec3	get_random_hemisphere_direction(vec3 hemisphere_normal)
 {
-	vec3	direction;
+	vec3	direction = vec3(1, 1, 1);
 
 	// if (rt.debug == 2)
-		// direction = vec3(RandomValueNormalDistribution(), RandomValueNormalDistribution(), RandomValueNormalDistribution());
+	// if (rt.debug == 1)
+	// 	direction = vec3(RandomValueNormalDistribution(), RandomValueNormalDistribution(), RandomValueNormalDistribution());
 	// else
 		direction = vec3(rand() - 0.5, rand() - 0.5, rand() - 0.5);
+	// direction = normalize(direction);
 	if (dot(direction, hemisphere_normal) <= 0)
 		direction *= -1;
 	return (direction);
