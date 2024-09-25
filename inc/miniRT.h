@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/24 14:42:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:54:39 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -479,6 +479,9 @@ t_error			parse_scene(t_scene_size scene_size, t_rt *rt);
 // parser/parse_material.c
 t_error			create_materials(size_t mat_cnt, t_rt *rt);
 
+// parser/parse_material2.c
+void			create_default_material(size_t mat_cnt, t_material *mat);
+
 // parser/parse_texture.c
 t_error			create_textures(size_t tex_cnt, t_rt *rt);
 
@@ -502,6 +505,7 @@ t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 // parser/parser_utils1.c
 float			ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3]);
 void			next_lst_item(t_list **lst);
+bool			next_is_name(char *line);
 
 // parser/parser_utils2.c
 t_identifier	get_identifier(char *line);

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:49:46 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/24 21:19:25 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:33:40 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,10 @@ static void	init_ubo_textures(t_gpu_texture *buffer, t_texture *texture)
 		gpu_tex.scale = texture->scale;
 		gpu_tex.col1 = texture->col1;
 		gpu_tex.col2 = texture->col2;
-		// ft_memmove(&buffer[i], &gpu_tex, sizeof(t_gpu_texture));
-		// i = i + sizeof(t_gpu_texture) / sizeof(float);
 		ft_memmove(&buffer[i], &gpu_tex, sizeof(t_gpu_texture));
 		i++;
 		texture = texture->next;
-		// printf("*************************\n");
-		// printf("type %i\n", gpu_tex.type);
-		// printf("unit %i\n", gpu_tex.texture_unit);
-		// printf("scale %f\n", gpu_tex.scale);
-		// printf("col1 %f,%f,%f\n", gpu_tex.col1.r, gpu_tex.col1.g, gpu_tex.col1.b);
-		// printf("col2 %f,%f,%f\n", gpu_tex.col2.r, gpu_tex.col2.g, gpu_tex.col2.b);
 	}
-
-	for (size_t it = 0; it < i; it++)
-	{
-		printf("*************************\n");
-		printf("type %i\n", buffer[it].type);
-		printf("unit %i\n", buffer[it].texture_unit);
-		printf("scale %f\n", buffer[it].scale);
-		printf("col1 %f,%f,%f\n", buffer[it].col1.r, buffer[it].col1.g, buffer[it].col1.b);
-		printf("col2 %f,%f,%f\n", buffer[it].col2.r, buffer[it].col2.g, buffer[it].col2.b);
-	}
-
 }
 
 void	create_ubo_textures(t_rt *rt)
