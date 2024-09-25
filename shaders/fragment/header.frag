@@ -193,7 +193,6 @@ uniform sampler3D		agx_lut;
 uniform sampler2D		raw_render_image;
 uniform sampler2D		environment_map;
 uniform sampler2D		texture_units[MAX_IMAGE_TEXTURES];
-// uniform sampler2D		texture5;
 
 out vec3 FragColor;
 
