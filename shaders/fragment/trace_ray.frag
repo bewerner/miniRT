@@ -47,5 +47,6 @@ vec3	trace_ray(t_ray ray)
 		+ materials[hitpoint.material_idx].metallic * col_reflection;
 
 	// return (get_checker_color(hitpoint));
+	// return (col_diffuse);
 	return (col);
 }

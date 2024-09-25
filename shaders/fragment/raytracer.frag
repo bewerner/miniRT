@@ -43,6 +43,8 @@ void	main(void)
 	col = trace_ray(camera_ray);
 
 	FragColor = mix(texture(raw_render_image, tmp).rgb, col, 1.0 / rt.sample_count);
-	if (rt.debug == -2)
-		FragColor.rgb = texture(environment_map, coord).rgb;
+	// if (rt.debug == -2)
+	// 	FragColor.rgb = texture(environment_map, coord).rgb;
+	// if (rt.debug == -3)
+	// 	FragColor.rgb = vec3(coord, 0);
 }
