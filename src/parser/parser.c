@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/24 14:43:50 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:35:54 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,54 +63,64 @@ static void	evaluate_light_id(t_identifier id, size_t light_cnt,
 	}
 }
 
-// size_t			index;
-// t_texture		*next;
-// char			name[MAX_NAME];
-// t_texture_type	type;
-// char			file[MAX_NAME];
-// float			scale;
-// t_vec3			col1;
-// t_vec3			col2;
-void	print_textures(t_rt *rt)
-{
-	t_texture *tex;
+// void	print_textures(t_rt *rt)
+// {
+// 	t_texture *tex;
 
-	tex = rt->textures;
-	while (tex)
-	{
-		printf("-------------------------\n");
-		printf("INDEX %zu \nNAME %s \nTYPE %i \nFILE %s \nSCALE %f \nCOL1 %f,%f,%f \nCOL2 %f,%f,%f\n", tex->index, tex->name, tex->type, tex->file, tex->scale, tex->col1.r, tex->col1.g, tex->col1.b, tex->col2.r, tex->col2.g, tex->col2.b);
-		tex = tex->next;
-	}
-}
+// 	tex = rt->textures;
+// 	while (tex)
+// 	{
+// 		printf("-------------------------\n");
+// 		printf("INDEX %zu \nNAME %s \nTYPE %i \nFILE %s \n"
+// 			"SCALE %f \nCOL1 %f,%f,%f \nCOL2 %f,%f,%f\n",
+// 			tex->index,
+// 			tex->name,
+// 			tex->type,
+// 			tex->file,
+// 			tex->scale,
+// 			tex->col1.r,
+// 			tex->col1.g,
+// 			tex->col1.b,
+// 			tex->col2.r,
+// 			tex->col2.g,
+// 			tex->col2.b);
+// 		tex = tex->next;
+// 	}
+// 	printf("\n\n");
+// }
 
-void	print_materialss(t_rt *rt)
-{
-	t_material *mat;
+// void	print_materialss(t_rt *rt)
+// {
+// 	t_material *mat;
 
-	printf("###############\nMATERIALS\n###############\n");
-	mat = rt->materials;
-	while (mat)
-	{
-		printf("-------------------------\n");
-		printf("INDEX %zu \nNAME %s \nCOLOR %f,%f,%f \nMETALLIC %f \nROUGHNESS %f \nIOR %f\nTRANSMISSION %f\nEMMISSION STRENGTH %f\nEMMISSION COL %f,%f,%f \nCOLOR_TEXTURE_IDX %i\n",
-		mat->index, mat->name, mat->color.r, mat->color.g, mat->color.b, mat->metallic, mat->roughness, mat->ior, mat->transmission, mat->emission_strength, mat->emission_color.r, mat->emission_color.g, mat->emission_color.b, mat->color_texture_id);
-		mat = mat->next;
-	}
-	printf("\n\n");
-}
-
-// size_t		index;
-// t_material	*next;
-// char		name[MAX_NAME];
-// t_vec3		color;
-// float		metallic;
-// float		roughness;
-// float		ior;
-// float		transmission;
-// float		emission_strength;
-// t_vec3		emission_color;
-// size_t		color_texture_id;
+// 	printf("###############\nMATERIALS\n###############\n");
+// 	mat = rt->materials;
+// 	while (mat)
+// 	{
+// 		printf("-------------------------\n");
+// 		printf("INDEX %zu \nNAME %s \nCOLOR %f,%f,%f \nMETALLIC %f \n"
+// 			"ROUGHNESS %f \nIOR %f\nTRANSMISSION %f\nEMMISSION STRENGTH %f\n"
+// 			"EMMISSION COL %f,%f,%f \nCOLOR_TEXTURE_IDX %i\n",
+// 			mat->index,
+// 			mat->name,
+// 			mat->color.r,
+// 			mat->color.g,
+// 			mat->color.b,
+// 			mat->metallic,
+// 			mat->roughness,
+// 			mat->ior,
+// 			mat->transmission,
+// 			mat->emission_strength,
+// 			mat->emission_color.r,
+// 			mat->emission_color.g,
+// 			mat->emission_color.b,
+// 			mat->color_texture_id);
+// 		mat = mat->next;
+// 	}
+// 	printf("\n\n");
+// }
+// 	print_materialss(rt);
+// 	print_textures(rt);
 
 t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
 {
@@ -137,7 +147,5 @@ t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
 	}
 	verify_material_uniqueness(rt);
 	verify_texture_uniqueness(rt);
-	print_materialss(rt);
-	// print_textures(rt);
 	return (RT_SUCCESS);
 }

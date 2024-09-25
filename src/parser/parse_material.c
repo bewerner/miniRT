@@ -6,42 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/24 14:53:30 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:54:13 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-static void	create_default_material(size_t mat_cnt, t_material *mat)
-{
-	mat->index = 0;
-	if (mat_cnt == 0)
-		mat->next = NULL;
-	else
-		mat->next = (void *)mat + sizeof(t_material);
-	ft_strlcat(mat->name, "DEFAULT", MAX_NAME);
-	mat->color.r = 204.0f / 255.0f;
-	mat->color.g = 204.0f / 255.0f;
-	mat->color.b = 204.0f / 255.0f;
-	mat->metallic = 0.0f;
-	mat->roughness = 0.5f;
-	mat->ior = 1.45f;
-	mat->transmission = 0.0f;
-	mat->emission_strength = 0.0f;
-	mat->emission_color.r = 0.0f;
-	mat->emission_color.g = 0.0f;
-	mat->emission_color.b = 0.0f;
-	mat->color_texture_id = -1;
-}
-
-bool	next_is_name(char *line)
-{
-	while (ft_isspace(*line))
-		line++;
-	if (ft_isalpha(*line))
-		return (true);
-	return (false);
-}
 
 static int	texid_from_name(char **line, t_rt *rt)
 {
@@ -62,6 +31,22 @@ static int	texid_from_name(char **line, t_rt *rt)
 	return (-1);
 }
 
+static void	set_material_col_textureid(t_material *mat, char **line, t_rt *rt)
+{
+	if (next_is_name(*line))
+	{
+		mat->color_texture_id = texid_from_name(line, rt);
+		mat->color = (t_vec3){{-1.0f, -1.0f, -1.0f}};
+	}
+	else
+	{
+		mat->color.r = vr(gnv(line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		mat->color.g = vr(gnv(line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		mat->color.b = vr(gnv(line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		mat->color_texture_id = -1;
+	}
+}
+
 static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 {
 	static size_t	index;
@@ -71,14 +56,7 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 	mat->next = (void *)mat + sizeof(t_material);
 	gnv_name(mat->name, &line, rt);
 	mat->color_texture_id = -1;
-	if (next_is_name(line))
-		mat->color_texture_id = texid_from_name(&line, rt);
-	else
-	{
-		mat->color.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		mat->color.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-		mat->color.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	}
+	set_material_col_textureid(mat, &line, rt);
 	mat->metallic = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->roughness = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->ior = vr(gnv(&line, rt), (t_vec2){1.0f, INFINITY}, rt);

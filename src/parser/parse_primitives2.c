@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:41:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 12:34:38 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:34:05 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	set_color_and_material(t_vec3 *col, t_material **mat,
 	if (ft_isalpha(*line))
 	{
 		*mat = get_next_material(line, rt);
-		*col = (t_vec3){{(*mat)->color.r, (*mat)->color.g, (*mat)->color.b}};
+		*col = (t_vec3){{-1.0f, -1.0f, -1.0f}};
 	}
 	else
 	{

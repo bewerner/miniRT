@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/23 15:13:10 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:37:17 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_identifier	get_identifier(char *line)
 }
 
 //	validate_range
+//	parse_utils2.c
 float	vr(float nbr, t_vec2 min_max, t_rt *rt)
 {
 	char	msg[4096];
@@ -55,6 +56,7 @@ float	vr(float nbr, t_vec2 min_max, t_rt *rt)
 }
 
 //	get_next_value
+//	parse_utils2.c
 float	gnv(char **line, t_rt *rt)
 {
 	float	value;

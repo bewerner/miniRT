@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:56:53 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/31 17:10:19 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:20:59 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,13 @@ void	next_lst_item(t_list **lst)
 	tmp = *lst;
 	*lst = tmp->next;
 	ft_lstdelone(tmp, free);
+}
+
+bool	next_is_name(char *line)
+{
+	while (ft_isspace(*line))
+		line++;
+	if (ft_isalpha(*line))
+		return (true);
+	return (false);
 }
