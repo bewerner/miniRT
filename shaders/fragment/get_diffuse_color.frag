@@ -1,7 +1,21 @@
 vec3	get_color_from_texture(int tex_idx, t_hitpoint hitpoint)
 {
+
+	// return(clamp(texture(environment_map, uv).rgb, 0, 16));
+
+	// if (rt.debug == 1)
+	// 	return ( texture(texture_units[textures[tex_idx].texture_unit], hitpoint.uv).rgb );
+
+
 	if (textures[tex_idx].type == TEX_IMAGE)
-		return (vec3(0.5, 0, 1));
+	{
+		// return ( texture( texture_units[textures[tex_idx].texture_unit], hitpoint.uv ).rgb );
+		// return ( texture(texture_units[0], hitpoint.uv).rgb );
+		// int t = textures[tex_idx].texture_unit;
+		int  i = 0;
+		return ( texture(texture_units[i], hitpoint.uv).rgb );
+	}
+		
 	else if (textures[tex_idx].type == TEX_CHECKER)
 		return(get_checker_color(tex_idx, hitpoint));
 	

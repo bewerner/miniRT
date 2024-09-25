@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_shader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/22 01:56:20 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/25 17:01:27 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,10 @@ void	render_raw_image(t_rt *rt)
 	if (rt->mode != MODE_NORMAL)
 		bind_lights(shader_program, rt);
 	if (rt->mode == MODE_PREVIEW)
+	{
 		bind_environment_map(shader_program, rt);
+		bind_texture_units(shader_program, rt);
+	}
 
 	// RUN SHADER
 	glBindVertexArray(rt->vao_screen_id);

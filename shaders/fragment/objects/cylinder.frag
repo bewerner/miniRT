@@ -152,10 +152,10 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
 		hitpoint = get_hitpoint_outside(ray, cylinder, hitpoint, t0);
 	}
 	hitpoint.hit = true;
-	// if (hitpoint.normal == cylinder.orientation || hitpoint.normal == cylinder.orientation * -1)
-	// 	hitpoint.uv = get_uv_cap(cylinder, hitpoint.pos);
-	// else
-	// 	hitpoint.uv = get_uv_cylinder(cylinder, cylinder.cap1.normal, hitpoint.normal, hitpoint.pos);
+	if (hitpoint.normal == cylinder.orientation || hitpoint.normal == cylinder.orientation * -1)
+		hitpoint.uv = get_uv_cap(cylinder, hitpoint.pos);
+	else
+		hitpoint.uv = get_uv_cylinder(cylinder, cylinder.cap1.normal, hitpoint.normal, hitpoint.pos);
 	hitpoint.color = cylinder.base_color;
 	// hitpoint.color = vec3(hitpoint.uv, 0);
 	hitpoint.material_idx = cylinder.material_idx;

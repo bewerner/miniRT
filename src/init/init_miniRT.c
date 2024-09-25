@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/25 02:56:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/25 18:40:58 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,5 +382,6 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
 	create_environment_map("assets/syferfontein_18d_clear_2k.hdr", 1.0f, rt);
+	load_textures(rt);
 	// create_environment_map("assets/uvgrid.png", 1.0f, rt);
 }

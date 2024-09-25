@@ -13,6 +13,8 @@
 #define MODE_NORMAL		1
 #define MODE_PREVIEW	2
 
+#define MAX_IMAGE_TEXTURES 10
+
 #define TEX_NONE		0
 #define TEX_IMAGE		1
 #define TEX_CHECKER		2
@@ -190,6 +192,8 @@ uniform samplerBuffer	lights;
 uniform sampler3D		agx_lut;
 uniform sampler2D		raw_render_image;
 uniform sampler2D		environment_map;
+uniform sampler2D		texture_units[MAX_IMAGE_TEXTURES];
+// uniform sampler2D		texture5;
 
 out vec3 FragColor;
 
