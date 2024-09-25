@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/25 01:48:04 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/25 02:56:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,7 +332,6 @@ void	create_environment_map(char * filepath, float strength, t_rt *rt)
 		image[i] = vec3_scale(strength, image[i]);
 		i++;
 	}
-	printf("%f %f %f\n", image[0].r, image[0].g, image[0].b);
 	glGenTextures(1, &rt->environment_map_id);
 	glActiveTexture(GL_TEXTURE0 + 4);
 	glBindTexture(GL_TEXTURE_2D, rt->environment_map_id);
@@ -383,4 +382,5 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
 	create_environment_map("assets/syferfontein_18d_clear_2k.hdr", 1.0f, rt);
+	// create_environment_map("assets/uvgrid.png", 1.0f, rt);
 }
