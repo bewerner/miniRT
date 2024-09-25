@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/24 12:11:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 11:02:47 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static void	load_elements(t_scene_size *scene_size, t_rt *rt)
 			ft_delete_line(&line);
 		line = prep_line(get_next_line(rt->fd));
 	}
+	close(rt->fd);
+	rt->fd = -1;
 }
 
 void	load_scene(char *file, t_rt *rt)
@@ -76,8 +78,6 @@ void	load_scene(char *file, t_rt *rt)
 	if (rt->fd == -1)
 		terminate("failed to load file", file, 1, rt);
 	load_elements(&scn_sze, rt);
-	close(rt->fd);
-	rt->fd = -1;
 	if (scn_sze.objs_size == 0)
 		terminate(error_msg(RT_ERROR_MISSING_SCENE_OBJS), NULL, 1, rt);
 	rt->objects = (t_object *)ft_calloc(1, scn_sze.objs_size);
