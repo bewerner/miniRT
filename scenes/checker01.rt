@@ -7,7 +7,7 @@ tex		tex1		checker		1			255,0,0		0,0,255
 tex		tex3		image		assets/textures/bricks01/bricks01_base_color.png
 tex		tex2		checker		.5			64,128,255	255,128,64
 
-#m	name			color 			metallic	roughness	ior		transmission	emission_strength	emission_color		color_tex_idx
+#m	name		color 			metallic	roughness	ior		transmission	emission_strength	emission_color		bump_map		color_tex_idx	
 mat	mat1		tex1			0.0			0.0			1.45	0.2				0.3					255,128,255
 mat	mat2		tex2			0.0			0.0			1.45	0.2				0.3					255,128,255
 mat	mat3		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255
