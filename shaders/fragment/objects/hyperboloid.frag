@@ -37,8 +37,6 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	vec3		delta_hp;	// delta_HitPoint
 	float		t_height;
 
-	// hyperboloid.orientation = vec3_rotate_x(hyperboloid.orientation, rt.debug / 50);
-
 	// orientation vectors for each axis	
 	vec3	va = hyperboloid.orientation;														// 	z-axis
 	vec3	wa = normalize(cross(va, (va != vec3(0, 0, 1)) ? vec3(0, 0, 1) : vec3(0, 1, 0)));	// 	x-axis
