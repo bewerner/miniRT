@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:15:35 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/10 16:43:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 12:17:38 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ void	scroll_hook(GLFWwindow *window, double xoffset, double yoffset)
 	else
 		rt->move.speed = fmaxf(0, rt->move.speed * 1.0f / zoom_factor);
 }
-	// printf("%f\n",  yoffset);
