@@ -1,0 +1,19 @@
+A		0.00				255,255,255
+C		0,-4,0			0,1,0	90
+
+#tex	name			type		path/scale	col1		col2
+tex		earth_tex		image		assets/textures/earth/earth_base_color.png
+# tex		stars_tex		image		assets/textures/earth/starmap_8k_base_color.png
+
+#m	name			color 			metallic	roughness	ior		transmission	emission_strength	emission_color		color_tex_idx
+mat	mat_earth		earth_tex			0.0			0.0			1.45	0.2				0.3					255,128,255
+# mat	mat_stars		stars_tex			0.0			0.0			1.45	0.2				0.3					255,128,255
+
+sp		0,0,0		2			mat_earth
+# sp		0,0,0		50			mat_stars
+
+
+# hb 	5.8,5,1.5	0,0,1		5		1	1	1	1		mat3
+# l	5.8,5,1			.1		204,204,204
+
+l	3,-3,3			10000		204,204,204
