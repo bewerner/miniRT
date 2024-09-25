@@ -48,7 +48,7 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 	hitpoint.hit = true;
 	hitpoint.ray = t * ray.dir;
 	hitpoint.pos = ray.origin + hitpoint.ray;
-	// hitpoint.uv = get_uv_plane(plane, hitpoint.pos);
+	hitpoint.uv = get_uv_plane(plane, hitpoint.pos);
 	hitpoint.color = plane.base_color;
 	// hitpoint.color = vec3(hitpoint.uv, 0);
 	hitpoint.material_idx = plane.material_idx;

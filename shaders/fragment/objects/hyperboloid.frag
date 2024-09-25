@@ -157,7 +157,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	else
 		return (HP_INF);
 
-	// hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height);
+	hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height);
 	// hitpoint.color = vec3(hitpoint.uv, 0);
 	return (hitpoint);
 }

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 11:54:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:00:12 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,6 +349,7 @@ typedef struct s_rt
 	GLuint			fbo_id;
 	GLuint			tex_fbo_id;
 	GLuint			environment_map_id;
+	GLuint			texture_ids[MAX_IMAGE_TEXTURES];
 
 	t_list			*line;
 	char			*curr_line;
@@ -450,6 +451,9 @@ void			create_tbo_agx_lut(char *filepath, t_rt *rt);
 
 // init/init_lights_tbo.c
 void			create_tbo_lights(t_rt *rt);
+
+// init/load_textures.c
+void			load_textures(t_rt *rt);
 
 // init/init_material_tbo.c
 void			create_ubo_materials(t_rt *rt);
@@ -566,6 +570,8 @@ void			bind_objects(GLuint shader_program, t_rt *rt);
 void			bind_lights(GLuint shader_program, t_rt *rt);
 void			bind_agx_lut(GLuint shader_program, t_rt *rt);
 void			bind_environment_map(GLuint shader_program, t_rt *rt);
+void			bind_texture_units(GLuint shader_program, t_rt *rt);
+
 
 // shader/run_shader.c
 void			draw_gizmo(t_rt *rt);

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:49:46 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 11:33:40 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 19:18:46 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ static size_t	get_gpu_texture_count(t_texture *texture)
 	count = 0;
 	while (texture)
 	{
-		// count += sizeof(t_gpu_texture);
 		count++;
 		texture = texture->next;
 	}
-printf("***********************\nGPU TEXTURE COUNT : %zu\n", count);
 	return (count);
 }
 
@@ -39,12 +37,15 @@ static void	init_ubo_textures(t_gpu_texture *buffer, t_texture *texture)
 		gpu_tex = (t_gpu_texture){0};
 		gpu_tex.type = texture->type;
 		if (texture->type == TEX_IMAGE)
+		{
 			gpu_tex.texture_unit = curr_tex_unit++;
+		}
 		else
-			gpu_tex.texture_unit = 0.0f;
+			gpu_tex.texture_unit = -1;
 		gpu_tex.scale = texture->scale;
 		gpu_tex.col1 = texture->col1;
 		gpu_tex.col2 = texture->col2;
+			printf("NAME: %s TEX_UNIT: %i\n", texture->name, gpu_tex.texture_unit);
 		ft_memmove(&buffer[i], &gpu_tex, sizeof(t_gpu_texture));
 		i++;
 		texture = texture->next;

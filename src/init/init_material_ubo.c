@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 11:33:44 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/25 19:12:43 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	init_ubo_materials(t_gpu_material *buffer, t_material *material)
 		gpu_mat.emission_color = material->emission_color;
 		gpu_mat.emission_strength = material->emission_strength;
 		gpu_mat.color_texture_id = material->color_texture_id;
+		printf("NAME: %s, TEX_ID: %i\n", material->name,  material->color_texture_id);
 		ft_memmove(&buffer[i], &gpu_mat, sizeof(t_gpu_material));
 		i++;
 		material = material->next;
