@@ -23,29 +23,27 @@ bool	reaches_sky(t_ray ray)
 
 vec3 get_random_hemisphere_direction(vec3 hemisphere_normal)
 {
-    // Generate random numbers in the range [0, 1]
-    float u = rand();
-    float v = rand();
-    
-    // Convert random numbers to spherical coordinates
-    float theta = acos(sqrt(u)); // Cosine weighted
-    float phi = 2.0 * M_PI * v; // Uniformly distributed in [0, 2π]
-    
-    // Spherical to Cartesian coordinates
-    float x = sin(theta) * cos(phi);
-    float y = sin(theta) * sin(phi);
-    float z = cos(theta);
+	// Generate random numbers in the range [0, 1]
+	float u = rand();
+	float v = rand();
 
-    // Create a local tangent basis for the hemisphere
-    vec3 tangent = normalize(cross(vec3(0.0, 1.0, 0.0), hemisphere_normal));
-    vec3 bitangent = cross(hemisphere_normal, tangent);
+	// Convert random numbers to spherical coordinates
+	float theta = acos(sqrt(u)); // Cosine weighted
+	float phi = 2.0 * M_PI * v; // Uniformly distributed in [0, 2π]
 
-    // Convert local space coordinates to world space
-    vec3 random_direction = x * tangent + y * bitangent + z * hemisphere_normal;
+	// Spherical to Cartesian coordinates
+	float x = sin(theta) * cos(phi);
+	float y = sin(theta) * sin(phi);
+	float z = cos(theta);
 
-	if (rt.debug == 1)
-	    return (normalize(random_direction));
-    return (random_direction);
+	// Create a local tangent basis for the hemisphere
+	vec3 tangent = normalize(cross(vec3(0.0, 1.0, 0.0), hemisphere_normal));
+	vec3 bitangent = cross(hemisphere_normal, tangent);
+
+	// Convert local space coordinates to world space
+	vec3 random_direction = x * tangent + y * bitangent + z * hemisphere_normal;
+
+	return (normalize(random_direction));
 }
 
 vec3	get_environment_map_color(vec3 direction)
@@ -63,6 +61,7 @@ vec3	get_environment_map_color(vec3 direction)
 vec3	get_sky_color(t_hitpoint hitpoint)
 {
 	vec3	col = VEC3_BLACK;
+	// vec3	col = vec3(1,0,0);
 	t_ray	ray;
 
 	ray.origin = get_offset_hitpoint_pos(hitpoint);
