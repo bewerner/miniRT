@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 16:03:56 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:39:15 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static size_t	get_gpu_material_count(t_material *material)
 	count = 0;
 	while (material)
 	{
-		// count += sizeof(t_gpu_material);
 		count++;
 		material = material->next;
 	}
@@ -51,8 +50,8 @@ static void	init_ubo_materials(t_gpu_material *buffer, t_material *material)
 
 void	create_ubo_materials(t_rt *rt)
 {
-	size_t	size;
-	GLuint	block_index;
+	size_t			size;
+	GLuint			block_index;
 	t_gpu_material	*buffer;
 
 	size = get_gpu_material_count(rt->materials) * sizeof(t_gpu_material);

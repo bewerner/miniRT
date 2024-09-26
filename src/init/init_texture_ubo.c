@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:49:46 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 20:56:23 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:11:13 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static void	init_ubo_textures(t_gpu_texture *buffer, t_texture *texture)
 
 void	create_ubo_textures(t_rt *rt)
 {
-	size_t	size;
-	GLuint	block_index;
+	size_t			size;
+	GLuint			block_index;
 	t_gpu_texture	*buffer;
 
 	if (rt->textures == NULL)
