@@ -9,20 +9,13 @@ vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, v
 	t_height /= hyperboloid.height;
 	uv.y = clamp(t_height, 0.0, 1.0);
 	
-	orientation *= -1;
-	if (orientation.z == 1.0)
-		orientation.y = -0.000001;
-	if (orientation.z == -1.0)
-		orientation.y = 0.000001;
-
-	vec3 cap_u = normalize(cross(orientation, vec3(orientation.xy, 0)));
-	vec3 cap_v = cross(orientation, cap_u);
-
-	normal = normalize(cross(normal, orientation));
-
-	uv.x = dot(normal, cap_u) * 0.25 + 0.25;
-	if (dot(normal, cap_v) < 0)
-			uv.x = 1 - uv.x;
+	if (abs(orientation.z) != 1.0)
+	{
+		vec3 axis = normalize(cross(orientation, vec3(orientation.xy, 0)));
+		float rad = acos(dot(vec3(0, 0, 1), orientation));
+		normal = vec3_rotate_axis(normal, axis, -rad);
+	}
+	uv.x = 0.5 + atan(normal.x, -normal.y) / (2.0 * M_PI);
 
 	return (uv);
 }
