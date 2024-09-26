@@ -41,10 +41,6 @@ vec3	get_reflection_color(t_hitpoint hitpoint)
 	vec3	mult_col = make_mul_col(hitpoint.color);
 
 	col = VEC3_BLACK;
-	// mult_col = VEC3_BLACK;
-	// mult_col = vec3(1,1,1,1);
-	// if (rt.debug > 0)
-	// 	bounce_value = 1;
 
 	while (bounce_count < MAX_BOUNCES && hitpoint.hit == true && materials[hitpoint.material_idx].metallic > 0.0)
 	{

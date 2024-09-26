@@ -137,6 +137,7 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
 	float		t0;
 	float		t1;
 
+	hitpoint.hit = true;
 	if (get_cylinder_discriminant(ray, cylinder, t0, t1) < 0 || (t1 < 0 && t0 < 0))
 		return (HP_INF);
 	if (t1 < 0)
@@ -151,7 +152,6 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
 		hitpoint.pos = ray.origin + hitpoint.ray;
 		hitpoint = get_hitpoint_outside(ray, cylinder, hitpoint, t0);
 	}
-	hitpoint.hit = true;
 	if (hitpoint.normal == cylinder.orientation || hitpoint.normal == cylinder.orientation * -1)
 		hitpoint.uv = get_uv_cap(cylinder, hitpoint.pos);
 	else
