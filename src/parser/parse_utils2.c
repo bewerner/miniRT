@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 11:37:17 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:54:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,9 @@ t_identifier	get_identifier(char *line)
 //	parse_utils2.c
 float	vr(float nbr, t_vec2 min_max, t_rt *rt)
 {
-	char	msg[4096];
-
 	if (nbr >= min_max.x - EPSILON && nbr <= min_max.y + EPSILON)
 		return (nbr);
-	ft_memset(msg, 0, 4096);
-	ft_memcpy(msg, rt->curr_line, ft_strlen(rt->curr_line));
-	terminate("number not in valid range", msg, 1, rt);
+	terminate("number not in valid range", rt->curr_line, 1, rt);
 	return (0);
 }
 
@@ -63,10 +59,10 @@ float	gnv(char **line, t_rt *rt)
 
 	ft_skipspace(line);
 	if (**line == '\0')
-		terminate("Missing value detected", *line, 1, rt);
+		terminate("Missing value detected", rt->curr_line, 1, rt);
 	value = ft_atod(line, 0, (int [3]){1, -1, 0});
 	if (value == NAN || value == INFINITY || value == -INFINITY)
-		terminate("invalid number", *line, 1, rt);
+		terminate("invalid number", rt->curr_line, 1, rt);
 	while (*line && (ft_isspace(**line) || **line == ','))
 		(*line)++;
 	return (value);

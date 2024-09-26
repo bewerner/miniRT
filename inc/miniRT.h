@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 15:36:40 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:00:35 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ typedef struct s_material
 	float		emission_strength;
 	t_vec3		emission_color;
 	int			color_texture_id;
+	int			bump_map_id;
 }	t_material;
 
 typedef enum e_texture_type
