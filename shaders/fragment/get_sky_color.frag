@@ -68,10 +68,14 @@ vec3	get_sky_color(t_hitpoint hitpoint)
 	ray.dir = get_random_hemisphere_direction(hitpoint.normal);
 	if (reaches_sky(ray) == true)
 	{
-		if (rt.debug == -1)
-			col = get_environment_map_color(ray.dir);
-		else
+		// if (rt.debug == -1)
+		// 	col = get_environment_map_color(ray.dir);
+		// else
+		// 	col = rt.ambient;
+		if (rt.ambient.r >= 0)
 			col = rt.ambient;
+		else
+			col = get_environment_map_color(ray.dir);
 	}
 	return (col);
 }

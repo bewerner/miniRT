@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 16:10:39 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:57:03 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,18 @@ t_error	parse_ambient(t_rt *rt)
 	line = (char *)rt->line->content + 1;
 	rt->ambient_strength
 		= vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	rt->ambient.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	rt->ambient.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	rt->ambient.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	rt->ambient = vec3_scale(rt->ambient_strength, rt->ambient);
+	if (next_is_name(line))
+	{
+		gnv_name(rt->ambient_env_file, &line, rt);
+		rt->ambient = (t_vec3){{-1.0f, -1.0f, -1.0f}};
+	}
+	else
+	{
+		rt->ambient.r = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		rt->ambient.g = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		rt->ambient.b = vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
+		rt->ambient = vec3_scale(rt->ambient_strength, rt->ambient);
+	}
 	return (RT_SUCCESS);
 }
 

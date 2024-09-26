@@ -6,11 +6,40 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:56:53 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 11:20:59 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:55:47 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
+
+t_identifier	get_identifier(char *line)
+{
+	if (line == NULL || line[0] == '\0')
+		return (ID_EOF);
+	if (line[0] == '#')
+		return (ID_COMMENT);
+	if (ft_strncmp(line, "A ", 2) == 0)
+		return (ID_AMBIENT);
+	else if (ft_strncmp(line, "C ", 2) == 0)
+		return (ID_CAMERA);
+	else if (ft_strncmp(line, "mat ", 4) == 0)
+		return (ID_MATERIAL);
+	else if (ft_strncmp(line, "tex ", 4) == 0)
+		return (ID_TEXTURE);
+	else if (ft_strncmp(line, "L ", 2) == 0)
+		return (ID_POINT_LIGHT);
+	else if (ft_strncmp(line, "l ", 2) == 0)
+		return (ID_POINT_LIGHT);
+	else if (ft_strncmp(line, "sp ", 3) == 0)
+		return (ID_SPHERE);
+	else if (ft_strncmp(line, "pl ", 3) == 0)
+		return (ID_PLANE);
+	else if (ft_strncmp(line, "cy ", 3) == 0)
+		return (ID_CYLINDER);
+	else if (ft_strncmp(line, "hb ", 3) == 0)
+		return (ID_HYPERBOLOID);
+	return (ID_INVALID);
+}
 
 static int	get_sign(char **str)
 {

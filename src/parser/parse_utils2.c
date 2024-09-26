@@ -6,40 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 15:54:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:57:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-t_identifier	get_identifier(char *line)
-{
-	if (line == NULL || line[0] == '\0')
-		return (ID_EOF);
-	if (line[0] == '#')
-		return (ID_COMMENT);
-	if (ft_strncmp(line, "A ", 2) == 0)
-		return (ID_AMBIENT);
-	else if (ft_strncmp(line, "C ", 2) == 0)
-		return (ID_CAMERA);
-	else if (ft_strncmp(line, "mat ", 4) == 0)
-		return (ID_MATERIAL);
-	else if (ft_strncmp(line, "tex ", 4) == 0)
-		return (ID_TEXTURE);
-	else if (ft_strncmp(line, "L ", 2) == 0)
-		return (ID_POINT_LIGHT);
-	else if (ft_strncmp(line, "l ", 2) == 0)
-		return (ID_POINT_LIGHT);
-	else if (ft_strncmp(line, "sp ", 3) == 0)
-		return (ID_SPHERE);
-	else if (ft_strncmp(line, "pl ", 3) == 0)
-		return (ID_PLANE);
-	else if (ft_strncmp(line, "cy ", 3) == 0)
-		return (ID_CYLINDER);
-	else if (ft_strncmp(line, "hb ", 3) == 0)
-		return (ID_HYPERBOLOID);
-	return (ID_INVALID);
-}
 
 //	validate_range
 //	parse_utils2.c
@@ -68,6 +39,28 @@ float	gnv(char **line, t_rt *rt)
 	return (value);
 }
 
+static void	check_filepath_size(char *line, t_rt *rt)
+{
+	size_t	len;
+	char	msg[1024];
+	char	*nbr;
+
+	len = ft_strlen(line);
+	if (len > MAX_NAME)
+	{
+		nbr = ft_itoa(MAX_NAME);
+		if (nbr == NULL)
+			terminate("failed to allocate memory",
+				rt->curr_line, 1, rt);
+		ft_memset(msg, 0, 1024);
+		ft_strlcat(msg, "path and filename longer than ", 1024);
+		ft_strlcat(msg, nbr, 1024);
+		ft_strlcat(msg, " characters", 1024);
+		free(nbr);
+		terminate(msg, rt->curr_line, 1, rt);
+	}
+}
+
 //	get_next_name_value
 //	parser_utils2.c
 void	gnv_name(char *name, char **line, t_rt *rt)
@@ -81,6 +74,7 @@ void	gnv_name(char *name, char **line, t_rt *rt)
 	if (!ft_isalpha(**line))
 		terminate("expecting a name, but name starts not with \
 an alphanumeric character", rt->curr_line, 1, rt);
+	check_filepath_size(*line, rt);
 	while (*line && !ft_isspace(**line)
 		&& **line != ',' && count < MAX_NAME - 1)
 	{
