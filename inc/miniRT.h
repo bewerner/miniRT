@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 17:00:12 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:36:40 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,6 +361,7 @@ typedef struct s_rt
 	t_object		*objects;
 	t_light			*lights;
 	t_vec3			ambient;
+	float			ambient_strength;
 	float			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_dvec2			initial_cursor_pos;

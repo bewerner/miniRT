@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/25 18:40:58 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:40:42 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,7 +315,7 @@ void	create_fbo(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind the framebuffer
 }
 
-void	create_environment_map(char * filepath, float strength, t_rt *rt)
+void	create_environment_map(char * filepath, t_rt *rt)
 {
 	int		width;
 	int		height;
@@ -329,7 +329,7 @@ void	create_environment_map(char * filepath, float strength, t_rt *rt)
 	i = 0;
 	while (i < (size_t)width * height)
 	{
-		image[i] = vec3_scale(strength, image[i]);
+		image[i] = vec3_scale(rt->ambient_strength, image[i]);
 		i++;
 	}
 	glGenTextures(1, &rt->environment_map_id);
@@ -381,7 +381,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
-	create_environment_map("assets/syferfontein_18d_clear_2k.hdr", 1.0f, rt);
+	create_environment_map("assets/syferfontein_18d_clear_2k.hdr", rt);
 	load_textures(rt);
 	// create_environment_map("assets/uvgrid.png", 1.0f, rt);
 }
