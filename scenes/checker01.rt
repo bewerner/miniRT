@@ -1,4 +1,4 @@
-A		0.025				255,255,255
+A		1.0				assets/syferfontein_18d_clear_2k.hdr
 C		0,-4,0			0,1,0	90
 
 #tex	name			type		path/scale	col1		col2

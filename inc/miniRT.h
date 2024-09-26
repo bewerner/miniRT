@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 16:00:35 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:55:58 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 # define LIGHT_POWER	0.575f
 # define EPSILON		0.000001f
 
-# define MAX_NAME 256 
+# define MAX_NAME 1024 
 
 # define MAX_IMAGE_TEXTURES 10
 
@@ -363,6 +363,7 @@ typedef struct s_rt
 	t_light			*lights;
 	t_vec3			ambient;
 	float			ambient_strength;
+	char			ambient_env_file[MAX_NAME];
 	float			clicked;
 	int8_t			mouse_buttons_pressed;
 	t_dvec2			initial_cursor_pos;
@@ -509,12 +510,12 @@ void			set_color_and_material(t_vec3 *col, t_material **mat, char *line, t_rt *r
 t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 
 // parser/parser_utils1.c
+t_identifier	get_identifier(char *line);
 float			ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3]);
 void			next_lst_item(t_list **lst);
 bool			next_is_name(char *line);
 
 // parser/parser_utils2.c
-t_identifier	get_identifier(char *line);
 float			vr(float nbr, t_vec2 min_max, t_rt *rt);
 float			gnv(char **line, t_rt *rt);
 void			gnv_name(char *name, char **line, t_rt *rt);
