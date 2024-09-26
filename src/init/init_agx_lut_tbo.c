@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_agx_lut_tbo.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:21:54 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/23 00:23:15 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/26 16:40:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	create_tbo_agx_lut(char *filepath, t_rt *rt)
 	glGenTextures(1, &rt->tbo_agx_lut_id);
 	glActiveTexture(GL_TEXTURE0 + 3);
 	glBindTexture(GL_TEXTURE_3D, rt->tbo_agx_lut_id);
-	glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB32F, 64, 64, 64, 0, GL_RGB, GL_FLOAT, image);
+	glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB32F, 64, 64, 64, 0,
+		GL_RGB, GL_FLOAT, image);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
