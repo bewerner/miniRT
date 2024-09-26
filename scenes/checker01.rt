@@ -6,6 +6,7 @@ C		0,-4,0			0,1,0	90
 tex		tex1		checker		1			255,0,0		0,0,255
 tex		tex2		checker		.5			64,128,255	255,128,64
 tex		tex3		image		assets/textures/bricks01/bricks01_base_color.png
+# tex		tex3		image		assets/uvgrid.png
 tex		tex4		image		assets/textures/bricks01/bricks01_bump_map.png
 
 #m	name		color 			metallic	roughness	ior		transmission	emission_strength	emission_color		bump_map	something_else		color_tex_idx	
@@ -29,7 +30,13 @@ sp		0,0,3.5		1 			0,192,0	mat5
 pl		0,0,-1		0,0,1		mat3
 
 hb 	5.8,5,1.5	0,0,1		5		1	1	1	1		mat3
+hb 	22.8,18,3.5	-0.2,1.9,1		5		1	1	1	1		mat3
+
+cy	11.8,8,1.5	0,0,1	2.0	4.45288	mat3
+cy	15.8,8,1.5	0.201835,-1.91368,1.119877	2.0	4.45288	mat3
+
 l	5.8,5,1			.1		204,204,204
 
 l	1.5,-3,3			.1		204,204,204
+l	15.8,2,5.5			.1		204,204,204
 tex		tex5		image		assets/textures/tiles01/tiles01_base_color.png

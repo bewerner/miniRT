@@ -273,3 +273,4 @@ vec3	dither(vec3 col);
 vec3	vec3_rotate_x(vec3 v, float rad);
 vec3	vec3_rotate_y(vec3 v, float rad);
 vec3	vec3_rotate_z(vec3 v, float rad);
+vec3	vec3_rotate_axis(vec3 v, vec3 axis, float rad);
