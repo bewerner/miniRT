@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 18:54:58 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:27:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	texid_from_name(char **line, t_rt *rt)
 		tex = tex->next;
 		id++;
 	}
+	terminate("material has non existant texture", rt->curr_line, 1, rt);
 	return (-1);
 }
 
