@@ -11,9 +11,9 @@
 - random
 	- better random
 
-- bump-maps
-	- material has new value for bump_maps -> which are textures
-	- also needs bump strength parameter
+- bumb-maps
+	- material has new value for bumb_maps -> which are textures
+	- also needs bumb strength parameter
 	- gethitpoint normal do stuff
 		if 2d tex
 		if 3d tex
