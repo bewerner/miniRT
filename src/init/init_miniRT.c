@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/26 15:41:31 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:15:03 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,17 +315,19 @@ void	create_fbo(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind the framebuffer
 }
 
-void	create_environment_map(char * filepath, t_rt *rt)
+void	create_environment_map(t_rt *rt)
 {
 	int		width;
 	int		height;
 	t_vec3	*image;
 	size_t	i;
 
+	if (rt->ambient.r >= 0)
+		return ;
 	stbi_set_flip_vertically_on_load(true);
-	image = (t_vec3 *)stbi_loadf(filepath, &width, &height, NULL, 3);
+	image = (t_vec3 *)stbi_loadf(rt->ambient_env_file, &width, &height, NULL, 3);
 	if (!image)
-		terminate(filepath, NULL, 1, rt);
+		terminate(rt->ambient_env_file, NULL, 1, rt);
 	i = 0;
 	while (i < (size_t)width * height)
 	{
@@ -342,7 +344,7 @@ void	create_environment_map(char * filepath, t_rt *rt)
 	stbi_image_free(image);
 }
 
-void	init_shader_programs(t_rt *rt)
+static void	init_shader_programs(t_rt *rt)
 {
 	rt->solid_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
@@ -381,7 +383,6 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
 	create_fbo(rt);
-	create_environment_map("assets/syferfontein_18d_clear_2k.hdr", rt);
+	create_environment_map(rt);
 	load_textures(rt);
-	// create_environment_map("assets/uvgrid.png", 1.0f, rt);
 }

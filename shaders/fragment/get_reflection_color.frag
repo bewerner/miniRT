@@ -18,10 +18,14 @@ vec3	shoot_ray(t_ray ray, inout t_hitpoint hitpoint, inout vec3 mult_col, float 
 	hitpoint = get_closest_hitpoint(ray);
 	if (!hitpoint.hit)
 	{
-		if (rt.debug == -1)
-			return (get_environment_map_color(ray.dir) * mult_col);
-		else
+		// if (rt.debug == -1)
+		// 	return (get_environment_map_color(ray.dir) * mult_col);
+		// else
+		// 	return (rt.ambient * mult_col);
+		if (rt.ambient.r >= 0)
 			return (rt.ambient * mult_col);
+		else
+			return (get_environment_map_color(ray.dir) * mult_col);
 	}
 
 	col = get_diffuse_color(hitpoint) * get_illumination_color(hitpoint);
