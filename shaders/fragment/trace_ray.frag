@@ -12,7 +12,7 @@ vec3	trace_ray(t_ray ray)
 
 	// while (bounce_count <= 0)
 	// {
-		hitpoint = get_closest_hitpoint(ray);
+		hitpoint = get_closest_hitpoint(ray, true);
 		if (!hitpoint.hit)
 		{
 			// if (rt.debug == -1)
