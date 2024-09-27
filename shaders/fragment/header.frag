@@ -7,7 +7,7 @@
 #define VEC3_BLACK	vec3(0, 0, 0)
 #define VEC3_WHITE	vec3(1, 1, 1)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
-#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, 0)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, 0)
 
 #define MODE_SOLID		0
 #define MODE_NORMAL		1
@@ -33,6 +33,8 @@ struct t_hitpoint
 	vec3			ray;
 	vec3			pos;
 	vec3			normal;
+	vec3			tangent;
+	vec3			bitangent;
 	vec2			uv;
 	vec3			color;
 	int				material_idx;
@@ -214,6 +216,7 @@ vec3			get_environment_map_color(vec3 direction);
 vec3			get_sky_color(t_hitpoint hitpoint);
 
 // get_diffuse_color.frag
+vec3			get_color_from_texture(int tex_idx, t_hitpoint hitpoint);
 vec3			get_diffuse_color(t_hitpoint hitpoint);
 
 // get_reflection_color.frag
@@ -256,6 +259,9 @@ t_point_light	get_point_light(int offset);
 // ┌───────────┐
 // │ Utilities │
 // └───────────┘
+
+// utils/bump_map.frag
+vec3			apply_bump_map(t_hitpoint hitpoint);
 
 // utils/ray_utils.frag
 vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
