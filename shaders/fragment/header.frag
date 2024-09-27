@@ -268,6 +268,7 @@ vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
 bool			is_obstructed(t_ray ray);
 
 // utils/hitpoint_utils.frag
+vec3			get_hitpoint_color(t_hitpoint hitpoint);
 vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
 t_hitpoint		get_closest_hitpoint(t_ray ray);
 
