@@ -37,9 +37,11 @@ vec3 get_random_hemisphere_direction(vec3 hemisphere_normal)
 	float z = cos(theta);
 
 	// Create a local tangent basis for the hemisphere
-	vec3 tangent = normalize(cross(vec3(0.0, 1.0, 0.0), hemisphere_normal));
-	if (tangent == vec3(0))
-		tangent = normalize(cross(vec3(1.0, 0.0, 0.0), hemisphere_normal));
+	vec3 tangent;
+	if (abs(hemisphere_normal.y) != 1)
+		tangent = normalize(cross(vec3(0, 1, 0), hemisphere_normal));
+	else
+		tangent = normalize(cross(vec3(1, 0, 0), hemisphere_normal));
 	vec3 bitangent = cross(hemisphere_normal, tangent);
 
 	// Convert local space coordinates to world space
