@@ -136,7 +136,7 @@ vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool 
 	return (uv);
 }
 
-t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
+t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 {
 	t_hitpoint	hitpoint;
 	float		t0;
@@ -157,14 +157,18 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
 		hitpoint.pos = ray.origin + hitpoint.ray;
 		hitpoint = get_hitpoint_outside(ray, cylinder, hitpoint, t0);
 	}
+	hitpoint.color = cylinder.base_color;
+	hitpoint.material_idx = cylinder.material_idx;
+
+	if (init_all == false)
+		return (hitpoint);
+
 	if (hitpoint.normal == cylinder.cap1.normal)
 		hitpoint.uv = get_uv_cap(cylinder.cap1.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, true);
 	else if (hitpoint.normal == cylinder.cap2.normal)
 		hitpoint.uv = get_uv_cap(cylinder.cap2.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, false);
 	else
 		hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos);
-	hitpoint.color = cylinder.base_color;
-	hitpoint.material_idx = cylinder.material_idx;
 	return (hitpoint);
 }
 

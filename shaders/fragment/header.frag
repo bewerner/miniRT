@@ -237,7 +237,7 @@ int				next_object_type(inout int i);
 int				next_light_type(inout int i);
 
 // objects/sphere.frag
-t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere);
+t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all);
 t_sphere		get_sphere(int offset);
 
 // objects/plane.frag
@@ -246,11 +246,11 @@ t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all);
 t_plane			get_plane(int offset);
 
 // objects/cylinder.frag
-t_hitpoint		get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder);
+t_hitpoint		get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all);
 t_cylinder		get_cylinder(int offset);
 
 // objects/hyperboloid.frag
-t_hitpoint		get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid);
+t_hitpoint		get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool init_all);
 t_hyperboloid	get_hyperboloid(int offset);
 
 // point_light.frag

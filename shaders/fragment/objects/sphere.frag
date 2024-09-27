@@ -20,7 +20,7 @@ void	calc_sphere_tangent_vectors(inout t_hitpoint hitpoint)
 	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
 }
 
-t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
+t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all)
 {
 	t_hitpoint	hitpoint;
 	float		discriminant;
@@ -56,6 +56,9 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 	hitpoint.hit = true;
 	hitpoint.color = sphere.base_color;
 	hitpoint.material_idx = sphere.material_idx;
+
+	if (init_all == false)
+		return (hitpoint);
 	
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
