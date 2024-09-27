@@ -74,3 +74,23 @@ t_hitpoint	get_closest_hitpoint(t_ray ray)
 	}
 	return (closest);
 }
+
+bool	has_image_texture(t_hitpoint hitpoint)
+{
+	if (hitpoint.material_idx <= 0)
+		return (false);
+
+	if (materials[hitpoint.material_idx].color.r >= 0)
+		return (false);
+	return (true);
+}
+
+bool	has_bump_map_material(t_hitpoint hitpoint)
+{
+	if (hitpoint.material_idx <= 0)
+		return (false);
+
+	if (materials[hitpoint.material_idx].bump_map_idx >= 0)
+		return (true);
+	return (false);
+}
