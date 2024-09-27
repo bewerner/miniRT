@@ -15,14 +15,14 @@ float	get_bump_height(int bump_idx, vec2 uv, t_hitpoint hitpoint)
 				return ( (texture(texture_units[4], uv).r + texture(texture_units[4], uv).g + texture(texture_units[4], uv).b) / 3 );
 			case 5:
 				return ( (texture(texture_units[5], uv).r + texture(texture_units[5], uv).g + texture(texture_units[5], uv).b) / 3 );
-			// case 6:
-			// 	return ( (texture(texture_units[6], uv).r + texture(texture_units[6], uv).g + texture(texture_units[6], uv).b) / 3 );
-			// case 7:
-			// 	return ( (texture(texture_units[7], uv).r + texture(texture_units[7], uv).g + texture(texture_units[7], uv).b) / 3 );
-			// case 8:
-			// 	return ( (texture(texture_units[8], uv).r + texture(texture_units[8], uv).g + texture(texture_units[8], uv).b) / 3 );
-			// case 9:
-			// 	return ( (texture(texture_units[9], uv).r + texture(texture_units[9], uv).g + texture(texture_units[9], uv).b) / 3 );
+			case 6:
+				return ( (texture(texture_units[6], uv).r + texture(texture_units[6], uv).g + texture(texture_units[6], uv).b) / 3 );
+			case 7:
+				return ( (texture(texture_units[7], uv).r + texture(texture_units[7], uv).g + texture(texture_units[7], uv).b) / 3 );
+			case 8:
+				return ( (texture(texture_units[8], uv).r + texture(texture_units[8], uv).g + texture(texture_units[8], uv).b) / 3 );
+			case 9:
+				return ( (texture(texture_units[9], uv).r + texture(texture_units[9], uv).g + texture(texture_units[9], uv).b) / 3 );
 			default:
 				return (-1.0);
 		}

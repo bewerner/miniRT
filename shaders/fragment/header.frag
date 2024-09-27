@@ -242,7 +242,7 @@ t_sphere		get_sphere(int offset);
 
 // objects/plane.frag
 bool			is_near_zero(float value);
-t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane);
+t_hitpoint		get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all);
 t_plane			get_plane(int offset);
 
 // objects/cylinder.frag

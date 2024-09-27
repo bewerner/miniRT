@@ -38,7 +38,7 @@ void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint)
 	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
 }
 
-t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
+t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)
 {
 	t_hitpoint	hitpoint;
 	float		dp;
@@ -62,6 +62,9 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 	hitpoint.color = plane.base_color;
 	hitpoint.material_idx = plane.material_idx;
 
+	if (init_all == false)
+		return (hitpoint);
+
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
 		hitpoint.uv = get_uv_plane(plane.normal, plane.origin, hitpoint.pos);
@@ -75,18 +78,6 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 
 	return (hitpoint);
 }
-
-
-// bool			hit;
-// vec3			ray;
-// vec3			pos;
-// vec3			normal;
-// vec3			tangent;
-// vec3			bitangent;
-// vec2			uv;
-// vec3			color;
-// int			material_idx;
-
 
 t_plane	get_plane(int offset)
 {

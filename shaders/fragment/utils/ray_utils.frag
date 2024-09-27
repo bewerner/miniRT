@@ -18,7 +18,7 @@ bool	is_obstructed(t_ray ray)
 		if (type == OBJ_SPHERE)
 			current = get_hitpoint_sphere(ray, get_sphere(i));
 		else if (type == OBJ_PLANE)
-			current = get_hitpoint_plane(ray, get_plane(i));
+			current = get_hitpoint_plane(ray, get_plane(i), false);
 		else if (type == OBJ_CYLINDER)
 			current = get_hitpoint_cylinder(ray, get_cylinder(i));
 		else if (type == OBJ_HYPERBOLOID)
