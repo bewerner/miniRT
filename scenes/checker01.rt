@@ -22,9 +22,10 @@ sp		2,0,0		2			mat3
 sp		4,0,0		2			mat4
 pl		0,4,0		1,-1,1		mat1
 
-# sp		0,0,1.5		1 			0,192,0 mat1
-# sp		0,0,2.5		1 			mat5
-# sp		0,0,3.5		1 			0,192,0	mat5
+# Three Speher overeach other checking COLOR HIRARCHY
+sp		0,0,1.5		1 			0,192,0 mat1
+sp		0,0,2.5		1 			mat5
+sp		0,0,3.5		1 			0,192,0	mat5
 
 pl		0,0,-1		0,0,1		mat3
 

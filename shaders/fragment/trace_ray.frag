@@ -25,6 +25,8 @@ vec3	trace_ray(t_ray ray)
 				return(get_environment_map_color(ray.dir));
 		}
 
+		hitpoint.color = get_hitpoint_color(hitpoint);
+
 		col_illumination = get_illumination_color(hitpoint);
 		col_sky = get_sky_color(hitpoint);
 		col_diffuse = get_diffuse_color(hitpoint);
@@ -46,8 +48,9 @@ vec3	trace_ray(t_ray ray)
 	// original::
 	// col = (1.0 - g_metallic) * col_diffuse + g_metallic * col_reflection;
 	// WITH MATERIAL ::
-	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diffuse * (col_illumination + col_sky) + materials[hitpoint.material_idx].metallic * col_reflection;
-		// + col_specular * 0.0
+	col = (1.0 - materials[hitpoint.material_idx].metallic) * col_diffuse * (col_illumination + col_sky)
+	+ col_specular * 1.0
+	+ materials[hitpoint.material_idx].metallic * col_reflection;
 
 	// return (get_checker_color(hitpoint));
 	// return (col_diffuse);

@@ -1,6 +1,11 @@
 #version 330 core
 
+
 #import ../fragment/header.frag
+
+#import ../fragment/get_diffuse_color.frag
+
+#import ../fragment/checker_texture.frag
 #import get_normal_color.frag
 #import ../fragment/objects/object_utils.frag
 #import ../fragment/objects/sphere.frag
@@ -8,6 +13,8 @@
 #import ../fragment/objects/cylinder.frag
 #import ../fragment/objects/hyperboloid.frag
 #import trace_ray_normal.frag
+
+#import ../fragment/utils/bump_map.frag
 #import ../fragment/utils/hitpoint_utils.frag
 #import ../fragment/utils/vec3_rotations.frag
 #import ../fragment/utils/random.frag
