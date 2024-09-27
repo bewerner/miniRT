@@ -17,6 +17,7 @@
 #import objects/cylinder.frag
 #import objects/hyperboloid.frag
 
+#import utils/bump_map.frag
 #import utils/ray_utils.frag
 #import utils/hitpoint_utils.frag
 #import utils/vec3_rotations.frag

@@ -9,6 +9,17 @@ vec2	get_uv_sphere(vec3 normal, bool inside)
 	return (uv);
 }
 
+void	calc_sphere_tangent_vectors(inout t_hitpoint hitpoint)
+{
+	vec3	up = vec3(0, 0, 1);
+
+	if (abs(hitpoint.normal.z) > 0.999)
+		up = vec3(1, 0, 0);
+	
+	hitpoint.tangent = normalize(cross(hitpoint.normal, up));
+	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
+}
+
 t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 {
 	t_hitpoint	hitpoint;
@@ -50,7 +61,17 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 	hitpoint.material_idx = sphere.material_idx;
 
 	// We need tangent and bitangen vectors for bump_maps
-	// hitpoint.normal = apply_bump_map(hitpoint)
+
+	if (hitpoint.color.r >= 0)
+		;
+	else if (materials[hitpoint.material_idx].color.r >= 0)
+		hitpoint.color = materials[hitpoint.material_idx].color;
+	else
+		hitpoint.color = get_color_from_texture(materials[hitpoint.material_idx].color_tex_idx, hitpoint);
+		
+	calc_sphere_tangent_vectors(hitpoint);
+	hitpoint.normal = apply_bump_map(hitpoint);
+
 
 	return (hitpoint);
 }
