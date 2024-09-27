@@ -7,7 +7,7 @@
 #define VEC3_BLACK	vec3(0, 0, 0)
 #define VEC3_WHITE	vec3(1, 1, 1)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
-#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, 0)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, -1)
 
 #define MODE_SOLID		0
 #define MODE_NORMAL		1

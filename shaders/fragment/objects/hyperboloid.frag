@@ -20,6 +20,17 @@ vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, v
 	return (uv);
 }
 
+void	calc_hyperboloid_tangent_vectors(inout t_hitpoint hitpoint)
+{
+	vec3	up = vec3(0, 0, 1);
+
+	if (abs(hitpoint.normal.z) > 0.999)
+		up = vec3(1, 0, 0);
+	
+	hitpoint.tangent = normalize(cross(hitpoint.normal, up));
+	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
+}
+
 t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 {
 	t_hitpoint	hitpoint;
@@ -148,8 +159,17 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	else
 		return (HP_INF);
 
-	hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height);
-	// hitpoint.color = vec3(hitpoint.uv, 0);
+	// if we have an image_texture we calculate UVs
+	if (has_image_texture(hitpoint))
+		hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height);
+
+	// We need tangent and bitangen vectors for bump_maps		
+	if (has_bump_map_material(hitpoint))
+	{
+		calc_hyperboloid_tangent_vectors(hitpoint);
+		hitpoint.normal = apply_bump_map(hitpoint);
+	}
+
 	return (hitpoint);
 }
 
