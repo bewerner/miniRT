@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_objects_utils.c                               :+:      :+:    :+:   */
+/*   init_objects_primitives.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 15:26:36 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 15:30:44 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:59:18 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	init_gpu_plane(float *buffer, size_t *i, t_plane *plane)
 	gpu_plane.base_color = plane->base_color;
 	gpu_plane.normal = plane->normal;
 	gpu_plane.dist = plane->dist;
-	gpu_plane.material_idx = 0;
+	gpu_plane.material_idx = (float)plane->material->index;
 	if (plane->material != NULL)
 		gpu_plane.material_idx = (float)plane->material->index;
 	ft_memmove(&buffer[*i], &gpu_plane, sizeof(t_gpu_plane));

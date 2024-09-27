@@ -27,6 +27,17 @@ vec2	get_uv_plane(t_plane plane, vec3 pos)
 	return (uv);
 }
 
+void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint)
+{
+	vec3	up = vec3(0, 0, 1);
+
+	if (abs(hitpoint.normal.z) > 0.999)
+		up = vec3(1, 0, 0);
+	
+	hitpoint.tangent = normalize(cross(hitpoint.normal, up));
+	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
+}
+
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 {
 	t_hitpoint	hitpoint;
@@ -48,13 +59,34 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 	hitpoint.hit = true;
 	hitpoint.ray = t * ray.dir;
 	hitpoint.pos = ray.origin + hitpoint.ray;
-	hitpoint.uv = get_uv_plane(plane, hitpoint.pos);
 	hitpoint.color = plane.base_color;
-	// hitpoint.color = vec3(hitpoint.uv, 0);
 	hitpoint.material_idx = plane.material_idx;
+
+	// if we have an image_texture we calculate UVs
+	if (has_image_texture(hitpoint))
+		hitpoint.uv = get_uv_plane(plane, hitpoint.pos);
+
+	// We need tangent and bitangen vectors for bump_maps		
+	if (has_bump_map_material(hitpoint))
+	{
+		calc_plane_tangent_vectors(hitpoint);
+		hitpoint.normal = apply_bump_map(hitpoint);
+	}
 
 	return (hitpoint);
 }
+
+
+// bool			hit;
+// vec3			ray;
+// vec3			pos;
+// vec3			normal;
+// vec3			tangent;
+// vec3			bitangent;
+// vec2			uv;
+// vec3			color;
+// int			material_idx;
+
 
 t_plane	get_plane(int offset)
 {
