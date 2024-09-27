@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/27 12:10:04 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 00:52:52 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -574,6 +574,8 @@ void			bind_lights(GLuint shader_program, t_rt *rt);
 void			bind_agx_lut(GLuint shader_program, t_rt *rt);
 void			bind_environment_map(GLuint shader_program, t_rt *rt);
 void			bind_texture_units(GLuint shader_program, t_rt *rt);
+void			bind_material_ubo(GLuint shader_program, t_rt *rt);
+void			bind_texture_ubo(GLuint shader_program, t_rt *rt);
 
 
 // shader/run_shader.c

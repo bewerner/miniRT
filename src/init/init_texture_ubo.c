@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_texture_ubo.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:49:46 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 16:11:13 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 00:55:40 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static void	init_ubo_textures(t_gpu_texture *buffer, t_texture *texture)
 void	create_ubo_textures(t_rt *rt)
 {
 	size_t			size;
-	GLuint			block_index;
 	t_gpu_texture	*buffer;
 
 	if (rt->textures == NULL)
@@ -68,10 +67,5 @@ void	create_ubo_textures(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_textures_id);
 	glBufferData(GL_UNIFORM_BUFFER, size, buffer, GL_STATIC_DRAW);
 	free(buffer);
-	block_index
-		= glGetUniformBlockIndex(rt->preview_shader_program, "u_textures");
-	if (block_index == GL_INVALID_INDEX)
-		terminate("textures ubo not found in shader program", NULL, 1, rt);
-	glUniformBlockBinding(rt->preview_shader_program, block_index, 2);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 2, rt->ubo_textures_id);
 }

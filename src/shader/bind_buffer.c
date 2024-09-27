@@ -102,3 +102,23 @@ void	bind_texture_units(GLuint shader_program, t_rt *rt)
 		idx++;
 	}
 }
+
+void	bind_material_ubo(GLuint shader_program, t_rt *rt)
+{
+	GLuint	block_index;
+
+	block_index = glGetUniformBlockIndex(shader_program, "u_materials");
+	if (block_index == GL_INVALID_INDEX)
+		terminate("materials ubo not found in shader program", NULL, 1, rt);
+	glUniformBlockBinding(shader_program, block_index, 1);
+}
+
+void	bind_texture_ubo(GLuint shader_program, t_rt *rt)
+{
+	GLuint	block_index;
+
+	block_index = glGetUniformBlockIndex(shader_program, "u_textures");
+	if (block_index == GL_INVALID_INDEX)
+		terminate("textures ubo not found in shader program", NULL, 1, rt);
+	glUniformBlockBinding(shader_program, block_index, 2);
+}
