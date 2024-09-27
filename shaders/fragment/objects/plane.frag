@@ -3,25 +3,25 @@ bool	is_near_zero(float value)
 	return (value > -EPSILON && value < EPSILON);
 }
 
-vec2	get_uv_plane(t_plane plane, vec3 pos)
+vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
 {
 	vec2	uv;
 	float	scale = 5;
 
-	if (plane.normal.z == 1.0)
-		plane.normal.y = -0.000001;
-	if (plane.normal.z == -1.0)
-		plane.normal.y = 0.000001;
+	if (rt.debug == 0 && abs(normal.z) != 1.0)
+	{
+		vec3 axis = normalize(cross(normal, vec3(0, 0, 1)));
+		float rad = acos(dot(normal, vec3(0, 0, 1)));
+		pos = vec3_rotate_axis(pos, axis, rad);
+		if (axis.x != 1.0)
+		{
+			rad = acos(dot(vec3(1, 0, 0), axis));
+			pos = vec3_rotate_z(pos, rad);
+		}
+		pos = -pos;
+	}
 
-	vec3 norm_u = normalize(cross(plane.normal, vec3(plane.normal.xy, 0)));
-	vec3 norm_v = cross(plane.normal, norm_u);
-
-	norm_u /= scale;
-	norm_v /= scale;
-
-	vec3 relative_pos = pos - plane.origin;
-	uv.x = dot(relative_pos, norm_u);
-	uv.y = dot(relative_pos, norm_v);
+	uv = pos.xy - plane_origin.xy;
 
 	uv = fract(uv);
 	return (uv);
@@ -64,7 +64,7 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane)
 
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
-		hitpoint.uv = get_uv_plane(plane, hitpoint.pos);
+		hitpoint.uv = get_uv_plane(plane.normal, plane.origin, hitpoint.pos);
 
 	// We need tangent and bitangen vectors for bump_maps		
 	if (has_bump_map_material(hitpoint))
