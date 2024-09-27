@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/26 18:54:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:10:04 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_gpu_material
 	float		emission_strength;
 	t_vec3		emission_color;	
 	int			color_texture_id;
-	int			bumb_map_id;
+	int			bump_map_id;
 	int			padding1;
 	int			padding2;
 	int			padding3;

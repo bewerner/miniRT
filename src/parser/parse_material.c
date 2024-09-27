@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 19:27:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:10:04 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	mat->emission_color.b
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	mat->bumb_map_id = -1;
+	mat->bump_map_id = -1;
 	if (next_is_name(line))
-		mat->bumb_map_id = texid_from_name(&line, rt);
+		mat->bump_map_id = texid_from_name(&line, rt);
 	return (RT_SUCCESS);
 }
 

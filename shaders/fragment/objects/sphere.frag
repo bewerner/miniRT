@@ -48,6 +48,10 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 	// hitpoint.color = vec3(hitpoint.uv, 0);
 	// hitpoint.color = texture(environment_map, hitpoint.uv).rgb;
 	hitpoint.material_idx = sphere.material_idx;
+
+	// We need tangent and bitangen vectors for bump_maps
+	// hitpoint.normal = apply_bump_map(hitpoint)
+
 	return (hitpoint);
 }
 
