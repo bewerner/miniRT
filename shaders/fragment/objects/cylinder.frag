@@ -27,12 +27,12 @@ t_hitpoint	get_hitpoint_cap(t_ray ray, t_cylinder cylinder, t_plane cap_plane, b
 	if (inside)
 	{
 		if (dot(ray.dir, (cylinder.origin - cap_plane.origin)) < 0)
-			return (get_hitpoint_plane(ray, cap_plane));
+			return (get_hitpoint_plane(ray, cap_plane, false));
 		return (HP_INF);
 	}
 	else
 	{
-		hitpoint = get_hitpoint_plane(ray, cap_plane);
+		hitpoint = get_hitpoint_plane(ray, cap_plane, false);
 		// hitpoint.hit = true;
 		hitpoint.color = cylinder.base_color;
 		hitpoint.material_idx = cylinder.material_idx;
@@ -49,7 +49,7 @@ t_hitpoint	get_hitpoint_outside(t_ray ray, t_cylinder cylinder, t_hitpoint hitpo
 		hitpoint.ray = t0 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
 		if (dot(cylinder.orientation, (hitpoint.pos - cylinder.cap1.origin)) > 0)
-			return (get_hitpoint_plane(ray, cylinder.cap1));
+			return (get_hitpoint_plane(ray, cylinder.cap1, false));
 		return (HP_INF);
 	}
 	else if (dot(cylinder.orientation, (hitpoint.pos - cylinder.cap2.origin)) > 0)
@@ -57,7 +57,7 @@ t_hitpoint	get_hitpoint_outside(t_ray ray, t_cylinder cylinder, t_hitpoint hitpo
 		hitpoint.ray = t0 * ray.dir;
 		hitpoint.pos = ray.origin + hitpoint.ray;
 		if (dot(cylinder.orientation, (hitpoint.pos - cylinder.cap2.origin)) < 0)
-			return (get_hitpoint_plane(ray, cylinder.cap2));
+			return (get_hitpoint_plane(ray, cylinder.cap2, false));
 		return (HP_INF);
 	}
 	hitpoint.normal = cross(cylinder.orientation, cross((hitpoint.pos - cylinder.origin), cylinder.orientation));
@@ -164,7 +164,6 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder)
 	else
 		hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos);
 	hitpoint.color = cylinder.base_color;
-	// hitpoint.color = vec3(hitpoint.uv, 0);
 	hitpoint.material_idx = cylinder.material_idx;
 	return (hitpoint);
 }
