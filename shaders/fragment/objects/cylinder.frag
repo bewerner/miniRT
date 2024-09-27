@@ -163,12 +163,24 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	if (init_all == false)
 		return (hitpoint);
 
-	if (hitpoint.normal == cylinder.cap1.normal)
-		hitpoint.uv = get_uv_cap(cylinder.cap1.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, true);
-	else if (hitpoint.normal == cylinder.cap2.normal)
-		hitpoint.uv = get_uv_cap(cylinder.cap2.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, false);
-	else
-		hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos);
+	// if we have an image_texture we calculate UVs
+	if (has_image_texture(hitpoint))
+	{
+		if (hitpoint.normal == cylinder.cap1.normal)
+			hitpoint.uv = get_uv_cap(cylinder.cap1.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, true);
+		else if (hitpoint.normal == cylinder.cap2.normal)
+			hitpoint.uv = get_uv_cap(cylinder.cap2.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, false);
+		else
+			hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos);
+	}
+
+	// We need tangent and bitangen vectors for bump_maps		
+	if (has_bump_map_material(hitpoint))
+	{
+		calc_plane_tangent_vectors(hitpoint);
+		hitpoint.normal = apply_bump_map(hitpoint);
+	}
+
 	return (hitpoint);
 }
 
