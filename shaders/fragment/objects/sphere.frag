@@ -54,15 +54,19 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere)
 		hitpoint.normal = normalize(hitpoint.pos - sphere.origin);
 	}
 	hitpoint.hit = true;
-	hitpoint.uv = get_uv_sphere(hitpoint.normal, inside);
 	hitpoint.color = sphere.base_color;
-	// hitpoint.color = vec3(hitpoint.uv, 0);
-	// hitpoint.color = texture(environment_map, hitpoint.uv).rgb;
 	hitpoint.material_idx = sphere.material_idx;
+	
+	// if we have an image_texture we calculate UVs
+	if (has_image_texture(hitpoint))
+		hitpoint.uv = get_uv_sphere(hitpoint.normal, inside);
 
 	// We need tangent and bitangen vectors for bump_maps		
-	calc_sphere_tangent_vectors(hitpoint);
-	hitpoint.normal = apply_bump_map(hitpoint);
+	if (has_bump_map_material(hitpoint))
+	{
+		calc_sphere_tangent_vectors(hitpoint);
+		hitpoint.normal = apply_bump_map(hitpoint);
+	}
 
 	return (hitpoint);
 }

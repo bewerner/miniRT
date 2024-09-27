@@ -271,6 +271,8 @@ bool			is_obstructed(t_ray ray);
 vec3			get_hitpoint_color(t_hitpoint hitpoint);
 vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
 t_hitpoint		get_closest_hitpoint(t_ray ray);
+bool			has_image_texture(t_hitpoint hitpoint);
+bool			has_bump_map_material(t_hitpoint hitpoint);
 
 // utils/random.frag
 float	rand();
