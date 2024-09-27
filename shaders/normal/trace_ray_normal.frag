@@ -7,7 +7,6 @@ vec3	trace_ray_normal(t_ray ray)
 	if (!hitpoint.hit)
 		return (VEC3_BLACK);
 
-	// col = vec3(hitpoint.normal.r * 0.5 + 0.5, hitpoint.normal.g * 0.5 + 0.5, hitpoint.normal.b * 0.5 + 0.5, 1.0);
 	col = hitpoint.normal * 0.5 + 0.5;
 
 	return (col);

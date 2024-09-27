@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_shader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/25 17:01:27 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 01:00:44 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,15 @@ void	render_raw_image(t_rt *rt)
 	// ACTIVATE BUFFERS
 	bind_framebuffer_texture(shader_program, rt);
 	bind_objects(shader_program, rt);
-	if (rt->mode != MODE_NORMAL)
-		bind_lights(shader_program, rt);
 	if (rt->mode == MODE_PREVIEW)
-	{
 		bind_environment_map(shader_program, rt);
+	if (rt->mode == MODE_PREVIEW || rt->mode == MODE_SOLID)
+		bind_lights(shader_program, rt);
+	if (rt->mode == MODE_PREVIEW || rt->mode == MODE_NORMAL)
+	{
 		bind_texture_units(shader_program, rt);
+		bind_material_ubo(shader_program, rt);
+		bind_texture_ubo(shader_program, rt);
 	}
 
 	// RUN SHADER

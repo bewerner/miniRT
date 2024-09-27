@@ -35,10 +35,6 @@ void main()
 	camera_ray.dir = uv.y * camera_up + uv.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
 
 	vec3 col = trace_ray_normal(camera_ray);
-	col = dither(col);
-
-	// col = vec3(col.r * 0.5 + 0.5, col.g * 0.5 + 0.5, col.b * 0.5 + 0.5, 1.0);
-	// col = vec3(col.rgb, 1.0);
 
 	FragColor = col;
 }

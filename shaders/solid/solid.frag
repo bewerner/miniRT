@@ -48,7 +48,6 @@ void main()
 	}
 
 	vec3 col = trace_ray_solid(camera_ray, uv);
-	col = dither(col);
 
 	FragColor = col;
 }
