@@ -37,7 +37,7 @@ void	calc_hyperboloid_tangent_vectors(inout t_hitpoint hitpoint)
 	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
 }
 
-t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
+t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool init_all)
 {
 	t_hitpoint	hitpoint;
 	float		discriminant;
@@ -164,6 +164,9 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid)
 	}
 	else
 		return (HP_INF);
+
+	if (init_all == false)
+		return (hitpoint);
 
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))

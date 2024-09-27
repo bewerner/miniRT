@@ -7,13 +7,13 @@ bool	reaches_sky(t_ray ray)
 	while (type != OBJ_NONE)
 	{
 		if (type == OBJ_SPHERE)
-			hitpoint = get_hitpoint_sphere(ray, get_sphere(i));
+			hitpoint = get_hitpoint_sphere(ray, get_sphere(i), false);
 		else if (type == OBJ_PLANE)
 			hitpoint = get_hitpoint_plane(ray, get_plane(i), false);
 		else if (type == OBJ_CYLINDER)
-			hitpoint = get_hitpoint_cylinder(ray, get_cylinder(i));
+			hitpoint = get_hitpoint_cylinder(ray, get_cylinder(i), false);
 		else if (type == OBJ_HYPERBOLOID)
-			hitpoint = get_hitpoint_hyperboloid(ray, get_hyperboloid(i));
+			hitpoint = get_hitpoint_hyperboloid(ray, get_hyperboloid(i), false);
 		if (hitpoint.hit == true)
 			return (false);
 		type = next_object_type(i);
