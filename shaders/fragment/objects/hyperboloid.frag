@@ -11,6 +11,12 @@ vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, v
 	
 	if (abs(orientation.z) != 1.0)
 	{
+		if (orientation.z == 0)
+			orientation.z = 0.000001;
+		if (orientation.y == 0)
+			orientation.y = 0.000001;
+		if (orientation.x == 0)
+			orientation.x = 0.000001;
 		vec3 axis = normalize(cross(orientation, vec3(orientation.xy, 0)));
 		float rad = acos(dot(vec3(0, 0, 1), orientation));
 		normal = vec3_rotate_axis(normal, axis, -rad);

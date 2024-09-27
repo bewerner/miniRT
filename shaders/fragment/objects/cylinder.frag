@@ -33,7 +33,7 @@ t_hitpoint	get_hitpoint_cap(t_ray ray, t_cylinder cylinder, t_plane cap_plane, b
 	else
 	{
 		hitpoint = get_hitpoint_plane(ray, cap_plane);
-		hitpoint.hit = true;
+		// hitpoint.hit = true;
 		hitpoint.color = cylinder.base_color;
 		hitpoint.material_idx = cylinder.material_idx;
 		if (distance(hitpoint.pos, cap_plane.origin) > cylinder.radius)
@@ -94,6 +94,12 @@ vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 po
 
 	if (abs(orientation.z) != 1.0)
 	{
+		if (orientation.z == 0)
+			orientation.z = 0.000001;
+		if (orientation.y == 0)
+			orientation.y = 0.000001;
+		if (orientation.x == 0)
+			orientation.x = 0.000001;
 		vec3 axis = normalize(cross(orientation, vec3(orientation.xy, 0)));
 		float rad = acos(dot(vec3(0, 0, 1), orientation));
 		normal = vec3_rotate_axis(normal, axis, -rad);
@@ -110,6 +116,12 @@ vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool 
 
 	if (abs(orientation.z) != 1.0)
 	{
+		if (orientation.z == 0)
+			orientation.z = 0.000001;
+		if (orientation.y == 0)
+			orientation.y = 0.000001;
+		if (orientation.x == 0)
+			orientation.x = 0.000001;
 		vec3 axis = normalize(cross(orientation, vec3(orientation.xy, 0)));
 		float rad = acos(dot(vec3(0, 0, 1), orientation));
 		pos = vec3_rotate_axis(pos, axis, -rad);
