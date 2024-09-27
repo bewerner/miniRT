@@ -75,6 +75,11 @@ t_hitpoint	get_closest_hitpoint(t_ray ray)
 	return (closest);
 }
 
+// The following two functions could be replaced with a flag in the material
+// bool	has_img_tex;
+// for example, which could be set in the parsing, and save valuable time
+// in the rendering process. This could also be expandet to and int,
+// which is a flag for for CALC_UV and CALC_BUMP_MAP and maybe even more…
 bool	has_image_texture(t_hitpoint hitpoint)
 {
 	if (hitpoint.material_idx <= 0)
