@@ -57,7 +57,7 @@ vec3	apply_bump_map(t_hitpoint hitpoint)
 
 	// float	bump_strength = rt.debug / 50;
 	// vec3	bump_normal = H * hitpoint.normal + bump_strength * normalize((Hum * hitpoint.tangent - Hup * hitpoint.tangent) + (Hvm * hitpoint.bitangent - Hvp * hitpoint.bitangent));
-	vec3	bump_normal = mix(hitpoint.normal, hitpoint.normal * H + normalize((Hum * hitpoint.tangent - Hup * hitpoint.tangent) + (Hvm * hitpoint.bitangent - Hvp * hitpoint.bitangent)), rt.debug/50);
+	vec3	bump_normal = mix(hitpoint.normal, hitpoint.normal * H + normalize((Hum * hitpoint.tangent - Hup * hitpoint.tangent) + (Hvm * hitpoint.bitangent - Hvp * hitpoint.bitangent)), rt.debug/10);
 
 	// Re-normalize the bump_normal
 	return ( normalize(bump_normal) );

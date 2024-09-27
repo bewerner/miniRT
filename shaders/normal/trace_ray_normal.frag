@@ -3,7 +3,7 @@ vec3	trace_ray_normal(t_ray ray)
 	t_hitpoint	hitpoint;
 	vec3		col;
 
-	hitpoint = get_closest_hitpoint(ray);
+	hitpoint = get_closest_hitpoint(ray, true);
 	if (!hitpoint.hit)
 		return (VEC3_BLACK);
 

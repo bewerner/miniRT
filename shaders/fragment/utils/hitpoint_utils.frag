@@ -48,7 +48,7 @@ vec3	get_offset_hitpoint_pos(t_hitpoint hitpoint)
 	return (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal);
 }
 
-t_hitpoint	get_closest_hitpoint(t_ray ray)
+t_hitpoint	get_closest_hitpoint(t_ray ray, bool init_all)
 {
 	t_hitpoint	closest;
 	t_hitpoint	current;
@@ -61,13 +61,13 @@ t_hitpoint	get_closest_hitpoint(t_ray ray)
 	while (type != OBJ_NONE)
 	{
 		if (type == OBJ_SPHERE)
-			current = get_hitpoint_sphere(ray, get_sphere(i), true);
+			current = get_hitpoint_sphere(ray, get_sphere(i), init_all);
 		else if (type == OBJ_PLANE)
-			current = get_hitpoint_plane(ray, get_plane(i), true);
+			current = get_hitpoint_plane(ray, get_plane(i), init_all);
 		else if (type == OBJ_CYLINDER)
-			current = get_hitpoint_cylinder(ray, get_cylinder(i), true);
+			current = get_hitpoint_cylinder(ray, get_cylinder(i), init_all);
 		else if (type == OBJ_HYPERBOLOID)
-			current = get_hitpoint_hyperboloid(ray, get_hyperboloid(i), true);
+			current = get_hitpoint_hyperboloid(ray, get_hyperboloid(i), init_all);
 		if (length(current.ray) < length(closest.ray))
 			closest = current;
 		type = next_object_type(i);

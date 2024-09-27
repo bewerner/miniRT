@@ -8,7 +8,7 @@ vec3	trace_ray_solid(t_ray ray, vec2 uv)
 
 	int bounce_count = 0;
 
-	hitpoint = get_closest_hitpoint(ray);
+	hitpoint = get_closest_hitpoint(ray, false);
 	if (!hitpoint.hit)
 	{
 		if (rt.mac_os == 1)

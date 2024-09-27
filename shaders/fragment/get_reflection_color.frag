@@ -15,7 +15,7 @@ vec3	shoot_ray(t_ray ray, inout t_hitpoint hitpoint, inout vec3 mult_col, float 
 	// mult_col += hitpoint.color * (1 - bounce_value) * (bounce_value);
 	mult_col *= make_mul_col(hitpoint.color);
 	// mult_col *= (1 - bounce_value);
-	hitpoint = get_closest_hitpoint(ray);
+	hitpoint = get_closest_hitpoint(ray, true);
 	if (!hitpoint.hit)
 	{
 		// if (rt.debug == -1)
