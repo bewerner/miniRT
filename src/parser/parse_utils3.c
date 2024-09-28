@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:39:29 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/04 15:30:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 11:44:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,13 @@ void	ft_delete_line(char **str)
 		free(*str);
 		*str = NULL;
 	}
+}
+
+bool	has_next_value(char *line)
+{
+	while (line && *line && ft_isspace(*line))
+		line++;
+	if (line && *line && !ft_isspace(*line))
+		return (true);
+	return (false);
 }

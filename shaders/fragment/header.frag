@@ -121,7 +121,7 @@ struct t_material
 	vec3		emission_color;
 	int			color_tex_idx;
 	int			bump_map_idx;
-	int			padding1;
+	float		bump_strength;
 	int			padding2;
 	int			padding3;
 };

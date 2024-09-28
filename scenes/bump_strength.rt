@@ -1,0 +1,43 @@
+A		1.0				assets/syferfontein_18d_clear_2k.hdr
+C		0,-6,0.5			0,1,0	90
+
+#tex	name		type		path/scale	col1		col2
+# tex		tex1		checker		1			255,0,0		0,0,255
+# tex		tex2		checker		.25			64,80,128	255,128,64
+tex		tex3		image		assets/textures/bricks01/bricks01_base_color.png
+tex		tex4		image		assets/textures/bricks01/bricks01_bump_map.png
+
+#m	name		color 			metallic	roughness	ior		transmission	emission_strength	emission_color		bump_map	bump_strength	something_else		color_tex_idx	
+mat	matpl		204,204,204		0.0			0.0			1.45	0.2				0.3					255,128,255			
+
+mat	mat1		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4
+mat	mat2		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		.25
+mat	mat3		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		.50
+mat	mat4		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		.75
+mat	mat5		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		1.0
+
+mat	mat6		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4
+mat	mat7		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		-0.25
+mat	mat8		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		-0.50
+mat	mat9		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		-0.75
+mat	mat10		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		-1.0
+
+pl		0,0,-1		0,0,1		204,204,204	matpl
+
+
+# Three Speher overeach other checking COLOR HIRARCHY
+sp		-4,0,0		2			mat1
+sp		-2,0,0		2			mat2
+sp		0,0,0		2			mat3
+sp		2,0,0		2			mat4
+sp		4,0,0		2			mat5
+
+sp		-4,0,2		2			mat6
+sp		-2,0,2		2			mat7
+sp		0,0,2		2			mat8
+sp		2,0,2		2			mat9
+sp		4,0,2		2			mat10
+
+l	-2,-3,3			.1		204,204,204
+l	 2,-3,3			.1		204,204,204
+l	 0, 6,2			1		204,204,204

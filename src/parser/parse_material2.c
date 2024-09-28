@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:54:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/27 12:10:04 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 11:32:45 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->emission_color.b = 0.0f;
 	mat->color_texture_id = -1;
 	mat->bump_map_id = -1;
+	mat->bump_strength = 0.0f;
 }

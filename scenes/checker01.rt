@@ -1,15 +1,14 @@
 A		1.0				assets/syferfontein_18d_clear_2k.hdr
 C		0,-4,0			0,1,0	90
 
-#tex	name			type		path/scale	col1		col2
-#tex		image_tex		image		texture/tex01.png
+#tex	name		type		path/scale	col1		col2
 tex		tex1		checker		1			255,0,0		0,0,255
 tex		tex2		checker		.25			64,80,128	255,128,64
 tex		tex3		image		assets/textures/bricks01/bricks01_base_color.png
 tex		tex4		image		assets/textures/bricks01/bricks01_bump_map.png
 tex		tex5		image		assets/textures/tiles01/tiles01_base_color.png
 
-#m	name		color 			metallic	roughness	ior		transmission	emission_strength	emission_color		bump_map	something_else		color_tex_idx	
+#m	name		color 			metallic	roughness	ior		transmission	emission_strength	emission_color		bump_map	bump_strength	something_else		color_tex_idx	
 mat	mat1		tex1			0.0			0.0			1.45	0.2				0.3					255,128,255			tex2
 mat	mat2		tex2			0.0			0.0			1.45	0.2				0.3					255,128,255			
 mat	mat3		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4

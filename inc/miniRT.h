@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 00:52:52 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/28 11:39:25 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ typedef struct s_material
 	t_vec3		emission_color;
 	int			color_texture_id;
 	int			bump_map_id;
+	float			bump_strength;
 }	t_material;
 
 typedef enum e_texture_type
@@ -525,6 +526,7 @@ char			*prep_line(char *str);
 size_t			obj_size(t_identifier id);
 size_t			light_size(t_identifier id);
 void			ft_delete_line(char **str);
+bool			has_next_value(char *line);
 
 // parser/parser_validations.c
 void			verify_material_uniqueness(t_rt *rt);
@@ -576,7 +578,6 @@ void			bind_environment_map(GLuint shader_program, t_rt *rt);
 void			bind_texture_units(GLuint shader_program, t_rt *rt);
 void			bind_material_ubo(GLuint shader_program, t_rt *rt);
 void			bind_texture_ubo(GLuint shader_program, t_rt *rt);
-
 
 // shader/run_shader.c
 void			draw_gizmo(t_rt *rt);
