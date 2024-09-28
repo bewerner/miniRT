@@ -44,22 +44,27 @@ vec3	apply_bump_map(t_hitpoint hitpoint)
 		return hitpoint.normal;
 
 	// Calculate du and dv based on the texture resolution
-	float	du = 1.0 / 2048 / 10;
-	float	dv = 1.0 / 2048 / 10;
+	float	du = 1.0 / 2048 / 1;
+	float	dv = 1.0 / 2048 / 1;
 
 	// Get the height at the current texture coordinate
 	float	H = get_bump_height(bump_idx, hitpoint.uv, hitpoint);
 
-	float	Hup = H - get_bump_height(bump_idx, hitpoint.uv + vec2(du, 0.0), hitpoint);
-	float	Hum = H - get_bump_height(bump_idx, hitpoint.uv - vec2(du, 0.0), hitpoint);
-	float	Hvp = H - get_bump_height(bump_idx, hitpoint.uv + vec2(0.0, dv), hitpoint);
-	float	Hvm = H - get_bump_height(bump_idx, hitpoint.uv - vec2(0.0, dv), hitpoint);
+	float	HUp = get_bump_height(bump_idx, hitpoint.uv + vec2(du, 0.0), hitpoint);
+	float	HUm = get_bump_height(bump_idx, hitpoint.uv - vec2(du, 0.0), hitpoint);
+	float	HVp = get_bump_height(bump_idx, hitpoint.uv + vec2(0.0, dv), hitpoint);
+	float	HVm = get_bump_height(bump_idx, hitpoint.uv - vec2(0.0, dv), hitpoint);
 
 	// float	bump_strength = rt.debug / 50;
 	// vec3	bump_normal = H * hitpoint.normal + bump_strength * normalize((Hum * hitpoint.tangent - Hup * hitpoint.tangent) + (Hvm * hitpoint.bitangent - Hvp * hitpoint.bitangent));
+	// vec3	bump_normal = mix(	hitpoint.normal,
+	// 							hitpoint.normal * H + normalize((Hum * hitpoint.tangent - Hup * hitpoint.tangent) + (Hvm * hitpoint.bitangent - Hvp * hitpoint.bitangent)),
+	// 							materials[hitpoint.material_idx].bump_strength);
+
+
 	vec3	bump_normal = mix(	hitpoint.normal,
-								hitpoint.normal * H + normalize((Hum * hitpoint.tangent - Hup * hitpoint.tangent) + (Hvm * hitpoint.bitangent - Hvp * hitpoint.bitangent)),
-								materials[hitpoint.material_idx].bump_strength);
+								hitpoint.normal * H + normalize((HUp - HUm) * hitpoint.tangent + (HVp - HVm) * hitpoint.bitangent),
+								materials[hitpoint.material_idx].bump_strength	);
 
 	// Re-normalize the bump_normal
 	return ( normalize(bump_normal) );
