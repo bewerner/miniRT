@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_material_ubo.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 00:47:11 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/28 11:46:03 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	init_ubo_materials(t_gpu_material *buffer, t_material *material)
 		gpu_mat.emission_strength = material->emission_strength;
 		gpu_mat.color_texture_id = material->color_texture_id;
 		gpu_mat.bump_map_id = material->bump_map_id;
+		gpu_mat.bump_strength = material->bump_strength;
 		ft_memmove(&buffer[i], &gpu_mat, sizeof(t_gpu_material));
 		i++;
 		material = material->next;

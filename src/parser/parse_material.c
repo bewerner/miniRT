@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/27 12:10:04 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 11:48:54 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,11 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	mat->bump_map_id = -1;
 	if (next_is_name(line))
+	{
 		mat->bump_map_id = texid_from_name(&line, rt);
+		if (has_next_value(line))
+			mat->bump_strength = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);	// WHAT is the RANGE here??
+	}
 	return (RT_SUCCESS);
 }
 
