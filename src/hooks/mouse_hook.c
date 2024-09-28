@@ -6,24 +6,25 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/03 13:28:20 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:05:34 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-void	mouse_hook(GLFWwindow* window, int button, int action, int mods)
+// if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !mods)
+// {
+// 	// rt_select(window, rt);
+// 	return ;
+// }
+
+void	mouse_hook(GLFWwindow *window, int button, int action, int mods)
 {
 	t_rt	*rt;
 	double	x;
 	double	y;
 
 	rt = get_rt();
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !mods)
-	{
-		// rt_select(window, rt);
-		return ;
-	}
 	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && !mods)
 	{
 		rt->mouse_buttons_pressed++;

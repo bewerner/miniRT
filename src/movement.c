@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/18 18:25:35 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 13:22:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	handle_move_input(t_rt *rt)
 void	move_camera(t_rt *rt)
 {
 	t_camera	initial_camera;
-	
+
 	initial_camera = rt->camera;
 	rt->camera.right = (t_vec3){{1, 0, 0}};
 	rt->camera.right = vec3_rotate_z(rt->camera.right, rt->camera.yaw);

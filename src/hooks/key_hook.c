@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/25 11:59:11 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:04:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,22 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 	}
 }
 
-void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
+void	check_debug_key_presses(int key, int action, t_rt *rt)
+{
+	if (key == GLFW_KEY_UP && action)
+	{
+		rt->debug += 1;
+		printf("debug is %f\n", rt->debug);
+	}
+	else if (key == GLFW_KEY_DOWN && action)
+	{
+		rt->debug -= 1;
+		printf("debug is %f\n", rt->debug);
+	}
+}
+
+void	key_hook(GLFWwindow *window, int key, int scancode,
+			int action, int mods)
 {
 	t_rt	*rt;
 
@@ -75,16 +90,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 		reset_camera(&rt->camera);
 		rt->move.vel = g_vec3_zero;
 	}
-	else if (key == GLFW_KEY_UP && action)
-	{
-		rt->debug += 1;
-		printf("debug is %f\n", rt->debug);
-	}
-	else if (key == GLFW_KEY_DOWN && action)
-	{
-		rt->debug -= 1;
-		printf("debug is %f\n", rt->debug);
-	}
 	else
 		key_hook_axial_view(key, action, rt);
+	check_debug_key_presses(key, action, rt);
 }

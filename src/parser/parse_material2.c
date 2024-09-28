@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:54:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 11:32:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:02:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,16 @@ void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->color_texture_id = -1;
 	mat->bump_map_id = -1;
 	mat->bump_strength = 0.0f;
+}
+
+void	parse_bump_values(t_material *mat, char **line, t_rt *rt)
+{
+	if (next_is_name(*line))
+	{
+		mat->bump_map_id = texid_from_name(line, rt);
+		if (has_next_value(*line))
+			mat->bump_strength
+				= vr(gnv(line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
+										// WHAT is the RANGE here??
+	}
 }
