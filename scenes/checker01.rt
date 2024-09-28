@@ -11,7 +11,7 @@ tex		tex5		image		assets/textures/tiles01/tiles01_base_color.png
 #m	name		color 			metallic	roughness	ior		transmission	emission_strength	emission_color		bump_map	bump_strength	something_else		color_tex_idx	
 mat	mat1		tex1			0.0			0.0			1.45	0.2				0.3					255,128,255			tex2
 mat	mat2		tex2			0.0			0.0			1.45	0.2				0.3					255,128,255			
-mat	mat3		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4
+mat	mat3		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		0.5
 mat	mat4		tex5			0.0			0.0			1.45	0.2				0.3					255,128,255
 mat	mat5		102,0,0			0.0			0.0			1.45	0.2				0.3					255,128,255
 

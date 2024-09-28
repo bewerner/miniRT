@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 11:39:25 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/28 13:54:22 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,6 +420,9 @@ void			move_camera(t_rt *rt);
 // update.c
 void			update(t_rt *rt);
 
+// update_window_title.c
+void			update_window_title(t_rt *rt);
+
 // ┌───────┐
 // │ Hooks │
 // └───────┘
@@ -485,10 +488,12 @@ void			load_scene(char *file, t_rt *rt);
 t_error			parse_scene(t_scene_size scene_size, t_rt *rt);
 
 // parser/parse_material.c
+int				texid_from_name(char **line, t_rt *rt);
 t_error			create_materials(size_t mat_cnt, t_rt *rt);
 
 // parser/parse_material2.c
 void			create_default_material(size_t mat_cnt, t_material *mat);
+void			parse_bump_values(t_material *mat, char **line, t_rt *rt);
 
 // parser/parse_texture.c
 t_error			create_textures(size_t tex_cnt, t_rt *rt);
