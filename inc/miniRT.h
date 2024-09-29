@@ -6,24 +6,22 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/29 21:49:54 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/29 22:00:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# if defined(__APPLE__)
-#  if defined(__MACH__)
-#   define LUT_PATH	"resources/AgX_LUT3D_P3.png"
-#   define MAC_OS	1
-#  else
-#   define LUT_PATH	"resources/AgX_LUT3D_sRGB.png"
-#   define MAC_OS	0
-#  endif
-# else
 # define LUT_PATH	"resources/AgX_LUT3D_sRGB.png"
 # define MAC_OS	0
+# if defined(__APPLE__)
+#  if defined(__MACH__)
+#   undef LUT_PATH
+#   undef MAC_OS
+#   define LUT_PATH	"resources/AgX_LUT3D_P3.png"
+#   define MAC_OS	1
+#  endif
 # endif
 
 # include "../libft/libft.h"
