@@ -58,8 +58,8 @@ vec3	get_environment_map_color(vec3 direction)
 	uv.x = 0.5 + atan(-normal.y, normal.x) / (2.0 * M_PI);
 	uv.y = 0.5 - asin(-normal.z) / M_PI;
 
-	// return (texture(environment_map, uv).rgb);
-	return(clamp(texture(environment_map, uv).rgb, 0, 16));
+	return (texture(environment_map, uv).rgb);
+	// return(clamp(texture(environment_map, uv).rgb, 0, 16));
 }
 
 vec3	get_sky_color(t_hitpoint hitpoint)
