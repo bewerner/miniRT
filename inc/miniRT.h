@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/29 22:00:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/30 01:09:16 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -459,6 +459,9 @@ void			scroll_hook(GLFWwindow *window,
 
 // init/init_agx_lut_tbo.c
 void			create_tbo_agx_lut(char *filepath, t_rt *rt);
+
+// init/init_environment_map.c
+void			create_environment_map(t_rt *rt);
 
 // init/init_lights_tbo.c
 void			create_tbo_lights(t_rt *rt);
