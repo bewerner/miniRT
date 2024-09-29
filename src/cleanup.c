@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/22 17:13:26 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:33:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*error_msg(t_error error)
 	return ((char *)msgs[error]);
 }
 
-void	error(char *message, char *add_msg)
+void	error(char *message, char *msg2)
 {
 	if (!message)
 		return ;
@@ -37,10 +37,10 @@ void	error(char *message, char *add_msg)
 		perror(message);
 	else if (message)
 		ft_putendl_fd(message, STDERR_FILENO);
-	if (add_msg)
+	if (msg2)
 	{
 		ft_putstr_fd("\033[96m-> \033[94m", STDERR_FILENO);
-		ft_putstr_fd(add_msg, STDERR_FILENO);
+		ft_putstr_fd(msg2, STDERR_FILENO);
 		ft_putendl_fd("\033[0m", STDERR_FILENO);
 	}
 	errno = 0;
@@ -70,7 +70,7 @@ static void	delete_shader_program(GLuint shader_program)
 	}
 }
 
-void	terminate(char *msg, char *add_msg, uint8_t exit_code, t_rt *rt)
+void	terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt)
 {
 	if (rt->window)
 		glUseProgram(0);
@@ -81,7 +81,7 @@ void	terminate(char *msg, char *add_msg, uint8_t exit_code, t_rt *rt)
 	if (rt->fd != -1)
 		close(rt->fd);
 	if (msg)
-		error(msg, add_msg);
+		error(msg, msg2);
 	if (rt->window)
 		glfwDestroyWindow(rt->window);
 	glfwTerminate();

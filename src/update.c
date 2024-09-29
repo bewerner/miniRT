@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 13:53:40 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:34:43 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	update(t_rt *rt)
 	move_camera(rt);
 	if (i == 1)
 		ft_timer(TIMER_START, NULL);
-	// glfwSetCursorPos(rt->window, 123, 123);
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
 	oldstart = start;
