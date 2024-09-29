@@ -3,7 +3,7 @@ C		0,-4,0			0,1,0	90
 
 #tex	name		type		path/scale	col1		col2
 tex		tex1		checker		1			255,0,0		0,0,255
-tex		tex2		checker		.25			64,80,128	255,128,64
+tex		tex2		checker		4			64,80,128	255,128,64
 tex		tex_ch		checker		.1			100,100,100	156,156,156
 tex		tex3		image		assets/textures/bricks01/bricks01_base_color.png
 tex		tex4		image		assets/textures/bricks01/bricks01_bump_map.png
