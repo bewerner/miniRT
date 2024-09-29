@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 13:54:22 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:33:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# if defined(__APPLE__) && defined(__MACH__)
-#  define LUT_PATH	"resources/AgX_LUT3D_P3.png"
-#  define MAC_OS	1
-# else
-#  define LUT_PATH	"resources/AgX_LUT3D_sRGB.png"
-#  define MAC_OS	0
+# if defined(__APPLE__)
+#  if defined(__MACH__)
+#   define LUT_PATH	"resources/AgX_LUT3D_P3.png"
+#   define MAC_OS	1
+#  else
+#   define LUT_PATH	"resources/AgX_LUT3D_sRGB.png"
+#   define MAC_OS	0
+#  endif
 # endif
 
 # include "../libft/libft.h"
@@ -91,7 +93,6 @@ typedef enum e_identifier
 // Parser Objects for parser.c
 typedef struct s_pobjs
 {
-	// t_material	*curr_mat;
 	t_object	*curr_obj;
 	t_light		*curr_light;
 }				t_pobjs;
@@ -145,7 +146,7 @@ typedef struct s_material
 	t_vec3		emission_color;
 	int			color_texture_id;
 	int			bump_map_id;
-	float			bump_strength;
+	float		bump_strength;
 }	t_material;
 
 typedef enum e_texture_type
@@ -165,7 +166,6 @@ typedef struct s_texture
 	float			scale;
 	t_vec3			col1;
 	t_vec3			col2;
-	
 }	t_texture;
 
 typedef enum e_obj_type
@@ -245,7 +245,6 @@ typedef struct s_hitpoint
 {
 	t_vec3			ray;
 	t_vec3			pos;
-	// t_ray			incident_ray;
 	t_vec3			normal;
 	t_object		*object;
 }	t_hitpoint;
@@ -380,8 +379,8 @@ typedef struct s_rt
 static const t_ivec2		g_ivec2_zero = (t_ivec2){0, 0};
 static const t_vec2			g_vec2_zero = (t_vec2){0, 0};
 static const t_vec3			g_vec3_zero = (t_vec3){{0, 0, 0}};
-static const t_vec3			g_vec3_inf = (t_vec3){{INFINITY, INFINITY, INFINITY}};
-
+static const t_vec3			g_vec3_inf
+	= (t_vec3){{INFINITY, INFINITY, INFINITY}};
 
 static const t_vec3			g_vec3_white = (t_vec3){{1, 1, 1}};
 static const t_vec3			g_vec3_black = (t_vec3){{0, 0, 0}};
@@ -406,8 +405,8 @@ void			init_mini_rt(char **argv, t_rt *rt);
 
 // cleanup.c
 char			*error_msg(t_error error);
-void			error(char *message, char *add_msg);
-void			terminate(char *msg, char *add_msg, uint8_t exit_code, t_rt *rt);
+void			error(char *message, char *msg2);
+void			terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt);
 
 // movement.c
 void			handle_move_input(t_rt *rt);
@@ -432,19 +431,23 @@ void			init_hooks(t_rt *rt);
 
 // hooks/key_hook.c
 void			reset_camera(t_camera *camera);
-void			key_hook(GLFWwindow *window, int key, int scancode, int action, int mods);
+void			key_hook(GLFWwindow *window,
+					int key, int scancode, int action, int mods);
 
 // hooks/cursor_hook.c
-void			cursor_hook(GLFWwindow *window, double cursor_x, double cursor_y);
+void			cursor_hook(GLFWwindow *window,
+					double cursor_x, double cursor_y);
 
 // hooks/mouse_hook.c
-void			mouse_hook(GLFWwindow* window, int button, int action, int mods);
+void			mouse_hook(GLFWwindow *window,
+					int button, int action, int mods);
 
 // hooks/resize_hook.c
 void			resize_hook(GLFWwindow *window, int width, int height);
 
 // hooks/scroll_hook.c
-void 			scroll_hook(GLFWwindow* window, double xoffset, double yoffset);
+void			scroll_hook(GLFWwindow *window,
+					double xoffset, double yoffset);
 
 // hooks/loop_hook.c
 // void			loop_hook(void *param);
@@ -468,8 +471,10 @@ void			create_ubo_materials(t_rt *rt);
 // init/init_objects_primitives.c
 void			init_gpu_sphere(float *buffer, size_t *i, t_sphere *sphere);
 void			init_gpu_plane(float *buffer, size_t *i, t_plane *plane);
-void			init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder);
-void			init_gpu_hyperboloid(float *buffer, size_t *i, t_hyperboloid *hyperboloid);
+void			init_gpu_cylinder(float *buffer, size_t *i,
+					t_cylinder *cylinder);
+void			init_gpu_hyperboloid(float *buffer, size_t *i,
+					t_hyperboloid *hyperboloid);
 
 // init/init_objects_tbo.c
 void			create_tbo_objects(t_rt *rt);
@@ -512,7 +517,8 @@ t_error			parse_cylinder(t_cylinder *cylinder, t_rt *rt);
 
 // parser/parse_primitives2.c
 t_material		*get_next_material(char *line, t_rt *rt);
-void			set_color_and_material(t_vec3 *col, t_material **mat, char *line, t_rt *rt);
+void			set_color_and_material(t_vec3 *col, t_material **mat,
+					char *line, t_rt *rt);
 t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 
 // parser/parser_utils1.c
@@ -568,11 +574,13 @@ char			*assemble_shader_source(const char *file);
 size_t			file_size(const char *file);
 int				is_import(char *str);
 void			extract_shader_path(char *shader_path, const char *file);
-void			prepares_import_filename(char *filename, char *str, char *shader_path);
+void			prepares_import_filename(char *filename, char *str,
+					char *shader_path);
 GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 
 // shader/shader_program.c
-GLuint			create_shader_program(const char *vert, const char *freg, t_rt *rt);
+GLuint			create_shader_program(const char *vert,
+					const char *freg, t_rt *rt);
 
 // shader/bind_buffer.c
 void			bind_framebuffer_texture(GLuint shader_program, t_rt *rt);

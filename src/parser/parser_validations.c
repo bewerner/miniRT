@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_validations.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 17:27:14 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/24 12:10:29 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:33:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	verify_material_uniqueness(t_rt *rt)
 {
 	t_material	*curr;
 	t_material	*next;
-	char		add_msg[MAX_NAME];
+	char		msg2[MAX_NAME];
 
 	curr = rt->materials;
 	while (curr->next)
@@ -26,9 +26,9 @@ void	verify_material_uniqueness(t_rt *rt)
 		{
 			if (ft_strcmp(curr->name, next->name) == 0)
 			{
-				ft_memset(add_msg, 0, MAX_NAME);
-				ft_strlcat(add_msg, curr->name, MAX_NAME);
-				terminate("duplicate material names", add_msg, 1, rt);
+				ft_memset(msg2, 0, MAX_NAME);
+				ft_strlcat(msg2, curr->name, MAX_NAME);
+				terminate("duplicate material names", msg2, 1, rt);
 			}
 			next = next->next;
 		}
@@ -40,7 +40,7 @@ void	verify_texture_uniqueness(t_rt *rt)
 {
 	t_texture	*curr;
 	t_texture	*next;
-	char		add_msg[MAX_NAME];
+	char		msg2[MAX_NAME];
 
 	curr = rt->textures;
 	while (curr && curr->next)
@@ -50,9 +50,9 @@ void	verify_texture_uniqueness(t_rt *rt)
 		{
 			if (ft_strcmp(curr->name, next->name) == 0)
 			{
-				ft_memset(add_msg, 0, MAX_NAME);
-				ft_strlcat(add_msg, curr->name, MAX_NAME);
-				terminate("duplicate texture names", add_msg, 1, rt);
+				ft_memset(msg2, 0, MAX_NAME);
+				ft_strlcat(msg2, curr->name, MAX_NAME);
+				terminate("duplicate texture names", msg2, 1, rt);
 			}
 			next = next->next;
 		}
