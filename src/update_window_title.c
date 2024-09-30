@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_window_title.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/30 04:21:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/30 11:33:20 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static char	*get_fps(t_rt *rt)
 	time += rt->delta_time;
 	fps_str = ft_itoa((1 / (time / frame_count)));
 	if (time < 0.5f)
+	{
+		free(fps_str);
 		return (NULL);
+	}
 	frame_count = 0;
 	time = 0;
 	return (fps_str);
