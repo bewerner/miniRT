@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_window_title.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 14:00:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/30 04:21:16 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*get_fps(t_rt *rt)
 	time += rt->delta_time;
 	fps_str = ft_itoa((1 / (time / frame_count)));
 	if (time < 0.5f)
-		return (fps_str);
+		return (NULL);
 	frame_count = 0;
 	time = 0;
 	return (fps_str);
@@ -54,12 +54,10 @@ void	update_window_title(t_rt *rt)
 
 	title[0] = '\0';
 	fps_str = get_fps(rt);
-	if (fps_str)
-	{
-		ft_strlcat(title, fps_str, 1024);
-		ft_strlcat(title, " FPS - ", 1024);
-	}
-	ft_strlcat(title, "miniRT - ", 1024);
+	if (!fps_str)
+		return ;
+	ft_strlcat(title, fps_str, 1024);
+	ft_strlcat(title, " FPS - miniRT - ", 1024);
 	ft_strlcat(title, rt->filename, 1024);
 	if (rt->mode == MODE_PREVIEW)
 		add_sample_to_title(title, rt);
