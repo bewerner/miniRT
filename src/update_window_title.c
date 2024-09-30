@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/30 11:33:20 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:46:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,9 @@ static char	*get_fps(t_rt *rt)
 
 	frame_count++;
 	time += rt->delta_time;
-	fps_str = ft_itoa((1 / (time / frame_count)));
 	if (time < 0.5f)
-	{
-		free(fps_str);
 		return (NULL);
-	}
+	fps_str = ft_itoa((1 / (time / frame_count)));
 	frame_count = 0;
 	time = 0;
 	return (fps_str);
