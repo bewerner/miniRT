@@ -6,52 +6,120 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 01:05:17 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/30 02:28:25 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/09/30 18:47:03 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	apply_strength(float strength, t_vec3 *image, size_t width, size_t height)
+void	set_cumulative_distribution(t_vec4 *image, int width, int height)
 {
-	size_t	x;
-	size_t	y;
+	size_t	length;
+	size_t	i;
+	float	previous_weight;
 
+	length = (size_t)width * height;
+	i = 0;
+	previous_weight = 0;
+	while (i < length)
+	{
+		image[i].a += previous_weight;
+		previous_weight = image[i].a;
+		i++;
+	}
+}
+
+void	normalize_weight(t_vec4 *image, float total_weight, int width, int height)
+{
+	size_t	length;
+	size_t	i;
+
+	length = (size_t)width * height;
+	i = 0;
+	while (i < length)
+	{
+		image[i].a /= total_weight;
+		i++;
+	}
+}
+
+void	apply_strength(float strength, t_vec4 *image, int width, int height)
+{
+	size_t	length;
+	size_t	i;
+
+	length = (size_t)width * height;
+	i = 0;
+	while (i < length)
+	{
+		image[i].r *= strength;
+		image[i].g *= strength;
+		image[i].b *= strength;
+		i++;
+	}
+}
+
+float	get_importance_weight(float luminance, float row, int width, int height)
+{
+	float	solid_angle;
+	float	importance_weight;
+	float	pi = M_PI;
+
+	solid_angle = sinf(row / height * pi) * (pi / height) * (2 * pi / width);
+	importance_weight = luminance * solid_angle;
+	return (importance_weight);
+}
+
+void	set_importance_weight(t_vec4 *image, int width, int height)
+{
+	t_vec4	*pixel;
+	int		x;
+	int		y;
+	float	total_weight;
+
+	total_weight = 0;
 	y = 0;
 	while (y < height)
 	{
 		x = 0;
 		while (x < width)
 		{
-			image[x + y * width] = vec3_scale(strength, image[x + y * width]);
+			pixel = &image[x + y * width];
+			pixel->a = pixel->r * 0.2126 + pixel->g * 0.7152 + pixel->b * 0.0722;
+			pixel->a = get_importance_weight(pixel->a, y + 1, width, height);
+			total_weight += pixel->a;
 			x++;
 		}
 		y++;
 	}
+	normalize_weight(image, total_weight, width, height);
 }
 
 void	create_environment_map(t_rt *rt)
 {
 	int		width;
 	int		height;
-	t_vec3	*image;
+	t_vec4	*image;
 	// size_t	length;
 
 	if (rt->ambient.r >= 0)
 		return ;
 	stbi_set_flip_vertically_on_load(true);
-	image = (t_vec3 *)stbi_loadf(rt->ambient_env_file, &width, &height, NULL, 3);
+	image = (t_vec4 *)stbi_loadf(rt->ambient_env_file, &width, &height, NULL, 4);
 	if (!image)
 		terminate(rt->ambient_env_file, NULL, 1, rt);
 
 
 	// length = (size_t)width * height;
 	apply_strength(rt->ambient_strength, image, width, height);
+	set_importance_weight(image, width, height);
+	set_cumulative_distribution(image, width, height);
+	// set_importance_weight(image, width, height);
 
 	// calc_luminance(image, length);
 	// Luminance=0.2126×Red+0.7152×Green+0.0722×Blue
 
-	// calc_importance_weight(image, length);
+	// set_importance_weight(image, length);
 	// consider actual area of each pixel on the skysphere to create area weighted importance
 
 	// PDF (Probability Distribution Function)
@@ -77,8 +145,8 @@ void	create_environment_map(t_rt *rt)
 	glGenTextures(1, &rt->environment_map_id);
 	glActiveTexture(GL_TEXTURE0 + 4);
 	glBindTexture(GL_TEXTURE_2D, rt->environment_map_id);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0,
-		GL_RGB, GL_FLOAT, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0,
+		GL_RGBA, GL_FLOAT, image);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	stbi_image_free(image);
