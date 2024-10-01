@@ -3,17 +3,32 @@ C		4,0,0			-1,0,0	90
 
 #tex	name			type		path/scale	col1		col2
 tex		earth_tex		image		assets/textures/earth/earth_base_color.png
-# tex		stars_tex		image		assets/textures/earth/starmap_8k_base_color.png
+tex		earth_bump		image		assets/textures/earth/earth_bump_map.png
+tex		moon_tex		image		assets/textures/earth/moon_base_color.png
+tex		moon_bump		image		assets/textures/earth/moon_bump_map.png
 
 #m	name			color 			metallic	roughness	ior		transmission	emission_strength	emission_color		color_tex_idx
-mat	mat_earth		earth_tex			0.0			0.0			1.45	0.2				0.3					255,128,255
+mat	mat_earth		earth_tex			0.0			0.0			1.45	0.2				0.0					0,0,0		earth_bump	0.05
+mat	mat_moon		moon_tex			0.0			0.0			1.45	0.2				0.0					0,0,0		moon_bump	0.05
 # mat	mat_stars		stars_tex			0.0			0.0			1.45	0.2				0.3					255,128,255
 
+# EARTH
 sp		0,0,0		2			mat_earth
-# sp		0,0,0		50			mat_stars
+
+# MOON
+sp		0,60.33,0		0.5462			mat_moon
 
 
 # hb 	5.8,5,1.5	0,0,1		5		1	1	1	1		mat3
 # l	5.8,5,1			.1		204,204,204
 
 l	10,0,0			10000		204,204,204
+
+l	-0,15,0			1000		204,204,204
+l	-0,-15,0			1000		204,204,204
+l	-0,0,-15		1000		204,204,204
+l	-0,0,15			1000		204,204,204
+l	-15,0,0			1000		204,204,204
+
+# MOON LIGHT
+l	15,60,0		10000		204,204,204
