@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 01:05:17 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/30 18:47:03 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/01 00:55:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	create_environment_map(t_rt *rt)
 	image = (t_vec4 *)stbi_loadf(rt->ambient_env_file, &width, &height, NULL, 4);
 	if (!image)
 		terminate(rt->ambient_env_file, NULL, 1, rt);
-
 
 	// length = (size_t)width * height;
 	apply_strength(rt->ambient_strength, image, width, height);
