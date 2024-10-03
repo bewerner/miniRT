@@ -1,10 +1,16 @@
-float	rand()
+// float	rand()
+// {
+// 	g_seed = (214013 * g_seed + 2531011);
+// 	return(float(((g_seed >> 16) & 0x7FFF) / 32768.0));
+// }
+
+float rand()
 {
-	g_seed = (214013 * g_seed + 2531011);
-	return(float(((g_seed >> 16) & 0x7FFF) / 32768.0));
-	// g_seed++;
-	// return(sin(g_seed) * 0.5 + 0.5);
+    g_seed = (214013 * g_seed + 2531011);
+    // Extract 26 bits instead of 15
+    return (float((g_seed >> 5) & 0x3FFFFFF) / 67108864.0);  // 0x3FFFFFF is 26 bits (67108863 in decimal)
 }
+
 
 vec3	dither(vec3 col)
 {

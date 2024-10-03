@@ -43,19 +43,24 @@ void	main(void)
 	vec3 col;
 	col = trace_ray(camera_ray);
 
+	// if (rt.debug == 0)
+	// 	col = vec3(rand());
 	FragColor = mix(texture(raw_render_image, tmp).rgb, col, 1.0 / rt.sample_count);
 	uv.x = coord.x;
 	uv.y = 1 - coord.y;
+
 	if (rt.debug == 1)
 		FragColor = texture(environment_map, uv).rgb;
 	if (rt.debug == 2)
 		FragColor = vec3(texture(environment_map, uv).a);
 	if (rt.debug == 3)
-		FragColor = vec3(texture(environment_map, uv).a - texture(environment_map, uv - vec2(1.0/2048, 0)).a) * 1000000;
-	if (rt.debug == 4)
-		FragColor = vec3(texelFetch(environment_map, ivec2(0,0), 0).a);
-	if (rt.debug == 5)
-		FragColor = vec3(texture(environment_map, vec2(0,0)).a);
+		FragColor = vec3(get_pdf(ivec2(uv.x * 2048, uv.y * 1024), 2048, 1024) * 1000000);
+
+	// if (rt.debug == 4)
+	// 	FragColor = vec3(texelFetch(environment_map, ivec2(0,0), 0).a);
+	// if (rt.debug == 5)
+	// 	FragColor = vec3(texture(environment_map, vec2(0,0)).a);
+
 	// 	// FragColor = vec3(texture(environment_map, vec2(1.0/2048,1.0/1024)).a);
 	// if (rt.debug == -2)
 	// 	FragColor = vec3(texture(environment_map, vec2(0.8,0.8)).a);
