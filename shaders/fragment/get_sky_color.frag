@@ -369,22 +369,26 @@ vec3	get_sky_color(t_hitpoint hitpoint)
 
 	pdf_cosine = cos(dot(hitpoint.normal, ray_cosine.dir)) / M_PI;
 	pdf_cosine = max(pdf_cosine, 1e-6);
+	// if (pdf_importance <= 1e-6)
+	// 	return(vec3(1,0,0));
 	pdf_importance = max(pdf_importance, 1e-6);
 
 	weight_importance = pdf_importance / (pdf_importance + pdf_cosine);
 	weight_cosine = pdf_cosine / (pdf_cosine + pdf_importance);
 
 	if (reaches_sky(ray_importance) == true)
-			col_importance = get_environment_map_color(ray_importance.dir)/100000 * max(0, dot(hitpoint.normal, ray_importance.dir)) / pdf_importance;
+		col_importance = get_environment_map_color(ray_importance.dir) / (((50000))) * max(0, dot(hitpoint.normal, ray_importance.dir)) / pdf_importance;
 	if (reaches_sky(ray_cosine) == true)
-			col_cosine = clamp(get_environment_map_color(ray_cosine.dir) / pdf_cosine, 0, 16);
+		col_cosine = clamp(get_environment_map_color(ray_cosine.dir) / pdf_cosine, 0, 16);
 
-	col_final = col_importance * weight_importance + col_cosine * weight_cosine;
-	if (rt.debug == 1);
-		col_final = mix(col_importance, col_cosine, weight_cosine);
+	col_final = col_importance * weight_importance + (col_cosine * (((0.3)))) * weight_cosine;
+	// if (rt.debug == 1)
+	// 	col_final = mix(col_importance, col_cosine, weight_cosine);
 
 	// return (col_importance);
 	// return (clamp(col_importance, 0, 1));
 	// return (col_importance / 10000000);
+	// if (rt.debug == 1)
+	// 	return (col_cosine * pdf_cosine);
 	return (col_final);
 }
