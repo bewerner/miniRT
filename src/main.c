@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 14:38:19 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/01 02:11:12 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,47 @@ t_rt	*get_rt(void)
 	return (&rt);
 }
 
+// Convert a direction vector to UV coordinates
+t_vec2 direction_to_uv(t_vec3 direction) {
+    t_vec2 uv;
+    t_vec3 normal = vec3_normalize(direction);
+    uv.x = 0.5 + atan2(-normal.y, normal.x) / (2.0 * M_PI);
+    uv.y = 0.5 - asin(-normal.z) / M_PI;
+    return uv;
+}
+
+// Convert UV coordinates back to a direction vector
+t_vec3 uv_to_direction(t_vec2 uv) {
+    t_vec3 direction;
+
+    // Convert the UV coordinates back to angles
+    float theta = (uv.x - 0.5) * 2.0 * M_PI; // Angle in the XY plane
+    float phi = (0.5 - uv.y) * M_PI;         // Angle from the Z axis
+
+    // Calculate the direction vector using spherical coordinates
+    direction.x = cos(phi) * cos(theta);   // x = cos(phi) * cos(theta)
+    direction.y = -cos(phi) * sin(theta);   // y = cos(phi) * sin(theta)
+    direction.z = -sin(phi);                  // z = sin(phi)
+
+    return (direction); // Ensure it is a normalized direction
+    // return vec3_normalize(direction); // Ensure it is a normalized direction
+}
+
 int	main(int argc, char **argv)
 {
 	t_rt	*rt;
 
+    t_vec3 direction = (t_vec3){{5, 2, 1}};
+    direction = vec3_normalize(direction);
+    printf("Normalized direction: %f, %f, %f\n", direction.x, direction.y, direction.z);
+    
+    t_vec2 uv = direction_to_uv(direction);
+    printf("UV: %f, %f\n", uv.x, uv.y);
+    
+    direction = uv_to_direction(uv);
+    printf("Direction from UV: %f, %f, %f\n", direction.x, direction.y, direction.z);
+    
+	// return (0);
 	rt = get_rt();
 	errno = 0;
 	validate_args(argc, argv, rt);
