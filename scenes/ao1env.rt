@@ -16,4 +16,6 @@ C	   -5.624806,   -9.304664,    5.390772          0.330406,    0.855917,   -0.39
 
 # AMBIENT
 #	strength             color
+# A		0.00001				assets/syferfontein_18d_clear_2k.hdr
 A		1.00				assets/syferfontein_18d_clear_2k.hdr
+# A		1.00				assets/cape_hill_2k.hdr

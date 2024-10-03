@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 01:05:17 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/01 00:55:26 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/03 02:53:33 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,24 @@ void	set_cumulative_distribution(t_vec4 *image, int width, int height)
 {
 	size_t	length;
 	size_t	i;
-	float	previous_weight;
+	double	previous_weight;
+	double	current_weight;
 
 	length = (size_t)width * height;
 	i = 0;
 	previous_weight = 0;
+	current_weight = 0;
 	while (i < length)
 	{
-		image[i].a += previous_weight;
-		previous_weight = image[i].a;
+		current_weight = previous_weight + image[i].a;
+		image[i].a = current_weight;
+		previous_weight = current_weight;
 		i++;
 	}
+	printf("last weight: %f\n", previous_weight);
 }
 
-void	normalize_weight(t_vec4 *image, float total_weight, int width, int height)
+void	normalize_weight(t_vec4 *image, double total_weight, int width, int height)
 {
 	size_t	length;
 	size_t	i;
@@ -43,7 +47,7 @@ void	normalize_weight(t_vec4 *image, float total_weight, int width, int height)
 	}
 }
 
-void	apply_strength(float strength, t_vec4 *image, int width, int height)
+void	apply_strength(double strength, t_vec4 *image, int width, int height)
 {
 	size_t	length;
 	size_t	i;
@@ -59,11 +63,11 @@ void	apply_strength(float strength, t_vec4 *image, int width, int height)
 	}
 }
 
-float	get_importance_weight(float luminance, float row, int width, int height)
+double	get_importance_weight(double luminance, double row, int width, int height)
 {
-	float	solid_angle;
-	float	importance_weight;
-	float	pi = M_PI;
+	double	solid_angle;
+	double	importance_weight;
+	double	pi = M_PI;
 
 	solid_angle = sinf(row / height * pi) * (pi / height) * (2 * pi / width);
 	importance_weight = luminance * solid_angle;
@@ -75,7 +79,7 @@ void	set_importance_weight(t_vec4 *image, int width, int height)
 	t_vec4	*pixel;
 	int		x;
 	int		y;
-	float	total_weight;
+	double	total_weight;
 
 	total_weight = 0;
 	y = 0;
