@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_window_title.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/30 17:46:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/03 22:37:46 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ void	update_window_title(t_rt *rt)
 
 	title[0] = '\0';
 	fps_str = get_fps(rt);
+	if (!fps_str)
+		return ;
+	ft_strlcat(title, fps_str, 1024);
+	ft_strlcat(title, " FPS - miniRT - ", 1024);
 	if (!fps_str)
 		return ;
 	ft_strlcat(title, fps_str, 1024);
