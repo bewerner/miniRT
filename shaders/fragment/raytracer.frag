@@ -49,12 +49,12 @@ void	main(void)
 	uv.x = coord.x;
 	uv.y = 1 - coord.y;
 
-	if (rt.debug == 1)
-		FragColor = texture(environment_map, uv).rgb;
-	if (rt.debug == 2)
-		FragColor = vec3(texture(environment_map, uv).a);
-	if (rt.debug == 3)
-		FragColor = vec3(get_pdf(ivec2(uv.x * 2048, uv.y * 1024), 2048, 1024) * 1000000);
+	// if (rt.debug == 1)
+	// 	FragColor = texture(environment_map, uv).rgb;
+	// if (rt.debug == 2)
+	// 	FragColor = vec3(texture(environment_map, uv).a);
+	// if (rt.debug == 3)
+	// 	FragColor = vec3(get_pdf(ivec2(uv.x * 2048, uv.y * 1024), 2048, 1024) * 1000000);
 
 	// if (rt.debug == 4)
 	// 	FragColor = vec3(texelFetch(environment_map, ivec2(0,0), 0).a);

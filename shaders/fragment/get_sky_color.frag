@@ -205,6 +205,48 @@ vec3	get_environment_map_color(vec3 direction)
 // // 	return ivec2(-1, -1); // Return invalid pixel position if target is not found
 // }
 
+// // Function to retrieve the pixel position based on a random value and the CDF using binary search
+// ivec2 get_pixel_pos(float target, int width, int height)
+// {
+// 	int		total_pixels = width * height;
+// 	int		lower = 0;
+// 	int		middle;
+// 	int		upper = total_pixels - 1;
+// 	float	cdf;
+// 	ivec2	pos;
+
+// 	// Loop to perform binary search
+// 	while (lower <= upper)
+// 	{
+// 		middle = (lower + upper) / 2;
+
+// 		// Calculate the x and y coordinates from the middle index
+// 		pos.x = middle % width;
+// 		pos.y = middle / width;
+
+// 		// Sample the environment map at the middle pixel position
+// 		cdf = texelFetch(environment_map, pos, 0).a;
+// 		if (cdf < target)
+// 			lower = middle + 1;
+// 		else if (cdf > target)
+// 			upper = middle - 1;
+// 		else if (cdf == target)
+// 			return (pos);
+// 	}
+// 	return (pos); // Return the pixel coordinates as an ivec2
+
+// 	// At this point, lower is the first index where the CDF >= target
+// 	// Ensure lower is within bounds
+// 	if (lower < total_pixels) {
+// 		pos.x = lower % width;
+// 		pos.y = lower / width;
+// 		return (pos); // Return the pixel coordinates as an ivec2
+// 	}
+
+// 	// Fallback return value (should not reach here if target is valid)
+// 	return ivec2(-1, -1); // Return invalid pixel position if target is not found
+// }
+
 // Function to retrieve the pixel position based on a random value and the CDF using binary search
 ivec2 get_pixel_pos(float target, int width, int height)
 {
@@ -225,7 +267,7 @@ ivec2 get_pixel_pos(float target, int width, int height)
 		pos.y = middle / width;
 
 		// Sample the environment map at the middle pixel position
-		cdf = texelFetch(environment_map, pos, 0).a;
+		cdf = texture(environment_map, vec2(float(pos.x) / width, float(pos.y) / height), 0).a;
 		if (cdf < target)
 			lower = middle + 1;
 		else if (cdf > target)
@@ -261,7 +303,7 @@ float	get_pdf(ivec2 pos, int width, int height)
 	return (weight - texelFetch(environment_map, pos, 0).a);
 }
 
-vec3	get_random_importance_weighted_direction(inout float pdf)
+vec3	get_random_importance_weighted_direction(out float pdf)
 {
 	int		width = 2048;
 	int		height = 1024;
@@ -277,8 +319,11 @@ vec3	get_random_importance_weighted_direction(inout float pdf)
 	pdf = get_pdf(pixel_pos, width, height);
 	// pdf /= 1000;
 
+	// uv.x = (float(pixel_pos.x + 1)) / width;
+	// uv.y = (float(pixel_pos.y + 1)) / height;
 	uv.x = (float(pixel_pos.x + 1) + (rand() - 0.5)) / width;
 	uv.y = (float(pixel_pos.y + 1) + (rand() - 0.5)) / height;
+	uv = clamp(uv, 0, 1);
 
 	float theta = (uv.x - 0.5) * (2.0 * M_PI);
 	float phi = (0.5 - uv.y) * (M_PI);
@@ -330,14 +375,16 @@ vec3	get_sky_color(t_hitpoint hitpoint)
 	weight_cosine = pdf_cosine / (pdf_cosine + pdf_importance);
 
 	if (reaches_sky(ray_importance) == true)
-			col_importance = get_environment_map_color(ray_importance.dir) / pdf_importance;
+			col_importance = get_environment_map_color(ray_importance.dir)/100000 * max(0, dot(hitpoint.normal, ray_importance.dir)) / pdf_importance;
 	if (reaches_sky(ray_cosine) == true)
-			col_cosine = get_environment_map_color(ray_cosine.dir) / pdf_cosine;
+			col_cosine = clamp(get_environment_map_color(ray_cosine.dir) / pdf_cosine, 0, 16);
 
 	col_final = col_importance * weight_importance + col_cosine * weight_cosine;
+	if (rt.debug == 1);
+		col_final = mix(col_importance, col_cosine, weight_cosine);
 
 	// return (col_importance);
-	return (clamp(col_importance, 0, 1));
+	// return (clamp(col_importance, 0, 1));
 	// return (col_importance / 10000000);
 	return (col_final);
 }
