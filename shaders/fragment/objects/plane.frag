@@ -8,7 +8,7 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
 	vec2	uv;
 	float	scale = 5;
 
-	if (rt.debug == 0 && abs(normal.z) != 1.0)
+	if (abs(normal.z) != 1.0)
 	{
 		vec3 axis = normalize(cross(normal, vec3(0, 0, 1)));
 		float rad = acos(dot(normal, vec3(0, 0, 1)));
