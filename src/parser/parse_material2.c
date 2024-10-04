@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_material2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:54:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 14:02:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:58:37 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ void	create_default_material(size_t mat_cnt, t_material *mat)
 	mat->emission_color.g = 0.0f;
 	mat->emission_color.b = 0.0f;
 	mat->color_texture_id = -1;
-	mat->bump_map_id = -1;
-	mat->bump_strength = 0.0f;
+	mat->normal_map_id = -1;
+	mat->normal_strength = 0.0f;
 }
 
-void	parse_bump_values(t_material *mat, char **line, t_rt *rt)
+void	parse_normal_values(t_material *mat, char **line, t_rt *rt)
 {
 	if (next_is_name(*line))
 	{
-		mat->bump_map_id = texid_from_name(line, rt);
+		mat->normal_map_id = texid_from_name(line, rt);
 		if (has_next_value(*line))
-			mat->bump_strength
+			mat->normal_strength
 				= vr(gnv(line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 										// WHAT is the RANGE here??
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_material.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 13:37:13 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:58:37 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	mat->emission_color.b
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
-	mat->bump_map_id = -1;
-	parse_bump_values(mat, &line, rt);
+	mat->normal_map_id = -1;
+	parse_normal_values(mat, &line, rt);
 	return (RT_SUCCESS);
 }
 
