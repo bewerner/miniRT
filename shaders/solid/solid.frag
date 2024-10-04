@@ -17,7 +17,7 @@
 #import ../fragment/objects/point_light.frag
 #import trace_ray_solid.frag
 
-#import ../fragment/utils/bump_map.frag
+#import ../fragment/utils/normal_map.frag
 #import ../fragment/utils/ray_utils.frag
 #import ../fragment/utils/hitpoint_utils.frag
 #import ../fragment/utils/vec3_rotations.frag

@@ -79,23 +79,23 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, bool init_all)
 // bool	has_img_tex;
 // for example, which could be set in the parsing, and save valuable time
 // in the rendering process. This could also be expandet to and int,
-// which is a flag for for CALC_UV and CALC_BUMP_MAP and maybe even more…
+// which is a flag for for CALC_UV and CALC_normal_MAP and maybe even more…
 bool	has_image_texture(t_hitpoint hitpoint)
 {
 	if (hitpoint.material_idx <= 0)
 		return (false);
 
-	if (materials[hitpoint.material_idx].bump_map_idx >= 0 || materials[hitpoint.material_idx].color.r < 0)
+	if (materials[hitpoint.material_idx].normal_map_idx >= 0 || materials[hitpoint.material_idx].color.r < 0)
 		return (true);
 	return (false);
 }
 
-bool	has_bump_map_material(t_hitpoint hitpoint)
+bool	has_normal_map_material(t_hitpoint hitpoint)
 {
 	if (hitpoint.material_idx <= 0)
 		return (false);
 
-	if (materials[hitpoint.material_idx].bump_map_idx >= 0)
+	if (materials[hitpoint.material_idx].normal_map_idx >= 0)
 		return (true);
 	return (false);
 }

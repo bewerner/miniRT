@@ -14,7 +14,7 @@
 #import ../fragment/objects/hyperboloid.frag
 #import trace_ray_normal.frag
 
-#import ../fragment/utils/bump_map.frag
+#import ../fragment/utils/normal_map.frag
 #import ../fragment/utils/hitpoint_utils.frag
 #import ../fragment/utils/vec3_rotations.frag
 #import ../fragment/utils/random.frag

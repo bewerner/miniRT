@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_buffer_objects.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/28 14:08:51 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:59:14 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_gpu_material
 	float		emission_strength;
 	t_vec3		emission_color;	
 	int			color_texture_id;
-	int			bump_map_id;
-	float		bump_strength;
+	int			normal_map_id;
+	float		normal_strength;
 	int			padding2;
 	int			padding3;
 }	t_gpu_material;

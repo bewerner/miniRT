@@ -174,11 +174,11 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 			hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos);
 	}
 
-	// We need tangent and bitangen vectors for bump_maps		
-	if (has_bump_map_material(hitpoint))
+	// We need tangent and bitangen vectors for normal_maps		
+	if (has_normal_map_material(hitpoint))
 	{
 		calc_plane_tangent_vectors(hitpoint);
-		hitpoint.normal = apply_bump_map(hitpoint);
+		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 
 	return (hitpoint);

@@ -120,8 +120,8 @@ struct t_material
 	float		emission_strength;
 	vec3		emission_color;
 	int			color_tex_idx;
-	int			bump_map_idx;
-	float		bump_strength;
+	int			normal_map_idx;
+	float		normal_strength;
 	int			padding2;
 	int			padding3;
 };
@@ -260,8 +260,8 @@ t_point_light	get_point_light(int offset);
 // │ Utilities │
 // └───────────┘
 
-// utils/bump_map.frag
-vec3			apply_bump_map(t_hitpoint hitpoint);
+// utils/normal_map.frag
+vec3			apply_normal_map(t_hitpoint hitpoint);
 
 // utils/ray_utils.frag
 vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
@@ -272,7 +272,7 @@ vec3			get_hitpoint_color(t_hitpoint hitpoint);
 vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
 t_hitpoint		get_closest_hitpoint(t_ray ray, bool init_all);
 bool			has_image_texture(t_hitpoint hitpoint);
-bool			has_bump_map_material(t_hitpoint hitpoint);
+bool			has_normal_map_material(t_hitpoint hitpoint);
 
 // utils/random.frag
 float	rand();

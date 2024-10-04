@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/30 01:09:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/04 16:59:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ typedef struct s_material
 	float		emission_strength;
 	t_vec3		emission_color;
 	int			color_texture_id;
-	int			bump_map_id;
-	float		bump_strength;
+	int			normal_map_id;
+	float		normal_strength;
 }	t_material;
 
 typedef enum e_texture_type
@@ -502,7 +502,7 @@ t_error			create_materials(size_t mat_cnt, t_rt *rt);
 
 // parser/parse_material2.c
 void			create_default_material(size_t mat_cnt, t_material *mat);
-void			parse_bump_values(t_material *mat, char **line, t_rt *rt);
+void			parse_normal_values(t_material *mat, char **line, t_rt *rt);
 
 // parser/parse_texture.c
 t_error			create_textures(size_t tex_cnt, t_rt *rt);

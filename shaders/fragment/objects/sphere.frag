@@ -64,11 +64,11 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all)
 	if (has_image_texture(hitpoint))
 		hitpoint.uv = get_uv_sphere(hitpoint.normal, inside);
 
-	// We need tangent and bitangen vectors for bump_maps		
-	if (has_bump_map_material(hitpoint))
+	// We need tangent and bitangen vectors for normal_maps		
+	if (has_normal_map_material(hitpoint))
 	{
 		calc_sphere_tangent_vectors(hitpoint);
-		hitpoint.normal = apply_bump_map(hitpoint);
+		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 
 	return (hitpoint);
