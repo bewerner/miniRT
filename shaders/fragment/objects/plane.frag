@@ -29,13 +29,16 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
 
 void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint)
 {
-	vec3	up = vec3(0, 0, 1);
-
-	if (abs(hitpoint.normal.z) > 0.999)
-		up = vec3(1, 0, 0);
-	
-	hitpoint.tangent = normalize(cross(hitpoint.normal, up));
-	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
+	if (abs(hitpoint.normal.z) == 1)
+	{
+		hitpoint.tangent = vec3(hitpoint.normal.z, 0, 0);
+		hitpoint.bitangent = vec3(0, hitpoint.normal.z, 0);
+	}
+	else
+	{
+		hitpoint.tangent = cross(vec3(0, 0, 1), hitpoint.normal);
+		hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
+	}	
 }
 
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)

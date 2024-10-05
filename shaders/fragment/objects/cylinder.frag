@@ -1,3 +1,9 @@
+void	calc_cylinder_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation)
+{
+	hitpoint.tangent = cross(orientation, hitpoint.normal);
+	hitpoint.bitangent = orientation;
+}
+
 float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, out float t0, out float t1)
 {
 	vec3		ap;
@@ -177,7 +183,10 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	// We need tangent and bitangen vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
-		calc_plane_tangent_vectors(hitpoint);
+		if (hitpoint.normal == cylinder.cap1.normal || hitpoint.normal == cylinder.cap2.normal)
+			calc_plane_tangent_vectors(hitpoint);
+		else
+			calc_cylinder_tangent_vectors(hitpoint, cylinder.orientation);
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 
