@@ -9,7 +9,7 @@ vec2	get_uv_sphere(vec3 normal, bool inside)
 	return (uv);
 }
 
-void	calc_sphere_tangent_vectors(inout t_hitpoint hitpoint)
+void	calc_sphere_tangent_vectors(inout t_hitpoint hitpoint, bool inside)
 {
 	if (abs(hitpoint.normal.z) == 1)
 	{
@@ -20,7 +20,9 @@ void	calc_sphere_tangent_vectors(inout t_hitpoint hitpoint)
 	{
 		hitpoint.tangent = cross(vec3(0, 0, 1), hitpoint.normal);
 		hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
-	}	
+	}
+	if (inside == true)
+		hitpoint.bitangent *= -1;
 }
 
 t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all)
@@ -67,10 +69,10 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all)
 	if (has_image_texture(hitpoint))
 		hitpoint.uv = get_uv_sphere(hitpoint.normal, inside);
 
-	// We need tangent and bitangen vectors for normal_maps		
+	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
-		calc_sphere_tangent_vectors(hitpoint);
+		calc_sphere_tangent_vectors(hitpoint, inside);
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 

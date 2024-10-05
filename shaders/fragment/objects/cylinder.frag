@@ -1,7 +1,9 @@
-void	calc_cylinder_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation)
+void	calc_cylinder_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation, bool inside)
 {
 	hitpoint.tangent = cross(orientation, hitpoint.normal);
 	hitpoint.bitangent = orientation;
+	if (inside == true)
+		hitpoint.bitangent *= -1;
 }
 
 float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, out float t0, out float t1)
@@ -88,11 +90,11 @@ t_hitpoint	get_hitpoint_inside(t_ray ray, t_cylinder cylinder, t_hitpoint hitpoi
 	return (hitpoint);
 }
 
-vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 pos)
+vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 pos, bool inside)
 {
 	vec2	uv;
 
-	if (dot(cylinder.origin - pos, normal) > 0)
+	if (inside == true)
 		normal *= -1;
 
 	uv.y = distance(cylinder.cap1.origin, pos - normal * cylinder.radius);
@@ -169,6 +171,8 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	if (init_all == false)
 		return (hitpoint);
 
+	bool inside = dot(cylinder.origin - hitpoint.pos, hitpoint.normal) > 0;
+
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
 	{
@@ -177,16 +181,16 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 		else if (hitpoint.normal == cylinder.cap2.normal)
 			hitpoint.uv = get_uv_cap(cylinder.cap2.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, false);
 		else
-			hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos);
+			hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos, inside);
 	}
 
-	// We need tangent and bitangen vectors for normal_maps		
+	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
 		if (hitpoint.normal == cylinder.cap1.normal || hitpoint.normal == cylinder.cap2.normal)
 			calc_plane_tangent_vectors(hitpoint);
 		else
-			calc_cylinder_tangent_vectors(hitpoint, cylinder.orientation);
+			calc_cylinder_tangent_vectors(hitpoint, cylinder.orientation, inside);
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 

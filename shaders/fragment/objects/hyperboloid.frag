@@ -1,8 +1,8 @@
-vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, vec3 normal, float t_height)
+vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, vec3 normal, float t_height, bool inside)
 {
 	vec2	uv;
 
-	if (dot(hyperboloid.origin - pos, normal) > 0)
+	if (inside == true)
 		normal *= -1;
 
 	t_height += hyperboloid.height / 2;
@@ -26,12 +26,28 @@ vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, v
 	return (uv);
 }
 
-void	calc_hyperboloid_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation)
+void	calc_hyperboloid_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation, bool inside)
 {
-	// if (all(equal(orientation, hitpoint.normal)) == true)
-	// 	orientation = hitpoint.pos - origin;
-	hitpoint.tangent = cross(orientation, hitpoint.normal);
-	hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
+	if (abs(dot(orientation, hitpoint.normal)) == 1)
+	{
+		if (abs(orientation.z) == 1)
+		{
+			hitpoint.tangent = vec3(orientation.z, 0, 0);
+			hitpoint.bitangent = vec3(0, orientation.z, 0);
+		}
+		else
+		{
+			hitpoint.tangent = cross(vec3(0, 0, 1), hitpoint.normal);
+			hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
+		}
+	}
+	else
+	{
+		hitpoint.tangent = cross(orientation, hitpoint.normal);
+		hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
+	}
+	if (inside == true)
+		hitpoint.bitangent *= -1;
 }
 
 t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool init_all)
@@ -165,14 +181,16 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool i
 	if (init_all == false)
 		return (hitpoint);
 
+	bool inside = dot(hyperboloid.origin - hitpoint.pos, hitpoint.normal) > 0;
+
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
-		hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height);
+		hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height, inside);
 
-	// We need tangent and bitangen vectors for normal_maps		
+	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
-		calc_hyperboloid_tangent_vectors(hitpoint, hyperboloid.orientation);
+		calc_hyperboloid_tangent_vectors(hitpoint, hyperboloid.orientation, inside);
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 
