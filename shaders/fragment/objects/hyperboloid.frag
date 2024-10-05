@@ -26,15 +26,12 @@ vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, v
 	return (uv);
 }
 
-void	calc_hyperboloid_tangent_vectors(inout t_hitpoint hitpoint)
+void	calc_hyperboloid_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation)
 {
-	vec3	up = vec3(0, 0, 1);
-
-	if (abs(hitpoint.normal.z) > 0.999)
-		up = vec3(1, 0, 0);
-	
-	hitpoint.tangent = normalize(cross(hitpoint.normal, up));
-	hitpoint.bitangent = normalize(cross(hitpoint.normal, hitpoint.tangent));
+	// if (all(equal(orientation, hitpoint.normal)) == true)
+	// 	orientation = hitpoint.pos - origin;
+	hitpoint.tangent = cross(orientation, hitpoint.normal);
+	hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
 }
 
 t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool init_all)
@@ -175,7 +172,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool i
 	// We need tangent and bitangen vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
-		calc_hyperboloid_tangent_vectors(hitpoint);
+		calc_hyperboloid_tangent_vectors(hitpoint, hyperboloid.orientation);
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 

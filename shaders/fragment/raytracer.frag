@@ -50,6 +50,10 @@ void	main(void)
 	uv.y = 1 - coord.y;
 
 	// if (rt.debug == 1)
+	// 	FragColor = texture(texture_units[1], uv).rgb;
+	// if (rt.debug == 2)
+	// 	FragColor = pow(texture(texture_units[1], uv).rgb, vec3(1/2.2));
+	// if (rt.debug == 1)
 	// 	FragColor = texture(environment_map, uv).rgb;
 	// if (rt.debug == 2)
 	// 	FragColor = vec3(texture(environment_map, uv).a);
