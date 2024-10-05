@@ -3,6 +3,32 @@ bool	is_near_zero(float value)
 	return (value > -EPSILON && value < EPSILON);
 }
 
+// vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
+// {
+// 	vec2	uv;
+// 	float	scale = 5;
+
+// 	if (abs(normal.z) != 1.0)
+// 	{
+// 		vec3 axis1 = normalize(cross(normal, vec3(0, 0, 1)));
+// 		float rad = acos(dot(normal, vec3(0, 0, 1)));
+// 		pos = vec3_rotate_axis(pos, axis1, rad);
+// 		if (axis1.x != 1.0)
+// 		{
+// 			rad = acos(dot(vec3(1, 0, 0), axis1));
+// 			pos = vec3_rotate_z(pos, rad - rt.debug/100);
+// 			normal = vec3_rotate_z(normal, rad - rt.debug/100);
+// 		}
+// 		vec3 axis2 = normalize(cross(normal, vec3(0, -1, 0)));
+// 		pos = -pos;
+// 	}
+
+// 	uv = pos.xy - plane_origin.xy;
+
+// 	uv = fract(uv/2);
+// 	return (uv);
+// }
+
 vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
 {
 	vec2	uv;
@@ -10,20 +36,19 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
 
 	if (abs(normal.z) != 1.0)
 	{
-		vec3 axis = normalize(cross(normal, vec3(0, 0, 1)));
-		float rad = acos(dot(normal, vec3(0, 0, 1)));
-		pos = vec3_rotate_axis(pos, axis, rad);
-		if (axis.x != 1.0)
+		if (abs(normalize(normal.xy).y) != 1.0)
 		{
-			rad = acos(dot(vec3(1, 0, 0), axis));
+			float rad = acos(dot(normalize(normal.xy), vec2(0, -1)));
 			pos = vec3_rotate_z(pos, rad);
+			normal = vec3_rotate_z(normal, rad);
 		}
-		pos = -pos;
+		float rad = acos(dot(normalize(normal.yz), vec2(0, 1)));
+		pos = vec3_rotate_x(pos, -rad);
 	}
 
 	uv = pos.xy - plane_origin.xy;
 
-	uv = fract(uv);
+	uv = fract(uv/2);
 	return (uv);
 }
 
@@ -36,8 +61,12 @@ void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint)
 	}
 	else
 	{
-		hitpoint.tangent = cross(vec3(0, 0, 1), hitpoint.normal);
+		hitpoint.tangent = normalize(cross(vec3(0, 0, 1), hitpoint.normal));
 		hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
+		if (rt.debug == 1 || rt.debug == 3)
+			hitpoint.tangent *= -1;
+		if (rt.debug == 2 || rt.debug == 3)
+			hitpoint.bitangent *= -1;
 	}	
 }
 
@@ -72,7 +101,7 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)
 	if (has_image_texture(hitpoint))
 		hitpoint.uv = get_uv_plane(plane.normal, plane.origin, hitpoint.pos);
 
-	// We need tangent and bitangen vectors for normal_maps		
+	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
 		calc_plane_tangent_vectors(hitpoint);
