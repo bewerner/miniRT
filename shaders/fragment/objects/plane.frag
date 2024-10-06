@@ -34,11 +34,14 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
 	vec2	uv;
 	float	scale = 5;
 
-	if (abs(normal.z) != 1.0)
+	if (abs(normal.z) != 1)
 	{
-		if (abs(normalize(normal.xy).y) != 1.0)
+		vec2 normal_xy = normalize(normal.xy);
+		if (normal_xy.y != -1)
 		{
-			float rad = acos(dot(normalize(normal.xy), vec2(0, -1)));
+			float rad = acos(dot(normal_xy, vec2(0, -1)));
+			if (normal_xy.x > 0)
+				rad *= -1;
 			pos = vec3_rotate_z(pos, rad);
 			normal = vec3_rotate_z(normal, rad);
 		}
@@ -52,22 +55,27 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos)
 	return (uv);
 }
 
-void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint)
+void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint, bool backface)
 {
 	if (abs(hitpoint.normal.z) == 1)
 	{
 		hitpoint.tangent = vec3(hitpoint.normal.z, 0, 0);
 		hitpoint.bitangent = vec3(0, hitpoint.normal.z, 0);
+		// hitpoint.tangent = vec3(0, 0, 0);
+		// hitpoint.bitangent = vec3(0, 0, 0);
 	}
 	else
 	{
 		hitpoint.tangent = normalize(cross(vec3(0, 0, 1), hitpoint.normal));
 		hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
-		if (rt.debug == 1 || rt.debug == 3)
-			hitpoint.tangent *= -1;
-		if (rt.debug == 2 || rt.debug == 3)
+		// if (rt.debug == 1 || rt.debug == 3)
+		// 	hitpoint.tangent *= -1;
+		// if (rt.debug == 2 || rt.debug == 3)
+		// 	hitpoint.bitangent *= -1;
+		// if (backface == true && rt.debug == 1)
+		if (backface == true)
 			hitpoint.bitangent *= -1;
-	}	
+	}
 }
 
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)
@@ -104,10 +112,9 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)
 	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
-		calc_plane_tangent_vectors(hitpoint);
+		calc_plane_tangent_vectors(hitpoint, hitpoint.normal != plane.normal);
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
-
 	return (hitpoint);
 }
 

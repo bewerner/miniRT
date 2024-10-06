@@ -188,7 +188,7 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	if (has_normal_map_material(hitpoint))
 	{
 		if (hitpoint.normal == cylinder.cap1.normal || hitpoint.normal == cylinder.cap2.normal)
-			calc_plane_tangent_vectors(hitpoint);
+			calc_plane_tangent_vectors(hitpoint, dot(cylinder.origin - ray.origin, cylinder.cap1.origin) < 0 && dot(cylinder.origin - ray.origin, cylinder.cap2.origin) < 0);
 		else
 			calc_cylinder_tangent_vectors(hitpoint, cylinder.orientation, inside);
 		hitpoint.normal = apply_normal_map(hitpoint);
