@@ -2,7 +2,6 @@ vec3	get_color_from_texture(int tex_idx, t_hitpoint hitpoint)
 {
 	if (textures[tex_idx].type == TEX_IMAGE)
 	{
-		// return ( texture(texture_units[textures[tex_idx].texture_unit], hitpoint.uv).rgb ); // this also works now?
 		switch (textures[tex_idx].texture_unit) {
 			case 0:
 				return ( texture(texture_units[0], hitpoint.uv).rgb );
@@ -33,6 +32,38 @@ vec3	get_color_from_texture(int tex_idx, t_hitpoint hitpoint)
 	
 	// ELSE RETURN MISSING TEXTURE COLOR
 	return (vec3(1, 0, 0.5));
+}
+
+ivec2	get_texture_resolution(int tex_idx)
+{
+	if (textures[tex_idx].type == TEX_IMAGE)
+	{
+		switch (textures[tex_idx].texture_unit) {
+			case 0:
+				return ( textureSize(texture_units[0], 0) );
+			case 1:
+				return ( textureSize(texture_units[1], 0) );
+			case 2:
+				return ( textureSize(texture_units[2], 0) );
+			case 3:
+				return ( textureSize(texture_units[3], 0) );
+			case 4:
+				return ( textureSize(texture_units[4], 0) );
+			case 5:
+				return ( textureSize(texture_units[5], 0) );
+			case 6:
+				return ( textureSize(texture_units[6], 0) );
+			case 7:
+				return ( textureSize(texture_units[7], 0) );
+			case 8:
+				return ( textureSize(texture_units[8], 0) );
+			case 9:
+				return ( textureSize(texture_units[9], 0) );
+			default:
+				return (ivec2(-1, -1));
+		}
+	}		
+	return (ivec2(-1, -1));
 }
 
 vec3	get_hitpoint_color(t_hitpoint hitpoint)
@@ -86,16 +117,17 @@ bool	has_image_texture(t_hitpoint hitpoint, out bool texture_is_square)
 	if (hitpoint.material_idx <= 0)
 		return (false);
 
-	if (materials[hitpoint.material_idx].normal_map_idx >= 0)
+	t_material material = materials[hitpoint.material_idx]; // instantiating a t_material here actually increases performance a lot
+	if (material.color_tex_idx >= 0)
 	{
-		ivec2 resolution = textureSize(texture_units[textures[materials[hitpoint.material_idx].normal_map_idx].texture_unit], 0);
-		texture_is_square = resolution.x == resolution.y;
+		ivec2 resolution = get_texture_resolution(material.color_tex_idx);
+		texture_is_square = (resolution.x == resolution.y);
 		return (true);
 	}
-	if (materials[hitpoint.material_idx].color_tex_idx >= 0)
+	if (material.normal_map_idx >= 0)
 	{
-		ivec2 resolution = textureSize(texture_units[textures[materials[hitpoint.material_idx].color_tex_idx].texture_unit], 0);
-		texture_is_square = resolution.x == resolution.y;
+		ivec2 resolution = get_texture_resolution(material.normal_map_idx);
+		texture_is_square = (resolution.x == resolution.y);
 		return (true);
 	}
 	return (false);
@@ -106,9 +138,10 @@ bool	has_image_texture(t_hitpoint hitpoint)
 	if (hitpoint.material_idx <= 0)
 		return (false);
 
-	if (materials[hitpoint.material_idx].normal_map_idx >= 0)
+	t_material material = materials[hitpoint.material_idx]; // instantiating a t_material here actually increases performance a lot
+	if (material.color_tex_idx >= 0)
 		return (true);
-	if (materials[hitpoint.material_idx].color_tex_idx >= 0)
+	if (material.normal_map_idx >= 0)
 		return (true);
 	return (false);
 }
