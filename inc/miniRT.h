@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/08 00:00:53 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/08 01:07:24 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,7 +365,6 @@ typedef struct s_rt
 	t_vec3			ambient;
 	float			ambient_strength;
 	char			ambient_env_file[MAX_NAME];
-	float			clicked;
 	t_dvec2			initial_cursor_pos;
 	t_dvec2			cursor_pos;
 	int				mode;
