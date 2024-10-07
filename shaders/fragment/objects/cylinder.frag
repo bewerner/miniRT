@@ -186,6 +186,7 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	}
 	hitpoint.color = cylinder.base_color;
 	hitpoint.material_idx = cylinder.material_idx;
+	hitpoint.object_normal = hitpoint.normal;
 
 	if (init_all == false)
 		return (hitpoint);

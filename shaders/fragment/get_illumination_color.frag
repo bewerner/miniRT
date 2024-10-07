@@ -7,6 +7,8 @@ vec3	illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
 	light_ray.dir = get_offset_hitpoint_pos(hitpoint) - point_light.origin;
 	light_ray.origin = point_light.origin;
 	intensity = -dot(hitpoint.normal, normalize(light_ray.dir));
+	intensity += -dot(hitpoint.object_normal, normalize(light_ray.dir));
+	intensity /= 2;
 	if (intensity <= 0)
 		return (VEC3_BLACK);
 	distance = length(light_ray.dir);

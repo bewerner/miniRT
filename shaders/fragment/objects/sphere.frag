@@ -1,11 +1,12 @@
-vec2	get_uv_sphere(vec3 normal, bool inside)
+vec2	get_uv_sphere(vec3 normal, bool inside, bool texture_is_square)
 {
 	vec2	uv;
 
 	if (inside == true)
 		normal *= -1;
 	uv.x = 0.5 + atan(normal.y, normal.x) / (2.0 * M_PI);
-	uv.x *= 2; // unstretch if texture is square
+	if (texture_is_square == true)
+		uv.x *= 2; // unstretch if texture is texture_is_square
 	uv.y = 0.5 - asin(-normal.z) / M_PI;
 	return (uv);
 }
@@ -62,13 +63,15 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all)
 	hitpoint.hit = true;
 	hitpoint.color = sphere.base_color;
 	hitpoint.material_idx = sphere.material_idx;
+	hitpoint.object_normal = hitpoint.normal;
 
 	if (init_all == false)
 		return (hitpoint);
 	
 	// if we have an image_texture we calculate UVs
-	if (has_image_texture(hitpoint))
-		hitpoint.uv = get_uv_sphere(hitpoint.normal, inside);
+	bool texture_is_square;
+	if (has_image_texture(hitpoint, texture_is_square))
+		hitpoint.uv = get_uv_sphere(hitpoint.normal, inside, texture_is_square);
 
 	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))

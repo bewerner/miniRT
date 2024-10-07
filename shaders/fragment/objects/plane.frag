@@ -94,6 +94,7 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)
 	hitpoint.pos = ray.origin + hitpoint.ray;
 	hitpoint.color = plane.base_color;
 	hitpoint.material_idx = plane.material_idx;
+	hitpoint.object_normal = hitpoint.normal;
 
 	if (init_all == false)
 		return (hitpoint);
