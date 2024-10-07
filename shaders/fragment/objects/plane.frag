@@ -61,18 +61,11 @@ void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint, bool backface)
 	{
 		hitpoint.tangent = vec3(hitpoint.normal.z, 0, 0);
 		hitpoint.bitangent = vec3(0, hitpoint.normal.z, 0);
-		// hitpoint.tangent = vec3(0, 0, 0);
-		// hitpoint.bitangent = vec3(0, 0, 0);
 	}
 	else
 	{
 		hitpoint.tangent = normalize(cross(vec3(0, 0, 1), hitpoint.normal));
 		hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
-		// if (rt.debug == 1 || rt.debug == 3)
-		// 	hitpoint.tangent *= -1;
-		// if (rt.debug == 2 || rt.debug == 3)
-		// 	hitpoint.bitangent *= -1;
-		// if (backface == true && rt.debug == 1)
 		if (backface == true)
 			hitpoint.bitangent *= -1;
 	}
