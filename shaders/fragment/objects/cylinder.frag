@@ -6,6 +6,23 @@ void	calc_cylinder_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation, 
 		hitpoint.bitangent *= -1;
 }
 
+void	calc_cap_tangent_vectors(inout t_hitpoint hitpoint, bool inside, bool is_cap1, bool is_cap2)
+{
+	calc_plane_tangent_vectors(hitpoint, inside);
+	if (inside == true && hitpoint.normal.z != -1)
+	{
+		hitpoint.bitangent *= -1;
+		if (is_cap2 == true || hitpoint.normal.z == 1)
+			hitpoint.tangent *= -1;
+	}
+	else if (inside == false && hitpoint.normal.z != 1)
+	{
+		hitpoint.bitangent *= -1;
+		if (is_cap2 == true || abs(hitpoint.normal.z) == 1)
+			hitpoint.tangent *= -1;
+	}
+}
+
 float	get_cylinder_discriminant(t_ray ray, t_cylinder cylinder, out float t0, out float t1)
 {
 	vec3		ap;
@@ -41,7 +58,6 @@ t_hitpoint	get_hitpoint_cap(t_ray ray, t_cylinder cylinder, t_plane cap_plane, b
 	else
 	{
 		hitpoint = get_hitpoint_plane(ray, cap_plane, false);
-		// hitpoint.hit = true;
 		hitpoint.color = cylinder.base_color;
 		hitpoint.material_idx = cylinder.material_idx;
 		if (distance(hitpoint.pos, cap_plane.origin) > cylinder.radius)
@@ -100,17 +116,19 @@ vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 po
 	uv.y = distance(cylinder.cap1.origin, pos - normal * cylinder.radius);
 	uv.y = uv.y / cylinder.height / 2 + 0.5;
 
-	if (abs(orientation.z) != 1.0)
+	if (orientation.z != 1.0)
 	{
-		if (orientation.z == 0)
-			orientation.z = 0.000001;
-		if (orientation.y == 0)
-			orientation.y = 0.000001;
-		if (orientation.x == 0)
-			orientation.x = 0.000001;
-		vec3 axis = normalize(cross(orientation, vec3(orientation.xy, 0)));
-		float rad = acos(dot(vec3(0, 0, 1), orientation));
-		normal = vec3_rotate_axis(normal, axis, -rad);
+		vec2 orientation_xy = normalize(orientation.xy);
+		if (orientation_xy.y != 1)
+		{
+			float rad = acos(dot(orientation_xy, vec2(0, 1)));
+			if (orientation_xy.x < 0)
+				rad *= -1;
+			orientation = vec3_rotate_z(orientation, rad);
+			normal = vec3_rotate_z(normal, rad);
+		}
+		float rad = acos(dot(normalize(orientation.yz), vec2(0, 1)));
+		normal = vec3_rotate_x(normal, rad);
 	}
 	uv.x = 0.5 + atan(normal.x, -normal.y) / (2.0 * M_PI);
 	return (uv);
@@ -122,17 +140,19 @@ vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool 
 
 	pos -= cap_origin;
 
-	if (abs(orientation.z) != 1.0)
+	if (orientation.z != 1.0)
 	{
-		if (orientation.z == 0)
-			orientation.z = 0.000001;
-		if (orientation.y == 0)
-			orientation.y = 0.000001;
-		if (orientation.x == 0)
-			orientation.x = 0.000001;
-		vec3 axis = normalize(cross(orientation, vec3(orientation.xy, 0)));
-		float rad = acos(dot(vec3(0, 0, 1), orientation));
-		pos = vec3_rotate_axis(pos, axis, -rad);
+		vec2 orientation_xy = normalize(orientation.xy);
+		if (orientation_xy.y != 1)
+		{
+			float rad = acos(dot(orientation_xy, vec2(0, 1)));
+			if (orientation_xy.x < 0)
+				rad *= -1;
+			orientation = vec3_rotate_z(orientation, rad);
+			pos = vec3_rotate_z(pos, rad);
+		}
+		float rad = acos(dot(normalize(orientation.yz), vec2(0, 1)));
+		pos = vec3_rotate_x(pos, rad);
 	}
 
 	uv = pos.xy / radius;
@@ -140,7 +160,6 @@ vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool 
 	uv += 0.25;
 	if (is_cap1 == true)
 		uv.x += 0.5;
-
 	return (uv);
 }
 
@@ -171,14 +190,21 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	if (init_all == false)
 		return (hitpoint);
 
-	bool inside = dot(cylinder.origin - hitpoint.pos, hitpoint.normal) > 0;
+	bool inside =  t1 < 0
+				&& dot(cylinder.cap1.origin - ray.origin, cylinder.cap1.normal) > 0
+				&& dot(cylinder.cap2.origin - ray.origin, cylinder.cap2.normal) > 0;
+	bool is_cap1 = (inside == false && hitpoint.normal == cylinder.cap1.normal)
+				|| (inside == true && hitpoint.normal == -cylinder.cap1.normal);
+	bool is_cap2 = (inside == false && hitpoint.normal == cylinder.cap2.normal)
+				|| (inside == true && hitpoint.normal == -cylinder.cap2.normal);
+
 
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
 	{
-		if (hitpoint.normal == cylinder.cap1.normal)
+		if (is_cap1 == true)
 			hitpoint.uv = get_uv_cap(cylinder.cap1.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, true);
-		else if (hitpoint.normal == cylinder.cap2.normal)
+		else if (is_cap2 == true)
 			hitpoint.uv = get_uv_cap(cylinder.cap2.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, false);
 		else
 			hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos, inside);
@@ -187,13 +213,16 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
 	{
-		if (hitpoint.normal == cylinder.cap1.normal || hitpoint.normal == cylinder.cap2.normal)
-			calc_plane_tangent_vectors(hitpoint, dot(cylinder.origin - ray.origin, cylinder.cap1.origin) < 0 && dot(cylinder.origin - ray.origin, cylinder.cap2.origin) < 0);
+		if (is_cap1 == true || is_cap2 == true)
+			calc_cap_tangent_vectors(hitpoint, inside, is_cap1, is_cap2);
 		else
 			calc_cylinder_tangent_vectors(hitpoint, cylinder.orientation, inside);
+		if (rt.debug == 1 || rt.debug == 3)
+			hitpoint.tangent *= -1;
+		if (rt.debug == 2 || rt.debug == 3)
+			hitpoint.bitangent *= -1;
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
-
 	return (hitpoint);
 }
 

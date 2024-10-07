@@ -5,6 +5,7 @@ vec2	get_uv_sphere(vec3 normal, bool inside)
 	if (inside == true)
 		normal *= -1;
 	uv.x = 0.5 + atan(normal.y, normal.x) / (2.0 * M_PI);
+	uv.x *= 2; // unstretch if texture is square
 	uv.y = 0.5 - asin(-normal.z) / M_PI;
 	return (uv);
 }
