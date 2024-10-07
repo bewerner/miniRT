@@ -217,10 +217,6 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 			calc_cap_tangent_vectors(hitpoint, inside, is_cap1, is_cap2);
 		else
 			calc_cylinder_tangent_vectors(hitpoint, cylinder.orientation, inside);
-		if (rt.debug == 1 || rt.debug == 3)
-			hitpoint.tangent *= -1;
-		if (rt.debug == 2 || rt.debug == 3)
-			hitpoint.bitangent *= -1;
 		hitpoint.normal = apply_normal_map(hitpoint);
 	}
 	return (hitpoint);

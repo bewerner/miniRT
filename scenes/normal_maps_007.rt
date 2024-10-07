@@ -1,0 +1,24 @@
+tex		tex3		image		assets/textures/bricks01/bricks01_base_color.png
+tex		tex4		image		assets/textures/bricks01/bricks01_normal.png
+
+mat	bricks		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		3.0
+
+# SPHERES
+#	origin                                          diameter       material
+sp	    0.000000,    0.000000,    1.000000          2.000000       bricks              
+
+# PLANES
+#	origin                                          normal                                         material
+pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,    1.000000             bricks              
+
+# LIGHTS
+#	origin                                          power          color
+l	    5.103366,   -0.989878,    2.808793          1686.399902    255,255,255
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	    0.782754,   -6.303354,    2.383844         -0.122218,    0.967461,   -0.221544             39.597752      
+
+# AMBIENT
+#	strength             color
+A	0.000000             12, 12, 12
