@@ -178,6 +178,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool i
 	}
 	else
 		return (HP_INF);
+	hitpoint.object_normal = hitpoint.normal;
 
 	if (init_all == false)
 		return (hitpoint);

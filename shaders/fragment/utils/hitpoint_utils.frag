@@ -2,6 +2,7 @@ vec3	get_color_from_texture(int tex_idx, t_hitpoint hitpoint)
 {
 	if (textures[tex_idx].type == TEX_IMAGE)
 	{
+		// return ( texture(texture_units[textures[tex_idx].texture_unit], hitpoint.uv).rgb ); // this also works now?
 		switch (textures[tex_idx].texture_unit) {
 			case 0:
 				return ( texture(texture_units[0], hitpoint.uv).rgb );
@@ -45,7 +46,7 @@ vec3	get_hitpoint_color(t_hitpoint hitpoint)
 
 vec3	get_offset_hitpoint_pos(t_hitpoint hitpoint)
 {
-	return (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.normal);
+	return (hitpoint.pos + (max(1, length(hitpoint.ray)) * 0.0001) * hitpoint.object_normal);
 }
 
 t_hitpoint	get_closest_hitpoint(t_ray ray, bool init_all)
@@ -80,12 +81,34 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, bool init_all)
 // for example, which could be set in the parsing, and save valuable time
 // in the rendering process. This could also be expandet to and int,
 // which is a flag for for CALC_UV and CALC_normal_MAP and maybe even more…
+bool	has_image_texture(t_hitpoint hitpoint, out bool texture_is_square)
+{
+	if (hitpoint.material_idx <= 0)
+		return (false);
+
+	if (materials[hitpoint.material_idx].normal_map_idx >= 0)
+	{
+		ivec2 resolution = textureSize(texture_units[textures[materials[hitpoint.material_idx].normal_map_idx].texture_unit], 0);
+		texture_is_square = resolution.x == resolution.y;
+		return (true);
+	}
+	if (materials[hitpoint.material_idx].color_tex_idx >= 0)
+	{
+		ivec2 resolution = textureSize(texture_units[textures[materials[hitpoint.material_idx].color_tex_idx].texture_unit], 0);
+		texture_is_square = resolution.x == resolution.y;
+		return (true);
+	}
+	return (false);
+}
+
 bool	has_image_texture(t_hitpoint hitpoint)
 {
 	if (hitpoint.material_idx <= 0)
 		return (false);
 
-	if (materials[hitpoint.material_idx].normal_map_idx >= 0 || materials[hitpoint.material_idx].color.r < 0)
+	if (materials[hitpoint.material_idx].normal_map_idx >= 0)
+		return (true);
+	if (materials[hitpoint.material_idx].color_tex_idx >= 0)
 		return (true);
 	return (false);
 }

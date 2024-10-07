@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/07 20:19:50 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/07 21:08:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ static char	*get_fps(t_rt *rt)
 	time += rt->delta_time;
 	if (time < 0.5f)
 		return (NULL);
-	if (glfwGetWindowAttrib(rt->window, GLFW_FOCUSED) == GLFW_TRUE)
-		printf("in focus\n");
-	else
-		printf("NOT in focus\n");
 	fps_str = ft_itoa((1 / (time / frame_count)));
 	frame_count = 0;
 	time = 0;

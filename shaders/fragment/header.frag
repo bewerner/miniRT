@@ -7,7 +7,7 @@
 #define VEC3_BLACK	vec3(0, 0, 0)
 #define VEC3_WHITE	vec3(1, 1, 1)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
-#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, -1)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, -1)
 
 #define MODE_SOLID		0
 #define MODE_NORMAL		1
@@ -33,6 +33,7 @@ struct t_hitpoint
 	vec3			ray;
 	vec3			pos;
 	vec3			normal;
+	vec3			object_normal;
 	vec3			tangent;
 	vec3			bitangent;
 	vec2			uv;
@@ -271,6 +272,7 @@ bool			is_obstructed(t_ray ray);
 vec3			get_hitpoint_color(t_hitpoint hitpoint);
 vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
 t_hitpoint		get_closest_hitpoint(t_ray ray, bool init_all);
+bool			has_image_texture(t_hitpoint hitpoint, out bool texture_is_square);
 bool			has_image_texture(t_hitpoint hitpoint);
 bool			has_normal_map_material(t_hitpoint hitpoint);
 

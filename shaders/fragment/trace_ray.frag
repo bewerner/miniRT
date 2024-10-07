@@ -22,7 +22,7 @@ vec3	trace_ray(t_ray ray)
 			if (rt.ambient.r >= 0)
 				return (rt.ambient);
 			else
-				return(get_environment_map_color(ray.dir));
+				return (get_environment_map_color(ray.dir));
 		}
 
 		hitpoint.color = get_hitpoint_color(hitpoint);
