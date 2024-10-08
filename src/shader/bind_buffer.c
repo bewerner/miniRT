@@ -17,7 +17,7 @@ void	bind_framebuffer_texture(GLuint shader_program, t_rt *rt)
 	// (void)shader_program;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(shader_program, "raw_render_image"), 0); // this line is not needed in wsl. check for mac and linux
+	glUniform1i(glGetUniformLocation(shader_program, "cumulative_render_buffer"), 0); // this line is not needed in wsl. check for mac and linux
 }
 
 void	bind_objects(GLuint shader_program, t_rt *rt)

@@ -197,7 +197,7 @@ in vec2 coord;
 uniform samplerBuffer	objects;
 uniform samplerBuffer	lights;
 uniform sampler3D		agx_lut;
-uniform sampler2D		raw_render_image;
+uniform sampler2D		cumulative_render_buffer;
 uniform sampler2D		environment_map;
 uniform sampler2D		texture_units[MAX_IMAGE_TEXTURES];
 
