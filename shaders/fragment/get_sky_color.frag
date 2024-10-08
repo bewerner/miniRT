@@ -392,3 +392,17 @@ vec3	get_sky_color(t_hitpoint hitpoint)
 	// 	return (col_cosine * pdf_cosine);
 	return (col_final);
 }
+
+vec3	get_sky_color_from_ray(t_ray ray, t_hitpoint hitpoint)
+{
+	vec3	col = VEC3_BLACK;
+
+	if (hitpoint.hit == false)
+	{
+		if (rt.ambient.r >= 0)
+			col = rt.ambient;
+		else
+			col = get_environment_map_color(ray.dir);
+	}
+	return (col);
+}
