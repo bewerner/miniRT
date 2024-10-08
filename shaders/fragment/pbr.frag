@@ -76,6 +76,29 @@ vec3	lambert_diffuse(vec3 col)
 	return (diffuse);
 }
 
+// vec3	oren_nayar_diffuse(vec3 col, vec3 N, vec3 V, vec3 L, float a)
+// {
+// 	vec3	ond;
+
+// 	float	cos_thetaI = max(dot(N, L), 0.0);
+// 	float	cos_thetaO = max(dot(N, V), 0.0);
+
+// 	float	thetaI = acos(cos_thetaI);
+// 	float	thetaO = acos(cos_thetaO);
+
+// 	vec3	projectedL = normalize(L - dot(N, L) * N);
+// 	vec3	projectedV = normalize(V - dot(N, V) * N);
+
+// 	float	phiDiff = max(dot(projectedL, projectedV), 0.0);
+
+// 	// Oren Nayar A and B terms
+// 	float	A = (1 - a) / 2 * (a + 0.33);
+// 	float	B = (0.45 * a) / (a + 0.09);
+
+// 	ond = col * ( A + B * phiDiff * sin(thetaI) * tan(thetaO)); // / M_PI;
+// 	return (ond);
+// }
+
 vec3	fresnel(vec3 F0, vec3 V, vec3 H)
 {
  	return ( F0 + (vec3(1) - F0) * pow((1 - max(dot(V, H), 0.0)), 5.0) );
@@ -148,7 +171,7 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_point_light point_light, vec3 N, ve
 	return (col);
 }
 
-vec3	ambient_brdf(t_hitpoint hitpoint)
+vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 {
 	vec3	col;
 
@@ -168,8 +191,8 @@ vec3	ambient_brdf(t_hitpoint hitpoint)
 	// vec3	ambient_light;
 	// ambient_light = (ambient_diffuse_light + ambient_specular_light) / 2;
 
-	vec3	N = hitpoint.normal;
-	vec3	V = -normalize(hitpoint.ray);
+	// vec3	N = hitpoint.normal;
+	// vec3	V = -normalize(hitpoint.ray);
 	vec3	L = ray.dir;
 	vec3	H = normalize(V + L);
 
@@ -222,8 +245,6 @@ vec3	ambient_brdf(t_hitpoint hitpoint)
 	else if (rt.debug == 3)
 		col = specular;
 
-	// col = clamp(col, 0, 10);
-
 	return (col);
 }
 
@@ -261,7 +282,7 @@ vec3	compute_pbr(t_ray ray)
 		}
 
 		// AMBIENT - is this necessary or does globel/indirect illumination solve it for free?
-		col += ambient_brdf(hitpoint);
+		col += ambient_brdf(hitpoint, N, V);
 
 		// EMISSION
 		col += materials[hitpoint.material_idx].emission_color * materials[hitpoint.material_idx].emission_strength;
