@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_material.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/04 16:58:37 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/08 16:52:00 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 	mat->roughness = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->ior = vr(gnv(&line, rt), (t_vec2){1.0f, INFINITY}, rt);
 	mat->transmission = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
-	mat->emission_strength = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
+	mat->emission_strength
+		= vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	mat->emission_color.r
 		= vr(gnv(&line, rt) / 255.0f, (t_vec2){0.0f, 1.0f}, rt);
 	mat->emission_color.g
