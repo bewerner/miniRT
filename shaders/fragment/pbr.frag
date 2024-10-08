@@ -17,6 +17,58 @@ vec3	get_point_light_illumination(t_point_light point_light, t_hitpoint hitpoint
 	return (intensity * point_light.color);
 }
 
+vec3	slerp(vec3 v0, vec3 v1, float t)
+{
+	float	dp;
+	dp = dot(v0, v1);
+	dp = clamp(dp, -1.0, 1.0);
+
+	float	angle;
+	angle = acos(dp) * t;
+
+	vec3	orthonormal;
+	orthonormal = normalize(v1 - v0 * dp);
+
+	return ( normalize(v0 * cos(angle) + orthonormal * sin(angle)) );
+}
+
+vec3 get_random_cosine_weighted_hemisphere_direction_roughness_dependent(t_hitpoint hitpoint)
+{
+	// Get reflection ray
+	vec3	reflection_dir;
+	reflection_dir = normalize(create_bounce_dir(hitpoint.ray, hitpoint.normal));
+
+	// Generate random numbers in the range [0, 1]
+	float u = rand();
+	float v = rand();
+
+	// Convert random numbers to spherical coordinates
+	float theta = acos(sqrt(u)); // Cosine weighted
+	float phi = 2.0 * M_PI * v; // Uniformly distributed in [0, 2π]
+
+	// Spherical to Cartesian coordinates
+	float x = sin(theta) * cos(phi);
+	float y = sin(theta) * sin(phi);
+	float z = cos(theta);
+
+	// Create a local tangent basis for the hemisphere
+	vec3 tangent;
+	if (abs(hitpoint.object_normal.y) != 1)
+		tangent = normalize(cross(vec3(0, 1, 0), hitpoint.object_normal));
+	else
+		tangent = normalize(cross(vec3(1, 0, 0), hitpoint.object_normal));
+	vec3 bitangent = cross(hitpoint.object_normal, tangent);
+
+	// Convert local space coordinates to world space
+	vec3 random_direction = normalize(x * tangent + y * bitangent + z * hitpoint.object_normal);
+
+	// Slerp
+	return ( slerp(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness) );
+
+	// Lerp
+	// return ( mix(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness) );
+}
+
 vec3	lambert_diffuse(vec3 col)
 {
 	vec3	diffuse = col; // / M_PI;
@@ -96,6 +148,85 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_point_light point_light, vec3 N, ve
 	return (col);
 }
 
+vec3	ambient_brdf(t_hitpoint hitpoint)
+{
+	vec3	col;
+
+	// RECIEVE AMBIENT
+	t_ray	ray;
+	vec3	ambient_diffuse_light;
+	vec3	ambient_specular_light;
+
+	ray.origin				= get_offset_hitpoint_pos(hitpoint);
+	ray.dir					= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint);
+	ambient_specular_light	= get_sky_color_from_ray(ray);
+
+	ray.dir 				= get_real_random_hemisphere_direction(hitpoint);
+	ambient_diffuse_light	= get_sky_color_from_ray(ray);
+	ambient_diffuse_light	= get_sky_color(hitpoint);
+
+	// vec3	ambient_light;
+	// ambient_light = (ambient_diffuse_light + ambient_specular_light) / 2;
+
+	vec3	N = hitpoint.normal;
+	vec3	V = -normalize(hitpoint.ray);
+	vec3	L = ray.dir;
+	vec3	H = normalize(V + L);
+
+	float	metallic = materials[hitpoint.material_idx].metallic;
+
+	vec3	F0 = mix(vec3(0.04), hitpoint.color, metallic);
+
+	float	roughness = materials[hitpoint.material_idx].roughness;
+	float	a = roughness * roughness;
+
+	vec3	ks = fresnel(F0, V, H);
+	vec3	kd = (vec3(1) - ks) * (1.0 - metallic);
+
+	vec3	diffuse;
+	// Lambert  Diffuse
+	diffuse = lambert_diffuse(hitpoint.color);
+	// Oren Nayar Diffuse
+	// diffuse = oren_nayar_diffuse(hitpoint.color, N, V, L, a);
+
+	float NdotL = max(dot(N, L), 0.0);
+    float NdotV = max(dot(N, V), 0.0);
+
+	vec3	specular = specular_cookTorrance(N, V, L, H, a, ks);
+	// specular = ambient_light;
+
+	vec3	BRDF;
+	// if (rt.debug == -1)
+	// 	BRDF = kd * diffuse + specular * max(dot(N, L), 0.0);
+	// else
+		// BRDF = kd * diffuse + specular * NdotL * NdotV;
+
+	// BRDF = kd * diffuse + specular;
+	BRDF = kd * diffuse * ambient_diffuse_light + ambient_specular_light;
+	// BRDF = mix(kd * diffuse * ambient_diffuse_light, specular * ambient_specular_light, NdotV);
+
+	// BRDF = specular;
+
+	// if (BRDF.r <= vec3(0.75).r)
+	// 	BRDF = vec3(1,0,0);
+
+	// col = BRDF * ambient_light;
+	col = BRDF / 2;
+	// col += max(max(rt.ambient, 0.0), 0.0) * NdotV;
+	// col /= 2;
+
+	if (rt.debug == 1)
+		col = vec3(kd.r, 0, 0);
+	else if (rt.debug == 2)
+		col = vec3(0, ks.r, 0);
+	else if (rt.debug == 3)
+		col = specular;
+
+	// col = clamp(col, 0, 10);
+
+	return (col);
+}
+
 vec3	compute_pbr(t_ray ray)
 {
 	int 		i;
@@ -128,9 +259,16 @@ vec3	compute_pbr(t_ray ray)
 
 			type = next_light_type(i);
 		}
+
+		// AMBIENT - is this necessary or does globel/indirect illumination solve it for free?
+		col += ambient_brdf(hitpoint);
+
+		// EMISSION
+		col += materials[hitpoint.material_idx].emission_color * materials[hitpoint.material_idx].emission_strength;
+
 	}
 	else
-		return (get_sky_color_from_ray(ray, hitpoint));
+		return (get_sky_color_from_ray(ray));
 
 	return (col);
 }
