@@ -215,6 +215,8 @@ vec3			get_illumination_color(t_hitpoint hitpoint);
 // get_sky_color.frag
 vec3			get_environment_map_color(vec3 direction);
 vec3			get_sky_color(t_hitpoint hitpoint);
+vec3			get_sky_color_from_ray(t_ray ray, t_hitpoint hitpoint);
+
 
 // get_diffuse_color.frag
 vec3			get_color_from_texture(int tex_idx, t_hitpoint hitpoint);
@@ -225,6 +227,9 @@ vec3			get_reflection_color(t_hitpoint hp);
 
 // get_specualar_color.frag
 vec3			get_specular_color(t_hitpoint hitpoint, vec3 col_illumination);
+
+// pbr.frag
+vec3			compute_pbr(t_ray ray);
 
 // trace_ray.frag
 vec3			trace_ray(t_ray ray);
