@@ -50,6 +50,40 @@ vec3 get_random_cosine_weighted_hemisphere_direction(vec3 hemisphere_normal)
 	return (normalize(random_direction));
 }
 
+vec3 get_real_random_hemisphere_direction(t_hitpoint hitpoint)
+{
+	float	roughness = materials[hitpoint.material_idx].roughness;
+
+	// Generate random numbers in the range [0, 1]
+	float u = rand();
+	float v = rand();
+
+	// Convert random numbers to spherical coordinates
+	float theta = acos(sqrt(u)); // Cosine weighted
+	float phi = 2.0 * M_PI * v; // Uniformly distributed in [0, 2π]
+
+	// Spherical to Cartesian coordinates
+	float x = sin(theta) * cos(phi);
+	float y = sin(theta) * sin(phi);
+	float z = cos(theta);
+
+	// Create a local tangent basis for the hemisphere
+	vec3 tangent;
+	if (abs(hitpoint.normal.y) != 1)
+		tangent = normalize(cross(vec3(0, 1, 0), hitpoint.normal));
+	else
+		tangent = normalize(cross(vec3(1, 0, 0), hitpoint.normal));
+	vec3 bitangent = cross(hitpoint.normal, tangent);
+
+	hitpoint.tangent = tangent;
+	hitpoint.bitangent = bitangent;
+
+	// Convert local space coordinates to world space
+	vec3 random_direction = x * hitpoint.tangent + y * hitpoint.bitangent + z * hitpoint.normal;
+
+	return (normalize(random_direction));
+}
+
 vec3	get_environment_map_color(vec3 direction)
 {
 	vec2	uv;
@@ -362,10 +396,11 @@ vec3	get_sky_color(t_hitpoint hitpoint)
 	float	pdf_importance;
 	float	pdf_cosine;
 
-	ray_importance.origin = get_offset_hitpoint_pos(hitpoint);
-	ray_cosine.origin = ray_importance.origin;
-	ray_importance.dir = get_random_importance_weighted_direction(pdf_importance);
-	ray_cosine.dir = get_random_cosine_weighted_hemisphere_direction(hitpoint.normal);
+	ray_importance.origin	= get_offset_hitpoint_pos(hitpoint);
+	ray_importance.dir		= get_random_importance_weighted_direction(pdf_importance);
+
+	ray_cosine.origin	= ray_importance.origin;
+	ray_cosine.dir		= get_random_cosine_weighted_hemisphere_direction(hitpoint.normal);
 
 	pdf_cosine = cos(dot(hitpoint.normal, ray_cosine.dir)) / M_PI;
 	pdf_cosine = max(pdf_cosine, 1e-6);
@@ -393,11 +428,11 @@ vec3	get_sky_color(t_hitpoint hitpoint)
 	return (col_final);
 }
 
-vec3	get_sky_color_from_ray(t_ray ray, t_hitpoint hitpoint)
+vec3	get_sky_color_from_ray(t_ray ray)
 {
 	vec3	col = VEC3_BLACK;
 
-	if (hitpoint.hit == false)
+	if (reaches_sky(ray) == true)
 	{
 		if (rt.ambient.r >= 0)
 			col = rt.ambient;
