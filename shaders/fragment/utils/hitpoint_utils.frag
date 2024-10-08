@@ -77,7 +77,7 @@ vec3	get_hitpoint_color(t_hitpoint hitpoint)
 
 vec3	get_offset_hitpoint_pos(t_hitpoint hitpoint)
 {
-	return (hitpoint.pos + (max(1, length(hitpoint.ray)) * 0.0001) * hitpoint.object_normal);
+	return (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.object_normal);
 }
 
 t_hitpoint	get_closest_hitpoint(t_ray ray, bool init_all)

@@ -10,7 +10,7 @@ void	main(void)
 
 	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929);
 
-	vec3 col = texture(raw_render_image, uv).rgb;
+	vec3 col = texture(cumulative_render_buffer, uv).rgb;
 
 	// if (rt.mode == MODE_PREVIEW && rt.debug == 0)
 	// 	col = to_agx(col.rgb);

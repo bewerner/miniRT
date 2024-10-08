@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/28 14:04:21 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/08 03:17:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
+
+void	print_camera_info(t_rt *rt)
+{
+	printf("C    %f, %f, %f    %f, %f, %f    %f\n",
+		rt->camera.origin.x, rt->camera.origin.y, rt->camera.origin.z,
+		rt->camera.direction.x, rt->camera.direction.y, rt->camera.direction.z,
+		rt->camera.fov);
+}
 
 void	reset_camera(t_camera *camera)
 {
@@ -90,6 +98,8 @@ void	key_hook(GLFWwindow *window, int key, int scancode,
 		reset_camera(&rt->camera);
 		rt->move.vel = g_vec3_zero;
 	}
+	else if (key == GLFW_KEY_P && action == GLFW_PRESS)
+		print_camera_info(rt);
 	else
 		key_hook_axial_view(key, action, rt);
 	check_debug_key_presses(key, action, rt);
