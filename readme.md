@@ -1,26 +1,11 @@
 # Mandatory
 
-- init_miniRT.c
-	- only init textures or bindings
-	- split it up and norminette it
-
 - parser
-	- environment map
 	- textures for metallic & roughness
-
-- random
-	- better random
-
-- bump-maps
-	- material has new value for bump_maps -> which are textures
-	- also needs bump strength parameter
-	- gethitpoint normal do stuff
-		if 2d tex
-		if 3d tex
 
 - Materails use all parameters
 	- …	
-	- better use of refelctions
+	- better use of reflections
 		- better calculations
 		- glossy bounce limit (nice to have)
 
@@ -28,11 +13,16 @@
 
 - merging of MANDATORY && BONUS
 
+- random
+	- better random (already improved. this is probably fine?)
+
 ---
 ---
 # Nice to have
 
 - Diffuse Bounces
+
+- improve antialiasing
 
 - Depth of Field
 
@@ -50,7 +40,7 @@
 
 - light gizmos
 	- lightcolor indication
-	- gizmos texture -> as sprite
+	- gizmos texture -> as sprite (or shader)
 		- use of vertex shader
 
 - Exporter
@@ -59,6 +49,8 @@
 	- .png
 
 - 3D Noise Texture
+  	- greyscale for values
+  	- color for 3d normal map
 
 ---
 ---
@@ -67,20 +59,16 @@
 - selectable objects
 	- render outline
 
-- hdri env maps (ambient)
-
 - BVH (Bounding volume hierarchy)
 
 - OBJ loader
 
 - UI
 
-- parser
-	- BETTER ERROR MSG with line number and more context
-
 - render scale
 
 - viewport navigation like blender (rotate around anchor point)
 
 - grid floor in solid mode (like blender)
+
 - viewport shading (mode) buttons (like blender)
