@@ -1,0 +1,33 @@
+# MATERIALS
+#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
+mat	Material.pl                   204,204,204       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.002                  255,219,145       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.003                  255,219,145       0.250000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.004                  255,219,145       0.500000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.005                  255,219,145       0.750000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.006                  255,219,145       1.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
+
+# SPHERES
+#	origin                                          diameter       material
+sp	   -4.000000,    0.000000,    0.000000          2.000000       Material.002        
+sp	   -2.000000,    0.000000,    0.000000          2.000000       Material.003        
+sp	    0.000000,    0.000000,    0.000000          2.000000       Material.004        
+sp	    2.000000,    0.000000,    0.000000          2.000000       Material.005        
+sp	    4.000000,    0.000000,    0.000000          2.000000       Material.006        
+
+# PLANES
+#	origin                                          normal                                         material
+pl	    0.000000,    0.000000,   -1.000000          0.000000,    0.000000,    1.000000             Material.pl         
+
+# LIGHTS
+#	origin                                          power          color
+l	    0.000000,   -6.000000,    6.000000          0.100000       255,255,255
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	    0.000000,   -8.000000,    0.000000          0.000000,    1.000000,    0.000000             72.196568      
+
+# AMBIENT
+#	strength             color
+# A	1.000000             12, 12, 12
+A		1.0				assets/syferfontein_18d_clear_2k.hdr
