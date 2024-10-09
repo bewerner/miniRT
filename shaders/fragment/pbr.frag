@@ -180,13 +180,13 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 	vec3	ambient_diffuse_light;
 	vec3	ambient_specular_light;
 
-	ray.origin				= get_offset_hitpoint_pos(hitpoint);
-	ray.dir					= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint);
-	ambient_specular_light	= get_sky_color_from_ray(ray);
-
 	ray.dir 				= get_real_random_hemisphere_direction(hitpoint);
 	ambient_diffuse_light	= get_sky_color_from_ray(ray);
 	ambient_diffuse_light	= get_sky_color(hitpoint);
+
+	ray.origin				= get_offset_hitpoint_pos(hitpoint);
+	ray.dir					= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint);
+	ambient_specular_light	= get_sky_color_from_ray(ray);
 
 	// vec3	ambient_light;
 	// ambient_light = (ambient_diffuse_light + ambient_specular_light) / 2;
@@ -226,8 +226,14 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 
 	// BRDF = kd * diffuse + specular;
 
+
 	// BRDF = (kd * diffuse * ambient_diffuse_light + ambient_specular_light) / 2; //old
-	BRDF = kd * diffuse * ambient_diffuse_light + ks * ambient_specular_light; // new
+	// BRDF = kd * diffuse * ambient_diffuse_light + ks * ambient_specular_light; // new
+	BRDF = kd * diffuse * ambient_diffuse_light + max(clamp(specular, 0.0, rt.debug/10), ks) * ambient_specular_light; // new new
+		// of course this makes no sense, but it might point out the issue. probably specular_cookTorrance needs
+		// to be adjusted so that in the final version we can do something like
+		// kd * diffuse * ambient_diffuse_light + specular * ambient_specular_light;
+
 
 	// BRDF = mix(kd * diffuse * ambient_diffuse_light, specular * ambient_specular_light, NdotV);
 
