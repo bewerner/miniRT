@@ -225,7 +225,10 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 		// BRDF = kd * diffuse + specular * NdotL * NdotV;
 
 	// BRDF = kd * diffuse + specular;
-	BRDF = kd * diffuse * ambient_diffuse_light + ambient_specular_light;
+
+	// BRDF = (kd * diffuse * ambient_diffuse_light + ambient_specular_light) / 2; //old
+	BRDF = kd * diffuse * ambient_diffuse_light + ks * ambient_specular_light; // new
+
 	// BRDF = mix(kd * diffuse * ambient_diffuse_light, specular * ambient_specular_light, NdotV);
 
 	// BRDF = specular;
@@ -234,16 +237,16 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 	// 	BRDF = vec3(1,0,0);
 
 	// col = BRDF * ambient_light;
-	col = BRDF / 2;
+	col = BRDF;
 	// col += max(max(rt.ambient, 0.0), 0.0) * NdotV;
 	// col /= 2;
 
-	if (rt.debug == 1)
-		col = vec3(kd.r, 0, 0);
-	else if (rt.debug == 2)
-		col = vec3(0, ks.r, 0);
-	else if (rt.debug == 3)
-		col = specular;
+	// if (rt.debug == 1)
+	// 	col = vec3(kd.r, 0, 0);
+	// else if (rt.debug == 2)
+	// 	col = vec3(0, ks.r, 0);
+	// else if (rt.debug == 3)
+	// 	col = specular;
 
 	return (col);
 }
