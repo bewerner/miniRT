@@ -143,12 +143,20 @@ vec3	specular_cookTorrance(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks)
 	return	(ct_numerator / ct_denominator);
 }
 
+vec3	calculate_F0(float IOR)
+{
+	// F0 is the base reflectance at normal incidence, determined from the IOR
+	// this results in 0.04 when IOR is 1.5
+	return (vec3(pow((IOR - 1) / (IOR + 1), 2)));
+}
+
 vec3	point_light_brdf(t_hitpoint hitpoint, t_point_light point_light, vec3 N, vec3 V, vec3 L, vec3 H)
 {
 	vec3	col;
 	float	metallic = materials[hitpoint.material_idx].metallic;
+	float	IOR = materials[hitpoint.material_idx].ior;
 
-	vec3	F0 = mix(vec3(0.04), hitpoint.color, metallic);
+	vec3	F0 = mix(calculate_F0(IOR), hitpoint.color, metallic);
 
 	float	roughness = materials[hitpoint.material_idx].roughness;
 	float	a = roughness * roughness;
@@ -197,8 +205,9 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 	vec3	H = normalize(V + L);
 
 	float	metallic = materials[hitpoint.material_idx].metallic;
+	float	IOR = materials[hitpoint.material_idx].ior;
 
-	vec3	F0 = mix(vec3(0.04), hitpoint.color, metallic);
+	vec3	F0 = mix(calculate_F0(IOR), hitpoint.color, metallic);
 
 	float	roughness = materials[hitpoint.material_idx].roughness;
 	float	a = roughness * roughness;
@@ -250,12 +259,14 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 	// col += max(max(rt.ambient, 0.0), 0.0) * NdotV;
 	// col /= 2;
 
-	// if (rt.debug == 1)
-	// 	col = vec3(kd.r, 0, 0);
-	// else if (rt.debug == 2)
-	// 	col = vec3(0, ks.r, 0);
-	// else if (rt.debug == 3)
+	// if (rt.debug == -1)
+	// 	col = ambient_diffuse_light;
+	// else if (rt.debug == -2)
+	// 	col = ambient_specular_light;
+	// else if (rt.debug == -3)
 	// 	col = specular;
+	// if (specular.r > 1.0 || specular.g > 1.0 || specular.b > 1.0)
+	// 	col = vec3(1,0,0);
 
 	return (col);
 }
