@@ -3,8 +3,6 @@
 
 #import ../fragment/header.frag
 
-#import ../fragment/get_diffuse_color.frag
-
 #import ../fragment/checker_texture.frag
 #import get_normal_color.frag
 #import ../fragment/objects/object_utils.frag

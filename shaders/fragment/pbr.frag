@@ -1,22 +1,3 @@
-vec3	get_point_light_illumination(t_point_light point_light, t_hitpoint hitpoint)
-{
-	t_ray	light_ray;
-	float	distance;
-	float	intensity;
-
-	light_ray.dir = get_offset_hitpoint_pos(hitpoint) - point_light.origin;
-	light_ray.origin = point_light.origin;
-	intensity = -dot(hitpoint.normal, normalize(light_ray.dir));
-	if (intensity <= 0)
-		return (VEC3_BLACK);
-	distance = length(light_ray.dir);
-	intensity = intensity / (distance * distance);
-	if (intensity <= 0.000005 || is_obstructed(light_ray))
-		return (VEC3_BLACK);
-	intensity *= point_light.intensity;
-	return (intensity * point_light.color);
-}
-
 vec3	slerp(vec3 v0, vec3 v1, float t)
 {
 	float	dp;
@@ -62,18 +43,16 @@ vec3 get_random_cosine_weighted_hemisphere_direction_roughness_dependent(t_hitpo
 	// Convert local space coordinates to world space
 	vec3 random_direction = normalize(x * tangent + y * bitangent + z * hitpoint.object_normal);
 
-	// Slerp
+	// spherical linear interpolation
 	return ( slerp(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness) );
 
-	// Lerp
-	// return ( mix(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness) );
+	// linear interpolation
+	// return ( normalize(mix(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness)) );
 }
 
-vec3	lambert_diffuse(vec3 col)
+float	lambert_diffuse(vec3 N, vec3 L)
 {
-	vec3	diffuse = col; // / M_PI;
-
-	return (diffuse);
+	return (max(dot(N, L), 0.0));
 }
 
 // vec3	oren_nayar_diffuse(vec3 col, vec3 N, vec3 V, vec3 L, float a)
@@ -143,47 +122,45 @@ vec3	specular_cookTorrance(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks)
 	return	(ct_numerator / ct_denominator);
 }
 
-vec3	calculate_F0(float IOR)
+vec3	dielectric_F0(float IOR)
 {
 	// F0 is the base reflectance at normal incidence, determined from the IOR
 	// this results in 0.04 when IOR is 1.5
 	return (vec3(pow((IOR - 1) / (IOR + 1), 2)));
 }
 
-vec3	point_light_brdf(t_hitpoint hitpoint, t_point_light point_light, vec3 N, vec3 V, vec3 L, vec3 H)
+vec3	radiance(t_hitpoint hitpoint, t_point_light point_light)
 {
-	vec3	col;
-	float	metallic = materials[hitpoint.material_idx].metallic;
-	float	IOR = materials[hitpoint.material_idx].ior;
+	float distance = distance(hitpoint.pos, point_light.origin);
+	return(point_light.color * (point_light.intensity / (distance * distance)));
+}
 
-	vec3	F0 = mix(calculate_F0(IOR), hitpoint.color, metallic);
+vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light point_light, vec3 N, vec3 V, vec3 L, vec3 H)
+{
+	float metallic	= material.metallic;
+	float IOR		= material.ior;
+	float roughness	= material.roughness;
+	vec3  albedo	= material.color;
 
-	float	roughness = materials[hitpoint.material_idx].roughness;
-	float	a = roughness * roughness;
+	vec3 F0 = mix(dielectric_F0(IOR) * M_PI, albedo, metallic);
+	vec3 ks = fresnel(F0, V, H);
+	vec3 kd = (vec3(1) - ks) * (1.0 - metallic);
+	float a = roughness * roughness;
 
-	vec3	ks = fresnel(F0, V, H);
-	vec3	kd = (vec3(1) - ks) * (1.0 - metallic);
-
-	vec3	diffuse;
-	// Lambert  Diffuse
-	diffuse = lambert_diffuse(hitpoint.color);
 	// Oren Nayar Diffuse
-	// diffuse = oren_nayar_diffuse(hitpoint.color, N, V, L, a);
+	// diffuse = oren_nayar_diffuse(albedo, N, V, L, a);
+	// Lambert  Diffuse
+	float diffuse = lambert_diffuse(N, L);
+	vec3  radiance = radiance(hitpoint, point_light);
+	vec3  specular = specular_cookTorrance(N, V, L, H, a, ks);
 
-	vec3	specular = specular_cookTorrance(N, V, L, H, a, ks);
-
-	vec3	BRDF = kd * diffuse + specular;
-
-	col = BRDF * get_point_light_illumination(point_light, hitpoint);
+	vec3 col = (kd * albedo + specular) * radiance * diffuse;
 
 	return (col);
 }
 
-vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
+vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 {
-	vec3	col;
-
-	// RECIEVE AMBIENT
 	t_ray	ray;
 	vec3	ambient_diffuse_light;
 	vec3	ambient_specular_light;
@@ -196,79 +173,37 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 	ray.dir					= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint);
 	ambient_specular_light	= get_sky_color_from_ray(ray);
 
-	// vec3	ambient_light;
-	// ambient_light = (ambient_diffuse_light + ambient_specular_light) / 2;
+	float metallic	= material.metallic;
+	float IOR		= material.ior;
+	float roughness	= material.roughness;
+	vec3  albedo	= material.color;
 
-	// vec3	N = hitpoint.normal;
-	// vec3	V = -normalize(hitpoint.ray);
-	vec3	L = normalize(ray.dir);
-	vec3	H = normalize(V + L);
+	vec3 L  = normalize(ray.dir);
+	vec3 H  = normalize(V + L);
+	vec3 F0 = mix(dielectric_F0(IOR), hitpoint.color, metallic);
+	vec3 ks = fresnel(F0, V, H);
+	vec3 kd = (vec3(1) - ks) * (1.0 - metallic);
+	float a = roughness * roughness;
 
-	float	metallic = materials[hitpoint.material_idx].metallic;
-	float	IOR = materials[hitpoint.material_idx].ior;
-
-	vec3	F0 = mix(calculate_F0(IOR), hitpoint.color, metallic);
-
-	float	roughness = materials[hitpoint.material_idx].roughness;
-	float	a = roughness * roughness;
-
-	vec3	ks = fresnel(F0, V, H);
-	vec3	kd = (vec3(1) - ks) * (1.0 - metallic);
-
-	vec3	diffuse;
 	// Lambert  Diffuse
-	diffuse = lambert_diffuse(hitpoint.color);
+	// vec3 diffuse = lambert_diffuse(N, L);
 	// Oren Nayar Diffuse
-	// diffuse = oren_nayar_diffuse(hitpoint.color, N, V, L, a);
+	// vec3 diffuse = oren_nayar_diffuse(hitpoint.color, N, V, L, a);
 
-	float NdotL = max(dot(N, L), 0.0);
-    float NdotV = max(dot(N, V), 0.0);
+	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks);
 
-	vec3	specular = specular_cookTorrance(N, V, L, H, a, ks);
-	// specular = ambient_light;
+	vec3 BRDF = kd * albedo * ambient_diffuse_light + max(clamp(specular, 0.0, 1.0), ks) * ambient_specular_light;
 
-	vec3	BRDF;
 	// if (rt.debug == -1)
-	// 	BRDF = kd * diffuse + specular * max(dot(N, L), 0.0);
-	// else
-		// BRDF = kd * diffuse + specular * NdotL * NdotV;
-
-	// BRDF = kd * diffuse + specular;
-
-
-	// BRDF = (kd * diffuse * ambient_diffuse_light + ambient_specular_light) / 2; //old
-	// BRDF = kd * diffuse * ambient_diffuse_light + ks * ambient_specular_light; // new
-	BRDF = kd * diffuse * ambient_diffuse_light + max(clamp(specular, 0.0, 1.0), ks) * ambient_specular_light; // new new
-		// of course this makes no sense, but it might point out the issue. probably specular_cookTorrance needs
-		// to be adjusted so that in the final version we can do something like
-		// kd * diffuse * ambient_diffuse_light + specular * ambient_specular_light;
-
-		// seems like the specular_cookTorrance produces values bigger than 1.0
-		// this goes against the whole conservation of energy principle i think?
-
-
-	// BRDF = mix(kd * diffuse * ambient_diffuse_light, specular * ambient_specular_light, NdotV);
-
-	// BRDF = specular;
-
-	// if (BRDF.r <= vec3(0.75).r)
+	// 	BRDF = ambient_diffuse_light;
+	// else if (rt.debug == -2)
+	// 	BRDF = ambient_specular_light;
+	// else if (rt.debug == -3)
+	// 	BRDF = specular;
+	// if (specular.r > 1.0 || specular.g > 1.0 || specular.b > 1.0)
 	// 	BRDF = vec3(1,0,0);
 
-	// col = BRDF * ambient_light;
-	col = BRDF;
-	// col += max(max(rt.ambient, 0.0), 0.0) * NdotV;
-	// col /= 2;
-
-	if (rt.debug == -1)
-		col = ambient_diffuse_light;
-	else if (rt.debug == -2)
-		col = ambient_specular_light;
-	else if (rt.debug == -3)
-		col = specular;
-	// if (specular.r > 1.0 || specular.g > 1.0 || specular.b > 1.0)
-	// 	col = vec3(1,0,0);
-
-	return (col);
+	return (BRDF);
 }
 
 vec3	compute_pbr(t_ray ray)
@@ -277,9 +212,11 @@ vec3	compute_pbr(t_ray ray)
 	int			type;
 	vec3		col = VEC3_BLACK;
 	t_hitpoint	hitpoint;
+	t_material	material;
 
 	hitpoint = get_closest_hitpoint(ray, true);
-	hitpoint.color = get_hitpoint_color(hitpoint);
+	material = materials[hitpoint.material_idx];
+	material.color = get_hitpoint_color(hitpoint);
 
 	if (hitpoint.hit)
 	{
@@ -299,16 +236,14 @@ vec3	compute_pbr(t_ray ray)
 			light_ray.dir = get_offset_hitpoint_pos(hitpoint) - point_light.origin;
 			light_ray.origin = point_light.origin;
 			if (is_obstructed(light_ray) == false)
-				col += point_light_brdf(hitpoint, point_light, N, V, L, H);
+				col += point_light_brdf(hitpoint, material, point_light, N, V, L, H);
 
 			type = next_light_type(i);
 		}
-
-		// AMBIENT - is this necessary or does globel/indirect illumination solve it for free?
-		col += ambient_brdf(hitpoint, N, V);
+		col += ambient_brdf(hitpoint, material, N, V);
 
 		// EMISSION
-		col += materials[hitpoint.material_idx].emission_color * materials[hitpoint.material_idx].emission_strength;
+		col += material.emission_color * material.emission_strength;
 
 	}
 	else
