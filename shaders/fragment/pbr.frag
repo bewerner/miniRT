@@ -259,12 +259,12 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 	// col += max(max(rt.ambient, 0.0), 0.0) * NdotV;
 	// col /= 2;
 
-	// if (rt.debug == -1)
-	// 	col = ambient_diffuse_light;
-	// else if (rt.debug == -2)
-	// 	col = ambient_specular_light;
-	// else if (rt.debug == -3)
-	// 	col = specular;
+	if (rt.debug == -1)
+		col = ambient_diffuse_light;
+	else if (rt.debug == -2)
+		col = ambient_specular_light;
+	else if (rt.debug == -3)
+		col = specular;
 	// if (specular.r > 1.0 || specular.g > 1.0 || specular.b > 1.0)
 	// 	col = vec3(1,0,0);
 
@@ -274,7 +274,7 @@ vec3	ambient_brdf(t_hitpoint hitpoint, vec3 N, vec3 V)
 vec3	compute_pbr(t_ray ray)
 {
 	int 		i;
-	float		type;
+	int			type;
 	vec3		col = VEC3_BLACK;
 	t_hitpoint	hitpoint;
 
