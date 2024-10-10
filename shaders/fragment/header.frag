@@ -209,9 +209,6 @@ vec3			to_agx(vec3 col);
 // checker_texture.frag
 vec3			get_checker_color(int tex_idx, t_hitpoint hitpoint);
 
-// get_illumination_color.frag
-vec3			get_illumination_color(t_hitpoint hitpoint);
-
 // get_sky_color.frag
 vec3			get_random_cosine_weighted_hemisphere_direction(vec3 hemisphere_normal);
 vec3			get_real_random_hemisphere_direction(t_hitpoint hitpoint);
@@ -219,22 +216,8 @@ vec3			get_environment_map_color(vec3 direction);
 vec3			get_sky_color(t_hitpoint hitpoint);
 vec3			get_sky_color_from_ray(t_ray ray);
 
-
-// get_diffuse_color.frag
-vec3			get_color_from_texture(int tex_idx, t_hitpoint hitpoint);
-vec3			get_diffuse_color(t_hitpoint hitpoint);
-
-// get_reflection_color.frag
-vec3			get_reflection_color(t_hitpoint hp);
-
-// get_specualar_color.frag
-vec3			get_specular_color(t_hitpoint hitpoint, vec3 col_illumination);
-
 // pbr.frag
 vec3			compute_pbr(t_ray ray);
-
-// trace_ray.frag
-vec3			trace_ray(t_ray ray);
 
 // ┌─────────┐
 // │ Objects │
@@ -276,6 +259,7 @@ vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
 bool			is_obstructed(t_ray ray);
 
 // utils/hitpoint_utils.frag
+vec3			get_color_from_texture(int tex_idx, t_hitpoint hitpoint);
 vec3			get_hitpoint_color(t_hitpoint hitpoint);
 vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
 t_hitpoint		get_closest_hitpoint(t_ray ray, bool init_all);

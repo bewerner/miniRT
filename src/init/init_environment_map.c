@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 01:05:17 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/03 02:53:33 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/10 20:48:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	set_cumulative_distribution(t_vec4 *image, int width, int height)
 		previous_weight = current_weight;
 		i++;
 	}
-	printf("last weight: %f\n", previous_weight);
 }
 
 void	normalize_weight(t_vec4 *image, double total_weight, int width, int height)

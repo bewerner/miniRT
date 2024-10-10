@@ -3,12 +3,7 @@
 #import header.frag
 #import AgX.frag
 #import checker_texture.frag
-#import get_illumination_color.frag
 #import get_sky_color.frag
-#import get_diffuse_color.frag
-#import get_reflection_color.frag
-#import get_specular_color.frag
-#import trace_ray.frag
 #import pbr.frag
 
 #import objects/object_utils.frag
@@ -41,7 +36,6 @@ void	main(void)
 	camera_ray.dir.x = camera_ray.dir.x - (2.0 / rt.width  / 2.0) + (2.0 / rt.width  * rand() * 1);
 	camera_ray.dir.y = camera_ray.dir.y - (2.0 / rt.height / 2.0) + (2.0 / rt.height * rand() * 1);
 
-	// vec3 render = trace_ray(camera_ray);
 	vec3 render = compute_pbr(camera_ray);
 	vec3 buffer = texture(cumulative_render_buffer, tmp).rgb;
 
