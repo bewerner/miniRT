@@ -1,7 +1,7 @@
 tex		tex3		image		assets/textures/bricks01/bricks01_base_color.png
 tex		tex4		image		assets/textures/bricks01/bricks01_normal.png
 
-mat	bricks		tex3			0.0			0.0			1.45	0.2				0.3					255,128,255			tex4		3.0
+mat	bricks		tex3			0.0			0.0			1.45	0.2				0.0					255,128,255			tex4		3.0
 
 # SPHERES
 #	origin                                          diameter       material
