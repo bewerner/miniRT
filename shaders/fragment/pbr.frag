@@ -143,8 +143,6 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light po
 	vec3  albedo	= material.color;
 
 	vec3 F0 = mix(dielectric_F0(IOR) * M_PI, albedo, metallic);
-	if (rt.debug == 1)
-		F0 = mix(dielectric_F0(IOR) * 20, albedo, metallic);
 	vec3 ks = fresnel(F0, V, H);
 	vec3 kd = (vec3(1) - ks) * (1.0 - metallic);
 	float a = roughness * roughness;
@@ -158,17 +156,17 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light po
 
 	vec3 col = (kd * albedo + specular) * radiance * diffuse;
 
-	if (rt.debug == -1)
-		col = specular;
-	else if (rt.debug == -2)
-		col = kd * albedo;
-	else if (rt.debug == -3)
-		col = radiance;
-	else if (rt.debug == -4)
-		col = radiance * diffuse;
+	// if (rt.debug == -1)
+	// 	col = specular;
+	// else if (rt.debug == -2)
+	// 	col = kd * albedo;
+	// else if (rt.debug == -3)
+	// 	col = radiance;
+	// else if (rt.debug == -4)
+	// 	col = radiance * diffuse;
 
-	if (rt.debug < 0)
-		col *= 0.0001;
+	// if (rt.debug < 0)
+	// 	col *= 0.0001;
 
 	return (col);
 }
