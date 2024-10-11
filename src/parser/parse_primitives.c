@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:29:18 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/15 14:26:25 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:20:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_error	parse_plane(t_plane *pl, t_rt *rt)
 	pl->normal.x = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	pl->normal.y = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	pl->normal.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-	pl->normal = vec3_normalize(pl->normal);
+	pl->normal = vn(vec3_normalize(pl->normal), rt);
 	pl->dist = vec3_dot(pl->origin, pl->normal);
 	set_color_and_material(&pl->base_color, &pl->material, line, rt);
 	return (RT_SUCCESS);
@@ -83,7 +83,7 @@ t_error	parse_cylinder(t_cylinder *cy, t_rt *rt)
 	cy->next = (void *)cy + sizeof(t_cylinder);
 	cy->origin = parse_vec3_infinity(&line, rt);
 	cy->orientation = parse_vec3_infinity(&line, rt);
-	cy->orientation = vec3_normalize(cy->orientation);
+	cy->orientation = vn(vec3_normalize(cy->orientation), rt);
 	cy->radius = vr(gnv(&line, rt) * 0.5f, (t_vec2){-INFINITY, INFINITY}, rt);
 	cy->height = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	set_color_and_material(&cy->base_color, &cy->material, line, rt);
