@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_material2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:54:03 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/04 16:58:37 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/11 15:03:53 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,5 @@ void	parse_normal_values(t_material *mat, char **line, t_rt *rt)
 		if (has_next_value(*line))
 			mat->normal_strength
 				= vr(gnv(line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
-										// WHAT is the RANGE here??
 	}
 }
