@@ -12,8 +12,14 @@ t_point_light	get_point_light(int offset)
 
 	if (point_light.radius > 0.0)
 	{
-		vec3	radius_offset = (vec3(rand(), rand(), rand()) * 2.0) - 1.0;
-		point_light.origin += radius_offset * point_light.radius;
+		float	z = mix(-1.0, 1.0, rand());
+		float	radial_distance = sqrt(1 - z * z);
+		float	phi = mix(0.0, 2 * M_PI, rand());
+		float	x = radial_distance * cos(phi);
+		float	y = radial_distance * sin(phi);
+		vec3	offset_vec = vec3(x, y, z);
+
+		point_light.origin += offset_vec * point_light.radius;
 	}
 
 	return (point_light);
