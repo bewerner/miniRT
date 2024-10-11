@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/11 15:15:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:58:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ typedef struct s_point_light
 	t_vec3			color;
 	float			power;
 	float			intensity;
+	float			radius;
 }	t_point_light;
 
 typedef struct s_movement
