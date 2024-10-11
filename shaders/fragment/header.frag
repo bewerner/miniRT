@@ -109,6 +109,7 @@ struct t_point_light
 	// float			ratio;
 	float			power;
 	float			intensity;
+	float			radius;
 };
 
 struct t_material
