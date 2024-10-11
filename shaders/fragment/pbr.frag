@@ -165,8 +165,6 @@ vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 	vec3	ambient_diffuse_light;
 	vec3	ambient_specular_light;
 
-	ray.dir 				= get_real_random_hemisphere_direction(hitpoint);
-	ambient_diffuse_light	= get_sky_color_from_ray(ray);
 	ambient_diffuse_light	= get_sky_color(hitpoint);
 
 	ray.origin				= get_offset_hitpoint_pos(hitpoint);
