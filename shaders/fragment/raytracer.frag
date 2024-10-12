@@ -3,6 +3,7 @@
 #import header.frag
 #import AgX.frag
 #import checker_texture.frag
+#import noise_texture.frag
 #import get_sky_color.frag
 #import pbr.frag
 

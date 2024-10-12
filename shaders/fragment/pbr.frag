@@ -34,14 +34,14 @@ vec3 get_random_cosine_weighted_hemisphere_direction_roughness_dependent(t_hitpo
 
 	// Create a local tangent basis for the hemisphere
 	vec3 tangent;
-	if (abs(hitpoint.object_normal.y) != 1)
-		tangent = normalize(cross(vec3(0, 1, 0), hitpoint.object_normal));
+	if (abs(hitpoint.normal.y) != 1)
+		tangent = normalize(cross(vec3(0, 1, 0), hitpoint.normal));
 	else
-		tangent = normalize(cross(vec3(1, 0, 0), hitpoint.object_normal));
-	vec3 bitangent = cross(hitpoint.object_normal, tangent);
+		tangent = normalize(cross(vec3(1, 0, 0), hitpoint.normal));
+	vec3 bitangent = cross(hitpoint.normal, tangent);
 
 	// Convert local space coordinates to world space
-	vec3 random_direction = normalize(x * tangent + y * bitangent + z * hitpoint.object_normal);
+	vec3 random_direction = normalize(x * tangent + y * bitangent + z * hitpoint.normal);
 
 	// spherical linear interpolation
 	return ( slerp(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness) );
@@ -80,7 +80,7 @@ float	lambert_diffuse(vec3 N, vec3 L)
 
 vec3	fresnel(vec3 F0, vec3 V, vec3 H)
 {
- 	return ( F0 + (vec3(1) - F0) * pow((1 - max(dot(V, H), 0.0)), 5.0) );
+ 	return ( F0 + (vec3(1.0) - F0) * pow((1 - max(dot(V, H), 0.0)), 5.0) );
 }
 
 float	normalDistribution(float a, vec3 N, vec3 H)
@@ -144,7 +144,7 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light po
 
 	vec3 F0 = mix(dielectric_F0(IOR) * M_PI, albedo, metallic);
 	vec3 ks = fresnel(F0, V, H);
-	vec3 kd = (vec3(1) - ks) * (1.0 - metallic);
+	vec3 kd = (vec3(1.0) - ks) * (1.0 - metallic);
 	float a = roughness * roughness;
 
 	// Oren Nayar Diffuse
@@ -178,10 +178,11 @@ vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 	vec3	ambient_specular_light;
 
 	ambient_diffuse_light	= get_sky_color(hitpoint);
-
 	ray.origin				= get_offset_hitpoint_pos(hitpoint);
 	ray.dir					= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint);
 	ambient_specular_light	= get_sky_color_from_ray(ray);
+	// if (ray.dir.z < 0)
+	// 	ray.dir.z += 1;
 
 	float metallic	= material.metallic;
 	float IOR		= material.ior;
@@ -190,15 +191,15 @@ vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 
 	vec3 L  = normalize(ray.dir);
 	vec3 H  = normalize(V + L);
-	vec3 F0 = mix(dielectric_F0(IOR), hitpoint.color, metallic);
+	vec3 F0 = mix(dielectric_F0(IOR), material.color, metallic);
 	vec3 ks = fresnel(F0, V, H);
-	vec3 kd = (vec3(1) - ks) * (1.0 - metallic);
+	vec3 kd = (vec3(1.0) - ks) * (1.0 - metallic);
 	float a = roughness * roughness;
 
 	// Lambert  Diffuse
 	// vec3 diffuse = lambert_diffuse(N, L);
 	// Oren Nayar Diffuse
-	// vec3 diffuse = oren_nayar_diffuse(hitpoint.color, N, V, L, a);
+	// vec3 diffuse = oren_nayar_diffuse(material.color, N, V, L, a);
 
 	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks);
 
@@ -210,9 +211,12 @@ vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 	// 	BRDF = ambient_specular_light;
 	// else if (rt.debug == -3)
 	// 	BRDF = specular;
+	// else if (rt.debug == -4)
+	// 	BRDF = ks;
 	// if (specular.r > 1.0 || specular.g > 1.0 || specular.b > 1.0)
 	// 	BRDF = vec3(1,0,0);
 
+		// BRDF = ambient_specular_light;
 	return (BRDF);
 }
 
@@ -227,6 +231,11 @@ vec3	compute_pbr(t_ray ray)
 	hitpoint = get_closest_hitpoint(ray, true);
 	material = materials[hitpoint.material_idx];
 	material.color = get_hitpoint_color(hitpoint);
+	hitpoint.color = material.color;
+
+	// material.color = get_noise_color(0, hitpoint);
+	// hitpoint.color = material.color;
+	// hitpoint.normal = get_noise_color(0, hitpoint);
 
 	if (hitpoint.hit)
 	{
