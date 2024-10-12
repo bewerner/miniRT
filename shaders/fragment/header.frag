@@ -210,6 +210,9 @@ vec3			to_agx(vec3 col);
 // checker_texture.frag
 vec3			get_checker_color(int tex_idx, t_hitpoint hitpoint);
 
+// noise_texture.frag
+vec3			get_noise_color(int tex_idx, t_hitpoint hitpoint);
+
 // get_sky_color.frag
 vec3			get_random_cosine_weighted_hemisphere_direction(vec3 hemisphere_normal);
 vec3			get_real_random_hemisphere_direction(t_hitpoint hitpoint);
