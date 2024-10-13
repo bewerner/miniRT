@@ -129,7 +129,9 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light po
 
 	float diffuse = lambert_diffuse(N, L);
 	vec3  radiance = radiance(hitpoint, point_light);
-	vec3  specular = specular_cookTorrance(N, V, L, H, a, ks);
+	vec3  specular = vec3(0.0);
+	if (roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
+		specular = specular_cookTorrance(N, V, L, H, a, ks);
 
 	vec3 col = (kd * albedo + specular) * radiance * diffuse;
 
