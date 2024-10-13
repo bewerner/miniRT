@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/11 15:58:24 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/13 19:34:23 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_pobjs
 	t_light		*curr_light;
 }				t_pobjs;
 
-typedef struct s_scene_size
+typedef struct s_scene
 {
 	size_t		obj_cnt;
 	size_t		objs_size;
@@ -106,7 +106,8 @@ typedef struct s_scene_size
 	size_t		light_size;
 	size_t		mat_cnt;
 	size_t		tex_cnt;
-}	t_scene_size;
+	size_t		camera_cnt;
+}	t_scene;
 
 typedef enum e_mode
 {
@@ -493,7 +494,7 @@ void			create_ubo_textures(t_rt *rt);
 void			load_scene(char *file, t_rt *rt);
 
 // parser/parser.c
-t_error			parse_scene(t_scene_size scene_size, t_rt *rt);
+t_error			parse_scene(t_scene scene, t_rt *rt);
 
 // parser/parse_material.c
 int				texid_from_name(char **line, t_rt *rt);
