@@ -1,0 +1,31 @@
+# MATERIALS
+#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
+mat	Material                      204,204,204       0.000000       1.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.001                  204,204,204       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.002                  204,204,204       0.000000       0.250000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.003                  204,204,204       0.000000       0.500000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.004                  204,204,204       0.000000       0.750000       1.450000       0.000000       0.000000            255,255,255
+
+# SPHERES
+#	origin                                          diameter       material
+sp	    0.000000,    0.000000,    1.000000          2.000000       Material.003        
+sp	    2.000000,    0.000000,    1.000000          2.000000       Material.004        
+sp	    4.000000,    0.000000,    1.000000          2.000000       Material            
+sp	   -2.000000,    0.000000,    1.000000          2.000000       Material.002        
+sp	   -4.000000,    0.000000,    1.000000          2.000000       Material.001        
+
+# PLANES
+#	origin                                          normal                                         material
+pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,-28355.640625             Material            
+
+# LIGHTS
+#	origin                                          power          color
+l	    0.000000,  -10.000000,    6.000000          1000.000000    255,255,255 1
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	    0.000000,  -25.000000,    6.000000          0.000000,    0.981627,   -0.190809             25.360766      
+
+# AMBIENT
+#	strength             color
+A	0.000000             63, 63, 63
