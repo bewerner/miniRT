@@ -1,9 +1,9 @@
 tex		tex3		image		assets/textures/pyramids/tiles_0119_color_2k.jpg
 tex		tex4		image		assets/textures/pyramids/tiles_0119_normal_opengl_2k.png
 
-mat		mat1			tex3			0.5			0.0			1.45	0.2				0.3					255,128,255			tex4		0.2
-mat		mat2			tex3			0.5			0.0			1.45	0.2				0.3					255,128,255			tex4		1.5
-mat		mat3			tex3			0.5			0.0			1.45	0.2				0.3					255,128,255			tex4		3.0
+mat		mat1			tex3			0.5			0.0			1.45	0.2				0.0					255,128,255			tex4		0.2
+mat		mat2			tex3			0.5			0.0			1.45	0.2				0.0					255,128,255			tex4		1.5
+mat		mat3			tex3			0.5			0.0			1.45	0.2				0.0					255,128,255			tex4		3.0
 
 # SPHERES
 #	origin                                          diameter       material

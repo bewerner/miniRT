@@ -1,0 +1,26 @@
+# MATERIALS
+#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
+mat	Material                      204,204,204       0.000000       1.000000       1.450000       0.000000       0.000000            255,255,255
+
+# SPHERES
+#	origin                                          diameter       material
+sp	   -3.000000,    0.000000,    0.000000          2.000000       Material            
+sp	    3.000000,    0.000000,    0.000000          2.000000       Material            
+sp	    0.000000,    0.000000,    0.000000          2.000000       Material            
+
+# PLANES
+#	origin                                          normal                                         material
+pl	    0.000000,    0.000000,   -1.000000          0.000000,    0.000000,    1.000000             Material                
+
+# LIGHTS
+#	origin                                          power          color				radius
+l	   -3.000000,    0.000000,    3.000000          0.020000       255,102, 51			1.00
+l	    3.000000,    0.000000,    3.000000          0.020000        51,153,255			1.00
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	    0.000000,   -8.000000,    0.000000          0.000000,    1.000000,    0.000000             65.238484      
+
+# AMBIENT
+#	strength             color
+A	1.000000              0,  0,  0
