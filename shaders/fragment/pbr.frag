@@ -13,7 +13,7 @@ vec3	slerp(vec3 v0, vec3 v1, float t)
 	return ( normalize(v0 * cos(angle) + orthonormal * sin(angle)) );
 }
 
-vec3 get_random_cosine_weighted_hemisphere_direction_roughness_dependent(t_hitpoint hitpoint)
+vec3 get_random_cosine_weighted_hemisphere_direction_roughness_dependent(t_hitpoint hitpoint, float roughness)
 {
 	// Get reflection ray
 	vec3	reflection_dir;
@@ -44,7 +44,7 @@ vec3 get_random_cosine_weighted_hemisphere_direction_roughness_dependent(t_hitpo
 	vec3 random_direction = normalize(x * tangent + y * bitangent + z * hitpoint.normal);
 
 	// spherical linear interpolation
-	return ( slerp(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness) );
+	return ( slerp(reflection_dir, random_direction, roughness) );
 
 	// linear interpolation
 	// return ( normalize(mix(reflection_dir, random_direction, materials[hitpoint.material_idx].roughness)) );
@@ -55,29 +55,6 @@ float	lambert_diffuse(vec3 N, vec3 L)
 	return (max(dot(N, L), 0.0));
 }
 
-// vec3	oren_nayar_diffuse(vec3 col, vec3 N, vec3 V, vec3 L, float a)
-// {
-// 	vec3	ond;
-
-// 	float	cos_thetaI = max(dot(N, L), 0.0);
-// 	float	cos_thetaO = max(dot(N, V), 0.0);
-
-// 	float	thetaI = acos(cos_thetaI);
-// 	float	thetaO = acos(cos_thetaO);
-
-// 	vec3	projectedL = normalize(L - dot(N, L) * N);
-// 	vec3	projectedV = normalize(V - dot(N, V) * N);
-
-// 	float	phiDiff = max(dot(projectedL, projectedV), 0.0);
-
-// 	// Oren Nayar A and B terms
-// 	float	A = (1 - a) / 2 * (a + 0.33);
-// 	float	B = (0.45 * a) / (a + 0.09);
-
-// 	ond = col * ( A + B * phiDiff * sin(thetaI) * tan(thetaO)); // / M_PI;
-// 	return (ond);
-// }
-
 vec3	fresnel(vec3 F0, vec3 V, vec3 H)
 {
  	return ( F0 + (vec3(1.0) - F0) * pow((1 - max(dot(V, H), 0.0)), 5.0) );
@@ -86,10 +63,13 @@ vec3	fresnel(vec3 F0, vec3 V, vec3 H)
 float	normalDistribution(float a, vec3 N, vec3 H)
 {
 	// GGX Trowbridge-Reitz Normal Distribution Function
-	float	numerator = pow(a, 2.0);
+	a = max(a, 0.00001);
 
-	float	NdotH = max(dot(N, H), 0.0);
-	float	denominator = M_PI * pow(pow(NdotH, 2.0) * (pow(a, 2.0) - 1.0) + 1.0, 2.0);
+	float aa = a * a;
+	float NdotH = max(dot(N, H), 0.0);
+	float numerator = mix(pow(NdotH, 100000), aa, pow(a, 0.0001)); //incorrect hack to handle low roughness values
+	numerator *= (1 + pow(a, 5)) * 2; //incorrect hack
+	float denominator = M_PI * pow((NdotH * NdotH) * (aa - 1.0) + 1.0, 2.0);
 	denominator = max(denominator, 0.0000001);
 
 	return (numerator / denominator);
@@ -147,9 +127,6 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light po
 	vec3 kd = (vec3(1.0) - ks) * (1.0 - metallic);
 	float a = roughness * roughness;
 
-	// Oren Nayar Diffuse
-	// diffuse = oren_nayar_diffuse(albedo, N, V, L, a);
-	// Lambert  Diffuse
 	float diffuse = lambert_diffuse(N, L);
 	vec3  radiance = radiance(hitpoint, point_light);
 	vec3  specular = specular_cookTorrance(N, V, L, H, a, ks);
@@ -173,37 +150,29 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light po
 
 vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 {
-	t_ray	ray;
-	vec3	ambient_diffuse_light;
-	vec3	ambient_specular_light;
-
-	ambient_diffuse_light	= get_sky_color(hitpoint);
-	ray.origin				= get_offset_hitpoint_pos(hitpoint);
-	ray.dir					= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint);
-	ambient_specular_light	= get_sky_color_from_ray(ray);
-	// if (ray.dir.z < 0)
-	// 	ray.dir.z += 1;
-
 	float metallic	= material.metallic;
 	float IOR		= material.ior;
 	float roughness	= material.roughness;
 	vec3  albedo	= material.color;
+	float a			= roughness * roughness;
+
+	t_ray	ray;
+	ray.origin					= get_offset_hitpoint_pos(hitpoint);
+	ray.dir						= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint, pow(roughness, 1+rt.debug/10));
+	vec3 ambient_diffuse_light	= get_sky_color(hitpoint);
+	vec3 ambient_specular_light	= get_sky_color_from_ray(ray);
+	// if (ray.dir.z < 0)
+	// 	ray.dir.z += 1;
 
 	vec3 L  = normalize(ray.dir);
 	vec3 H  = normalize(V + L);
 	vec3 F0 = mix(dielectric_F0(IOR), material.color, metallic);
 	vec3 ks = fresnel(F0, V, H);
 	vec3 kd = (vec3(1.0) - ks) * (1.0 - metallic);
-	float a = roughness * roughness;
-
-	// Lambert  Diffuse
-	// vec3 diffuse = lambert_diffuse(N, L);
-	// Oren Nayar Diffuse
-	// vec3 diffuse = oren_nayar_diffuse(material.color, N, V, L, a);
 
 	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks);
 
-	vec3 BRDF = kd * albedo * ambient_diffuse_light + max(clamp(specular, 0.0, 1.0), ks) * ambient_specular_light;
+	vec3 BRDF = kd * albedo * ambient_diffuse_light + clamp(specular, vec3(0.0), ks) * ambient_specular_light;
 
 	// if (rt.debug == -1)
 	// 	BRDF = ambient_diffuse_light;
@@ -216,7 +185,6 @@ vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 	// if (specular.r > 1.0 || specular.g > 1.0 || specular.b > 1.0)
 	// 	BRDF = vec3(1,0,0);
 
-		// BRDF = ambient_specular_light;
 	return (BRDF);
 }
 
@@ -232,10 +200,6 @@ vec3	compute_pbr(t_ray ray)
 	material = materials[hitpoint.material_idx];
 	material.color = get_hitpoint_color(hitpoint);
 	hitpoint.color = material.color;
-
-	// material.color = get_noise_color(0, hitpoint);
-	// hitpoint.color = material.color;
-	// hitpoint.normal = get_noise_color(0, hitpoint);
 
 	if (hitpoint.hit)
 	{
