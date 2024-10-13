@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/08 01:07:24 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/11 15:58:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ typedef struct s_point_light
 	t_vec3			color;
 	float			power;
 	float			intensity;
+	float			radius;
 }	t_point_light;
 
 typedef struct s_movement
@@ -540,6 +541,7 @@ size_t			obj_size(t_identifier id);
 size_t			light_size(t_identifier id);
 void			ft_delete_line(char **str);
 bool			has_next_value(char *line);
+t_vec3			vn(t_vec3 normal, t_rt *rt);
 
 // parser/parser_validations.c
 void			verify_material_uniqueness(t_rt *rt);

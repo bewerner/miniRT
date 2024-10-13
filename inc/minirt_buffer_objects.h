@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_buffer_objects.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/04 16:59:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/11 16:03:35 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct s_gpu_point_light
 	t_vec3			color;
 	float			power;
 	float			intensity;
+	float			radius;
 }	t_gpu_point_light;
 
 #endif

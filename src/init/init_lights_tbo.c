@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 14:58:13 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 15:08:47 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:04:16 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	init_gpu_point_light(float *buffer, size_t *i, t_point_light *light)
 	gpu_light.color = light->color;
 	gpu_light.power = light->power;
 	gpu_light.intensity = light->intensity;
+	gpu_light.radius = light->radius;
 	ft_memmove(&buffer[*i], &gpu_light, sizeof(t_gpu_point_light));
 	*i = gpu_light.next_offset;
 }

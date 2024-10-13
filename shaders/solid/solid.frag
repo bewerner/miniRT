@@ -2,10 +2,7 @@
 
 #import ../fragment/header.frag
 
-#import ../fragment/get_diffuse_color.frag
-
 #import ../fragment/checker_texture.frag
-#import ../fragment/get_illumination_color.frag
 #import get_solid_diffuse_color.frag
 #import get_solid_specular_color.frag
 #import light_gizmo.frag
