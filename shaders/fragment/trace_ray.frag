@@ -115,7 +115,7 @@ vec3	radiance(t_hitpoint hitpoint, t_point_light point_light)
 	return(point_light.color * (point_light.intensity / (distance * distance)));
 }
 
-vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light point_light, vec3 N, vec3 V, vec3 L, vec3 H)
+vec3	get_point_light_contribution(t_hitpoint hitpoint, t_material material, t_point_light point_light, vec3 N, vec3 V, vec3 L, vec3 H)
 {
 	float metallic	= material.metallic;
 	float IOR		= material.ior;
@@ -150,7 +150,7 @@ vec3	point_light_brdf(t_hitpoint hitpoint, t_material material, t_point_light po
 	return (col);
 }
 
-vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
+vec3	get_ambient_light_contribution(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 {
 	float metallic	= material.metallic;
 	float IOR		= material.ior;
@@ -190,7 +190,7 @@ vec3	ambient_brdf(t_hitpoint hitpoint, t_material material, vec3 N, vec3 V)
 	return (BRDF);
 }
 
-vec3	compute_pbr(t_ray ray)
+vec3	trace_ray(t_ray ray)
 {
 	int 		i;
 	int			type;
@@ -221,11 +221,11 @@ vec3	compute_pbr(t_ray ray)
 			light_ray.dir = get_offset_hitpoint_pos(hitpoint) - point_light.origin;
 			light_ray.origin = point_light.origin;
 			if (is_obstructed(light_ray) == false)
-				col += point_light_brdf(hitpoint, material, point_light, N, V, L, H);
+				col += get_point_light_contribution(hitpoint, material, point_light, N, V, L, H);
 
 			type = next_light_type(i);
 		}
-		col += ambient_brdf(hitpoint, material, N, V);
+		col += get_ambient_light_contribution(hitpoint, material, N, V);
 
 		// EMISSION
 		col += material.emission_color * material.emission_strength;

@@ -5,7 +5,7 @@
 #import checker_texture.frag
 #import noise_texture.frag
 #import get_sky_color.frag
-#import pbr.frag
+#import trace_ray.frag
 
 #import objects/object_utils.frag
 #import objects/point_light.frag
@@ -37,7 +37,7 @@ void	main(void)
 	camera_ray.dir.x = camera_ray.dir.x - (2.0 / rt.width  / 2.0) + (2.0 / rt.width  * rand() * 1);
 	camera_ray.dir.y = camera_ray.dir.y - (2.0 / rt.height / 2.0) + (2.0 / rt.height * rand() * 1);
 
-	vec3 render = compute_pbr(camera_ray);
+	vec3 render = trace_ray(camera_ray);
 	vec3 buffer = texture(cumulative_render_buffer, tmp).rgb;
 
 	FragColor = mix(buffer, render, 1.0 / rt.sample_count);
