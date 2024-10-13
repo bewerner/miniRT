@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 11:35:54 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/13 19:30:51 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static void	evaluate_light_id(t_identifier id, size_t light_cnt,
 // 	print_materialss(rt);
 // 	print_textures(rt);
 
-t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
+t_error	parse_scene(t_scene scene, t_rt *rt)
 {
 	t_identifier	id;
 	t_error			error;
@@ -132,8 +132,8 @@ t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
 	error = RT_SUCCESS;
 	curr_obj = rt->objects;
 	curr_light = rt->lights;
-	create_textures(scene_size.tex_cnt, rt);
-	create_materials(scene_size.mat_cnt, rt);
+	create_textures(scene.tex_cnt, rt);
+	create_materials(scene.mat_cnt, rt);
 	while (rt->line)
 	{
 		rt->curr_line = rt->line->content;
@@ -141,8 +141,8 @@ t_error	parse_scene(t_scene_size scene_size, t_rt *rt)
 		error = evaluate_id(id, (t_pobjs){curr_obj, curr_light}, rt);
 		if (error)
 			return (error);
-		evaluate_object_id(id, scene_size.obj_cnt, &curr_obj);
-		evaluate_light_id(id, scene_size.light_cnt, &curr_light);
+		evaluate_object_id(id, scene.obj_cnt, &curr_obj);
+		evaluate_light_id(id, scene.light_cnt, &curr_light);
 		next_lst_item(&rt->line);
 	}
 	verify_material_uniqueness(rt);
