@@ -63,6 +63,18 @@ vec3	fresnel(vec3 F0, vec3 V, vec3 H)
 float	normalDistribution(float a, vec3 N, vec3 H)
 {
 	// GGX Trowbridge-Reitz Normal Distribution Function
+	float	numerator = pow(a, 2.0);
+
+	float	NdotH = max(dot(N, H), 0.0);
+	float	denominator = M_PI * pow(pow(NdotH, 2.0) * (pow(a, 2.0) - 1.0) + 1.0, 2.0);
+	denominator = max(denominator, 0.0000001);
+
+	return (numerator / denominator);
+}
+
+float	hacky_normalDistribution(float a, vec3 N, vec3 H)
+{
+	// GGX Trowbridge-Reitz Normal Distribution Function
 	a = max(a, 0.00001);
 
 	float aa = a * a;
@@ -93,9 +105,13 @@ float	G(float a, vec3 N, vec3 V, vec3 L)
 	return ( G1(a, N, V) * G1(a, N, L) );
 }
 
-vec3	specular_cookTorrance(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks)
+vec3	specular_cookTorrance(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks, bool hacky_ndf)
 {
-	vec3	ct_numerator	= normalDistribution(a, N, H) * G(a, N, V, L) * ks;
+	vec3	ct_numerator;
+	if (hacky_ndf == true)
+		ct_numerator = hacky_normalDistribution(a, N, H) * G(a, N, V, L) * ks;
+	else
+		ct_numerator = normalDistribution(a, N, H) * G(a, N, V, L) * ks;
 	float	ct_denominator	= 4.0 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0);
 			ct_denominator	= max(ct_denominator, 0.000001);
 
@@ -131,7 +147,7 @@ vec3	get_point_light_contribution(t_hitpoint hitpoint, t_material material, t_po
 	vec3  radiance = radiance(hitpoint, point_light);
 	vec3  specular = vec3(0.0);
 	if (roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
-		specular = specular_cookTorrance(N, V, L, H, a, ks);
+		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 
 	vec3 col = (kd * albedo + specular) * radiance * diffuse;
 
@@ -172,18 +188,20 @@ vec3	get_ambient_light_contribution(t_hitpoint hitpoint, t_material material, ve
 	vec3 ks = fresnel(F0, V, H);
 	vec3 kd = (vec3(1.0) - ks) * (1.0 - metallic);
 
-	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks);
+	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
 
-	vec3 BRDF = kd * albedo * ambient_diffuse_light + clamp(specular, vec3(0.0), ks) * ambient_specular_light;
+	vec3 BRDF = kd * albedo * ambient_diffuse_light + max(clamp(specular, vec3(0.0), ks), ks) * ambient_specular_light;
 
-	// if (rt.debug == -1)
-	// 	BRDF = ambient_diffuse_light;
-	// else if (rt.debug == -2)
-	// 	BRDF = ambient_specular_light;
-	// else if (rt.debug == -3)
-	// 	BRDF = specular;
-	// else if (rt.debug == -4)
-	// 	BRDF = ks;
+	if (rt.debug == -1)
+		BRDF = ambient_diffuse_light;
+	else if (rt.debug == -2)
+		BRDF = ambient_specular_light;
+	else if (rt.debug == -3)
+		BRDF = specular;
+	else if (rt.debug == -4)
+		BRDF = clamp(specular, vec3(0.0), ks);
+	else if (rt.debug == -5)
+		BRDF = ks;
 	// if (specular.r > 1.0 || specular.g > 1.0 || specular.b > 1.0)
 	// 	BRDF = vec3(1,0,0);
 
