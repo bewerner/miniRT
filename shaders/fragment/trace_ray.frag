@@ -160,7 +160,7 @@ vec3	get_ambient_light_contribution(t_hitpoint hitpoint, t_material material, ve
 
 	t_ray	ray;
 	ray.origin					= get_offset_hitpoint_pos(hitpoint);
-	ray.dir						= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint, pow(roughness, 1+rt.debug/10));
+	ray.dir						= get_random_cosine_weighted_hemisphere_direction_roughness_dependent(hitpoint, pow(roughness, 1.5));
 	vec3 ambient_diffuse_light	= get_sky_color(hitpoint);
 	vec3 ambient_specular_light	= get_sky_color_from_ray(ray);
 	// if (ray.dir.z < 0)
