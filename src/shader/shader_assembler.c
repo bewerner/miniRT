@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 12:52:05 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/27 18:23:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:58:03 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static size_t	shader_src_size_with_import(const char *file)
 			line_size = get_import_file_size(line, shader_path);
 		}
 		size += line_size;
-		free(line);
+		ft_free((void *)&line);
 		if (line_size == 0)
 			return (close(fd), 0);
 		line = get_next_line(fd);
@@ -96,7 +96,7 @@ static int	read_into_buf(char *buf, char *shader_path, int fd)
 			ft_memcpy(&buf[i], line, ft_strlen(line));
 			i += ft_strlen(line);
 		}
-		free(line);
+		ft_free((void *)&line);
 		line = get_next_line(fd);
 	}
 	buf[i] = '\0';
@@ -118,15 +118,12 @@ char	*assemble_shader_source(const char *file)
 	if (shader_src == NULL || fd == -1)
 	{
 		if (shader_src)
-			free(shader_src);
+			ft_free((void *)&shader_src);
 		return (NULL);
 	}
 	extract_shader_path(shader_path, file);
 	if (read_into_buf(shader_src, shader_path, fd) == -1)
-	{
-		free (shader_src);
-		shader_src = NULL;
-	}
+		ft_free((void *)&shader_src);
 	close(fd);
 	return (shader_src);
 }

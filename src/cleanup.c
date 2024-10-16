@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/29 19:33:48 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/16 16:53:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	cleanup(t_rt *rt)
 	if (rt->line)
 		ft_lstclear(&rt->line, free);
 	rt->line = NULL;
-	free(rt->objects);
+	ft_free((void *)&rt->objects);
 	rt->objects = NULL;
-	free(rt->lights);
+	ft_free((void *)&rt->lights);
 	rt->lights = NULL;
-	free(rt->materials);
+	ft_free((void *)&rt->materials);
 	rt->materials = NULL;
-	free(rt->textures);
+	ft_free((void *)&rt->textures);
 	rt->textures = NULL;
 }
 

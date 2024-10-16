@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_texture_ubo.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:49:46 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 00:55:40 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/16 16:55:21 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ void	create_ubo_textures(t_rt *rt)
 	glGenBuffers(1, &rt->ubo_textures_id);
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_textures_id);
 	glBufferData(GL_UNIFORM_BUFFER, size, buffer, GL_STATIC_DRAW);
-	free(buffer);
+	ft_free((void *)&buffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 2, rt->ubo_textures_id);
 }

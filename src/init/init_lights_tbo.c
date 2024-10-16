@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 14:58:13 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/11 16:04:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:54:40 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	create_tbo_lights(t_rt *rt)
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
 	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);
-	free(buffer);
+	ft_free((void *)&buffer);
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 2);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);

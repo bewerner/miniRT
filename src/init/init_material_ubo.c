@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_material_ubo.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:55:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/04 16:58:37 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/16 16:54:51 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ void	create_ubo_materials(t_rt *rt)
 	glGenBuffers(1, &rt->ubo_materials_id);
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_materials_id);
 	glBufferData(GL_UNIFORM_BUFFER, size, buffer, GL_STATIC_DRAW);
-	free(buffer);
+	ft_free((void *)&buffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, rt->ubo_materials_id);
 }
