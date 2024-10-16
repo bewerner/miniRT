@@ -219,6 +219,7 @@ vec3			get_real_random_hemisphere_direction(t_hitpoint hitpoint);
 vec3			get_environment_map_color(vec3 direction);
 vec3			get_sky_color(t_hitpoint hitpoint);
 vec3			get_sky_color_from_ray(t_ray ray);
+vec3			get_sky_color_from_dir(vec3 dir);
 
 // trace_ray.frag
 vec3			trace_ray(t_ray ray);
