@@ -162,6 +162,20 @@ vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 
 	return (col);
 }
 
+vec3	get_ambient_light_contribution_no_specular(t_hitpoint hitpoint)
+{
+	vec3 ambient_diffuse_light;
+	if (rt.ambient.r >= 0)
+		ambient_diffuse_light = get_ambient_color(hitpoint);
+	else
+		ambient_diffuse_light = get_sky_color(hitpoint);
+	// ambient_diffuse_light = get_sky_color(hitpoint);
+
+	vec3 col = hitpoint.color * ambient_diffuse_light;
+
+	return (col);
+}
+
 vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	t_ray ray;
@@ -206,7 +220,7 @@ t_point_light	convert_hitpoint_into_point_light(t_hitpoint hitpoint)
 		col += get_point_light_contribution(hit_pos, get_point_light(i), N, V, F0p, a, mat, false);
 
 	// AMBIENT LIGHT
-	col += get_ambient_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+	col += get_ambient_light_contribution_no_specular(hitpoint);
 
 	// EMISSION
 	col += mat.emission_color * mat.emission_strength;
