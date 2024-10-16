@@ -441,3 +441,14 @@ vec3	get_sky_color_from_ray(t_ray ray)
 	}
 	return (col);
 }
+
+
+vec3	get_sky_color_from_dir(vec3 dir)
+{
+	vec3 col;
+	if (rt.ambient.r >= 0)
+		col = rt.ambient;
+	else
+		col = get_environment_map_color(dir);
+	return (col);
+}
