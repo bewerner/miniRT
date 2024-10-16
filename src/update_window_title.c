@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_window_title.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/07 21:08:56 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/16 16:54:06 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static void	add_sample_to_title(char *title, t_rt *rt)
 	max_samples = ft_itoa(rt->max_samples);
 	if (max_samples)
 		ft_strlcat(title, max_samples, 1024);
-	free(sample);
-	free(max_samples);
+	ft_free((void *)&sample);
+	ft_free((void *)&max_samples);
 }
 
 void	update_window_title(t_rt *rt)
@@ -66,5 +66,5 @@ void	update_window_title(t_rt *rt)
 	if (rt->mode == MODE_PREVIEW)
 		add_sample_to_title(title, rt);
 	glfwSetWindowTitle(rt->window, title);
-	free(fps_str);
+	ft_free((void *)&fps_str);
 }

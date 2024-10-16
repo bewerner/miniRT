@@ -14,7 +14,6 @@
 
 void	bind_framebuffer_texture(GLuint shader_program, t_rt *rt)
 {
-	// (void)shader_program;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
 	glUniform1i(glGetUniformLocation(shader_program, "cumulative_render_buffer"), 0); // this line is not needed in wsl. check for mac and linux
@@ -22,49 +21,37 @@ void	bind_framebuffer_texture(GLuint shader_program, t_rt *rt)
 
 void	bind_objects(GLuint shader_program, t_rt *rt)
 {
-	GLint uniform_location;
+	GLint	uniform_location;
 
-	// glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
-	// glActiveTexture(GL_TEXTURE1);
-	// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_objects_id);
 	uniform_location = glGetUniformLocation(shader_program, "objects");
 	if (uniform_location == -1)
 		terminate("objects not found in shader program", NULL, 1, rt);
 	glUniform1i(uniform_location, 1);
-	// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 }
 
 void	bind_lights(GLuint shader_program, t_rt *rt)
 {
-	GLint uniform_location;
+	GLint	uniform_location;
 
-	// glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_lights_id);
-	// glActiveTexture(GL_TEXTURE2);
-	// glTexBuffer(GL_TEXTURE_BUFFER, GL_R32F, rt->tbo_lights_id);
 	uniform_location = glGetUniformLocation(shader_program, "lights");
 	if (uniform_location == -1)
 		terminate("lights not found in shader program", NULL, 1, rt);
 	glUniform1i(uniform_location, 2);
-	// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 }
 
 void	bind_agx_lut(GLuint shader_program, t_rt *rt)
 {
-	GLint uniform_location;
+	GLint	uniform_location;
 
-	// glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_agx_lut_id);
-	// glActiveTexture(GL_TEXTURE3);
-	// glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, rt->tbo_agx_lut_id);
 	uniform_location = glGetUniformLocation(shader_program, "agx_lut");
 	if (uniform_location == -1)
 		terminate("agx_lut not found in shader program", NULL, 1, rt);
 	glUniform1i(uniform_location, 3);
-	// glBindBuffer(GL_TEXTURE_BUFFER, 0);	// unbind
 }
 
 void	bind_environment_map(GLuint shader_program, t_rt *rt)
 {
-	GLint uniform_location;
+	GLint	uniform_location;
 
 	uniform_location = glGetUniformLocation(shader_program, "environment_map");
 	if (uniform_location == -1)
@@ -75,7 +62,7 @@ void	bind_environment_map(GLuint shader_program, t_rt *rt)
 void	bind_texture_units(GLuint shader_program, t_rt *rt)
 {
 	size_t		idx;
-	GLint 		uniform_location;
+	GLint		uniform_location;
 	static char	*unit_names[10] = {
 		"texture_units[0]",
 		"texture_units[1]",
@@ -90,14 +77,11 @@ void	bind_texture_units(GLuint shader_program, t_rt *rt)
 
 	idx = 0;
 	while (idx < MAX_IMAGE_TEXTURES)
-	// while (idx < 1)
 	{
-		uniform_location = glGetUniformLocation(shader_program, unit_names[idx]);
-		// uniform_location = glGetUniformLocation(shader_program, "texture_units[0]");
+		uniform_location
+			= glGetUniformLocation(shader_program, unit_names[idx]);
 		if (uniform_location == -1)
 			terminate("texture_units not found in shader program", NULL, 1, rt);
-		// glActiveTexture(GL_TEXTURE5 + idx);
-		// glBindTexture(GL_TEXTURE_2D, rt->texture_ids[idx]);
 		glUniform1i(uniform_location, 5 + idx);
 		idx++;
 	}

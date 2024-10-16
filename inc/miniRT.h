@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/13 19:34:23 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:51:49 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,6 +399,7 @@ static const t_hitpoint		g_hp_inf = ((((((((t_hitpoint){
 							{{0, 0, 0}}, NULL})))))));
 
 // main.c
+void			ft_free(void **mem);
 t_rt			*get_rt(void);
 
 // init_miniRT.c

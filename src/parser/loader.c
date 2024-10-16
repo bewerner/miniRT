@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/13 19:44:34 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:55:47 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	add_line(char *line, t_rt *rt)
 	new_item = ft_lstnew(line);
 	if (new_item == NULL)
 	{
-		free(line);
+		ft_free((void *)&line);
 		terminate(error_msg(RT_ERROR_MALLOC), NULL, 1, rt);
 	}
 	ft_lstadd_back(&rt->line, new_item);
@@ -39,7 +39,7 @@ static void	evaluate_id(t_identifier id, char *line, t_scene *scene, t_rt *rt)
 {
 	if (id == ID_INVALID)
 	{
-		free(line);
+		ft_free((void *)&line);
 		terminate(error_msg(RT_ERROR_INVALID_IDENTIFIER), rt->curr_line, 1, rt);
 	}
 	else if (id == ID_CAMERA)

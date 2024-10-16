@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 12:18:00 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:59:11 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static int	create_shader_sources(char **dst_vert, char **dst_frag, const char *v
 	if (*dst_vert == NULL || *dst_frag == NULL)
 	{
 		if (*dst_vert)
-			free(*dst_vert);
+			ft_free((void *)dst_vert);
 		if (*dst_frag)
-			free(*dst_frag);
+			ft_free((void *)dst_frag);
 		return (1);
 	}
 
@@ -42,8 +42,8 @@ static int	compile_shader_srcs(GLuint *shaders, char *vert_src, char *frag_src)
 	shaders[1] = 0;
 	shaders[0] = compile_shader_src(GL_VERTEX_SHADER, vert_src);
 	shaders[1] = compile_shader_src(GL_FRAGMENT_SHADER, frag_src);
-	free(vert_src);
-	free(frag_src);
+	ft_free((void *)&vert_src);
+	ft_free((void *)&frag_src);
 	if (shaders[0] == 0 || shaders[1] == 0)
 	{
 		if (shaders[0] > 0)
@@ -77,7 +77,7 @@ static int	link_shader_program(GLuint *shaders, GLuint *shader_program)
 		errorlog = malloc(log_size);
 		glGetProgramInfoLog(*shader_program, 512, NULL, errorlog);
 		printf("ERROR SHADER PROGRAMM LINK FAILED\n%s\n", errorlog);
-		free(errorlog);
+		ft_free((void *)&errorlog);
 		return (1);
 	}
 	return (0);

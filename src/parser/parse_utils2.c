@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 17:57:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:56:19 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	check_filepath_size(char *line, t_rt *rt)
 		ft_strlcat(msg, "path and filename longer than ", 1024);
 		ft_strlcat(msg, nbr, 1024);
 		ft_strlcat(msg, " characters", 1024);
-		free(nbr);
+		ft_free((void *)&nbr);
 		terminate(msg, rt->curr_line, 1, rt);
 	}
 }

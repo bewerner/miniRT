@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:39:29 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/11 15:21:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:56:37 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_delete_line(char **str)
 {
 	if (*str)
 	{
-		free(*str);
+		ft_free((void *)str);
 		*str = NULL;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 15:11:44 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/22 15:29:50 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:55:07 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	create_tbo_objects(t_rt *rt)
 	glBindBuffer(GL_TEXTURE_BUFFER, rt->tbo_objects_id);
 	glBufferData(GL_TEXTURE_BUFFER, size, buffer, GL_STATIC_DRAW);
 	glBindBuffer(GL_TEXTURE_BUFFER, 0);
-	free(buffer);
+	ft_free((void *)&buffer);
 	glGenTextures(1, &texture_id);
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_BUFFER, texture_id);
