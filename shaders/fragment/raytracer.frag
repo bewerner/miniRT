@@ -5,6 +5,7 @@ layout(location = 1) out vec3 out_hitpoint_pos;
 layout(location = 2) out vec3 out_hitpoint_normal;
 layout(location = 3) out vec3 out_hitpoint_render;
 layout(location = 4) out vec3 out_hitpoint_misc;
+layout(location = 5) out vec3 out_hitpoint_color;
 
 #import header.frag
 #import AgX.frag
@@ -56,7 +57,9 @@ void	main(void)
 			previous.pos			= texture(buffer, vec3(uv, 1.0)).rgb;
 			previous.normal			= texture(buffer, vec3(uv, 2.0)).rgb;
 			previous.material_idx	= int(texture(buffer, vec3(uv, 4.0)).g);
-			previous.color			= get_hitpoint_color(previous);
+			previous.color			= texture(buffer, vec3(uv, 5.0)).rgb;;
+			// FragColor = previous.color;
+			// return ;
 
 			t_ray bounce_ray;
 			bounce_ray.origin = previous.pos;

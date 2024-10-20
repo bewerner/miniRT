@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/20 19:58:06 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/20 22:08:17 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,8 +359,8 @@ void create_fbo(t_rt *rt)
 	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
 
-	// Allocate memory for 5 layers (replace 5 with however many layers you need)
-	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGB32F, rt->width, rt->height, 5, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	// Allocate memory for 6 layers (replace 6 with however many layers you need)
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGB32F, rt->width, rt->height, 6, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
 	// Set texture parameters
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -374,13 +374,13 @@ void create_fbo(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
 
 	// Attach layers of the 2D texture array as different color attachments
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rt->tex_fbo_id, 0, i); // Attach layer i
 	}
 
 	// Define draw buffers for all color attachments
-	GLenum drawBuffers[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
-	glDrawBuffers(5, drawBuffers);  // Enable drawing to all 5 color attachments
+	GLenum drawBuffers[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 , GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(6, drawBuffers);  // Enable drawing to all 6 color attachments
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		terminate("Framebuffer creation failed!\n", NULL, 1, rt);
