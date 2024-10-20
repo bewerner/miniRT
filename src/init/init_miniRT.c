@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/09/30 01:05:39 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/20 19:58:06 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,26 +291,99 @@ void	init_cursor_is_settable(t_rt *rt)
 		rt->cursor_is_settable = 0;
 }
 
-void	create_fbo(t_rt *rt)
-{
-	// Create texture for the framebuffer
-	glGenTextures(1, &rt->tex_fbo_id);
-	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, rt->width, rt->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glBindTexture(GL_TEXTURE_2D, 0);
+// void	create_fbo(t_rt *rt)
+// {
+// 	// Create texture for the framebuffer
+// 	glGenTextures(1, &rt->tex_fbo_id);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
+// 	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+// 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, rt->width, rt->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+// 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// Create framebuffer and attach the texture
+// 	// Create texture for the framebuffer
+// 	glGenTextures(1, &rt->tex_fbo_id2);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id2);
+// 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, rt->width, rt->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+// 	glBindTexture(GL_TEXTURE_2D, 0);
+
+// 	// Create texture for the framebuffer
+// 	glGenTextures(1, &rt->tex_fbo_id3);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id3);
+// 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, rt->width, rt->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+// 	glBindTexture(GL_TEXTURE_2D, 0);
+
+// 	// Create texture for the framebuffer
+// 	glGenTextures(1, &rt->tex_fbo_id4);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id4);
+// 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, rt->width, rt->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+// 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+// 	glBindTexture(GL_TEXTURE_2D, 0);
+
+// 	// Create framebuffer and attach the texture
+// 	glGenFramebuffers(1, &rt->fbo_id);
+// 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
+// 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->tex_fbo_id, 0);
+// 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, rt->tex_fbo_id2, 0);
+// 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, rt->tex_fbo_id3, 0);
+// 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, rt->tex_fbo_id4, 0);
+
+// 	// Define draw buffers to use both color attachments
+// 	GLenum drawBuffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+// 	glDrawBuffers(4, drawBuffers); // Enable drawing to both color attachments
+
+// 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+// 		terminate("Framebuffer creation failed!\n", NULL, 1, rt);
+
+// 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind the framebuffer
+// }
+
+void create_fbo(t_rt *rt)
+{
+	// Create Texture2DArray for the framebuffer
+	glGenTextures(1, &rt->tex_fbo_id);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
+	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
+
+	// Allocate memory for 5 layers (replace 5 with however many layers you need)
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGB32F, rt->width, rt->height, 5, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+	// Set texture parameters
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+
+	// Create framebuffer and attach the texture array layers to different attachments
 	glGenFramebuffers(1, &rt->fbo_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->tex_fbo_id, 0);
+
+	// Attach layers of the 2D texture array as different color attachments
+	for (int i = 0; i < 5; ++i) {
+		glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rt->tex_fbo_id, 0, i); // Attach layer i
+	}
+
+	// Define draw buffers for all color attachments
+	GLenum drawBuffers[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
+	glDrawBuffers(5, drawBuffers);  // Enable drawing to all 5 color attachments
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		terminate("Framebuffer is not complete!\n", NULL, 1, rt);
+		terminate("Framebuffer creation failed!\n", NULL, 1, rt);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind the framebuffer
 }
@@ -336,6 +409,7 @@ static void	init_shader_programs(t_rt *rt)
 
 void	init_mini_rt(char **argv, t_rt *rt)
 {
+	rt->max_diffuse_bounces = 1;
 	rt->max_samples = INT32_MAX - 1;
 	// rt->max_samples = 4096;
 	rt->filename = argv[1];

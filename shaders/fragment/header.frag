@@ -13,7 +13,7 @@
 #define MODE_NORMAL		1
 #define MODE_PREVIEW	2
 
-#define MAX_IMAGE_TEXTURES 10
+#define MAX_IMAGE_TEXTURES 3
 
 #define TEX_NONE		0
 #define TEX_IMAGE		1
@@ -173,6 +173,8 @@ struct t_rt
 	int				height;
 	int				mode;
 	int				mac_os;
+	int				diffuse_bounce_count;
+	int				max_diffuse_bounces;
 };
 
 // ┌───────────────────────────┐
@@ -198,11 +200,12 @@ in vec2 coord;
 uniform samplerBuffer	objects;
 uniform samplerBuffer	lights;
 uniform sampler3D		agx_lut;
-uniform sampler2D		cumulative_render_buffer;
+uniform sampler2DArray	buffer;
 uniform sampler2D		environment_map;
 uniform sampler2D		texture_units[MAX_IMAGE_TEXTURES];
-
-out vec3 FragColor;
+// uniform sampler2D		g_hitpoint_pos;
+// uniform sampler2D		g_hitpoint_normal;
+// uniform sampler2D		g_hitpoint_render;
 
 // AgX.frag
 vec3			to_agx(vec3 col);
@@ -222,6 +225,7 @@ vec3			get_sky_color_from_ray(t_ray ray);
 vec3			get_sky_color_from_dir(vec3 dir);
 
 // trace_ray.frag
+vec3			add_bounce_light(t_ray bounce_ray, t_hitpoint previous);
 vec3			trace_ray(t_ray ray);
 
 // ┌─────────┐
