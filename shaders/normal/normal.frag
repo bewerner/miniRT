@@ -19,7 +19,9 @@
 
 vec3	get_normal_color(t_hitpoint hitpoint);
 vec3	trace_ray_normal(t_ray ray);
- 
+
+out vec3 FragColor;
+
 void main()
 {
 	vec2 uv = coord.xy;

@@ -9,20 +9,20 @@ vec3	get_color_from_texture(int tex_idx, t_hitpoint hitpoint)
 				return ( texture(texture_units[1], hitpoint.uv).rgb );
 			case 2:
 				return ( texture(texture_units[2], hitpoint.uv).rgb );
-			case 3:
-				return ( texture(texture_units[3], hitpoint.uv).rgb );
-			case 4:
-				return ( texture(texture_units[4], hitpoint.uv).rgb );
-			case 5:
-				return ( texture(texture_units[5], hitpoint.uv).rgb );
-			case 6:
-				return ( texture(texture_units[6], hitpoint.uv).rgb );
-			case 7:
-				return ( texture(texture_units[7], hitpoint.uv).rgb );
-			case 8:
-				return ( texture(texture_units[8], hitpoint.uv).rgb );
-			case 9:
-				return ( texture(texture_units[9], hitpoint.uv).rgb );
+			// case 3:
+			// 	return ( texture(texture_units[3], hitpoint.uv).rgb );
+			// case 4:
+			// 	return ( texture(texture_units[4], hitpoint.uv).rgb );
+			// case 5:
+			// 	return ( texture(texture_units[5], hitpoint.uv).rgb );
+			// case 6:
+			// 	return ( texture(texture_units[6], hitpoint.uv).rgb );
+			// case 7:
+			// 	return ( texture(texture_units[7], hitpoint.uv).rgb );
+			// case 8:
+			// 	return ( texture(texture_units[8], hitpoint.uv).rgb );
+			// case 9:
+				// return ( texture(texture_units[9], hitpoint.uv).rgb );
 			default:
 				return (vec3(1, 0 ,0.5));
 		}
@@ -45,20 +45,20 @@ ivec2	get_texture_resolution(int tex_idx)
 				return ( textureSize(texture_units[1], 0) );
 			case 2:
 				return ( textureSize(texture_units[2], 0) );
-			case 3:
-				return ( textureSize(texture_units[3], 0) );
-			case 4:
-				return ( textureSize(texture_units[4], 0) );
-			case 5:
-				return ( textureSize(texture_units[5], 0) );
-			case 6:
-				return ( textureSize(texture_units[6], 0) );
-			case 7:
-				return ( textureSize(texture_units[7], 0) );
-			case 8:
-				return ( textureSize(texture_units[8], 0) );
-			case 9:
-				return ( textureSize(texture_units[9], 0) );
+			// case 3:
+			// 	return ( textureSize(texture_units[3], 0) );
+			// case 4:
+			// 	return ( textureSize(texture_units[4], 0) );
+			// case 5:
+			// 	return ( textureSize(texture_units[5], 0) );
+			// case 6:
+			// 	return ( textureSize(texture_units[6], 0) );
+			// case 7:
+			// 	return ( textureSize(texture_units[7], 0) );
+			// case 8:
+			// 	return ( textureSize(texture_units[8], 0) );
+			// case 9:
+			// 	return ( textureSize(texture_units[9], 0) );
 			default:
 				return (ivec2(-1, -1));
 		}

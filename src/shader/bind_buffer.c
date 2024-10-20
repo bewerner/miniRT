@@ -20,6 +20,31 @@ void	bind_framebuffer_texture(GLuint shader_program, t_rt *rt)
 	glUniform1i(glGetUniformLocation(shader_program, "cumulative_render_buffer"), 0); // this line is not needed in wsl. check for mac and linux
 }
 
+// void	bind_framebuffer_textures(GLuint shader_program, t_rt *rt)
+// {
+// 	// (void)shader_program;
+// 	glActiveTexture(GL_TEXTURE0);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
+// 	glUniform1i(glGetUniformLocation(shader_program, "cumulative_render_buffer"), 0); // this line is not needed in wsl. check for mac and linux
+// 	glActiveTexture(GL_TEXTURE0 + 12);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id2);
+// 	glUniform1i(glGetUniformLocation(shader_program, "g_hitpoint_pos"), 12); // this line is not needed in wsl. check for mac and linux
+// 	glActiveTexture(GL_TEXTURE0 + 13);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id3);
+// 	glUniform1i(glGetUniformLocation(shader_program, "g_hitpoint_normal"), 13); // this line is not needed in wsl. check for mac and linux
+// 	glActiveTexture(GL_TEXTURE0 + 14);
+// 	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id4);
+// 	glUniform1i(glGetUniformLocation(shader_program, "g_hitpoint_render"), 14); // this line is not needed in wsl. check for mac and linux
+// }
+
+void	bind_framebuffer_textures(GLuint shader_program, t_rt *rt)
+{
+	// (void)shader_program;
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
+	glUniform1i(glGetUniformLocation(shader_program, "buffer"), 0); // this line is not needed in wsl. check for mac and linux
+}
+
 void	bind_objects(GLuint shader_program, t_rt *rt)
 {
 	GLint uniform_location;
@@ -76,17 +101,10 @@ void	bind_texture_units(GLuint shader_program, t_rt *rt)
 {
 	size_t		idx;
 	GLint 		uniform_location;
-	static char	*unit_names[10] = {
+	static char	*unit_names[3] = {
 		"texture_units[0]",
 		"texture_units[1]",
-		"texture_units[2]",
-		"texture_units[3]",
-		"texture_units[4]",
-		"texture_units[5]",
-		"texture_units[6]",
-		"texture_units[7]",
-		"texture_units[8]",
-		"texture_units[9]"};
+		"texture_units[2]"};
 
 	idx = 0;
 	while (idx < MAX_IMAGE_TEXTURES)

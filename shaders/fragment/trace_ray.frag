@@ -200,6 +200,9 @@ t_point_light	convert_hitpoint_into_point_light(t_hitpoint hitpoint)
 {
 	t_point_light bounce_light;
 	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
+	out_hitpoint_pos = hit_pos;
+	out_hitpoint_normal = hitpoint.normal;
+	out_hitpoint_misc.y = hitpoint.material_idx;
 	vec3 col = VEC3_BLACK;
 	t_material mat = materials[hitpoint.material_idx];
 
@@ -233,10 +236,12 @@ t_point_light	convert_hitpoint_into_point_light(t_hitpoint hitpoint)
 	return (bounce_light);
 }
 
-#define DIFFUSE_BOUNCES 0
 vec3	render_hitpoint(t_hitpoint hitpoint)
 {
 	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
+	out_hitpoint_pos = hit_pos;
+	out_hitpoint_normal = hitpoint.normal;
+	out_hitpoint_misc.y = hitpoint.material_idx;
 	vec3 col = VEC3_BLACK;
 	t_material mat = materials[hitpoint.material_idx];
 
@@ -267,27 +272,54 @@ vec3	trace_ray(t_ray ray)
 {
 	vec3 col;
 	t_hitpoint hitpoint = get_closest_hitpoint(ray, true);
+	out_hitpoint_misc.x = float(hitpoint.hit);
 	hitpoint.color = get_hitpoint_color(hitpoint);
 	if (hitpoint.hit == false)
 		return (get_sky_color_from_ray(ray));
 	col = render_hitpoint(hitpoint);
 
-	// BOUNCE LIGHT
-	if (rt.debug >= 1) // if (DIFFUSE_BOUNCES >= 1)
-	{
-		t_ray bounce_ray;
-		bounce_ray.origin = get_offset_hitpoint_pos(hitpoint);
-		bounce_ray.dir = bounce(hitpoint.normal);
-		t_hitpoint bounce_point = get_closest_hitpoint(bounce_ray, true);
-		bounce_point.color = get_hitpoint_color(bounce_point);
-		if (bounce_point.hit == true)
-		{
-			// t_point_light bounce_light = convert_hitpoint_into_point_light(bounce_point);
-			float distance = distance(bounce_point.pos, hitpoint.pos);
-			vec3  radiance = render_hitpoint(bounce_point) * min(2.6, 2.6 / (distance * distance));
-			float diffuse  = lambert_diffuse(hitpoint.normal, (normalize(bounce_ray.dir)));
-			col += hitpoint.color * radiance * diffuse;
-		}
-	}
+	return (col);
+}
+
+// vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
+// {
+// 	vec3 col;
+// 	t_hitpoint hitpoint = get_closest_hitpoint(bounce_ray, true);
+// 	hitpoint.color = get_hitpoint_color(hitpoint);
+// 	if (hitpoint.hit == false)
+// 		return (VEC3_BLACK);
+// 	col = render_hitpoint(hitpoint);
+
+// 	// t_point_light bounce_light = convert_hitpoint_into_point_light(bounce_point);
+// 	float distance = distance(hitpoint.pos, previous.pos);
+// 	vec3  radiance = col * min(2.6, 2.6 / (distance * distance));
+// 	float diffuse  = lambert_diffuse(previous.normal, bounce_ray.dir);
+// 	col = radiance * diffuse;
+// 	// col = previous.color * radiance * diffuse;
+	
+// 	return (col);
+// }
+
+vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
+{
+	vec3 col;
+	t_hitpoint hitpoint = get_closest_hitpoint(bounce_ray, true);
+	out_hitpoint_misc.x = float(hitpoint.hit);
+	hitpoint.color = get_hitpoint_color(hitpoint);
+	if (hitpoint.hit == false)
+		return (VEC3_BLACK);
+
+	t_point_light bounce_light = convert_hitpoint_into_point_light(hitpoint);
+
+	t_material mat = materials[hitpoint.material_idx];
+
+	mat.color = hitpoint.color;
+	vec3  F0p = mix(dielectric_F0(mat.ior) * 1.6, mat.color, mat.metallic);
+	float a   = mat.roughness * mat.roughness;
+
+	vec3 N = previous.normal;
+	vec3 V = normalize(previous.pos - rt.camera.origin);
+
+	col = get_point_light_contribution(previous.pos, bounce_light, N, V, F0p, a, mat, true);
 	return (col);
 }
