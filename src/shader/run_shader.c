@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/20 20:29:12 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/20 22:24:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ void	render_raw_image(t_rt *rt)
 	GLuint	shader_program;
 
 
-	rt->max_diffuse_bounces = rt->debug;
+	// rt->max_diffuse_bounces = rt->debug;
+	rt->max_diffuse_bounces = 1;
 
 
 	// CHOOSE RENDER SHADER PROGRAM
