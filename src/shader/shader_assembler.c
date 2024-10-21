@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 12:52:05 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 18:32:22 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:44:29 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ char	*assemble_shader_source(const char *file)
 		return (NULL);
 	}
 	extract_shader_path(shader_path, file);
-	if (read_into_buf(shader_src, shader_path, fd, (int [2]){0, 0}) == -1)
+	if (read_into_buf(shader_src, shader_path, fd, (size_t [2]){0, 0}) == -1)
 		ft_free((void *)&shader_src);
 	close(fd);
 	return (shader_src);

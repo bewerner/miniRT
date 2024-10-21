@@ -6,13 +6,11 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:15:35 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/25 12:17:38 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:53:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-#define SCROLL_SENSITIVITY 50.0f
 
 void	scroll_hook(GLFWwindow *window, double xoffset, double yoffset)
 {
