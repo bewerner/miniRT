@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 16:24:02 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 16:38:11 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -601,18 +601,22 @@ GLuint			create_shader_program(const char *vert,
 					const char *freg, t_rt *rt);
 void			init_shader_programs(t_rt *rt);
 
-// shader/bind_buffer.c
+// shader/bind_buffer2.c
 void			bind_framebuffer_texture(GLuint shader_program, t_rt *rt);
 void			bind_objects(GLuint shader_program, t_rt *rt);
 void			bind_lights(GLuint shader_program, t_rt *rt);
 void			bind_agx_lut(GLuint shader_program, t_rt *rt);
 void			bind_environment_map(GLuint shader_program, t_rt *rt);
+
+// shader/bind_buffer.c
 void			bind_texture_units(GLuint shader_program, t_rt *rt);
 void			bind_material_ubo(GLuint shader_program, t_rt *rt);
 void			bind_texture_ubo(GLuint shader_program, t_rt *rt);
 
-// shader/run_shader.c
+// shader/draw_gizmo.c
 void			draw_gizmo(t_rt *rt);
+
+// shader/run_shader.c
 void			postprocess_raw_image(t_rt *rt);
 void			render_raw_image(t_rt *rt);
 
