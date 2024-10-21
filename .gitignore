@@ -12,12 +12,10 @@
 !resources/**
 !libft
 !libft/**
-!lib
-!lib/**
 !src
 !src/**
 !inc
-!inc/**
+!inc/*.h
 !scenes
 !scenes/raw
 !scenes/**/*.rt
@@ -26,11 +24,15 @@
 !shaders/**/
 !shaders/**/*.frag
 !shaders/**/*.vert
+!glad.tar
 !Makefile
 !.gitignore
 
 #blacklist
 
+inc/glad/
+inc/KHR/
+lib/
 assets/textures/tmp/
 *.o
 *.a
