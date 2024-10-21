@@ -6,35 +6,11 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 15:45:21 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 16:08:10 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-static void	init_glfw(t_rt *rt)
-{
-	glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
-	if (glfwInit() == GLFW_FALSE)
-		terminate("glfw_init failed", NULL, 1, rt);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	rt->window = glfwCreateWindow(
-			WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT - LOADING...", NULL, NULL);
-	if (!rt->window)
-		terminate("glfw window creation failed", NULL, 1, rt);
-	glfwMakeContextCurrent(rt->window);
-	glfwShowWindow(rt->window);
-	glfwPollEvents();
-	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
-	rt->aspect_ratio = (float)rt->width / (float)rt->height;
-	glfwGetWindowContentScale(rt->window, &rt->dpi_scale, NULL);
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	glfwSwapInterval(SWAP_INTERVAL);
-}
 
 static void	init_camera(t_camera *camera)
 {
@@ -48,52 +24,6 @@ static void	init_camera(t_camera *camera)
 	rad = camera->fov * (M_PI / 180);
 	camera->focal_length = 1.0f / tanf(rad * 0.5f);
 	reset_camera(camera);
-}
-
-static void	create_screen_vertices(t_rt *rt)
-{
-	GLuint				vbo;
-	static const float	vertices[] = {
-		1, 1, 0, 1, 0, 0,
-		1, -1, 0, 1, 1, 0,
-		-1, -1, 0, 0, 1, 0,
-		\
-		-1, -1, 0, 0, 1, 0,
-		-1, 1, 0, 0, 0, 0,
-		1, 1, 0, 1, 0, 0
-	};
-
-	glGenVertexArrays(1, &rt->vao_screen_id);
-	glBindVertexArray(rt->vao_screen_id);
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(
-		0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
-		(void *)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glBindVertexArray(0);
-}
-
-static void	create_vbo_gizmo(t_rt *rt)
-{
-	GLuint	vbo;
-
-	glGenVertexArrays(1, &rt->vao_gizmo_id);
-	glBindVertexArray(rt->vao_gizmo_id);
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_gizmo_vertices),
-		g_gizmo_vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(
-		0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
-		(void *)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glBindVertexArray(0);
 }
 
 void	create_ubo_rt(t_rt *rt)
@@ -154,25 +84,6 @@ void	create_fbo(t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-static void	init_shader_programs(t_rt *rt)
-{
-	rt->solid_shader_program = create_shader_program(
-			"shaders/vertex/screen.vert",
-			"shaders/solid/solid.frag", rt);
-	rt->normal_shader_program = create_shader_program(
-			"shaders/vertex/screen.vert",
-			"shaders/normal/normal.frag", rt);
-	rt->postprocessing_shader_program = create_shader_program(
-			"shaders/vertex/screen.vert",
-			"shaders/postprocessing/postprocessing.frag", rt);
-	rt->preview_shader_program = create_shader_program(
-			"shaders/vertex/screen.vert",
-			"shaders/fragment/raytracer.frag", rt);
-	rt->gizmo_shader_program = create_shader_program(
-			"shaders/vertex/gizmo.vert",
-			"shaders/gizmo/gizmo.frag", rt);
-}
-
 void	init_mini_rt(char **argv, t_rt *rt)
 {
 	rt->max_samples = 65536;
@@ -183,7 +94,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	init_camera(&rt->camera);
 	init_hooks(rt);
 	init_shader_programs(rt);
-	create_screen_vertices(rt);
+	create_vbo_screen_vertices(rt);
 	create_vbo_gizmo(rt);
 	create_ubo_rt(rt);
 	create_tbo_objects(rt);

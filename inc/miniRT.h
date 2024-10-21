@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/16 16:51:49 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:08:06 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,13 +399,13 @@ static const t_hitpoint		g_hp_inf = ((((((((t_hitpoint){
 							{{0, 0, 0}}, NULL})))))));
 
 // main.c
-void			ft_free(void **mem);
 t_rt			*get_rt(void);
 
 // init_miniRT.c
 void			init_mini_rt(char **argv, t_rt *rt);
 
 // cleanup.c
+void			ft_free(void **mem);
 char			*error_msg(t_error error);
 void			error(char *message, char *msg2);
 void			terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt);
@@ -486,6 +486,13 @@ void			create_tbo_objects(t_rt *rt);
 
 // init/init_texture_ubo.c
 void			create_ubo_textures(t_rt *rt);
+
+// init/init_vertex_buffer_objects.c
+void			create_vbo_screen_vertices(t_rt *rt);
+void			create_vbo_gizmo(t_rt *rt);
+
+// init/init_glfw.c
+void			init_glfw(t_rt *rt);
 
 // ┌────────┐
 // │ Parser │
@@ -587,6 +594,7 @@ GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 // shader/shader_program.c
 GLuint			create_shader_program(const char *vert,
 					const char *freg, t_rt *rt);
+void			init_shader_programs(t_rt *rt);
 
 // shader/bind_buffer.c
 void			bind_framebuffer_texture(GLuint shader_program, t_rt *rt);
