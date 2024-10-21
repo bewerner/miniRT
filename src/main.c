@@ -3,24 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/16 17:04:24 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:07:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../inc/miniRT.h"
-
-void	ft_free(void **mem)
-{
-	if (mem && *mem)
-	{
-		free(*mem);
-		*mem = NULL;
-	}
-}
 
 void	validate_args(int argc, char **argv, t_rt *rt)
 {

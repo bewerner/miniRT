@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/16 16:53:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:07:32 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
+
+void	ft_free(void **mem)
+{
+	if (mem && *mem)
+	{
+		free(*mem);
+		*mem = NULL;
+	}
+}
 
 char	*error_msg(t_error error)
 {
@@ -46,21 +55,6 @@ void	error(char *message, char *msg2)
 	errno = 0;
 }
 
-void	cleanup(t_rt *rt)
-{
-	if (rt->line)
-		ft_lstclear(&rt->line, free);
-	rt->line = NULL;
-	ft_free((void *)&rt->objects);
-	rt->objects = NULL;
-	ft_free((void *)&rt->lights);
-	rt->lights = NULL;
-	ft_free((void *)&rt->materials);
-	rt->materials = NULL;
-	ft_free((void *)&rt->textures);
-	rt->textures = NULL;
-}
-
 static void	delete_shader_program(GLuint shader_program)
 {
 	if (shader_program)
@@ -85,6 +79,12 @@ void	terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt)
 	if (rt->window)
 		glfwDestroyWindow(rt->window);
 	glfwTerminate();
-	cleanup(rt);
+	if (rt->line)
+		ft_lstclear(&rt->line, free);
+	rt->line = NULL;
+	ft_free((void *)&rt->objects);
+	ft_free((void *)&rt->lights);
+	ft_free((void *)&rt->materials);
+	ft_free((void *)&rt->textures);
 	exit (exit_code);
 }
