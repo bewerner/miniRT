@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 12:52:05 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/16 16:58:03 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:32:22 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ static size_t	get_import_file_size(char *str, char *shader_path)
 	return (size);
 }
 
-static size_t	shader_src_size_with_import(const char *file)
+static size_t	shader_src_size_with_import(const char *file,
+					size_t size, size_t line_size)
 {
 	int		fd;
-	size_t	size;
-	size_t	line_size;
 	char	*line;
 	char	shader_path[512];
 
@@ -72,34 +71,32 @@ static size_t	shader_src_size_with_import(const char *file)
 	return (size);
 }
 
-static int	read_into_buf(char *buf, char *shader_path, int fd)
+static int	read_into_buf(char *buf, char *shader_path, int fd, size_t ij[2])
 {
-	size_t	i;
-	size_t	j;
 	char	*line;
 	char	import_file[1024];
 
-	i = 0;
+	ij[0] = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		if (is_import(line))
 		{
 			prepares_import_filename(import_file, &line[8], shader_path);
-			j = read_shader_src(&buf[i], import_file);
-			if (j == 0)
+			ij[1] = read_shader_src(&buf[ij[0]], import_file);
+			if (ij[1] == 0)
 				return (-1);
-			i += j;
+			ij[0] += ij[1];
 		}
 		else
 		{
-			ft_memcpy(&buf[i], line, ft_strlen(line));
-			i += ft_strlen(line);
+			ft_memcpy(&buf[ij[0]], line, ft_strlen(line));
+			ij[0] += ft_strlen(line);
 		}
 		ft_free((void *)&line);
 		line = get_next_line(fd);
 	}
-	buf[i] = '\0';
+	buf[ij[0]] = '\0';
 	return (0);
 }
 
@@ -110,7 +107,7 @@ char	*assemble_shader_source(const char *file)
 	size_t	src_size;
 	char	shader_path[512];
 
-	src_size = shader_src_size_with_import(file);
+	src_size = shader_src_size_with_import(file, 0, 0);
 	if (src_size == 0)
 		return (NULL);
 	shader_src = (char *)malloc(src_size + 1 * sizeof(char));
@@ -122,7 +119,7 @@ char	*assemble_shader_source(const char *file)
 		return (NULL);
 	}
 	extract_shader_path(shader_path, file);
-	if (read_into_buf(shader_src, shader_path, fd) == -1)
+	if (read_into_buf(shader_src, shader_path, fd, (int [2]){0, 0}) == -1)
 		ft_free((void *)&shader_src);
 	close(fd);
 	return (shader_src);
