@@ -58,8 +58,6 @@ void	main(void)
 			previous.normal			= texture(buffer, vec3(uv, 2.0)).rgb;
 			previous.material_idx	= int(texture(buffer, vec3(uv, 4.0)).g);
 			previous.color			= texture(buffer, vec3(uv, 5.0)).rgb;;
-			// FragColor = previous.color;
-			// return ;
 
 			t_ray bounce_ray;
 			bounce_ray.origin = previous.pos;
