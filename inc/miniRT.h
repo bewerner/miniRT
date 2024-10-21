@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 16:38:11 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 18:53:47 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@
 
 # define WINDOW_WIDTH	1280
 # define WINDOW_HEIGHT	720
+
+# define ACC  4.5f
+# define SCROLL_SENSITIVITY 50.0f
 
 # define SWAP_INTERVAL	1
 
@@ -376,27 +379,6 @@ typedef struct s_rt
 	int				sample_count;
 	int				max_samples;
 }	t_rt;
-
-static const t_ivec2		g_ivec2_zero = (t_ivec2){0, 0};
-static const t_vec2			g_vec2_zero = (t_vec2){0, 0};
-static const t_vec3			g_vec3_zero = (t_vec3){{0, 0, 0}};
-static const t_vec3			g_vec3_inf
-	= (t_vec3){{INFINITY, INFINITY, INFINITY}};
-
-static const t_vec3			g_vec3_white = (t_vec3){{1, 1, 1}};
-static const t_vec3			g_vec3_black = (t_vec3){{0, 0, 0}};
-static const t_vec3			g_vec3_transparent = (t_vec3){{0, 0, 0}};
-static const t_vec3			g_vec3_mg = (t_vec3){{0.05, 0.05, 0.05}};
-
-static const t_vec4			g_vec4_zero = (t_vec4){{0, 0, 0, 0}};
-static const t_vec4			g_vec4_white = (t_vec4){{1, 1, 1, 1}};
-static const t_vec4			g_vec4_black = (t_vec4){{0, 0, 0, 1}};
-static const t_vec4			g_vec4_transparent = (t_vec4){{0, 0, 0, 0}};
-static const t_vec4			g_vec4_mg = (t_vec4){{0.05, 0.05, 0.05, 0}};
-static const t_hitpoint		g_hp_inf = ((((((((t_hitpoint){
-							{{INFINITY, INFINITY, INFINITY}},
-							{{INFINITY, INFINITY, INFINITY}},
-							{{0, 0, 0}}, NULL})))))));
 
 // main.c
 t_rt			*get_rt(void);

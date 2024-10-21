@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/08 01:09:22 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 18:53:30 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-// if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !mods)
-// {
-// 	// rt_select(window, rt);
-// 	return ;
-// }
 
 void	mouse_hook(GLFWwindow *window, int button, int action, int mods)
 {

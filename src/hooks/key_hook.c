@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/08 03:17:30 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 18:51:24 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
 
-void	print_camera_info(t_rt *rt)
+static void	print_camera_info(t_rt *rt)
 {
 	printf("C    %f, %f, %f    %f, %f, %f    %f\n",
 		rt->camera.origin.x, rt->camera.origin.y, rt->camera.origin.z,
@@ -42,7 +42,7 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 		rt->camera.origin = (t_vec3){{0, -vec3_len(rt->camera.origin), 0}};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = M_PI / 2;
-		rt->move.vel = g_vec3_zero;
+		rt->move.vel = (t_vec3){{0, 0, 0}};
 	}
 	else if (key == GLFW_KEY_KP_3 && action == GLFW_PRESS)
 	{
@@ -50,7 +50,7 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 		rt->camera.origin = (t_vec3){{vec3_len(rt->camera.origin), 0, 0}};
 		rt->camera.yaw = M_PI / 2;
 		rt->camera.pitch = M_PI / 2;
-		rt->move.vel = g_vec3_zero;
+		rt->move.vel = (t_vec3){{0, 0, 0}};
 	}
 	else if (key == GLFW_KEY_KP_7 && action == GLFW_PRESS)
 	{
@@ -58,7 +58,7 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 		rt->camera.origin = (t_vec3){{0, 0, vec3_len(rt->camera.origin)}};
 		rt->camera.yaw = 0;
 		rt->camera.pitch = 0;
-		rt->move.vel = g_vec3_zero;
+		rt->move.vel = (t_vec3){{0, 0, 0}};
 	}
 }
 
@@ -96,7 +96,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode,
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
 	{
 		reset_camera(&rt->camera);
-		rt->move.vel = g_vec3_zero;
+		rt->move.vel = (t_vec3){{0, 0, 0}};
 	}
 	else if (key == GLFW_KEY_P && action == GLFW_PRESS)
 		print_camera_info(rt);

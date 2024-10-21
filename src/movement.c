@@ -6,20 +6,15 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/28 13:22:16 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:49:41 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-// #define ACC  0.15f
-// #define DAMP 0.65f
-#define ACC  4.5f
-// #define DAMP 0.65f
-
 void	handle_move_input(t_rt *rt)
 {
-	rt->move.acc = g_vec3_zero;
+	rt->move.acc = (t_vec3){{0, 0, 0}};
 	if (glfwGetKey(rt->window, GLFW_KEY_A))
 		rt->move.acc.x -= ACC * rt->delta_time;
 	if (glfwGetKey(rt->window, GLFW_KEY_D))

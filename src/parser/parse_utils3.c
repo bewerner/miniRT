@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:39:29 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/16 16:56:37 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:56:45 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ bool	has_next_value(char *line)
 }
 
 // validate normal vector length
+// parse_utils3.c
 t_vec3	vn(t_vec3 normal, t_rt *rt)
 {
 	float	len;
@@ -59,5 +60,5 @@ t_vec3	vn(t_vec3 normal, t_rt *rt)
 	if (len >= 1.0f - EPSILON && len <= 1.0f + EPSILON)
 		return (normal);
 	terminate("normal is not a unit vector", rt->curr_line, 1, rt);
-	return (g_vec3_zero);
+	return ((t_vec3){{0, 0, 0}});
 }
