@@ -2,6 +2,7 @@
 NAME				=	miniRT
 LIBFT				=	libft/libft.a
 STB					=	inc/stb
+GLAD_ARCHIVE		=	glad.tar
 
 VPATH				=	src src/init src/parser src/shader src/primitives src/utils src/hooks lib
 
@@ -15,7 +16,6 @@ SRC					=	main.c glad.c cleanup.c \
 						movement.c init_miniRT.c \
 						update.c update_window_title.c \
 						string_utils.c vec3_utils1.c vec3_utils2.c vec3_rotation.c time.c
-#						render.c plane.c sphere.c cylinder.c get_diffuse_color.c get_specular_color.c get_reflection_color.c get_hitpoint.c 
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
 CFLAGS				=	-Wall -Wextra -Werror #-flto -Ofast -march=native
@@ -33,7 +33,7 @@ COL_DEFAULT			= 	\033[0m
 
 .SILENT:
 
-all: $(LIBFT) $(STB) $(NAME)
+all: $(LIBFT) glad $(STB) $(NAME)
 
 $(NAME): $(OBJ)
 	echo "$(COL_YELLOW)Building $(NAME)...$(COL_DEFAULT)"
@@ -49,6 +49,9 @@ $(STB):
 	echo "$(COL_YELLOW)Cloning $(STB)...$(COL_DEFAULT)"
 	git clone git@github.com:nothings/stb.git inc/stb
 	echo "$(COL_GREEN)Successfully cloned $(STB).$(COL_DEFAULT)"
+
+glad:
+	tar -xkpf $(GLAD_ARCHIVE)
 
 ./obj/%.o: %.c
 	mkdir -p obj
