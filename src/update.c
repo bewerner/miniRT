@@ -6,11 +6,21 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/29 19:34:43 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 16:13:54 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
+
+static void	update_delta_time(t_rt *rt)
+{
+	static double	start;
+	static double	oldstart;
+
+	start = glfwGetTime();
+	rt->delta_time = start - oldstart;
+	oldstart = start;
+}
 
 void	update_ubo_rt(t_rt *rt)
 {
@@ -33,18 +43,9 @@ void	update_ubo_rt(t_rt *rt)
 
 void	update(t_rt *rt)
 {
-	static int		i;
-	static double	start;
-	static double	oldstart;
-
-	i++;
 	handle_move_input(rt);
 	move_camera(rt);
-	if (i == 1)
-		ft_timer(TIMER_START, NULL);
-	start = glfwGetTime();
-	rt->delta_time = start - oldstart;
-	oldstart = start;
+	update_delta_time(rt);
 	if (rt->mode == MODE_PREVIEW && rt->sample_count <= rt->max_samples)
 	{
 		glfwSwapInterval(0);
@@ -52,11 +53,8 @@ void	update(t_rt *rt)
 	}
 	else
 		glfwSwapInterval(1);
-
-
 	update_ubo_rt(rt);
 	update_window_title(rt);
-
 	if (rt->sample_count <= rt->max_samples)
 	{
 		render_raw_image(rt);
@@ -66,13 +64,6 @@ void	update(t_rt *rt)
 		glfwSwapBuffers(rt->window);
 	}
 	else
-		usleep(1000000/60);
-
+		usleep(1000000 / 60);
 	glfwPollEvents();
-
-	if (i == 60)
-	{
-		ft_timer(TIMER_STOP, NULL);
-		i = 0;
-	}
 }
