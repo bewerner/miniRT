@@ -329,7 +329,7 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 	// EMISSION
 	col += mat.emission_color * mat.emission_strength;
 
-	return (col);
+	return (clamp(col, 0, 16));
 }
 
 vec3	trace_ray(t_ray ray)

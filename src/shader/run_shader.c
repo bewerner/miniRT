@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 21:24:01 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 21:47:32 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	render_raw_image(t_rt *rt)
 
 
 	rt->max_diffuse_bounces = rt->debug;
-	// rt->max_diffuse_bounces = 1;
+	// rt->max_diffuse_bounces = 4;
 
 
 	// CHOOSE RENDER SHADER PROGRAM
