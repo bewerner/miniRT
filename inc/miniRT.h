@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/22 10:32:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/22 15:55:36 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,6 +330,8 @@ typedef struct s_ubo
 	int				mac_os;
 	int				diffuse_bounce_count;
 	int				max_diffuse_bounces;
+	int				glossy_bounce_count;
+	int				max_glossy_bounces;
 }	t_ubo;
 
 typedef struct s_rt
@@ -382,6 +384,8 @@ typedef struct s_rt
 	int				max_samples;
 	int				diffuse_bounce_count;
 	int				max_diffuse_bounces;
+	int				glossy_bounce_count;
+	int				max_glossy_bounces;
 }	t_rt;
 
 // main.c

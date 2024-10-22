@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 21:57:43 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/22 15:56:02 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	update_ubo_rt(t_rt *rt)
 	ubo_rt.mac_os = MAC_OS;
 	ubo_rt.diffuse_bounce_count = rt->diffuse_bounce_count;
 	ubo_rt.max_diffuse_bounces = rt->max_diffuse_bounces;
+	ubo_rt.glossy_bounce_count = rt->glossy_bounce_count;
+	ubo_rt.max_glossy_bounces = rt->max_glossy_bounces;
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
