@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/22 16:04:23 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/22 18:20:14 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	render_raw_image(t_rt *rt)
 	
 	while (rt->mode == MODE_PREVIEW && rt->diffuse_bounce_count < rt->max_diffuse_bounces)
 	{
+		// printf("bouncing diffuse\n");
 		rt->diffuse_bounce_count++;
 		update_ubo_rt(rt);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -79,6 +80,7 @@ void	render_raw_image(t_rt *rt)
 
 	while (rt->mode == MODE_PREVIEW && rt->glossy_bounce_count < rt->max_glossy_bounces)
 	{
+		// printf("bouncing glossy\n");
 		rt->glossy_bounce_count++;
 		update_ubo_rt(rt);
 		glDrawArrays(GL_TRIANGLES, 0, 6);

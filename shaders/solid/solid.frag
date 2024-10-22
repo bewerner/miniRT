@@ -24,7 +24,7 @@ vec3	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint h
 vec3	get_solid_color(t_hitpoint hitpoint);
 vec3	trace_ray_solid(t_ray ray, vec2 uv);
 
-out vec3 FragColor;
+out vec4 FragColor;
 
 void main()
 {
@@ -42,11 +42,11 @@ void main()
 
 	if (is_ligth_gizmo(camera_ray) == true)
 	{
-		FragColor = VEC3_BLACK;
+		FragColor.rgb = VEC3_BLACK;
 		return ;
 	}
 
 	vec3 col = trace_ray_solid(camera_ray, uv);
 
-	FragColor = col;
+	FragColor.rgb = col;
 }

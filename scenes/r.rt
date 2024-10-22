@@ -11,7 +11,7 @@ l	3,0,5		0.2		0,0,255
 l	20,0,3		0.005		255,64,64
 
 #m	name 	| color 		| metallic | roughness | ior | transmission | emission_strength | emission_color
-mat	mat1	  204,240,204		0.85			1.0		1.45		0.0				0.0				255,255,255
+mat	mat1	  204,240,204		0.2			0.0		1.45		0.0				0.0				255,255,255
 
 sp	-3,0,1	2.0		255,255,255	mat1
 sp	 0,0,1	2.0		255,255,255	mat1
