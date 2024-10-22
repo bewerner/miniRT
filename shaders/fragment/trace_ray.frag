@@ -170,6 +170,30 @@ vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 
 	return (col);
 }
 
+vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N, vec3 V, vec3 L, t_material mat, vec3 previous_specular)
+{
+	vec3 F0 = mix(dielectric_F0(mat.ior), mat.color, mat.metallic) * 1.6; // incorrect hack
+	vec3 H  = normalize(V + L);
+	vec3 ks = fresnel(F0, V, H);
+	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+	float a = mat.roughness * mat.roughness;
+
+	// float diffuse = lambert_diffuse(N, L);
+	// vec3  radiance = radiance(hit_pos, point_light);
+	// if (rt.debug == 1)
+	// 	x = true;
+	vec3  specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+	specular = max(clamp(specular, vec3(0.0), ks), ks);
+
+	specular *= previous_specular;
+	out_hitpoint_color.rgb = specular; // out_hitpoint_color is actually out_hitpoint_specular_accumulated in this case
+
+	// vec3 col = (kd * mat.color + specular) * radiance * diffuse;
+	// vec3 col = (kd * mat.color + specular * reflection_col);
+	vec3 col = (specular * reflection_col);
+	return (col);
+}
+
 vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	t_ray ray;
@@ -190,29 +214,6 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	return (col);
 }
 
-vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N, vec3 V, vec3 L, t_material mat, vec3 previous_specular)
-{
-	vec3 F0 = mix(dielectric_F0(mat.ior), mat.color, mat.metallic);
-	vec3 H  = normalize(V + L);
-	vec3 ks = fresnel(F0, V, H);
-	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-	float a = mat.roughness * mat.roughness;
-
-	// float diffuse = lambert_diffuse(N, L);
-	// vec3  radiance = radiance(hit_pos, point_light);
-	vec3  specular = vec3(0.0);
-	// if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
-		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-	specular = max(clamp(specular, vec3(0.0), ks), ks);
-
-	specular *= previous_specular;
-	out_hitpoint_color.rgb = specular; // out_hitpoint_color is actually out_hitpoint_specular_accumulated
-
-	// vec3 col = (kd * mat.color + specular) * radiance * diffuse;
-	vec3 col = (specular * reflection_col);
-	return (col);
-}
-
 vec3	render_hitpoint(t_hitpoint hitpoint)
 {
 	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
@@ -227,7 +228,7 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 
 	vec3  N   = hitpoint.normal;
 	vec3  V   = normalize(-hitpoint.ray);
-	vec3  F0p = mix(dielectric_F0(mat.ior) * 1.6, mat.color, mat.metallic);
+	vec3  F0p  = mix(dielectric_F0(mat.ior) * 1.6, mat.color, mat.metallic);
 	vec3  F0  = mix(dielectric_F0(mat.ior), mat.color, mat.metallic);
 	float a   = mat.roughness * mat.roughness;
 
