@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/22 03:36:22 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/22 10:32:45 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,6 +400,10 @@ void			terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt);
 void			handle_move_input(t_rt *rt);
 void			move_camera(t_rt *rt);
 
+// render.c
+void			postprocess_raw_image(t_rt *rt);
+void			render_raw_image(t_rt *rt);
+
 // update.c
 void			update_ubo_rt(t_rt *rt);
 void			update(t_rt *rt);
@@ -593,10 +597,6 @@ void			bind_texture_ubo(GLuint shader_program, t_rt *rt);
 
 // shader/draw_gizmo.c
 void			draw_gizmo(t_rt *rt);
-
-// shader/run_shader.c
-void			postprocess_raw_image(t_rt *rt);
-void			render_raw_image(t_rt *rt);
 
 // ┌───────────┐
 // │ Utilities │
