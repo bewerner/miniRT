@@ -51,7 +51,7 @@ $(STB):
 	echo "$(COL_GREEN)Successfully cloned $(STB).$(COL_DEFAULT)"
 
 glad:
-	tar -xkpf $(GLAD_ARCHIVE)
+	-tar -xkpf $(GLAD_ARCHIVE) 2>/dev/null
 
 ./obj/%.o: %.c
 	mkdir -p obj
@@ -81,4 +81,4 @@ d: LDFLAGS += $(DEBUG)
 d: CFLAGS += $(DEBUG)
 d: re
 
-.PHONY: all clean fclean re f d
+.PHONY: all clean fclean re glad f d

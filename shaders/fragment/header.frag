@@ -140,15 +140,6 @@ struct t_texture
 	int			padding3;
 };
 
-	// int			type;
-	// t_vec3		col1;
-	// int			texture_unit;
-	// t_vec3		col2;
-	// float		scale;
-	// int			padding1;
-	// int			padding2;
-	// int			padding3;
-
 struct t_camera
 {
 	vec3			origin;
@@ -173,6 +164,8 @@ struct t_rt
 	int				height;
 	int				mode;
 	int				mac_os;
+	int				diffuse_bounce_count;
+	int				max_diffuse_bounces;
 };
 
 // ┌───────────────────────────┐
@@ -198,11 +191,9 @@ in vec2 coord;
 uniform samplerBuffer	objects;
 uniform samplerBuffer	lights;
 uniform sampler3D		agx_lut;
-uniform sampler2D		cumulative_render_buffer;
+uniform sampler2DArray	buffer;
 uniform sampler2D		environment_map;
 uniform sampler2D		texture_units[MAX_IMAGE_TEXTURES];
-
-out vec3 FragColor;
 
 // AgX.frag
 vec3			to_agx(vec3 col);
@@ -219,8 +210,10 @@ vec3			get_real_random_hemisphere_direction(t_hitpoint hitpoint);
 vec3			get_environment_map_color(vec3 direction);
 vec3			get_sky_color(t_hitpoint hitpoint);
 vec3			get_sky_color_from_ray(t_ray ray);
+vec3			get_sky_color_from_dir(vec3 dir);
 
 // trace_ray.frag
+vec3			add_bounce_light(t_ray bounce_ray, t_hitpoint previous);
 vec3			trace_ray(t_ray ray);
 
 // ┌─────────┐
