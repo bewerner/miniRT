@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 22:37:02 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/22 03:36:22 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,9 +357,6 @@ typedef struct s_rt
 	GLuint			tbo_agx_lut_id;
 	GLuint			fbo_id;
 	GLuint			tex_fbo_id;
-	GLuint			tex_fbo_id2;
-	GLuint			tex_fbo_id3;
-	GLuint			tex_fbo_id4;
 	GLuint			environment_map_id;
 	GLuint			texture_ids[MAX_IMAGE_TEXTURES];
 
@@ -403,10 +400,6 @@ void			terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt);
 void			handle_move_input(t_rt *rt);
 void			move_camera(t_rt *rt);
 
-// render.c
-// t_vec3			get_pixel_ray(uint32_t x, uint32_t y, t_rt *rt);
-// void			render(t_rt *rt);
-
 // update.c
 void			update_ubo_rt(t_rt *rt);
 void			update(t_rt *rt);
@@ -440,9 +433,6 @@ void			resize_hook(GLFWwindow *window, int width, int height);
 // hooks/scroll_hook.c
 void			scroll_hook(GLFWwindow *window,
 					double xoffset, double yoffset);
-
-// hooks/loop_hook.c
-// void			loop_hook(void *param);
 
 // ┌──────┐
 // │ Init │
@@ -550,9 +540,6 @@ t_vec3			vn(t_vec3 normal, t_rt *rt);
 // parser/parser_validations.c
 void			verify_material_uniqueness(t_rt *rt);
 void			verify_texture_uniqueness(t_rt *rt);
-// select.c
-// void			unselect_all(t_object *obj);
-// void			rt_select(GLFWwindow* window, t_rt *rt);
 
 // ┌────────────┐
 // │ Primitives │

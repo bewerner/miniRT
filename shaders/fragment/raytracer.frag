@@ -50,8 +50,6 @@ void	main(void)
 	}
 	else
 	{
-		// FragColor = vec3(0,1,0);
-		// return ;
 		t_hitpoint previous;
 		previous.hit = bool(texture(buffer, vec3(uv, 4.0)).r);
 		if (previous.hit == true)
