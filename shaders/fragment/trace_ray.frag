@@ -190,7 +190,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	return (col);
 }
 
-vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N, vec3 V, vec3 L, t_material mat)
+vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N, vec3 V, vec3 L, t_material mat, vec3 previous_specular)
 {
 	vec3 F0 = mix(dielectric_F0(mat.ior), mat.color, mat.metallic);
 	vec3 H  = normalize(V + L);
@@ -203,6 +203,10 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 	vec3  specular = vec3(0.0);
 	// if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
 		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+	specular = max(clamp(specular, vec3(0.0), ks), ks);
+
+	specular *= previous_specular;
+	out_hitpoint_color.rgb = specular; // out_hitpoint_color is actually out_hitpoint_specular_accumulated
 
 	// vec3 col = (kd * mat.color + specular) * radiance * diffuse;
 	vec3 col = (specular * reflection_col);
@@ -212,9 +216,9 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 vec3	render_hitpoint(t_hitpoint hitpoint)
 {
 	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
-	out_hitpoint_pos = hit_pos;
-	out_hitpoint_normal = hitpoint.normal;
-	out_hitpoint_misc.y = hitpoint.material_idx;
+	out_hitpoint_pos.rgb = hit_pos;
+	out_hitpoint_normal.rgb = hitpoint.normal;
+	out_hitpoint_normal.a = hitpoint.material_idx;
 	vec3 col = VEC3_BLACK;
 	t_material mat = materials[hitpoint.material_idx];
 
@@ -245,10 +249,10 @@ vec3	trace_ray(t_ray ray)
 {
 	vec3 col;
 	t_hitpoint hitpoint = get_closest_hitpoint(ray, true);
-	out_hitpoint_misc.x = float(hitpoint.hit);
+	out_hitpoint_pos.a = float(hitpoint.hit);
 	hitpoint.color = get_hitpoint_color(hitpoint);
-	out_hitpoint_color = hitpoint.color;
-	out_glossy_hitpoint_ray	= hitpoint.ray;
+	out_hitpoint_color.rgb = hitpoint.color;
+	out_glossy_hitpoint_ray.rgb	= hitpoint.ray;
 
 	if (hitpoint.hit == false)
 		return (get_sky_color_from_ray(ray));
@@ -261,7 +265,7 @@ vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
 {
 	vec3 col;
 	t_hitpoint hitpoint = get_closest_hitpoint(bounce_ray, true);
-	out_hitpoint_misc.x = float(hitpoint.hit);
+	out_hitpoint_pos.a = float(hitpoint.hit);
 	hitpoint.color = get_hitpoint_color(hitpoint);
 	// out_hitpoint_color = hitpoint.color;
 	if (hitpoint.hit == false)
@@ -271,11 +275,11 @@ vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
 	vec3  radiance = render_hitpoint(hitpoint);
 	vec3 bounce_direction = normalize(previous.pos - hitpoint.pos);
 	col = previous.color * radiance;
-	out_hitpoint_color = previous.color * hitpoint.color;
+	out_hitpoint_color.rgb = previous.color * hitpoint.color;
 	return (col);
 }
 
-vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous)
+vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous, vec3 specular)
 {
 	vec3 col;
 	t_hitpoint hitpoint = get_closest_hitpoint(reflection_ray, true);
@@ -286,13 +290,12 @@ vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous)
 	else
 		col = render_hitpoint(hitpoint);
 
-	col = get_reflection_light_contribution(previous.pos, col, previous.normal, normalize(previous.ray), normalize(reflection_ray.dir), materials[previous.material_idx]);
+	col = get_reflection_light_contribution(previous.pos, col, previous.normal, normalize(previous.ray), normalize(reflection_ray.dir), materials[previous.material_idx], specular);
 
-	out_glossy_hitpoint_pos = out_hitpoint_pos;
-	out_glossy_hitpoint_normal = out_hitpoint_normal;
-	out_glossy_hitpoint_misc.x	= float(hitpoint.hit);
-	out_glossy_hitpoint_misc.y = out_hitpoint_misc.y;
-	out_glossy_hitpoint_ray = hitpoint.ray;
+	out_glossy_hitpoint_pos		= out_hitpoint_pos;
+	out_glossy_hitpoint_pos.a 	= float(hitpoint.hit);
+	out_glossy_hitpoint_normal	= out_hitpoint_normal;
+	out_glossy_hitpoint_ray.rgb = hitpoint.ray;
 
 	return (col);
 }

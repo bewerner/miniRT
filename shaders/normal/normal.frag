@@ -20,7 +20,7 @@
 vec3	get_normal_color(t_hitpoint hitpoint);
 vec3	trace_ray_normal(t_ray ray);
 
-out vec3 FragColor;
+out vec4 FragColor;
 
 void main()
 {
@@ -36,5 +36,5 @@ void main()
 
 	vec3 col = trace_ray_normal(camera_ray);
 
-	FragColor = col;
+	FragColor.rgb = col;
 }
