@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:56:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 18:53:30 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:37:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	mouse_hook(GLFWwindow *window, int button, int action, int mods)
 	{
 		if (rt->cursor_is_settable)
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwGetCursorPos(rt->window, &rt->cursor_pos.x, &rt->cursor_pos.y);
 		rt->initial_cursor_pos = rt->cursor_pos;
 		usleep(15000);
 	}
