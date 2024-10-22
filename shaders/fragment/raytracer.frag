@@ -4,7 +4,7 @@ layout(location = 0) out vec4 FragColor;
 layout(location = 1) out vec4 out_hitpoint_pos;				// alpha is hitpoint.hit
 layout(location = 2) out vec4 out_hitpoint_normal;			// alpha is hitpoint.material_idx
 layout(location = 3) out vec4 out_hitpoint_render;
-layout(location = 4) out vec4 out_hitpoint_color;
+layout(location = 4) out vec4 out_hitpoint_color;			// this doubles as glossy_specular_accumulation
 layout(location = 5) out vec4 out_glossy_hitpoint_pos;		// alpha is hitpoint.hit
 layout(location = 6) out vec4 out_glossy_hitpoint_normal;	// alpha is hitpoint.material_idx
 layout(location = 7) out vec4 out_glossy_hitpoint_ray;
@@ -77,7 +77,11 @@ void	main(void)
 		{
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
 			out_hitpoint_render.rgb = render;
+			out_hitpoint_pos.a = float(false); // hitpoint.hit
 		}
+		out_glossy_hitpoint_pos		= texture(buffer, vec3(uv, 5.0));
+		out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0));
+		out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0));
 	}
 	else
 	{
@@ -105,6 +109,7 @@ void	main(void)
 		{
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
 			out_hitpoint_render.rgb = render;
+			out_glossy_hitpoint_pos.a = float(false); // hitpoint.hit
 		}
 	}
 
