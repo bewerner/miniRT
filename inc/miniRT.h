@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 18:53:47 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/21 22:37:02 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,6 +328,8 @@ typedef struct s_ubo
 	int				height;
 	int				mode;
 	int				mac_os;
+	int				diffuse_bounce_count;
+	int				max_diffuse_bounces;
 }	t_ubo;
 
 typedef struct s_rt
@@ -355,6 +357,9 @@ typedef struct s_rt
 	GLuint			tbo_agx_lut_id;
 	GLuint			fbo_id;
 	GLuint			tex_fbo_id;
+	GLuint			tex_fbo_id2;
+	GLuint			tex_fbo_id3;
+	GLuint			tex_fbo_id4;
 	GLuint			environment_map_id;
 	GLuint			texture_ids[MAX_IMAGE_TEXTURES];
 
@@ -378,6 +383,8 @@ typedef struct s_rt
 	float			debug;
 	int				sample_count;
 	int				max_samples;
+	int				diffuse_bounce_count;
+	int				max_diffuse_bounces;
 }	t_rt;
 
 // main.c
@@ -401,6 +408,7 @@ void			move_camera(t_rt *rt);
 // void			render(t_rt *rt);
 
 // update.c
+void			update_ubo_rt(t_rt *rt);
 void			update(t_rt *rt);
 
 // update_window_title.c
@@ -585,6 +593,7 @@ void			init_shader_programs(t_rt *rt);
 
 // shader/bind_buffer2.c
 void			bind_framebuffer_texture(GLuint shader_program, t_rt *rt);
+void			bind_framebuffer_textures(GLuint shader_program, t_rt *rt);
 void			bind_objects(GLuint shader_program, t_rt *rt);
 void			bind_lights(GLuint shader_program, t_rt *rt);
 void			bind_agx_lut(GLuint shader_program, t_rt *rt);

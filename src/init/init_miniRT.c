@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 16:08:10 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/21 22:43:19 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,31 @@ void	init_cursor_is_settable(t_rt *rt)
 
 void	create_fbo(t_rt *rt)
 {
+	static int		i;
+	static GLenum	draw_buffers[6] = {
+		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
+		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5};
+
 	glGenTextures(1, &rt->tex_fbo_id);
-	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glfwGetFramebufferSize(rt->window, &rt->width, &rt->height);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, rt->width, rt->height,
-		0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGB32F, rt->width, rt->height, 6, 0,
+		GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	glGenFramebuffers(1, &rt->fbo_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
-	glFramebufferTexture2D(
-		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt->tex_fbo_id, 0);
+	while (i < 6)
+	{
+		glFramebufferTextureLayer(
+			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rt->tex_fbo_id, 0, i);
+		i++;
+	}
+	glDrawBuffers(6, draw_buffers);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		terminate("Framebuffer is not complete!\n", NULL, 1, rt);
+		terminate("Framebuffer creation failed!\n", NULL, 1, rt);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

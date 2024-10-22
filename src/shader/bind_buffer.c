@@ -12,6 +12,13 @@
 
 #include "../../inc/miniRT.h"
 
+void	bind_framebuffer_textures(GLuint shader_program, t_rt *rt)
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
+	glUniform1i(glGetUniformLocation(shader_program, "buffer"), 0);
+}
+
 void	bind_texture_units(GLuint shader_program, t_rt *rt)
 {
 	size_t		idx;
