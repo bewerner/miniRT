@@ -141,15 +141,13 @@ vec3	dielectric_F0(float IOR)
 	return (vec3(pow((IOR - 1) / (IOR + 1), 2)));
 }
 
-vec3	radiance(vec3 hit_pos, t_point_light point_light, bool is_bounce_light)
+vec3	radiance(vec3 hit_pos, t_point_light point_light)
 {
 	float distance = distance(hit_pos, point_light.origin);
-	if (is_bounce_light == true)
-		return(point_light.color * min(point_light.intensity / (distance * distance), point_light.intensity));
 	return(point_light.color * (point_light.intensity / (distance * distance)));
 }
 
-vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat, bool is_bounce_light)
+vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	vec3 L  = normalize(point_light.origin - hit_pos);
 	vec3 H  = normalize(V + L);
@@ -163,20 +161,16 @@ vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 
 		return (VEC3_BLACK);
 
 	float diffuse = lambert_diffuse(N, L);
-	vec3  radiance = radiance(hit_pos, point_light, is_bounce_light);
+	vec3  radiance = radiance(hit_pos, point_light);
 	vec3  specular = vec3(0.0);
 	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
 		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 
 	vec3 col = (kd * mat.color + specular) * radiance * diffuse;
-	// if (is_bounce_light == true && rt.debug == 2)
-	// 	col = (mat.color) * radiance;
-	// if (is_bounce_light == true && rt.debug == 3)
-	// 	col = (mat.color + specular) * radiance;
 	return (col);
 }
 
-vec3	get_point_light_contribution2(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat, bool is_bounce_light)
+vec3	get_point_light_contribution2(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	vec3 L  = normalize(point_light.origin - hit_pos);
 	vec3 H  = normalize(V + L);
@@ -190,20 +184,16 @@ vec3	get_point_light_contribution2(vec3 hit_pos, t_point_light point_light, vec3
 		return (VEC3_BLACK);
 
 	float diffuse = lambert_diffuse(N, L);
-	vec3  radiance = radiance(hit_pos, point_light, is_bounce_light);
+	vec3  radiance = radiance(hit_pos, point_light);
 	vec3  specular = vec3(0.0);
 	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
 		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 
 	vec3 col = (kd * mat.color + specular) * radiance;
-	// if (is_bounce_light == true && rt.debug == 2)
-	// 	col = (mat.color) * radiance;
-	// if (is_bounce_light == true && rt.debug == 3)
-	// 	col = (mat.color + specular) * radiance;
 	return (col);
 }
 
-vec3	get_bounce_portion_of_point_light(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat, bool is_bounce_light)
+vec3	get_bounce_portion_of_point_light(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	vec3 L  = normalize(point_light.origin - hit_pos);
 	vec3 H  = normalize(V + L);
@@ -217,7 +207,7 @@ vec3	get_bounce_portion_of_point_light(vec3 hit_pos, t_point_light point_light, 
 		return (VEC3_BLACK);
 
 	float diffuse = lambert_diffuse(N, L);
-	vec3  radiance = radiance(hit_pos, point_light, is_bounce_light);
+	vec3  radiance = radiance(hit_pos, point_light);
 	vec3  specular = vec3(0.0);
 	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
 		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
@@ -282,7 +272,7 @@ t_point_light	convert_hitpoint_into_point_light(t_hitpoint hitpoint)
 	// POINT LIGHTS
 	int i = -1;
 	for (int type = next_light_type(i); type != LIGHT_NONE; type = next_light_type(i))
-		col += get_bounce_portion_of_point_light(hit_pos, get_point_light(i), N, V, F0p, a, mat, false);
+		col += get_bounce_portion_of_point_light(hit_pos, get_point_light(i), N, V, F0p, a, mat);
 
 	// AMBIENT LIGHT
 	col += get_ambient_light_contribution_no_specular(hitpoint);
@@ -321,7 +311,7 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 	// POINT LIGHTS
 	int i = -1;
 	for (int type = next_light_type(i); type != LIGHT_NONE; type = next_light_type(i))
-		col += get_point_light_contribution(hit_pos, get_point_light(i), N, V, F0p, a, mat, false);
+		col += get_point_light_contribution(hit_pos, get_point_light(i), N, V, F0p, a, mat);
 
 	// AMBIENT LIGHT
 	col += get_ambient_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
