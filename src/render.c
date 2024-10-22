@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/22 15:08:11 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/22 16:04:23 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	render_raw_image(t_rt *rt)
 {
 	GLuint	shader_program;
 
-	rt->max_diffuse_bounces = rt->debug; // TEMPORARY
+	rt->max_diffuse_bounces = 0; // TEMPORARY
+	rt->max_glossy_bounces = rt->debug; // TEMPORARY
 	shader_program = rt->solid_shader_program;
 	if (rt->mode == MODE_NORMAL)
 		shader_program = rt->normal_shader_program;
@@ -67,6 +68,7 @@ void	render_raw_image(t_rt *rt)
 	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glFinish();
+	
 	while (rt->mode == MODE_PREVIEW && rt->diffuse_bounce_count < rt->max_diffuse_bounces)
 	{
 		rt->diffuse_bounce_count++;
@@ -74,5 +76,15 @@ void	render_raw_image(t_rt *rt)
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glFinish();
 	}
+
+	while (rt->mode == MODE_PREVIEW && rt->glossy_bounce_count < rt->max_glossy_bounces)
+	{
+		rt->glossy_bounce_count++;
+		update_ubo_rt(rt);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glFinish();
+	}
+
 	rt->diffuse_bounce_count = 0;
+	rt->glossy_bounce_count = 0;
 }

@@ -1,6 +1,6 @@
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
-mat	Material.a                     255,  0,  0      0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	Material.a                    255,  0,  0       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
 mat	Material.b                    0,255,  0		    0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
 mat	Material.pl	                  203,203,203       0.000000       1.000000       1.450000       0.000000       0.000000            255,255,255
 

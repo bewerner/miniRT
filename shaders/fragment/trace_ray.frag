@@ -13,19 +13,19 @@ vec3	slerp(vec3 v0, vec3 v1, float t)
 	return ( normalize(v0 * cos(angle) + orthonormal * sin(angle)) );
 }
 
-vec3 bounce2(vec3 normal)
-{
-		float	z = mix(-1.0, 1.0, rand());
-		float	radial_distance = sqrt(1 - z * z);
-		float	phi = mix(0.0, 2 * M_PI, rand());
-		float	x = radial_distance * cos(phi);
-		float	y = radial_distance * sin(phi);
-		vec3	bounce = vec3(x, y, z);
+// vec3 bounce2(vec3 normal)
+// {
+// 		float	z = mix(-1.0, 1.0, rand());
+// 		float	radial_distance = sqrt(1 - z * z);
+// 		float	phi = mix(0.0, 2 * M_PI, rand());
+// 		float	x = radial_distance * cos(phi);
+// 		float	y = radial_distance * sin(phi);
+// 		vec3	bounce = vec3(x, y, z);
 
-		if (dot(bounce, normal) < 0.0)
-			bounce *= -1;
-		return (bounce);
-}
+// 		if (dot(bounce, normal) < 0.0)
+// 			bounce *= -1;
+// 		return (bounce);
+// }
 
 vec3 bounce(vec3 normal)
 {
@@ -170,66 +170,6 @@ vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 
 	return (col);
 }
 
-vec3	get_point_light_contribution2(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
-{
-	vec3 L  = normalize(point_light.origin - hit_pos);
-	vec3 H  = normalize(V + L);
-	vec3 ks = fresnel(F0, V, H);
-	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-
-	t_ray	light_ray;
-	light_ray.dir = hit_pos - point_light.origin;
-	light_ray.origin = point_light.origin;
-	if (is_obstructed(light_ray) == true)
-		return (VEC3_BLACK);
-
-	float diffuse = lambert_diffuse(N, L);
-	vec3  radiance = radiance(hit_pos, point_light);
-	vec3  specular = vec3(0.0);
-	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
-		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-
-	vec3 col = (kd * mat.color + specular) * radiance;
-	return (col);
-}
-
-vec3	get_bounce_portion_of_point_light(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
-{
-	vec3 L  = normalize(point_light.origin - hit_pos);
-	vec3 H  = normalize(V + L);
-	vec3 ks = fresnel(F0, V, H);
-	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-
-	t_ray	light_ray;
-	light_ray.dir = hit_pos - point_light.origin;
-	light_ray.origin = point_light.origin;
-	if (is_obstructed(light_ray) == true)
-		return (VEC3_BLACK);
-
-	float diffuse = lambert_diffuse(N, L);
-	vec3  radiance = radiance(hit_pos, point_light);
-	vec3  specular = vec3(0.0);
-	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
-		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-
-	vec3 col = (kd * mat.color + specular) * radiance * diffuse * dot(N, V);
-	return (col);
-}
-
-vec3	get_ambient_light_contribution_no_specular(t_hitpoint hitpoint)
-{
-	vec3 ambient_diffuse_light;
-	if (rt.ambient.r >= 0)
-		ambient_diffuse_light = get_ambient_color(hitpoint);
-	else
-		ambient_diffuse_light = get_sky_color(hitpoint);
-	// ambient_diffuse_light = get_sky_color(hitpoint);
-
-	vec3 col = hitpoint.color * ambient_diffuse_light;
-
-	return (col);
-}
-
 vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	t_ray ray;
@@ -250,44 +190,23 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	return (col);
 }
 
-t_point_light	convert_hitpoint_into_point_light(t_hitpoint hitpoint)
+vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N, vec3 V, vec3 L, t_material mat)
 {
-	t_point_light bounce_light;
-	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
-	out_hitpoint_pos = hit_pos;
-	out_hitpoint_normal = hitpoint.normal;
-	out_hitpoint_misc.y = hitpoint.material_idx;
-	vec3 col = VEC3_BLACK;
-	t_material mat = materials[hitpoint.material_idx];
+	vec3 F0 = mix(dielectric_F0(mat.ior), mat.color, mat.metallic);
+	vec3 H  = normalize(V + L);
+	vec3 ks = fresnel(F0, V, H);
+	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+	float a = mat.roughness * mat.roughness;
 
-	mat.color = get_hitpoint_color(hitpoint);
-	hitpoint.color = mat.color;
+	// float diffuse = lambert_diffuse(N, L);
+	// vec3  radiance = radiance(hit_pos, point_light);
+	vec3  specular = vec3(0.0);
+	// if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
+		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 
-	vec3  N   = hitpoint.normal;
-	vec3  V   = normalize(-hitpoint.ray);
-	vec3  F0p = mix(dielectric_F0(mat.ior) * 1.6, mat.color, mat.metallic);
-	vec3  F0  = mix(dielectric_F0(mat.ior), mat.color, mat.metallic);
-	float a   = mat.roughness * mat.roughness;
-
-	// POINT LIGHTS
-	int i = -1;
-	for (int type = next_light_type(i); type != LIGHT_NONE; type = next_light_type(i))
-		col += get_bounce_portion_of_point_light(hit_pos, get_point_light(i), N, V, F0p, a, mat);
-
-	// AMBIENT LIGHT
-	col += get_ambient_light_contribution_no_specular(hitpoint);
-
-	// EMISSION
-	col += mat.emission_color * mat.emission_strength;
-
-	bounce_light.type = LIGHT_POINT;
-	bounce_light.origin = hitpoint.pos;
-	bounce_light.color = col;
-	// bounce_light.intensity = 1.0;
-	bounce_light.intensity = 1.0 + 1.3;
-	bounce_light.radius = 0.0;
-
-	return (bounce_light);
+	// vec3 col = (kd * mat.color + specular) * radiance * diffuse;
+	vec3 col = (specular * reflection_col);
+	return (col);
 }
 
 vec3	render_hitpoint(t_hitpoint hitpoint)
@@ -329,6 +248,8 @@ vec3	trace_ray(t_ray ray)
 	out_hitpoint_misc.x = float(hitpoint.hit);
 	hitpoint.color = get_hitpoint_color(hitpoint);
 	out_hitpoint_color = hitpoint.color;
+	out_glossy_hitpoint_ray	= hitpoint.ray;
+
 	if (hitpoint.hit == false)
 		return (get_sky_color_from_ray(ray));
 	col = render_hitpoint(hitpoint);
@@ -342,7 +263,7 @@ vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
 	t_hitpoint hitpoint = get_closest_hitpoint(bounce_ray, true);
 	out_hitpoint_misc.x = float(hitpoint.hit);
 	hitpoint.color = get_hitpoint_color(hitpoint);
-	out_hitpoint_color = hitpoint.color;
+	// out_hitpoint_color = hitpoint.color;
 	if (hitpoint.hit == false)
 		return (VEC3_BLACK);
 
@@ -353,3 +274,111 @@ vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
 	out_hitpoint_color = previous.color * hitpoint.color;
 	return (col);
 }
+
+vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous)
+{
+	vec3 col;
+	t_hitpoint hitpoint = get_closest_hitpoint(reflection_ray, true);
+	hitpoint.color = get_hitpoint_color(hitpoint);
+
+	if (hitpoint.hit == false)
+		col = get_sky_color_from_ray(reflection_ray);
+	else
+		col = render_hitpoint(hitpoint);
+
+	col = get_reflection_light_contribution(previous.pos, col, previous.normal, normalize(previous.ray), normalize(reflection_ray.dir), materials[previous.material_idx]);
+
+	out_glossy_hitpoint_pos = out_hitpoint_pos;
+	out_glossy_hitpoint_normal = out_hitpoint_normal;
+	out_glossy_hitpoint_misc.x	= float(hitpoint.hit);
+	out_glossy_hitpoint_misc.y = out_hitpoint_misc.y;
+	out_glossy_hitpoint_ray = hitpoint.ray;
+
+	return (col);
+}
+
+// vec3	get_point_light_contribution2(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
+// {
+// 	vec3 L  = normalize(point_light.origin - hit_pos);
+// 	vec3 H  = normalize(V + L);
+// 	vec3 ks = fresnel(F0, V, H);
+// 	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+
+// 	t_ray	light_ray;
+// 	light_ray.dir = hit_pos - point_light.origin;
+// 	light_ray.origin = point_light.origin;
+// 	if (is_obstructed(light_ray) == true)
+// 		return (VEC3_BLACK);
+
+// 	float diffuse = lambert_diffuse(N, L);
+// 	vec3  radiance = radiance(hit_pos, point_light);
+// 	vec3  specular = vec3(0.0);
+// 	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
+// 		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+
+// 	vec3 col = (kd * mat.color + specular) * radiance;
+// 	return (col);
+// }
+
+// vec3	get_bounce_portion_of_point_light(vec3 hit_pos, t_point_light point_light, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
+// {
+// 	vec3 L  = normalize(point_light.origin - hit_pos);
+// 	vec3 H  = normalize(V + L);
+// 	vec3 ks = fresnel(F0, V, H);
+// 	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+
+// 	t_ray	light_ray;
+// 	light_ray.dir = hit_pos - point_light.origin;
+// 	light_ray.origin = point_light.origin;
+// 	if (is_obstructed(light_ray) == true)
+// 		return (VEC3_BLACK);
+
+// 	float diffuse = lambert_diffuse(N, L);
+// 	vec3  radiance = radiance(hit_pos, point_light);
+// 	vec3  specular = vec3(0.0);
+// 	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack
+// 		specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+
+// 	vec3 col = (kd * mat.color + specular) * radiance * diffuse * dot(N, V);
+// 	return (col);
+// }
+
+// t_point_light	convert_hitpoint_into_point_light(t_hitpoint hitpoint)
+// {
+// 	t_point_light bounce_light;
+// 	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
+// 	out_hitpoint_pos = hit_pos;
+// 	out_hitpoint_normal = hitpoint.normal;
+// 	out_hitpoint_misc.y = hitpoint.material_idx;
+// 	vec3 col = VEC3_BLACK;
+// 	t_material mat = materials[hitpoint.material_idx];
+
+// 	mat.color = get_hitpoint_color(hitpoint);
+// 	hitpoint.color = mat.color;
+
+// 	vec3  N   = hitpoint.normal;
+// 	vec3  V   = normalize(-hitpoint.ray);
+// 	vec3  F0p = mix(dielectric_F0(mat.ior) * 1.6, mat.color, mat.metallic);
+// 	vec3  F0  = mix(dielectric_F0(mat.ior), mat.color, mat.metallic);
+// 	float a   = mat.roughness * mat.roughness;
+
+// 	// POINT LIGHTS
+// 	int i = -1;
+// 	for (int type = next_light_type(i); type != LIGHT_NONE; type = next_light_type(i))
+// 		col += get_bounce_portion_of_point_light(hit_pos, get_point_light(i), N, V, F0p, a, mat);
+
+// 	// AMBIENT LIGHT
+// 	col += get_ambient_light_contribution_no_specular(hitpoint);
+
+// 	// EMISSION
+// 	col += mat.emission_color * mat.emission_strength;
+
+// 	bounce_light.type = LIGHT_POINT;
+// 	bounce_light.origin = hitpoint.pos;
+// 	bounce_light.color = col;
+// 	// bounce_light.intensity = 1.0;
+// 	bounce_light.intensity = 1.0 + 1.3;
+// 	bounce_light.radius = 0.0;
+
+// 	return (bounce_light);
+// }
