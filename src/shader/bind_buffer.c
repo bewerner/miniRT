@@ -33,9 +33,11 @@ void	set_drawbuffers(t_rt *rt)
 	
 	if (rt->mode != MODE_PREVIEW)
 		glDrawBuffers(8, one);
-	else if (rt->glossy_bounce_count > 0 && rt->glossy_bounce_count <= rt->max_glossy_bounces)
+	else if (rt->glossy_bounce_count > 0
+		&& rt->glossy_bounce_count <= rt->max_glossy_bounces)
 		glDrawBuffers(8, glossy_bounce);
-	else if (rt->diffuse_bounce_count > 0 && rt->diffuse_bounce_count <= rt->max_diffuse_bounces)
+	else if (rt->diffuse_bounce_count > 0
+		&& rt->diffuse_bounce_count <= rt->max_diffuse_bounces)
 		glDrawBuffers(8, diffuse_bounce);
 	else
 		glDrawBuffers(8, all);

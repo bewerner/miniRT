@@ -79,9 +79,9 @@ void	main(void)
 			out_hitpoint_render.rgb = render;
 			out_hitpoint_pos.a = float(false); // hitpoint.hit
 		}
-		out_glossy_hitpoint_pos		= texture(buffer, vec3(uv, 5.0));
-		out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0));
-		out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0));
+		// out_glossy_hitpoint_pos		= texture(buffer, vec3(uv, 5.0));
+		// out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0));
+		// out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0));
 	}
 	else
 	{
