@@ -14,23 +14,21 @@
 
 void	set_drawbuffers(t_rt *rt)
 {
-	static GLenum	all[8] = {
+	static const GLenum	all[8] = {
 		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
 		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
 		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
-	static GLenum	one[8] = {
+	static const GLenum	one[8] = {
 		GL_COLOR_ATTACHMENT0, GL_NONE, GL_NONE,
-		GL_NONE, GL_NONE, GL_NONE,
-		GL_NONE, GL_NONE};
-	static GLenum	diffuse_bounce[8] = {
+		GL_NONE, GL_NONE, GL_NONE, GL_NONE, GL_NONE};
+	static const GLenum	diffuse_bounce[8] = {
 		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
-		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_NONE,
-		GL_NONE, GL_NONE};
-	static GLenum	glossy_bounce[8] = {
+		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_NONE, GL_NONE, GL_NONE};
+	static const GLenum	glossy_bounce[8] = {
 		GL_COLOR_ATTACHMENT0, GL_NONE, GL_NONE,
 		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
 		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
-	
+
 	if (rt->mode != MODE_PREVIEW)
 		glDrawBuffers(8, one);
 	else if (rt->glossy_bounce_count > 0

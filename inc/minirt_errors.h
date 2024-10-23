@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_errors.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 13:11:26 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 11:17:33 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:46:57 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ force one light with capital L"
 "no objects in scene"
 # define RT_ERROR_MSG_TOO_MANY_RENDER_SETTINGS \
 "too many render settings definitions, only one allowed"
-
 
 typedef enum e_error
 {
