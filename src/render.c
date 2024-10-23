@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 18:44:42 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 19:34:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	postprocess_raw_image(t_rt *rt)
 }
 
 // fix resize hook
-// create a function to bind the drawbuffer and set glDrawBuffers. potentially also use it in create_fbo, or just remove glDrawBuffers from there (norminette).
 void	render_raw_image(t_rt *rt)
 {
 	GLuint	shader_program;
@@ -58,6 +57,7 @@ void	render_raw_image(t_rt *rt)
 	while (rt->mode == MODE_PREVIEW && rt->diffuse_bounce_count < rt->max_diffuse_bounces)
 	{
 		rt->diffuse_bounce_count++;
+		bind_framebuffer(rt->fbo_id, shader_program, rt);
 		update_ubo_rt(rt);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glFinish();
@@ -66,6 +66,7 @@ void	render_raw_image(t_rt *rt)
 	while (rt->mode == MODE_PREVIEW && rt->glossy_bounce_count < rt->max_glossy_bounces)
 	{
 		rt->glossy_bounce_count++;
+		bind_framebuffer(rt->fbo_id, shader_program, rt);
 		update_ubo_rt(rt);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glFinish();
