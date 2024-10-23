@@ -128,8 +128,8 @@ struct t_material
 	int			color_tex_idx;
 	int			normal_map_idx;
 	float		normal_strength;
-	int			padding2;
-	int			padding3;
+	int			metallic_tex_idx;
+	int			roughness_tex_idx;
 };
 
 struct t_texture
@@ -264,6 +264,8 @@ bool			is_obstructed(t_ray ray);
 // utils/hitpoint_utils.frag
 vec3			get_color_from_texture(int tex_idx, t_hitpoint hitpoint);
 vec3			get_hitpoint_color(t_hitpoint hitpoint);
+float			get_hitpoint_metallic(t_hitpoint hitpoint);
+float			get_hitpoint_roughness(t_hitpoint hitpoint);
 vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
 t_hitpoint		get_closest_hitpoint(t_ray ray, bool init_all);
 bool			has_image_texture(t_hitpoint hitpoint, out bool texture_is_square);
