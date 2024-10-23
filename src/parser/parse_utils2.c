@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:38:40 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/16 16:56:19 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:32:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ float	vr(float nbr, t_vec2 min_max, t_rt *rt)
 {
 	if (nbr >= min_max.x - EPSILON && nbr <= min_max.y + EPSILON)
 		return (nbr);
+	rt->invalid_range = true;
+	rt->invalid_value = nbr;
+	rt->allowed_range = min_max;
 	terminate("number not in valid range", rt->curr_line, 1, rt);
 	return (0);
 }
