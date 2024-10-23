@@ -54,6 +54,7 @@ struct t_sphere
 	vec3			origin;
 	vec3			base_color;
 	float			radius;
+	vec2			uv_scale;
 	int				material_idx;
 };
 
@@ -65,6 +66,7 @@ struct t_plane
 	vec3			base_color;
 	vec3			normal;
 	float			dist;
+	vec2			uv_scale;
 	int				material_idx;
 };
 
@@ -77,6 +79,7 @@ struct t_cylinder
 	vec3			orientation;
 	float			radius;
 	float			height;
+	vec2			uv_scale;
 	int				material_idx;
 	t_plane			cap1;
 	t_plane			cap2;
@@ -94,6 +97,7 @@ struct t_hyperboloid
 	float			b;
 	float			c;
 	float			shape;
+	vec2			uv_scale;
 	int				material_idx;
 };
 

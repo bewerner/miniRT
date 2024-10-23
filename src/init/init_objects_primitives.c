@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_objects_primitives.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 15:26:36 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/27 21:59:18 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 21:15:49 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_gpu_sphere(float *buffer, size_t *i, t_sphere *sphere)
 	gpu_sphere.origin = sphere->origin;
 	gpu_sphere.base_color = sphere->base_color;
 	gpu_sphere.radius = sphere->radius;
+	gpu_sphere.uv_scale = sphere->uv_scale;
 	gpu_sphere.material_idx = (float)sphere->material->index;
 	ft_memmove(&buffer[*i], &gpu_sphere, sizeof(t_gpu_sphere));
 	*i = gpu_sphere.next_offset;
@@ -36,9 +37,8 @@ void	init_gpu_plane(float *buffer, size_t *i, t_plane *plane)
 	gpu_plane.base_color = plane->base_color;
 	gpu_plane.normal = plane->normal;
 	gpu_plane.dist = plane->dist;
+	gpu_plane.uv_scale = plane->uv_scale;
 	gpu_plane.material_idx = (float)plane->material->index;
-	if (plane->material != NULL)
-		gpu_plane.material_idx = (float)plane->material->index;
 	ft_memmove(&buffer[*i], &gpu_plane, sizeof(t_gpu_plane));
 	*i = gpu_plane.next_offset;
 }
@@ -58,6 +58,7 @@ void	init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder)
 	gpu_cylinder.orientation = cylinder->orientation;
 	gpu_cylinder.radius = cylinder->radius;
 	gpu_cylinder.height = cylinder->height;
+	gpu_cylinder.uv_scale = cylinder->uv_scale;
 	gpu_cylinder.material_idx = (float)cylinder->material->index;
 	ft_memmove(&buffer[*i], &gpu_cylinder, size_without_caps);
 	i_cap = *i + size_without_caps / sizeof(float);
@@ -84,6 +85,7 @@ void	init_gpu_hyperboloid(float *buffer, size_t *i,
 	gpu_hyperboloid.b = hyperboloid->b;
 	gpu_hyperboloid.c = hyperboloid->c;
 	gpu_hyperboloid.shape = hyperboloid->shape;
+	gpu_hyperboloid.uv_scale = hyperboloid->uv_scale;
 	gpu_hyperboloid.material_idx = (float)hyperboloid->material->index;
 	ft_memmove(&buffer[*i], &gpu_hyperboloid, size);
 	*i = gpu_hyperboloid.next_offset;
