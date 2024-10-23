@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 11:15:37 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:36:53 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,6 +365,9 @@ typedef struct s_rt
 
 	t_list			*line;
 	char			*curr_line;
+	bool			invalid_range;
+	float			invalid_value;
+	t_vec2			allowed_range;
 	t_movement		move;
 	t_camera		camera;
 	t_screen		screen;
@@ -398,7 +401,7 @@ void			init_mini_rt(char **argv, t_rt *rt);
 // cleanup.c
 void			ft_free(void **mem);
 char			*error_msg(t_error error);
-void			error(char *message, char *msg2);
+void			error(char *message, char *msg2, t_rt *rt);
 void			terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt);
 
 // movement.c

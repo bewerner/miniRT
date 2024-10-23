@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 11:18:50 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 17:09:17 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*error_msg(t_error error)
 	return ((char *)msgs[error]);
 }
 
-void	error(char *message, char *msg2)
+void	error(char *message, char *msg2, t_rt *rt)
 {
 	if (!message)
 		return ;
@@ -53,6 +53,10 @@ void	error(char *message, char *msg2)
 		ft_putstr_fd(msg2, STDERR_FILENO);
 		ft_putendl_fd("\033[0m", STDERR_FILENO);
 	}
+	if (rt->invalid_range)
+		fprintf(stderr,
+			"value is: %f\nallowed minimum: %f\nallowed maximum: %f\n",
+			rt->invalid_value, rt->allowed_range.x, rt->allowed_range.y);
 	errno = 0;
 }
 
@@ -76,7 +80,7 @@ void	terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt)
 	if (rt->fd != -1)
 		close(rt->fd);
 	if (msg)
-		error(msg, msg2);
+		error(msg, msg2, rt);
 	if (rt->window)
 		glfwDestroyWindow(rt->window);
 	glfwTerminate();

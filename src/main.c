@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 11:32:01 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:26:02 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	validate_args(int argc, char **argv, t_rt *rt)
 	}
 	rt->max_diffuse_bounces = 1;
 	rt->max_glossy_bounces = 1;
-	rt->max_samples = 1024;
+	rt->max_samples = INT32_MAX - 1;
 }
 
 t_rt	*get_rt(void)
