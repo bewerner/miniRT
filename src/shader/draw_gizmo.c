@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:37:19 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 16:43:43 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 18:05:49 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	draw_gizmo(t_rt *rt)
 {
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glUseProgram(rt->gizmo_shader_program);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	bind_framebuffer(0, rt->gizmo_shader_program, rt);
 	bind_uniforms_1(rt);
 	bind_uniforms_2(rt);
 	glBindVertexArray(rt->vao_gizmo_id);
