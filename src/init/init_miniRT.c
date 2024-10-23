@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_miniRT.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/22 17:34:15 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 10:57:13 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,11 @@ void	init_cursor_is_settable(t_rt *rt)
 		rt->cursor_is_settable = 0;
 }
 
-void	create_fbo(t_rt *rt)
+// create_fbo expected value for i:
+// pass i as -1 into the function
+void	create_fbo(t_rt *rt, int i)
 {
-	static int		i;
-	static GLenum	draw_buffers[8] = {
+	static const GLenum	draw_buffers[8] = {
 		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
 		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
 		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
@@ -82,12 +83,9 @@ void	create_fbo(t_rt *rt)
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	glGenFramebuffers(1, &rt->fbo_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
-	while (i < 8)
-	{
+	while (++i < 8)
 		glFramebufferTextureLayer(
 			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rt->tex_fbo_id, 0, i);
-		i++;
-	}
 	glDrawBuffers(8, draw_buffers);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		terminate("Framebuffer creation failed!\n", NULL, 1, rt);
@@ -112,7 +110,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_textures(rt);
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
-	create_fbo(rt);
+	create_fbo(rt, -1);
 	create_environment_map(rt);
 	load_textures(rt);
 }
