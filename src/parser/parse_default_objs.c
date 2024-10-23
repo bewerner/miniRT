@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/09/26 17:57:03 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:57:45 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,20 @@ t_error	parse_camera(t_rt *rt)
 	cam->direction.z = vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
 	cam->direction = vec3_normalize(cam->direction);
 	cam->fov = vr(gnv(&line, rt), (t_vec2){0.0f, 180.0f}, rt);
+	return (RT_SUCCESS);
+}
+
+t_error	parse_render_settings(t_rt *rt)
+{
+	char			*line;
+	static size_t	count;
+
+	count++;
+	if (count > 1)
+		return (RT_ERROR_TOO_MANY_RENDER_SETTINGS);
+	line = (char *)rt->line->content + 1;
+	rt->max_diffuse_bounces = (int)vr(gnv(&line, rt), (t_vec2){0, 10}, rt);
+	rt->max_glossy_bounces = (int)vr(gnv(&line, rt), (t_vec2){0, 100}, rt);
+	rt->max_samples = (int)vr(gnv(&line, rt), (t_vec2){1, 2147483646}, rt);
 	return (RT_SUCCESS);
 }

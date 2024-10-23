@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 16:07:32 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 11:18:50 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ char	*error_msg(t_error error)
 		RT_ERROR_MSG_TOO_MANY_LIGHTS,
 		RT_ERROR_MSG_TOO_MANY_CAMERAS,
 		RT_ERROR_MSG_TOO_MANY_AMBIENT,
+		RT_ERROR_MSG_TOO_MANY_RENDER_SETTINGS,
 		RT_ERROR_MSG_MISSING_SCENE_OBJS
 	};
 

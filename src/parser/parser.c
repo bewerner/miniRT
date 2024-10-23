@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 18:57:11 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:14:59 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 		return (parse_ambient(rt));
 	else if (id == ID_CAMERA)
 		return (parse_camera(rt));
+	else if (id == ID_RENDER_SETTINGS)
+		return (parse_render_settings(rt));
 	else if (id == ID_POINT_LIGHT)
 		return (parse_point_light((t_point_light *)objs.curr_light, rt));
 	else if (id == ID_SPHERE)

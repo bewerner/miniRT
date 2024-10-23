@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/22 15:55:36 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:15:37 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef enum e_identifier
 	ID_INVALID,
 	ID_COMMENT,
 	ID_AMBIENT,
+	ID_RENDER_SETTINGS,
 	ID_CAMERA,
 	ID_MATERIAL,
 	ID_TEXTURE,
@@ -511,6 +512,7 @@ t_error			create_textures(size_t tex_cnt, t_rt *rt);
 // parser/parse_default_objs.c
 t_error			parse_ambient(t_rt *rt);
 t_error			parse_camera(t_rt *rt);
+t_error			parse_render_settings(t_rt *rt);
 
 // parser/parse_lights.c
 t_error			parse_point_light(t_point_light *pl, t_rt *rt);
@@ -527,7 +529,6 @@ void			set_color_and_material(t_vec3 *col, t_material **mat,
 t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 
 // parser/parser_utils1.c
-t_identifier	get_identifier(char *line);
 float			ft_atod(char **str, float nbr, int sign_dpoint_dplaces[3]);
 void			next_lst_item(t_list **lst);
 bool			next_is_name(char *line);
@@ -544,6 +545,9 @@ size_t			light_size(t_identifier id);
 void			ft_delete_line(char **str);
 bool			has_next_value(char *line);
 t_vec3			vn(t_vec3 normal, t_rt *rt);
+
+// parser/parse_utils4.c
+t_identifier	get_identifier(char *line);
 
 // parser/parser_validations.c
 void			verify_material_uniqueness(t_rt *rt);
