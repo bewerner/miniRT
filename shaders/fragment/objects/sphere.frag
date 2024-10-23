@@ -6,7 +6,7 @@ vec2	get_uv_sphere(vec3 normal, bool inside, bool texture_is_square, vec2 uv_sca
 		normal *= -1;
 	uv.x = 0.5 + atan(normal.y, normal.x) / (2.0 * M_PI);
 	if (texture_is_square == true)
-		uv.x *= rt.debug; // unstretch if texture is texture_is_square and uv_scale has default value
+		uv.x *= 2; // unstretch if texture is texture_is_square and uv_scale has default value
 	uv.y = 0.5 - asin(-normal.z) / M_PI;
 	return (uv * uv_scale);
 }

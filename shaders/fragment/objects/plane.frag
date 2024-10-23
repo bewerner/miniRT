@@ -25,7 +25,6 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos, vec2 uv_scale)
 
 	uv = pos.xy - plane_origin.xy;
 
-	// uv = fract(uv/2);
 	return (uv * uv_scale / 2);
 }
 
