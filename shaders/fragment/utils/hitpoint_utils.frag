@@ -70,9 +70,25 @@ vec3	get_hitpoint_color(t_hitpoint hitpoint)
 {
 	if (hitpoint.color.r >= 0)
 		return (hitpoint.color);
-	else if (materials[hitpoint.material_idx].color.r >= 0)
+	if (materials[hitpoint.material_idx].color.r >= 0)
 		return (materials[hitpoint.material_idx].color);
 	return (get_color_from_texture(materials[hitpoint.material_idx].color_tex_idx, hitpoint));
+}
+
+float	get_hitpoint_metallic(t_hitpoint hitpoint)
+{
+	if (materials[hitpoint.material_idx].metallic >= 0.0)
+		return (materials[hitpoint.material_idx].metallic);
+	vec3 col = get_color_from_texture(materials[hitpoint.material_idx].metallic_tex_idx, hitpoint);
+	return (dot(col, vec3(1)) / 3);
+}
+
+float	get_hitpoint_roughness(t_hitpoint hitpoint)
+{
+	if (materials[hitpoint.material_idx].roughness >= 0.0)
+		return (materials[hitpoint.material_idx].roughness);
+	vec3 col = get_color_from_texture(materials[hitpoint.material_idx].roughness_tex_idx, hitpoint);
+	return (dot(col, vec3(1)) / 3);
 }
 
 vec3	get_offset_hitpoint_pos(t_hitpoint hitpoint)
@@ -127,6 +143,18 @@ bool	has_image_texture(t_hitpoint hitpoint, out bool texture_is_square)
 	if (material.normal_map_idx >= 0)
 	{
 		ivec2 resolution = get_texture_resolution(material.normal_map_idx);
+		texture_is_square = (resolution.x == resolution.y);
+		return (true);
+	}
+	if (material.metallic_tex_idx >= 0)
+	{
+		ivec2 resolution = get_texture_resolution(material.metallic_tex_idx);
+		texture_is_square = (resolution.x == resolution.y);
+		return (true);
+	}
+	if (material.roughness_tex_idx >= 0)
+	{
+		ivec2 resolution = get_texture_resolution(material.roughness_tex_idx);
 		texture_is_square = (resolution.x == resolution.y);
 		return (true);
 	}

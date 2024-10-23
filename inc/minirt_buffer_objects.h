@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 21:05:15 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 23:38:36 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ typedef struct s_gpu_material
 	int			color_texture_id;
 	int			normal_map_id;
 	float		normal_strength;
-	int			padding2;
-	int			padding3;
+	int			metallic_texture_id;
+	int			roughness_texture_id;
 }	t_gpu_material;
 
 // IDX, TYPE, TEX_IDX, SCALA, COL1, COL2

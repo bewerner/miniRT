@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 21:08:50 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 23:38:39 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,8 @@ typedef struct s_material
 	float		emission_strength;
 	t_vec3		emission_color;
 	int			color_texture_id;
+	int			metallic_texture_id;
+	int			roughness_texture_id;
 	int			normal_map_id;
 	float		normal_strength;
 }	t_material;
@@ -511,6 +513,10 @@ int				texid_from_name(char **line, t_rt *rt);
 t_error			create_materials(size_t mat_cnt, t_rt *rt);
 
 // parser/parse_material2.c
+void			set_material_metallic_textureid(
+					t_material *mat, char **line, t_rt *rt);
+void			set_material_roughness_textureid(
+					t_material *mat, char **line, t_rt *rt);
 void			create_default_material(size_t mat_cnt, t_material *mat);
 void			parse_normal_values(t_material *mat, char **line, t_rt *rt);
 

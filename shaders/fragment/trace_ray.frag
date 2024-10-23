@@ -180,8 +180,6 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 
 	// float diffuse = lambert_diffuse(N, L);
 	// vec3  radiance = radiance(hit_pos, point_light);
-	// if (rt.debug == 1)
-	// 	x = true;
 	vec3  specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 	specular = max(clamp(specular, vec3(0.0), ks), ks);
 
@@ -190,7 +188,7 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 
 	// vec3 col = (kd * mat.color + specular) * radiance * diffuse;
 	// vec3 col = (kd * mat.color + specular * reflection_col);
-	vec3 col = (specular * reflection_col);
+	vec3 col = min(specular * reflection_col, reflection_col);
 	return (col);
 }
 
@@ -223,8 +221,11 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 	vec3 col = VEC3_BLACK;
 	t_material mat = materials[hitpoint.material_idx];
 
-	mat.color = get_hitpoint_color(hitpoint);
-	hitpoint.color = mat.color;
+	// mat.color		= get_hitpoint_color(hitpoint);
+	// hitpoint.color	= mat.color;
+	mat.color		= hitpoint.color;
+	mat.metallic	= get_hitpoint_metallic(hitpoint);
+	mat.roughness	= get_hitpoint_roughness(hitpoint);
 
 	vec3  N   = hitpoint.normal;
 	vec3  V   = normalize(-hitpoint.ray);
@@ -291,7 +292,13 @@ vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous, vec3 specul
 	else
 		col = render_hitpoint(hitpoint);
 
-	col = get_reflection_light_contribution(previous.pos, col, previous.normal, normalize(previous.ray), normalize(reflection_ray.dir), materials[previous.material_idx], specular);
+	t_material previous_material = materials[previous.material_idx];
+
+	previous_material.color		= get_hitpoint_color(previous);
+	previous_material.metallic	= get_hitpoint_metallic(previous);
+	previous_material.roughness	= get_hitpoint_roughness(previous);
+
+	col = get_reflection_light_contribution(previous.pos, col, previous.normal, normalize(previous.ray), normalize(reflection_ray.dir), previous_material, specular);
 
 	out_glossy_hitpoint_pos		= out_hitpoint_pos;
 	out_glossy_hitpoint_pos.a 	= float(hitpoint.hit);
