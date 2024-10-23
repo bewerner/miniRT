@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 18:10:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 21:08:50 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ typedef struct s_object
 	t_object		*next;
 	t_vec3			origin;
 	t_vec3			base_color;
+	t_vec2			uv_scale;
 	t_material		*material;
 	bool			is_selected;
 }	t_object;
@@ -199,6 +200,7 @@ typedef struct s_sphere
 	t_object		*next;
 	t_vec3			origin;
 	t_vec3			base_color;
+	t_vec2			uv_scale;
 	t_material		*material;
 	bool			is_selected;
 	float			radius;
@@ -210,6 +212,7 @@ typedef struct s_plane
 	t_object		*next;
 	t_vec3			origin;
 	t_vec3			base_color;
+	t_vec2			uv_scale;
 	t_material		*material;
 	bool			is_selected;
 	t_vec3			normal;
@@ -222,6 +225,7 @@ typedef struct s_cylinder
 	t_object		*next;
 	t_vec3			origin;
 	t_vec3			base_color;
+	t_vec2			uv_scale;
 	t_material		*material;
 	bool			is_selected;
 	t_vec3			orientation;
@@ -237,6 +241,7 @@ typedef struct s_hyperboloid
 	t_object		*next;
 	t_vec3			origin;
 	t_vec3			base_color;
+	t_vec2			uv_scale;
 	t_material		*material;
 	bool			is_selected;
 	t_vec3			orientation;
@@ -526,9 +531,8 @@ t_error			parse_plane(t_plane *plane, t_rt *rt);
 t_error			parse_cylinder(t_cylinder *cylinder, t_rt *rt);
 
 // parser/parse_primitives2.c
-t_material		*get_next_material(char *line, t_rt *rt);
-void			set_color_and_material(t_vec3 *col, t_material **mat,
-					char *line, t_rt *rt);
+void			set_color_and_material_and_uv_scale(
+					t_object *o, char *line, t_rt *rt);
 t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 
 // parser/parser_utils1.c
@@ -550,6 +554,7 @@ bool			has_next_value(char *line);
 t_vec3			vn(t_vec3 normal, t_rt *rt);
 
 // parser/parse_utils4.c
+bool			has_next_numeric_value(char *line);
 t_identifier	get_identifier(char *line);
 
 // parser/parser_validations.c
@@ -620,7 +625,7 @@ t_vec3			create_bounce_dir(t_vec3 incoming_dir, t_vec3 normal);
 void			whitespace_to_space(char *str);
 void			ft_skipspace(char **str);
 int				ft_strcmp(const char *s1, const char *s2);
-void			ft_terminate_after_word(char *str);
+char			*ft_terminate_after_word(char *str);
 
 // utils/vec3_rotate.c
 t_vec3			vec3_rotate_x(t_vec3 p, float rad);

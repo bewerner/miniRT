@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:06:51 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/31 17:22:46 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 21:03:28 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,17 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (*s1 - *s2);
 }
 
-void	ft_terminate_after_word(char *str)
+char	*ft_terminate_after_word(char *str)
 {
+	char	*pointer;
+
+	pointer = NULL;
 	if (str == NULL)
-		return ;
+		return (NULL);
 	while (*str && !ft_isspace(*str))
 		str++;
+	if (*str != '\0')
+		pointer = str + 1;
 	*str = '\0';
+	return (pointer);
 }

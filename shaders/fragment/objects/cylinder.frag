@@ -106,7 +106,7 @@ t_hitpoint	get_hitpoint_inside(t_ray ray, t_cylinder cylinder, t_hitpoint hitpoi
 	return (hitpoint);
 }
 
-vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 pos, bool inside)
+vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 pos, bool inside, vec2 uv_scale)
 {
 	vec2	uv;
 
@@ -131,10 +131,10 @@ vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 po
 		normal = vec3_rotate_x(normal, rad);
 	}
 	uv.x = 0.5 + atan(normal.x, -normal.y) / (2.0 * M_PI);
-	return (uv);
+	return (uv * uv_scale);
 }
 
-vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool is_cap1)
+vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool is_cap1, vec2 uv_scale)
 {
 	vec2	uv;
 
@@ -160,7 +160,7 @@ vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool 
 	uv += 0.25;
 	if (is_cap1 == true)
 		uv.x += 0.5;
-	return (uv);
+	return (uv * uv_scale);
 }
 
 t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
@@ -204,11 +204,11 @@ t_hitpoint	get_hitpoint_cylinder(t_ray ray, t_cylinder cylinder, bool init_all)
 	if (has_image_texture(hitpoint))
 	{
 		if (is_cap1 == true)
-			hitpoint.uv = get_uv_cap(cylinder.cap1.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, true);
+			hitpoint.uv = get_uv_cap(cylinder.cap1.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, true, cylinder.uv_scale);
 		else if (is_cap2 == true)
-			hitpoint.uv = get_uv_cap(cylinder.cap2.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, false);
+			hitpoint.uv = get_uv_cap(cylinder.cap2.origin, cylinder.orientation, cylinder.radius, hitpoint.pos, false, cylinder.uv_scale);
 		else
-			hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos, inside);
+			hitpoint.uv = get_uv_cylinder(cylinder, cylinder.orientation, hitpoint.normal, hitpoint.pos, inside, cylinder.uv_scale);
 	}
 
 	// We need tangent and bitangent vectors for normal_maps		
@@ -234,6 +234,7 @@ t_cylinder	get_cylinder(int offset)
 	cylinder.orientation = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	cylinder.radius = texelFetch(objects, offset++).r;
 	cylinder.height = texelFetch(objects, offset++).r;
+	cylinder.uv_scale = vec2(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	cylinder.material_idx = int(texelFetch(objects, offset++).r);
 	cylinder.cap1 = get_plane(offset);
 	offset = cylinder.cap1.next_offset;

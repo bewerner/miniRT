@@ -1,4 +1,4 @@
-vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, vec3 normal, float t_height, bool inside)
+vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, vec3 normal, float t_height, bool inside, vec2 uv_scale)
 {
 	vec2	uv;
 
@@ -24,7 +24,7 @@ vec2	get_uv_hyperboloid(t_hyperboloid hyperboloid, vec3 orientation, vec3 pos, v
 		normal = vec3_rotate_x(normal, rad);
 	}
 	uv.x = 0.5 + atan(normal.x, -normal.y) / (2.0 * M_PI);
-	return (uv);
+	return (uv * uv_scale);
 }
 
 void	calc_hyperboloid_tangent_vectors(inout t_hitpoint hitpoint, vec3 orientation, bool inside)
@@ -187,7 +187,7 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool i
 
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
-		hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height, inside);
+		hitpoint.uv = get_uv_hyperboloid(hyperboloid, hyperboloid.orientation, hitpoint.pos, hitpoint.normal, t_height, inside, hyperboloid.uv_scale);
 
 	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
@@ -213,6 +213,7 @@ t_hyperboloid	get_hyperboloid(int offset)
 	hyperboloid.b = texelFetch(objects, offset++).r;
 	hyperboloid.c = texelFetch(objects, offset++).r;
 	hyperboloid.shape = texelFetch(objects, offset++).r;
+	hyperboloid.uv_scale = vec2(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	hyperboloid.material_idx = int(texelFetch(objects, offset++).r);
 
 	return (hyperboloid);

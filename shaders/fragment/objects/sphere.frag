@@ -1,4 +1,4 @@
-vec2	get_uv_sphere(vec3 normal, bool inside, bool texture_is_square)
+vec2	get_uv_sphere(vec3 normal, bool inside, bool texture_is_square, vec2 uv_scale)
 {
 	vec2	uv;
 
@@ -6,9 +6,9 @@ vec2	get_uv_sphere(vec3 normal, bool inside, bool texture_is_square)
 		normal *= -1;
 	uv.x = 0.5 + atan(normal.y, normal.x) / (2.0 * M_PI);
 	if (texture_is_square == true)
-		uv.x *= 2; // unstretch if texture is texture_is_square
+		uv.x *= rt.debug; // unstretch if texture is texture_is_square and uv_scale has default value
 	uv.y = 0.5 - asin(-normal.z) / M_PI;
-	return (uv);
+	return (uv * uv_scale);
 }
 
 void	calc_sphere_tangent_vectors(inout t_hitpoint hitpoint, bool inside)
@@ -71,7 +71,7 @@ t_hitpoint	get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all)
 	// if we have an image_texture we calculate UVs
 	bool texture_is_square;
 	if (has_image_texture(hitpoint, texture_is_square))
-		hitpoint.uv = get_uv_sphere(hitpoint.normal, inside, texture_is_square);
+		hitpoint.uv = get_uv_sphere(hitpoint.normal, inside, texture_is_square, sphere.uv_scale);
 
 	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
@@ -92,6 +92,7 @@ t_sphere	get_sphere(int offset)
 	sphere.origin = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	sphere.base_color = vec3(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	sphere.radius = texelFetch(objects, offset++).r;
+	sphere.uv_scale = vec2(texelFetch(objects, offset++).r, texelFetch(objects, offset++).r);
 	sphere.material_idx = int(texelFetch(objects, offset).r);
 
 	return (sphere);

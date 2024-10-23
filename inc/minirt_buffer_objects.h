@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:04:05 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 15:42:23 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 21:05:15 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_gpu_sphere
 	t_vec3			origin;
 	t_vec3			base_color;
 	float			radius;
+	t_vec2			uv_scale;
 	float			material_idx;
 }	t_gpu_sphere;
 
@@ -62,6 +63,7 @@ typedef struct s_gpu_plane
 	t_vec3			base_color;
 	t_vec3			normal;
 	float			dist;
+	t_vec2			uv_scale;
 	float			material_idx;
 }	t_gpu_plane;
 
@@ -74,6 +76,7 @@ typedef struct s_gpu_cylinder
 	t_vec3			orientation;
 	float			radius;
 	float			height;
+	t_vec2			uv_scale;
 	float			material_idx;
 	t_gpu_plane		cap1;
 	t_gpu_plane		cap2;
@@ -91,6 +94,7 @@ typedef struct s_gpu_hyperboloid
 	float			b;
 	float			c;
 	float			shape;
+	t_vec2			uv_scale;
 	float			material_idx;
 	float			padding1;
 	float			padding2;
