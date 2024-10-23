@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 16:23:21 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 17:43:44 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,7 @@ void	init_cursor_is_settable(t_rt *rt)
 
 void	create_fbo(t_rt *rt)
 {
-	static int		i;
-	static GLenum	draw_buffers[8] = {
-		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
-		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
-		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
+	int	i;
 
 	glGenTextures(1, &rt->tex_fbo_id);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
@@ -82,13 +78,14 @@ void	create_fbo(t_rt *rt)
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	glGenFramebuffers(1, &rt->fbo_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
+	i = 0;
 	while (i < 8)
 	{
 		glFramebufferTextureLayer(
 			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rt->tex_fbo_id, 0, i);
 		i++;
 	}
-	glDrawBuffers(8, draw_buffers);
+	set_drawbuffers(rt);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		terminate("Framebuffer creation failed!\n", NULL, 1, rt);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -12,11 +12,52 @@
 
 #include "../../inc/miniRT.h"
 
-void	bind_framebuffer_textures(GLuint shader_program, t_rt *rt)
+void	set_drawbuffers(t_rt *rt)
 {
+	static GLenum	all[8] = {
+		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
+		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
+		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
+	static GLenum	one[8] = {
+		GL_COLOR_ATTACHMENT0, GL_NONE, GL_NONE,
+		GL_NONE, GL_NONE, GL_NONE,
+		GL_NONE, GL_NONE};
+	static GLenum	diffuse_bounce[8] = {
+		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
+		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_NONE,
+		GL_NONE, GL_NONE};
+	static GLenum	glossy_bounce[8] = {
+		GL_COLOR_ATTACHMENT0, GL_NONE, GL_NONE,
+		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
+		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
+	
+	if (rt->mode != MODE_PREVIEW)
+		glDrawBuffers(8, one);
+	else if (rt->glossy_bounce_count > 0 && rt->glossy_bounce_count <= rt->max_glossy_bounces)
+		glDrawBuffers(8, glossy_bounce);
+	else if (rt->diffuse_bounce_count > 0 && rt->diffuse_bounce_count <= rt->max_diffuse_bounces)
+		glDrawBuffers(8, diffuse_bounce);
+	else
+		glDrawBuffers(8, all);
+}
+
+void	bind_framebuffer(GLuint id, GLuint shader_program, t_rt *rt)
+{
+	GLint	uniform_location;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, id);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(shader_program, "buffer"), 0);
+	if (shader_program == rt->preview_shader_program
+		|| shader_program == rt->postprocessing_shader_program)
+	{
+		uniform_location = glGetUniformLocation(shader_program, "buffer");
+		if (uniform_location == -1)
+			terminate("buffer not found in shader program", NULL, 1, rt);
+		glUniform1i(uniform_location, 0);
+	}
+	if (id == rt->fbo_id)
+		set_drawbuffers(rt);
 }
 
 void	bind_texture_units(GLuint shader_program, t_rt *rt)

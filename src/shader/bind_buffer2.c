@@ -6,19 +6,11 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:33:16 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 16:33:50 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 18:49:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/miniRT.h"
-
-void	bind_framebuffer_texture(GLuint shader_program, t_rt *rt)
-{
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, rt->tex_fbo_id);
-	glUniform1i(glGetUniformLocation(
-			shader_program, "cumulative_render_buffer"), 0);
-}
 
 void	bind_objects(GLuint shader_program, t_rt *rt)
 {
