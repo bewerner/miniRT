@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 16:07:26 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 11:32:01 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	validate_args(int argc, char **argv, t_rt *rt)
 	{
 		terminate(error_msg(RT_ERROR_WRONG_FILE_FORMAT), NULL, 1, rt);
 	}
+	rt->max_diffuse_bounces = 1;
+	rt->max_glossy_bounces = 1;
+	rt->max_samples = 1024;
 }
 
 t_rt	*get_rt(void)

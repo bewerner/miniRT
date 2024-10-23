@@ -6,7 +6,7 @@
 /*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 13:11:26 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/08/30 18:34:08 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:17:33 by nmihaile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ force one light with capital L"
 "too many ambient definitions, only one allowed"
 # define RT_ERROR_MSG_MISSING_SCENE_OBJS \
 "no objects in scene"
+# define RT_ERROR_MSG_TOO_MANY_RENDER_SETTINGS \
+"too many render settings definitions, only one allowed"
+
 
 typedef enum e_error
 {
@@ -45,6 +48,7 @@ typedef enum e_error
 	RT_ERROR_TOO_MANY_LIGHTS,
 	RT_ERROR_TOO_MANY_CAMERAS,
 	RT_ERROR_TOO_MANY_AMBIENT,
+	RT_ERROR_TOO_MANY_RENDER_SETTINGS,
 	RT_ERROR_MISSING_SCENE_OBJS
 }					t_error;
 
