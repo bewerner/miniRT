@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 17:09:17 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 17:30:44 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	error(char *message, char *msg2, t_rt *rt)
 	}
 	if (rt->invalid_range)
 		fprintf(stderr,
-			"value is: %f\nallowed minimum: %f\nallowed maximum: %f\n",
+			"value is: %24f\nallowed minimum: %17f\nallowed maximum: %17f\n",
 			rt->invalid_value, rt->allowed_range.x, rt->allowed_range.y);
 	errno = 0;
 }
