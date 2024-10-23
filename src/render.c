@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 19:34:48 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/23 19:41:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,34 @@ void	postprocess_raw_image(t_rt *rt)
 }
 
 // fix resize hook
+void	render_bounces(GLuint shader_program, t_rt *rt)
+{
+	while (rt->mode == MODE_PREVIEW
+		&& rt->diffuse_bounce_count < rt->max_diffuse_bounces)
+	{
+		rt->diffuse_bounce_count++;
+		bind_framebuffer(rt->fbo_id, shader_program, rt);
+		update_ubo_rt(rt);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glFinish();
+	}
+	while (rt->mode == MODE_PREVIEW
+		&& rt->glossy_bounce_count < rt->max_glossy_bounces)
+	{
+		rt->glossy_bounce_count++;
+		bind_framebuffer(rt->fbo_id, shader_program, rt);
+		update_ubo_rt(rt);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glFinish();
+	}
+	rt->diffuse_bounce_count = 0;
+	rt->glossy_bounce_count = 0;
+}
+
 void	render_raw_image(t_rt *rt)
 {
 	GLuint	shader_program;
 
-	// rt->max_diffuse_bounces = 0; // TEMPORARY
-	// rt->max_glossy_bounces = rt->debug; // TEMPORARY
 	shader_program = rt->solid_shader_program;
 	if (rt->mode == MODE_NORMAL)
 		shader_program = rt->normal_shader_program;
@@ -53,24 +75,6 @@ void	render_raw_image(t_rt *rt)
 	glBindVertexArray(rt->vao_screen_id);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glFinish();
-	
-	while (rt->mode == MODE_PREVIEW && rt->diffuse_bounce_count < rt->max_diffuse_bounces)
-	{
-		rt->diffuse_bounce_count++;
-		bind_framebuffer(rt->fbo_id, shader_program, rt);
-		update_ubo_rt(rt);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glFinish();
-	}
-
-	while (rt->mode == MODE_PREVIEW && rt->glossy_bounce_count < rt->max_glossy_bounces)
-	{
-		rt->glossy_bounce_count++;
-		bind_framebuffer(rt->fbo_id, shader_program, rt);
-		update_ubo_rt(rt);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glFinish();
-	}
-	rt->diffuse_bounce_count = 0;
-	rt->glossy_bounce_count = 0;
+	if (rt->max_diffuse_bounces || rt->max_glossy_bounces)
+		render_bounces(shader_program, rt);
 }
