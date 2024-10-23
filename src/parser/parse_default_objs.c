@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_default_objs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 11:57:45 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:54:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_error	parse_render_settings(t_rt *rt)
 	line = (char *)rt->line->content + 1;
 	rt->max_diffuse_bounces = (int)vr(gnv(&line, rt), (t_vec2){0, 10}, rt);
 	rt->max_glossy_bounces = (int)vr(gnv(&line, rt), (t_vec2){0, 100}, rt);
-	rt->max_samples = (int)vr(gnv(&line, rt), (t_vec2){1, 2147483646}, rt);
+	if (has_next_value(line))
+		rt->max_samples = (int)vr(gnv(&line, rt), (t_vec2){1, 2147483646}, rt);
 	return (RT_SUCCESS);
 }
