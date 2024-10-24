@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/24 09:20:07 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/24 10:17:17 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,21 @@
 
 static void	update_delta_time(t_rt *rt)
 {
+	static bool		initialized;
 	static double	start;
 	static double	oldstart;
 	static double	render_start;
 
+	if (!rt->first_update_finished)
+		return ;
+	if (!initialized)
+	{
+		oldstart = glfwGetTime();
+		render_start = oldstart;
+		initialized = true;
+		printf("Loading time was %.0f seconds\n", render_start);
+		return ;
+	}
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
 	oldstart = start;
@@ -78,4 +89,5 @@ void	update(t_rt *rt)
 	else
 		usleep(1000000 / 60);
 	glfwPollEvents();
+	rt->first_update_finished = true;
 }
