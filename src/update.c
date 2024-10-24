@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/24 07:49:45 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/24 09:20:07 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,18 @@ static void	update_delta_time(t_rt *rt)
 {
 	static double	start;
 	static double	oldstart;
+	static double	render_start;
 
 	start = glfwGetTime();
 	rt->delta_time = start - oldstart;
 	oldstart = start;
+	if (rt->sample_count == 0)
+	{
+		rt->render_time = 0;
+		render_start = start;
+	}
+	else if (rt->sample_count < rt->max_samples)
+		rt->render_time = start - render_start;
 }
 
 void	update_ubo_rt(t_rt *rt)
