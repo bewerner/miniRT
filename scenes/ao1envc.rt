@@ -3,7 +3,7 @@ tex		tex2		checker		1			255,255,255 0,0,0
 
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
-mat	Material                      100,100,100       0              1           1.450000       0.000000       0.000000            255,255,255
+mat	Material                      100,100,100       tex2              tex1           1.450000       0.000000       0.000000            255,255,255
 
 # SPHERES
 #	origin                                          diameter       material

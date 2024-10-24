@@ -226,6 +226,11 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 	mat.color		= hitpoint.color;
 	mat.metallic	= get_hitpoint_metallic(hitpoint);
 	mat.roughness	= get_hitpoint_roughness(hitpoint);
+	if (rt.diffuse_bounce_count == 0 && rt.glossy_bounce_count == 0)
+	{
+		out_hitpoint_render.a		= mat.metallic;
+		out_glossy_hitpoint_ray.a	= mat.roughness;
+	}
 
 	vec3  N   = hitpoint.normal;
 	vec3  V   = normalize(-hitpoint.ray);
@@ -281,7 +286,7 @@ vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
 	return (col);
 }
 
-vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous, vec3 specular)
+vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous, vec3 specular, float previous_metallic, float previous_roughness)
 {
 	vec3 col;
 	t_hitpoint hitpoint = get_closest_hitpoint(reflection_ray, true);
@@ -294,9 +299,9 @@ vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous, vec3 specul
 
 	t_material previous_material = materials[previous.material_idx];
 
-	previous_material.color		= get_hitpoint_color(previous);
-	previous_material.metallic	= get_hitpoint_metallic(previous);
-	previous_material.roughness	= get_hitpoint_roughness(previous);
+	// previous_material.color		= get_hitpoint_color(previous);
+	previous_material.metallic	= previous_metallic;
+	previous_material.roughness	= previous_roughness;
 
 	col = get_reflection_light_contribution(previous.pos, col, previous.normal, normalize(previous.ray), normalize(reflection_ray.dir), previous_material, specular);
 
