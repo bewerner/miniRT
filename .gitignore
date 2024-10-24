@@ -33,7 +33,6 @@
 inc/glad/
 inc/KHR/
 lib/
-assets/textures/tmp/
 *.o
 *.a
 inc/stb
