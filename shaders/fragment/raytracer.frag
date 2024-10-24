@@ -3,11 +3,11 @@
 layout(location = 0) out vec4 FragColor;
 layout(location = 1) out vec4 out_hitpoint_pos;				// alpha is hitpoint.hit
 layout(location = 2) out vec4 out_hitpoint_normal;			// alpha is hitpoint.material_idx
-layout(location = 3) out vec4 out_hitpoint_render;
+layout(location = 3) out vec4 out_hitpoint_render;			// alpha is glossy_hitpoint metallic
 layout(location = 4) out vec4 out_hitpoint_color;			// this doubles as glossy_specular_accumulation
 layout(location = 5) out vec4 out_glossy_hitpoint_pos;		// alpha is hitpoint.hit
 layout(location = 6) out vec4 out_glossy_hitpoint_normal;	// alpha is hitpoint.material_idx
-layout(location = 7) out vec4 out_glossy_hitpoint_ray;
+layout(location = 7) out vec4 out_glossy_hitpoint_ray;		// alpha is glossy_hitpoint roughness
 
 #import header.frag
 #import AgX.frag
@@ -72,6 +72,7 @@ void	main(void)
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
 			render += add_bounce_light(bounce_ray, previous);
 			out_hitpoint_render.rgb = render;
+			out_hitpoint_render.a	= texture(buffer, vec3(uv, 3.0)).a;
 		}
 		else
 		{
@@ -90,16 +91,20 @@ void	main(void)
 			previous.normal			= texture(buffer, vec3(uv, 6.0)).rgb;
 			previous.material_idx	= int(texture(buffer, vec3(uv, 6.0)).a);
 			previous.ray			= texture(buffer, vec3(uv, 7.0)).rgb;
+
+			float previous_metallic		= texture(buffer, vec3(uv, 3.0)).a;
+			float previous_roughness	= texture(buffer, vec3(uv, 7.0)).a;
+
 			vec3 specular			= vec3(0.0);
 			if (rt.glossy_bounce_count > 0)
 				specular = texture(buffer, vec3(uv, 4.0)).rgb;
 
 			t_ray reflection_ray;
 			reflection_ray.origin	= previous.pos;
-			reflection_ray.dir		= reflect(previous.ray, previous.normal, materials[previous.material_idx].roughness);
+			reflection_ray.dir		= reflect(previous.ray, previous.normal, previous_roughness);
 
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
-			render += add_reflection_light(reflection_ray, previous, specular);
+			render += add_reflection_light(reflection_ray, previous, specular, previous_metallic, previous_roughness);
 			out_hitpoint_render.rgb = render;
 		}
 		else
