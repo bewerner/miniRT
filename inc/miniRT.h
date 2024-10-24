@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/24 07:44:18 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/24 07:57:09 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,6 +390,7 @@ typedef struct s_rt
 	int				mode;
 	int				fd;
 	bool			cursor_is_settable;
+	bool			hide_gizmo;
 	float			debug;
 	int				sample_count;
 	int				max_samples;
@@ -435,7 +436,7 @@ void			update_window_title(t_rt *rt);
 void			init_hooks(t_rt *rt);
 
 // hooks/key_hook.c
-void			reset_camera(t_camera *camera);
+void			reset_camera(t_camera *camera, t_rt *rt);
 void			key_hook(GLFWwindow *window,
 					int key, int scancode, int action, int mods);
 

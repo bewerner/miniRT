@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/22 15:56:02 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/24 07:49:45 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	update(t_rt *rt)
 	{
 		render_raw_image(rt);
 		postprocess_raw_image(rt);
-		if (rt->mode != MODE_PREVIEW)
+		if (!rt->hide_gizmo)
 			draw_gizmo(rt);
 		glfwSwapBuffers(rt->window);
 	}

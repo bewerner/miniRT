@@ -6,13 +6,13 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 17:43:44 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/24 07:58:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-static void	init_camera(t_camera *camera)
+static void	init_camera(t_camera *camera, t_rt *rt)
 {
 	t_vec3	dir;
 	float	rad;
@@ -23,7 +23,7 @@ static void	init_camera(t_camera *camera)
 	camera->yaw = atan2f(dir.x, dir.y) * -1;
 	rad = camera->fov * (M_PI / 180);
 	camera->focal_length = 1.0f / tanf(rad * 0.5f);
-	reset_camera(camera);
+	reset_camera(camera, rt);
 }
 
 void	create_ubo_rt(t_rt *rt)
@@ -97,7 +97,7 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	load_scene(argv[1], rt);
 	init_glfw(rt);
 	init_cursor_is_settable(rt);
-	init_camera(&rt->camera);
+	init_camera(&rt->camera, rt);
 	init_hooks(rt);
 	init_shader_programs(rt);
 	create_vbo_screen_vertices(rt);
