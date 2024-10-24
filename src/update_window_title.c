@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/24 09:23:12 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/24 09:55:11 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	update_window_title(t_rt *rt)
 	char	title[1024];
 	char	*fps_str;
 
+	if (!rt->first_update_finished)
+		return ;
 	title[0] = '\0';
 	fps_str = get_fps(rt);
 	if (!fps_str)
