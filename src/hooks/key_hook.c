@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/21 18:51:24 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/24 07:56:57 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,19 @@ static void	print_camera_info(t_rt *rt)
 		rt->camera.fov);
 }
 
-void	reset_camera(t_camera *camera)
+void	reset_camera(t_camera *camera, t_rt *rt)
 {
-	static t_camera	cam;
-	static bool		is_set;
+	static t_camera	initial_camera;
+	static bool		initialized;
 
-	if (is_set == false)
+	if (initialized == false)
 	{
-		cam = *camera;
-		is_set = true;
+		initial_camera = *camera;
+		initialized = true;
+		return ;
 	}
-	else
-		*camera = cam;
+	*camera = initial_camera;
+	rt->move.vel = (t_vec3){{0, 0, 0}};
 }
 
 static void	key_hook_axial_view(int key, int action, t_rt *rt)
@@ -94,10 +95,9 @@ void	key_hook(GLFWwindow *window, int key, int scancode,
 			rt->mode = MODE_SOLID;
 	}
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
-	{
-		reset_camera(&rt->camera);
-		rt->move.vel = (t_vec3){{0, 0, 0}};
-	}
+		reset_camera(&rt->camera, rt);
+	else if (key == GLFW_KEY_G && action == GLFW_PRESS)
+		rt->hide_gizmo = !rt->hide_gizmo;
 	else if (key == GLFW_KEY_P && action == GLFW_PRESS)
 		print_camera_info(rt);
 	else
