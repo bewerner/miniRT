@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/24 07:57:09 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/24 08:53:09 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,7 @@ typedef struct s_rt
 	float			dpi_scale;
 	GLFWwindow		*window;
 	double			delta_time;
+	size_t			render_time;
 	GLuint			solid_shader_program;
 	GLuint			normal_shader_program;
 	GLuint			preview_shader_program;

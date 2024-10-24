@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_window_title.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/16 16:54:06 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/24 09:23:12 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static char	*get_fps(t_rt *rt)
 
 static void	add_sample_to_title(char *title, t_rt *rt)
 {
-	char			*sample;
-	char			*max_samples;
+	char	*sample;
+	char	*max_samples;
 
 	sample = NULL;
 	max_samples = NULL;
-	ft_strlcat(title, " - sample ", 1024);
+	ft_strlcat(title, " | Sample ", 1024);
 	sample = ft_itoa(ft_imin(rt->sample_count, rt->max_samples));
 	if (sample)
 		ft_strlcat(title, sample, 1024);
@@ -47,24 +47,47 @@ static void	add_sample_to_title(char *title, t_rt *rt)
 	ft_free((void *)&max_samples);
 }
 
+static void	add_time_to_title(char *title, t_rt *rt)
+{
+	char	*minutes;
+	char	*seconds;
+
+	minutes = NULL;
+	seconds = NULL;
+	ft_strlcat(title, " | Time: ", 1024);
+	seconds = ft_itoa((int)rt->render_time % 60);
+	minutes = ft_itoa((int)rt->render_time / 60);
+	if (minutes && ft_strlen(minutes) < 2)
+		ft_strlcat(title, "0", 1024);
+	if (minutes)
+		ft_strlcat(title, minutes, 1024);
+	ft_strlcat(title, ":", 1024);
+	if (seconds && ft_strlen(seconds) < 2)
+		ft_strlcat(title, "0", 1024);
+	if (seconds)
+		ft_strlcat(title, seconds, 1024);
+	ft_free((void *)&minutes);
+	ft_free((void *)&minutes);
+	ft_free((void *)&seconds);
+}
+
 void	update_window_title(t_rt *rt)
 {
-	char			title[1024];
-	char			*fps_str;
+	char	title[1024];
+	char	*fps_str;
 
 	title[0] = '\0';
 	fps_str = get_fps(rt);
 	if (!fps_str)
 		return ;
 	ft_strlcat(title, fps_str, 1024);
-	ft_strlcat(title, " FPS - miniRT - ", 1024);
-	if (!fps_str)
-		return ;
-	ft_strlcat(title, fps_str, 1024);
-	ft_strlcat(title, " FPS - miniRT - ", 1024);
+	ft_strlcat(title, " FPS | miniRT | ", 1024);
 	ft_strlcat(title, rt->filename, 1024);
 	if (rt->mode == MODE_PREVIEW)
+	{
+		add_time_to_title(title, rt);
 		add_sample_to_title(title, rt);
+	}
 	glfwSetWindowTitle(rt->window, title);
 	ft_free((void *)&fps_str);
 }
