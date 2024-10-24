@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 23:38:39 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/24 07:44:18 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -403,6 +403,7 @@ typedef struct s_rt
 t_rt			*get_rt(void);
 
 // init_miniRT.c
+void			create_fbo(t_rt *rt);
 void			init_mini_rt(char **argv, t_rt *rt);
 
 // cleanup.c
