@@ -33,6 +33,16 @@ void	main(void)
 {
 	vec2 uv = vec2(coord.x, 1.0 - coord.y);
 
+
+	FragColor					= texture(buffer, vec3(uv, 0.0)).rgba;
+	out_hitpoint_pos			= texture(buffer, vec3(uv, 1.0)).rgba;
+	out_hitpoint_normal			= texture(buffer, vec3(uv, 2.0)).rgba;
+	out_hitpoint_render			= texture(buffer, vec3(uv, 3.0)).rgba;
+	out_hitpoint_color			= texture(buffer, vec3(uv, 4.0)).rgba;
+	out_glossy_hitpoint_pos		= texture(buffer, vec3(uv, 5.0)).rgba;
+	out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0)).rgba;
+	out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0)).rgba;
+
 	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.sample_count + 1)) + rt.sample_count * 9823;
 	g_seed += int(rand() * 943 * rt.sample_count);
 	g_seed += int(rand() * 7943 * rt.diffuse_bounce_count);
@@ -83,6 +93,12 @@ void	main(void)
 	}
 	else
 	{
+		// out_hitpoint_render			= texture(buffer, vec3(uv, 3.0)).rgba;
+		// out_hitpoint_color			= texture(buffer, vec3(uv, 4.0)).rgba;
+		// out_glossy_hitpoint_pos		= texture(buffer, vec3(uv, 5.0)).rgba;
+		// out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0)).rgba;
+		// out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0)).rgba;
+
 		t_hitpoint previous;
 		previous.hit = bool(texture(buffer, vec3(uv, 5.0)).a);
 		if (previous.hit == true)
