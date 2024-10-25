@@ -1,0 +1,36 @@
+# A	0.05 255,128,200
+A		1.0				assets/environments/cape_hill_2k.hdr
+
+C    -6.336761, -13.478270, 7.375936    0.466086, 0.763567, -0.446911    70.000000
+R 1 0
+
+mat	Material                      204,204,204       0.000000       0.30000       1.450000       0.000000       0.000000            255,255,255
+
+# L	-4,-6,10 0.3 255,255,255 0.1
+
+sp	-3,-3,-3		2		Material
+sp	-3, 3,-3		2		Material
+sp	 3,-3,-3		2		Material
+sp	 3, 3,-3		2		Material
+
+sp	-3,-3, 3		2		Material
+sp	-3, 3, 3		2		Material
+sp	 3,-3, 3		2		Material
+sp	 3, 3, 3		2		Material
+
+cy	 0, 3,-3		1,0,0	2		6	Material
+cy	 0,-3,-3		1,0,0	2		6	Material
+cy	 0, 3, 3		1,0,0	2		6	Material
+cy	 0,-3, 3		1,0,0	2		6	Material
+
+cy	 3, 0,-3		0,1,0	2		6	Material
+cy	-3, 0,-3		0,1,0	2		6	Material
+cy	 3, 0, 3		0,1,0	2		6	Material
+cy	-3, 0, 3		0,1,0	2		6	Material
+
+cy	 3,-3, 0		0,0,1	2		6	Material
+cy	-3,-3, 0		0,0,1	2		6	Material
+cy	 3, 3, 0		0,0,1	2		6	Material
+cy	-3, 3, 0		0,0,1	2		6	Material
+
+pl	 0, 0,-4        0,0,2               Material
