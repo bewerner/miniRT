@@ -1,0 +1,30 @@
+R		0			1			1024
+A		2.00					assets/materials/earth/starmap.png
+C		4,0,0		-1,0,0		90
+
+#tex	name			type		path/scale	col1		col2
+tex		earth_tex		image		assets/materials/earth/earth_base_color.png
+tex		earth_normal	image		assets/materials/earth/earth_normal_map.png
+tex		moon_tex		image		assets/materials/earth/moon_base_color.png
+tex		moon_normal		image		assets/materials/earth/moon_normal_map.png
+
+#m	name			color 			metallic	roughness	ior		transmission	emission_strength	emission_color		color_tex_idx
+mat	mat_earth		earth_tex			0.0			0.0			1.45	0.2				0.0					0,0,0		earth_normal	5
+mat	mat_moon		moon_tex			0.0			0.0			1.45	0.2				0.0					0,0,0		moon_normal		1
+
+# EARTH
+sp		0,0,0			2			mat_earth
+
+# MOON
+sp		0,60.33,0		0.5462		mat_moon
+
+
+# SUN
+l		9160, 9160, 0			9000000000			255,255,224			69.5500
+
+# Ambient behind earth
+l	-0,15,0			1000		204,204,204
+l	-0,-15,0		1000		204,204,204
+l	-0,0,-15		1000		204,204,204
+l	-0,0,15			1000		204,204,204
+l	-15,0,0			1000		204,204,204
