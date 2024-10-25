@@ -18,8 +18,8 @@ SRC					=	main.c cleanup.c \
 						string_utils.c vec3_utils1.c vec3_utils2.c vec3_rotation.c time.c
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
-CFLAGS				=	-Wall -Wextra -Werror #-flto -Ofast -march=native
-LDFLAGS				=	-lm -ldl -lglfw #-flto
+CFLAGS				=	-Wall -Wextra -Werror -flto -Ofast -march=native
+LDFLAGS				=	-lm -ldl -lglfw -flto
 INCLUDES			=	-I./inc/
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
