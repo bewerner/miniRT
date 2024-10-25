@@ -1,30 +1,28 @@
 # Mandatory
 
-- parser
-	- textures for metallic & roughness
+- make scenes to showcase everything
 
-- Materails use all parameters
-	- …	
-	- better use of reflections
-		- better calculations
-		- glossy bounce limit (nice to have)
-
-- norminette
-
-- merging of MANDATORY && BONUS
-
-- random
-	- better random (already improved. this is probably fine?)
+- push to intra and final testing before eval
 
 ---
 ---
+
 # Nice to have
 
-- Diffuse Bounces
+- Exporter
+	- trigger ueber key_hook // UI-BTN
+	- .ppm
+	- .png
 
 - improve antialiasing
 
 - Depth of Field
+
+- better random (getting stripes and patterns sometimes)
+
+- 3D Noise Texture
+  	- greyscale for values
+  	- color for 3d normal map
 
 - Triangles
 	- new object
@@ -32,25 +30,10 @@
 	- UV Triangle
 	- Vertex Normals (smooth shading)
 
-- Planes
-	- additional UV Scalar parameter (optional)
-
-- Texture:
-	- TBO (max. count 10) -> depends on env_map
-
 - light gizmos
 	- lightcolor indication
 	- gizmos texture -> as sprite (or shader)
 		- use of vertex shader
-
-- Exporter
-	- trigger ueber key_hook // UI-BTN
-	- .ppm
-	- .png
-
-- 3D Noise Texture
-  	- greyscale for values
-  	- color for 3d normal map
 
 ---
 ---
