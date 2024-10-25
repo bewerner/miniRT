@@ -58,12 +58,41 @@ vec3 bounce(vec3 normal)
 
 vec3 reflect(vec3 incoming, vec3 normal, float roughness)
 {
-	vec3 mirror = normalize(incoming - (2.0 * dot(incoming, normal) * normal));
-	if (roughness == 0.0)
-		return (mirror);
-	vec3 bounce = bounce(normal);
+	vec3 reflection;
+	vec3 mirror;
 
-	return (slerp(mirror, bounce, roughness));
+	if (roughness < 1.0)
+		mirror = normalize(incoming - (2.0 * dot(incoming, normal) * normal));
+
+	if (roughness == 0.0)
+		reflection = mirror;
+	else if (roughness == 1.0)
+		reflection = bounce(normal);
+	else
+		reflection = slerp(mirror, bounce(normal), roughness);
+
+	return (reflection);
+}
+
+vec3 reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness)
+{
+	vec3 reflection;
+	vec3 mirror;
+
+	if (roughness < 1.0)
+		mirror = normalize(incoming - (2.0 * dot(incoming, normal) * normal));
+
+	if (roughness == 0.0)
+		reflection = mirror;
+	else if (roughness == 1.0)
+		reflection = bounce(normal);
+	else
+		reflection = slerp(mirror, bounce(normal), roughness);
+
+	if (dot(reflection, object_normal) < 0)
+		reflection = reflect(reflection, object_normal, roughness);
+
+	return (reflection);
 }
 
 float	lambert_diffuse(vec3 N, vec3 L)
@@ -196,8 +225,8 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 {
 	t_ray ray;
 	ray.origin = hit_pos;
-	ray.dir = reflect(hitpoint.ray, hitpoint.normal, pow(mat.roughness, 1.5));
-	vec3 ambient_specular_light = get_sky_color_from_ray(ray);
+	ray.dir = reflect(hitpoint.ray, hitpoint.normal, hitpoint.object_normal, pow(mat.roughness, 1.5));
+	vec3 ambient_specular_light = clamp(get_sky_color_from_ray(ray), 0, 16);
 	vec3 ambient_diffuse_light	= get_sky_color(hitpoint);
 
 	vec3 L  = normalize(ray.dir);
@@ -209,7 +238,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 
 	vec3 col = kd * mat.color * ambient_diffuse_light + max(clamp(specular, vec3(0.0), ks), ks) * ambient_specular_light;
 
-	return (col);
+	return (clamp(col, 0, 16));
 }
 
 vec3	render_hitpoint(t_hitpoint hitpoint)
