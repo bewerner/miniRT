@@ -1,0 +1,31 @@
+# TEXTURES
+#tex	name			type		path
+tex		nebula_color	image		assets/materials/nebula/nebula.png
+
+# MATERIALS
+#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
+mat	mirror                        255,255,255       1.000000       0.000000       1.450000       0.000000       0.000000            0,  0,  0
+mat	backdrop                      nebula_color      0.000000       0.000000       1.450000       0.000000       0.000000            0,  0,  0
+
+# PLANES
+#	origin                                          normal                                         material     uv_scale
+pl	    7.728793,    5.931804,   10.269529          0.000000,   -1.000000,   -0.000000             backdrop     0.4
+pl	    1.300644,   -7.983474,    0.000000         -7.592353,   -0.354071,    0.000001             mirror
+pl	   -0.650322,   -7.983474,   -1.126391          3.796177,   -0.354071,    6.575170             mirror
+pl	   -0.650322,   -7.983474,    1.126391          3.796175,   -0.354071,   -6.575171             mirror
+
+# LIGHTS
+#	origin                                          power          color
+l	    0.000000,   -2.300000,    0.000000          3926.799805    255,255,255
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	    0.000000,  -26.000000,    0.000000          0.000000,    1.000000,    0.000000             61.927515      
+
+# AMBIENT
+#	strength             color
+A	0.000000            255,255,255
+
+# RENDER SETTINGS
+#	max_diffuse_bounces    max_glossy_bounces    max_samples
+R	0                      17                    1
