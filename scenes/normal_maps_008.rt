@@ -1,9 +1,9 @@
 tex		tiles_color			image		assets/materials/pyramids/tiles_0119_color_2k.jpg
 tex		tiles_normal		image		assets/materials/pyramids/tiles_0119_normal_opengl_2k.png
 
-mat		mat1			tiles_color			0.5			0.0			1.45	0.2				0.0					255,128,255			tiles_normal		0.2
-mat		mat2			tiles_color			0.5			0.0			1.45	0.2				0.0					255,128,255			tiles_normal		1.5
-mat		mat3			tiles_color			0.5			0.0			1.45	0.2				0.0					255,128,255			tiles_normal		3.0
+mat		mat1			tiles_color			0.0			0.0			1.45	0.0				0.0					255,128,255			tiles_normal		0.5
+mat		mat2			tiles_color			0.0			0.0			1.45	0.0				0.0					255,128,255			tiles_normal		1.5
+mat		mat3			tiles_color			0.0			0.0			1.45	0.0				0.0					255,128,255			tiles_normal		3.0
 
 # SPHERES
 #	origin                                          diameter       material
@@ -15,7 +15,7 @@ cy	    2.641201,    4.441657,    1.500000          2.000000,    -1.00000,    2.0
 
 # PLANES
 #	origin                                          normal                                         material
-pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,    1.000000             mat1              
+pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,    1.000000             mat1        0.3      
 
 # CAMERA
 #	origin                                          orientation                                    fiew of view
@@ -24,3 +24,4 @@ C       5.900813, -11.066176, 2.277049              -0.298061, 0.948358, -0.1085
 # AMBIENT
 #	strength             color
 A		3.0				assets/environments/syferfontein_18d_clear_2k.hdr
+R 0 0
