@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/23 19:41:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/25 22:14:19 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	postprocess_raw_image(t_rt *rt)
 	glFinish();
 }
 
-// fix resize hook
 void	render_bounces(GLuint shader_program, t_rt *rt)
 {
 	while (rt->mode == MODE_PREVIEW

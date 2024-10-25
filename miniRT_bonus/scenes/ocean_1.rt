@@ -28,4 +28,4 @@ A	1.000000             assets/environments/evening_road_01_puresky_4k.hdr
 
 # RENDER SETTINGS
 #	max_diffuse_bounces    max_glossy_bounces    max_samples
-R	0                      1
+R	1                      1

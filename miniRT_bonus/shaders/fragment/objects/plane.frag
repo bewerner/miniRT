@@ -6,7 +6,6 @@ bool	is_near_zero(float value)
 vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos, vec2 uv_scale)
 {
 	vec2	uv;
-	float	scale = 5;
 
 	if (abs(normal.z) != 1)
 	{
@@ -23,7 +22,8 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos, vec2 uv_scale)
 		pos = vec3_rotate_x(pos, -rad);
 	}
 
-	uv = pos.xy - plane_origin.xy;
+	// uv = pos.xy - plane_origin.xy;
+	uv = pos.xy - plane_origin.xy - rt.debug * vec2(0.038, 0.052);
 
 	return (uv * uv_scale / 2);
 }
