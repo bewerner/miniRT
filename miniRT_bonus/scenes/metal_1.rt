@@ -1,0 +1,72 @@
+# TEXTURES
+#tex	name									type		path
+tex		diamond_plate_color						image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_Color.png
+tex		diamond_plate_metallic					image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_Metalness.png
+tex		diamond_plate_roughness					image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_Roughness.png
+tex		diamond_plate_normal					image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_NormalGL.png
+
+tex		metal_panel_color						image		assets/materials/Metal_Plate_021_4K/Metal_Plate_021_basecolor.png
+tex		metal_panel_metallic					image		assets/materials/Metal_Plate_021_4K/Metal_Plate_021_metallic.png
+tex		metal_panel_roughness					image		assets/materials/Metal_Plate_021_4K/Metal_Plate_021_roughness.png
+tex		metal_panel_normal						image		assets/materials/Metal_Plate_021_4K/Metal_Plate_021_normal.png
+
+
+# MATERIALS
+#	name                          color                   metallic                   roughness                   ior            transmission   emission_strength   emission_color     normal_map              normal_strength
+mat	diamond_plate                 diamond_plate_color     diamond_plate_metallic     diamond_plate_roughness     1.450000       0.000000       0.000000            255,255,255        diamond_plate_normal    1
+mat	metal_panel                   metal_panel_color       metal_panel_metallic       metal_panel_roughness       1.450000       0.000000       0.000000            255,255,255        metal_panel_normal      1
+
+# CYLINDERS
+#	origin                                          orientation                                    diameter       height         material            uv_scale
+cy	    0.000000,    0.000000,   -0.750000          0.000000,    0.000000,    1.000000             20.000000      0.500000       diamond_plate       110
+cy	    0.000000,    0.000000,    3.750000          0.000000,    0.000000,    1.000000             20.000000      0.500000       diamond_plate       110
+cy	   -3.000000,    7.794240,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    0.000000,    7.794240,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    3.000000,    7.794240,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -7.500000,    5.196163,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -4.500000,    5.196163,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -1.500000,    5.196163,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    1.500000,    5.196163,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    4.500000,    5.196163,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    7.500000,    5.196163,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -3.000000,    2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    0.000000,    2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -6.000000,    2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    3.000000,    2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    6.000000,    2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    9.000000,    2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -9.000000,    2.598082,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -7.500000,    0.000004,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -4.500000,    0.000004,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -1.500000,    0.000004,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    1.500000,    0.000004,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    4.500000,    0.000004,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    7.500000,    0.000004,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -3.000000,   -2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    0.000000,   -2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -6.000000,   -2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    3.000000,   -2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    6.000000,   -2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    9.000000,   -2.598080,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -9.000000,   -2.598078,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -7.500000,   -5.196156,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -4.500000,   -5.196156,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -1.500000,   -5.196156,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    1.500000,   -5.196156,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    4.500000,   -5.196156,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    7.500000,   -5.196156,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	   -3.000000,   -7.794239,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    0.000000,   -7.794239,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+cy	    3.000000,   -7.794239,    1.500000          0.000000,    0.000000,    0.500000             1.000000       4.000000       metal_panel         1,4
+
+# CAMERA
+#	origin                          orientation                       field of view
+C	6.331649, 0.858330, 0.197152    -0.166198, -0.958986, 0.229617    90.000000    
+
+# AMBIENT
+#	strength      color
+A	1.000000      assets/environments/evening_road_01_puresky_4k.hdr
+
+# RENDER SETTINGS
+#	max_diffuse_bounces    max_glossy_bounces    max_samples
+R	0                      0
