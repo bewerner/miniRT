@@ -1,8 +1,8 @@
 # TEXTURES
 #tex	name			type		path
-tex		stone_color		image		assets/materials/Wall_stone_017_4K/Wall_Stone_017_BaseColor.png
-tex		stone_normal	image		assets/materials/Wall_stone_017_4K/Wall_Stone_017_Normal.png
-tex		stone_roughness	image		assets/materials/Wall_stone_017_4K/Wall_Stone_017_Roughness.png
+tex		stone_color		image		assets/materials/Wall_stone_017_2K/Wall_Stone_017_BaseColor.png
+tex		stone_normal	image		assets/materials/Wall_stone_017_2K/Wall_Stone_017_Normal.png
+tex		stone_roughness	image		assets/materials/Wall_stone_017_2K/Wall_Stone_017_Roughness.png
 tex		water_normal	image		assets/materials/Water_001_4K/Water_001_NORM.png
 
 # MATERIALS

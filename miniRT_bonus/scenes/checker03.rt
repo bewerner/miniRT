@@ -19,7 +19,7 @@ C   -3.389201, -7.039691, 4.352799                  0.330406, 0.855917, -0.39779
 
 # AMBIENT
 #	strength             color
-A		0.90				assets/environments/studio_small_03_4k.hdr
-# A		0.50				assets/environments/syferfontein_18d_clear_2k.hdr
+# A		0.90				assets/environments/studio_small_03_4k.hdr
+A		0.50				assets/environments/syferfontein_18d_clear_2k.hdr
 
 R 0 1
