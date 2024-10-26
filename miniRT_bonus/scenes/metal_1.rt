@@ -1,9 +1,9 @@
 # TEXTURES
 #tex	name									type		path
-tex		diamond_plate_color						image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_Color.png
-tex		diamond_plate_metallic					image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_Metalness.png
-tex		diamond_plate_roughness					image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_Roughness.png
-tex		diamond_plate_normal					image		assets/materials/DiamondPlate003_4K-PNG/DiamondPlate003_4K-PNG_NormalGL.png
+tex		diamond_plate_color						image		assets/materials/DiamondPlate003_1K-PNG/DiamondPlate003_1K-PNG_Color.png
+tex		diamond_plate_metallic					image		assets/materials/DiamondPlate003_1K-PNG/DiamondPlate003_1K-PNG_Metalness.png
+tex		diamond_plate_roughness					image		assets/materials/DiamondPlate003_1K-PNG/DiamondPlate003_1K-PNG_Roughness.png
+tex		diamond_plate_normal					image		assets/materials/DiamondPlate003_1K-PNG/DiamondPlate003_1K-PNG_NormalGL.png
 
 tex		metal_panel_color						image		assets/materials/Metal_Plate_021_4K/Metal_Plate_021_basecolor.png
 tex		metal_panel_metallic					image		assets/materials/Metal_Plate_021_4K/Metal_Plate_021_metallic.png
