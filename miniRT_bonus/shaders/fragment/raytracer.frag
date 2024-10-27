@@ -51,13 +51,17 @@ void	main(void)
 	vec3 render;
 	if (rt.diffuse_bounce_count == 0 && rt.glossy_bounce_count == 0)
 	{
-		vec2 screen = (coord * 2 - 1) / vec2(1, rt.aspect_ratio);
+		vec2 screen = (coord * 2 - 1);
+		if (rt.sample_count > 1)
+		{
+			screen.x += 2.0 / rt.width  * (rand() - 0.5);
+			screen.y += 2.0 / rt.height * (rand() - 0.5);
+		}
+		screen /= vec2(1, rt.aspect_ratio);
 		t_ray camera_ray;
 		camera_ray.origin = rt.camera.origin;
 		vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
 		camera_ray.dir = screen.y * camera_up + screen.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
-		camera_ray.dir.x = camera_ray.dir.x - (2.0 / rt.width  / 2.0) + (2.0 / rt.width  * rand() * 1);
-		camera_ray.dir.y = camera_ray.dir.y - (2.0 / rt.height / 2.0) + (2.0 / rt.height * rand() * 1);
 		render = trace_ray(camera_ray);
 		out_hitpoint_render.rgb = render;
 
