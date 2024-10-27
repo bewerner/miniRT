@@ -18,11 +18,11 @@ tex		chip_normal		image		assets/materials/poker_chips/poker_chip_2k_normal.png
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color     normal_map       normal_strength
 mat	wood                          wood_color        0.000000       0.140813       1.450000       0.000000       0.000000            255,255,255        wood_normal      1
 mat	fabric                        fabric_color      0.000000       0.767372       1.450000       0.000000       0.000000            255,255,255        fabric_normal    0.6
-mat	white_chip                    white             0.000000       0.700000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	red_chip                      red               0.000000       0.700000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	green_chip                    green             0.000000       0.700000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	blue_chip                     blue              0.000000       0.700000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	black_chip                    black             0.000000       0.700000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
+mat	white_chip                    white             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
+mat	red_chip                      red               0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
+mat	green_chip                    green             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
+mat	blue_chip                     blue              0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
+mat	black_chip                    black             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
 
 # CYLINDERS
 #	origin                                          orientation                                    diameter       height         material         uv_scale
