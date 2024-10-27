@@ -1,0 +1,24 @@
+tex		tex_checker_roughness		checker		2			  1,  0,  0       250,250,250
+tex		tex_checker_metallic		checker		2			255,255,255       0,  0,  0
+
+# MATERIALS
+#	name                    color             metallic                  roughness                   ior            transmission   emission_strength   emission_color
+mat	mat_checker_mirror      210,210,210       tex_checker_metallic      tex_checker_roughness       1.450000       0.000000       0.000000            255,255,255
+
+# SPHERES
+#	origin                                          diameter       material
+sp	    0.000000,    0.000000,    1.000000          2.000000       mat_checker_mirror            
+
+# PLANES
+#	origin                                          normal                                         material
+pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,  -37.745251             mat_checker_mirror            
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C   -3.389201, -7.039691, 4.352799                  0.330406, 0.855917, -0.397790                  39.597755      
+
+# AMBIENT
+#	strength             color
+A		0.6				assets/environments/syferfontein_18d_clear_2k.hdr
+
+R 1 3
