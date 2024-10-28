@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/25 22:04:41 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/28 12:44:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,18 @@ void	check_debug_key_presses(int key, int action, t_rt *rt)
 		rt->debug -= 1;
 		rt->sample_count = 0;
 		printf("debug is %f\n", rt->debug);
+	}
+	if (key == GLFW_KEY_LEFT && action)
+	{
+		rt->debug2 += 1;
+		rt->sample_count = 0;
+		printf("debug2 is %f\n", rt->debug2);
+	}
+	else if (key == GLFW_KEY_RIGHT && action)
+	{
+		rt->debug2 -= 1;
+		rt->sample_count = 0;
+		printf("debug2 is %f\n", rt->debug2);
 	}
 }
 

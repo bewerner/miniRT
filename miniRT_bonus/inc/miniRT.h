@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/24 09:55:40 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/28 12:49:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@
 # define LIGHTCYAN		"\033[96m"
 # define RESET			"\033[0m"
 
-# define WINDOW_WIDTH	1280
-# define WINDOW_HEIGHT	720
+# define WINDOW_WIDTH	1920
+# define WINDOW_HEIGHT	1080
 
 # define ACC  4.5f
 # define SCROLL_SENSITIVITY 50.0f
@@ -330,6 +330,7 @@ typedef struct s_ubo
 	t_vec3			ambient;
 	float			aspect_ratio;
 	float			debug;
+	float			debug2;
 	int				sample_count;
 	int				max_samples;
 	int				width;
@@ -394,6 +395,7 @@ typedef struct s_rt
 	bool			cursor_is_settable;
 	bool			hide_gizmo;
 	float			debug;
+	float			debug2;
 	int				sample_count;
 	int				max_samples;
 	int				diffuse_bounce_count;
