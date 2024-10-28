@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/24 10:17:17 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/28 12:45:08 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	update_ubo_rt(t_rt *rt)
 	ubo_rt.sample_count = rt->sample_count;
 	ubo_rt.max_samples = rt->max_samples;
 	ubo_rt.debug = rt->debug;
+	ubo_rt.debug2 = rt->debug2;
 	ubo_rt.ambient = rt->ambient;
 	ubo_rt.aspect_ratio = rt->aspect_ratio;
 	ubo_rt.camera = rt->camera;
