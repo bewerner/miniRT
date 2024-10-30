@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/30 04:27:31 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/30 07:24:11 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,15 @@ void	move_camera(t_rt *rt)
 	rt->camera.right = vec3_rotate_z(rt->camera.right, rt->camera.yaw);
 	rt->camera.up = vec3_cross(rt->camera.direction, rt->camera.right);
 	rt->camera.direction = (t_vec3){{0, 0, -1}};
-	rt->camera.direction
-		= vec3_rotate_x(rt->camera.direction, rt->camera.pitch);
-	rt->camera.direction
-		= vec3_rotate_z(rt->camera.direction, rt->camera.yaw);
+	rt->camera.direction = vec3_rotate_x(rt->camera.direction, rt->camera.pitch);
+	rt->camera.direction = vec3_rotate_z(rt->camera.direction, rt->camera.yaw);
 	rt->move.vel = rt->move.acc;
-	rt->camera.origin = vec3_add(rt->camera.origin,
-			vec3_scale(rt->move.vel.x, rt->camera.right));
-	rt->camera.origin = vec3_add(rt->camera.origin,
-			(t_vec3){{0, 0, rt->move.vel.y}});
-	rt->camera.origin = vec3_add(rt->camera.origin,
-			vec3_scale(rt->move.vel.z, rt->camera.direction));
+	rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(rt->move.vel.x, rt->camera.right));
+	rt->camera.origin = vec3_add(rt->camera.origin, (t_vec3){{0, 0, rt->move.vel.y}});
+	rt->camera.origin = vec3_add(rt->camera.origin, vec3_scale(rt->move.vel.z, rt->camera.direction));
 	rt->camera.viewport_light = (t_vec3){{-0.348155, 0.348155, 0.870388}};
-	rt->camera.viewport_light
-		= vec3_rotate_x(rt->camera.viewport_light, rt->camera.pitch);
-	rt->camera.viewport_light
-		= vec3_rotate_z(rt->camera.viewport_light, rt->camera.yaw);
+	rt->camera.viewport_light = vec3_rotate_x(rt->camera.viewport_light, rt->camera.pitch);
+	rt->camera.viewport_light = vec3_rotate_z(rt->camera.viewport_light, rt->camera.yaw);
 	if (ft_memcmp(&initial_camera, &rt->camera, sizeof(t_camera)))
 		rt->sample_count = 0;
 }
