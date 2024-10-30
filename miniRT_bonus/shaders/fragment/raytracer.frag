@@ -29,12 +29,38 @@ layout(location = 7) out vec4 out_glossy_hitpoint_ray;		// alpha is glossy_hitpo
 #import utils/vec3_rotations.frag
 #import utils/random.frag
 
+t_ray	get_camera_ray(void)
+{
+	t_ray	ray;
+
+	vec2 screen = (coord * 2 - 1);
+	vec2 pixel_distance = vec2(2.0) / vec2(rt.width, rt.height);
+	if (rt.sample_count > 1)
+			screen += pixel_distance * random_point_in_circle(1.5); // Film Pixel Filter Width = 1.5
+	screen /= vec2(1, rt.aspect_ratio);
+
+	ray.origin = rt.camera.origin;
+	if (rt.camera.f_stop > 0)
+	{
+		float aperture = (rt.camera.focal_length * 0.018) / rt.camera.f_stop; // screen size (2000mm) * 0.018 = sensor size (36mm)
+		vec2 defocus = random_point_in_circle(aperture);
+		ray.origin += defocus.x * rt.camera.right + defocus.y * rt.camera.up;
+	}
+
+	vec3 target = (rt.camera.origin + rt.camera.direction * rt.camera.focal_length) + (screen.x * rt.camera.right) + (screen.y * rt.camera.up);
+	target = normalize(target - rt.camera.origin);
+	target *= rt.camera.focus_distance;
+	target += rt.camera.origin;
+
+	ray.dir = target - ray.origin;
+
+	return (ray);
+}
+
 void	main(void)
 {
 	vec2 uv = vec2(coord.x, 1.0 - coord.y);
 
-
-	FragColor					= texture(buffer, vec3(uv, 0.0)).rgba;
 	out_hitpoint_pos			= texture(buffer, vec3(uv, 1.0)).rgba;
 	out_hitpoint_normal			= texture(buffer, vec3(uv, 2.0)).rgba;
 	out_hitpoint_render			= texture(buffer, vec3(uv, 3.0)).rgba;
@@ -43,27 +69,12 @@ void	main(void)
 	out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0)).rgba;
 	out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0)).rgba;
 
-	g_seed = int(fract(sin(dot(vec2(coord.xy), vec2(12.9898, 78.233))) * 43758.5453123) * 5929 * (rt.sample_count + 1)) + rt.sample_count * 9823;
-	g_seed += int(rand() * 943 * rt.sample_count);
-	g_seed += int(rand() * 7943 * rt.diffuse_bounce_count);
-	g_seed += int(rand() * 2348 * rt.glossy_bounce_count);
+	init_seed();
 
 	vec3 render;
 	if (rt.diffuse_bounce_count == 0 && rt.glossy_bounce_count == 0)
 	{
-		vec2 screen = (coord * 2 - 1);
-		if (rt.sample_count > 1)
-		{
-			screen.x += 2.0 / rt.width  * (rand() - 0.5);
-			screen.y += 2.0 / rt.height * (rand() - 0.5);
-		}
-		screen /= vec2(1, rt.aspect_ratio);
-		t_ray camera_ray;
-		camera_ray.origin = rt.camera.origin;
-		vec3 camera_up = cross(rt.camera.direction, rt.camera.right);
-		camera_ray.dir = screen.y * camera_up + screen.x * rt.camera.right + rt.camera.focal_length * rt.camera.direction;
-		render = trace_ray(camera_ray);
-		out_hitpoint_render.rgb = render;
+		render = trace_ray(get_camera_ray());
 
 		out_glossy_hitpoint_pos		= out_hitpoint_pos;
 		out_glossy_hitpoint_normal	= out_hitpoint_normal;
@@ -85,24 +96,16 @@ void	main(void)
 
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
 			render += add_bounce_light(bounce_ray, previous);
-			out_hitpoint_render.rgb = render;
 			out_hitpoint_render.a	= texture(buffer, vec3(uv, 3.0)).a;
 		}
 		else
 		{
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
-			out_hitpoint_render.rgb = render;
 			out_hitpoint_pos.a = float(false); // hitpoint.hit
 		}
 	}
 	else
 	{
-		// out_hitpoint_render			= texture(buffer, vec3(uv, 3.0)).rgba;
-		// out_hitpoint_color			= texture(buffer, vec3(uv, 4.0)).rgba;
-		// out_glossy_hitpoint_pos		= texture(buffer, vec3(uv, 5.0)).rgba;
-		// out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0)).rgba;
-		// out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0)).rgba;
-
 		t_hitpoint previous;
 		previous.hit = bool(texture(buffer, vec3(uv, 5.0)).a);
 		if (previous.hit == true)
@@ -125,15 +128,14 @@ void	main(void)
 
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
 			render += add_reflection_light(reflection_ray, previous, specular, previous_metallic, previous_roughness);
-			out_hitpoint_render.rgb = render;
 		}
 		else
 		{
 			render = texture(buffer, vec3(uv, 3.0)).rgb;
-			out_hitpoint_render.rgb = render;
 			out_glossy_hitpoint_pos.a = float(false); // hitpoint.hit
 		}
 	}
+	out_hitpoint_render.rgb = render;
 
 	vec3 cumulative_render_buffer = texture(buffer, vec3(uv, 0.0)).rgb;
 	if (rt.diffuse_bounce_count == rt.max_diffuse_bounces && rt.glossy_bounce_count == rt.max_glossy_bounces)

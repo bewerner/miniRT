@@ -154,6 +154,12 @@ struct t_camera
 	float			focal_length;
 	vec3			viewport_light;
 	float			fov;
+	vec3			up;
+	float			focus_distance;
+	float			f_stop;
+	float			padding1;
+	float			padding2;
+	float			padding3;
 };
 
 struct t_rt
@@ -274,7 +280,9 @@ bool			has_image_texture(t_hitpoint hitpoint);
 bool			has_normal_map_material(t_hitpoint hitpoint);
 
 // utils/random.frag
-float	rand();
+void	init_seed(void);
+float	rand(void);
+vec2	random_point_in_circle(float diameter);
 vec3	dither(vec3 col);
 
 // utils/vec3_rotations.frag

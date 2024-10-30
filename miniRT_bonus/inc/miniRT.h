@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/28 12:49:21 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/30 03:48:10 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,6 +314,12 @@ typedef struct s_camera
 	float			focal_length;
 	t_vec3			viewport_light;
 	float			fov;
+	t_vec3			up;
+	float			focus_distance;
+	float			f_stop;
+	float			padding1;
+	float			padding2;
+	float			padding3;
 }	t_camera;
 
 typedef struct s_screen
