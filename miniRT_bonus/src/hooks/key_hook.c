@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/30 00:41:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/30 07:32:09 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 static void	print_camera_info(t_rt *rt)
 {
-	printf("C    %f, %f, %f    %f, %f, %f    %f\n",
+	printf("C    %f, %f, %f    %f, %f, %f    %f",
 		rt->camera.origin.x, rt->camera.origin.y, rt->camera.origin.z,
 		rt->camera.direction.x, rt->camera.direction.y, rt->camera.direction.z,
 		rt->camera.fov);
+	if (rt->camera.f_stop > 0)
+		printf("    %f    %f", rt->camera.f_stop, rt->camera.focus_distance);
+	printf("\n");
 }
 
 void	reset_camera(t_camera *camera, t_rt *rt)
