@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/28 12:45:08 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/10/30 06:52:24 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	update(t_rt *rt)
 	{
 		render_raw_image(rt);
 		postprocess_raw_image(rt);
-		if (!rt->hide_gizmo)
+		if (!rt->hide_gizmo || rt->mode != MODE_PREVIEW)
 			draw_gizmo(rt);
 		glfwSwapBuffers(rt->window);
 	}

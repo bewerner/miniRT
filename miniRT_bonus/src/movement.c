@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmihaile <nmihaile@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/21 18:49:41 by nmihaile         ###   ########.fr       */
+/*   Updated: 2024/10/30 04:27:31 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	move_camera(t_rt *rt)
 	initial_camera = rt->camera;
 	rt->camera.right = (t_vec3){{1, 0, 0}};
 	rt->camera.right = vec3_rotate_z(rt->camera.right, rt->camera.yaw);
+	rt->camera.up = vec3_cross(rt->camera.direction, rt->camera.right);
 	rt->camera.direction = (t_vec3){{0, 0, -1}};
 	rt->camera.direction
 		= vec3_rotate_x(rt->camera.direction, rt->camera.pitch);
