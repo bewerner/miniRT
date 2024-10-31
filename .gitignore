@@ -1,12 +1,5 @@
-miniRT_bonus/inc/glad/
-miniRT_bonus/inc/KHR/
-miniRT_bonus/inc/stb
-miniRT_bonus/lib/
-miniRT_bonus/debug.frag
-miniRT_bonus/miniRT
-
-miniRT_mandatory/MLX42/
-miniRT_mandatory/miniRT
+debug.frag
+miniRT
 
 *.o
 *.a
