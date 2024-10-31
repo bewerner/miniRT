@@ -11,18 +11,18 @@ tex		red				image		assets/materials/poker_chips/poker_chip_4k_red.png
 tex		green			image		assets/materials/poker_chips/poker_chip_4k_green.png
 tex		blue			image		assets/materials/poker_chips/poker_chip_4k_blue.png
 tex		black			image		assets/materials/poker_chips/poker_chip_4k_black.png
-tex		chip_normal		image		assets/materials/poker_chips/poker_chip_2k_normal.png
+tex		chip_normal		image		assets/materials/poker_chips/poker_chip_4k_normal.png
 
 
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color     normal_map       normal_strength
 mat	wood                          wood_color        0.000000       0.140813       1.450000       0.000000       0.000000            255,255,255        wood_normal      1
 mat	fabric                        fabric_color      0.000000       0.767372       1.450000       0.000000       0.000000            255,255,255        fabric_normal    0.6
-mat	white_chip                    white             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	red_chip                      red               0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	green_chip                    green             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	blue_chip                     blue              0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
-mat	black_chip                    black             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      9
+mat	white_chip                    white             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	red_chip                      red               0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	green_chip                    green             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	blue_chip                     blue              0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	black_chip                    black             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
 
 # CYLINDERS
 #	origin                                          orientation                                    diameter       height         material         uv_scale
@@ -148,7 +148,7 @@ cy	   -5.327497,   -2.597389,   -0.000000         -0.000007,   -0.000314,    0.8
 
 # CAMERA
 #	origin                                          orientation                                    fiew of view    f-stop    focus-distance
-# C	  -22.344769,   -5.374761,    3.897861          0.941350,    0.266972,   -0.206363             54.432226       0.7       11
+# C	  -22.344769,   -5.374761,    3.897861          0.941350,    0.266972,   -0.206363             54.432226       0.6       11
 C	    1.910649,    2.544702,    1.165279         -0.725664,   -0.651792,   -0.220406             54.432226       0.3       3.92156
 
 # AMBIENT
