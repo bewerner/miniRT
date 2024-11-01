@@ -1,24 +1,24 @@
 #version 330 core
 
-#import ../fragment/header.frag
+#import ../render/header.frag
 
-#import ../fragment/checker_texture.frag
+#import ../render/checker_texture.frag
 #import get_solid_diffuse_color.frag
 #import get_solid_specular_color.frag
 #import light_gizmo.frag
-#import ../fragment/objects/object_utils.frag
-#import ../fragment/objects/sphere.frag
-#import ../fragment/objects/plane.frag
-#import ../fragment/objects/cylinder.frag
-#import ../fragment/objects/hyperboloid.frag
-#import ../fragment/objects/point_light.frag
+#import ../render/objects/object_utils.frag
+#import ../render/objects/sphere.frag
+#import ../render/objects/plane.frag
+#import ../render/objects/cylinder.frag
+#import ../render/objects/hyperboloid.frag
+#import ../render/objects/point_light.frag
 #import trace_ray_solid.frag
 
-#import ../fragment/utils/normal_map.frag
-#import ../fragment/utils/ray_utils.frag
-#import ../fragment/utils/hitpoint_utils.frag
-#import ../fragment/utils/vec3_rotations.frag
-#import ../fragment/utils/random.frag
+#import ../render/utils/normal_map.frag
+#import ../render/utils/ray_utils.frag
+#import ../render/utils/hitpoint_utils.frag
+#import ../render/utils/vec3_rotations.frag
+#import ../render/utils/random.frag
 
 vec3	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint hitpoint);
 vec3	get_solid_color(t_hitpoint hitpoint);

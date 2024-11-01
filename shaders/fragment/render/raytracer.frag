@@ -10,7 +10,6 @@ layout(location = 6) out vec4 out_glossy_hitpoint_normal;	// alpha is hitpoint.m
 layout(location = 7) out vec4 out_glossy_hitpoint_ray;		// alpha is glossy_hitpoint roughness
 
 #import header.frag
-#import AgX.frag
 #import checker_texture.frag
 #import noise_texture.frag
 #import get_sky_color.frag
