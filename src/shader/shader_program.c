@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/01 01:47:22 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,17 +101,17 @@ void	init_shader_programs(t_rt *rt)
 {
 	rt->solid_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
-			"shaders/solid/solid.frag", rt);
+			"shaders/fragment/solid_mode/solid.frag", rt);
 	rt->normal_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
-			"shaders/normal/normal.frag", rt);
+			"shaders/fragment/normal_mode/normal.frag", rt);
 	rt->postprocessing_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
-			"shaders/postprocessing/postprocessing.frag", rt);
+			"shaders/fragment/postprocessing/postprocessing.frag", rt);
 	rt->preview_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
-			"shaders/fragment/raytracer.frag", rt);
+			"shaders/fragment/render/raytracer.frag", rt);
 	rt->gizmo_shader_program = create_shader_program(
 			"shaders/vertex/gizmo.vert",
-			"shaders/gizmo/gizmo.frag", rt);
+			"shaders/fragment/gizmo/gizmo.frag", rt);
 }

@@ -1,8 +1,8 @@
 #version 330 core
 
-#import ../fragment/header.frag
-#import ../fragment/AgX.frag
-#import ../fragment/utils/random.frag
+#import ../render/header.frag
+#import AgX.frag
+#import ../render/utils/random.frag
 
 out vec3 FragColor;
 
