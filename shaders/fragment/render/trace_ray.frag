@@ -29,20 +29,16 @@ vec3	slerp(vec3 v0, vec3 v1, float t)
 
 vec3 bounce(vec3 normal)
 {
-	// Generate random numbers in the range [0, 1]
 	float u = rand();
 	float v = rand();
 
-	// Convert random numbers to spherical coordinates
-	float theta = acos(sqrt(u)); // Cosine weighted
-	float phi = 2.0 * M_PI * v; // Uniformly distributed in [0, 2π]
+	float theta = acos(sqrt(u));
+	float phi = 2.0 * M_PI * v;
 
-	// Spherical to Cartesian coordinates
 	float x = sin(theta) * cos(phi);
 	float y = sin(theta) * sin(phi);
 	float z = cos(theta);
 
-	// Create a local tangent basis for the hemisphere
 	vec3 tangent;
 	if (abs(normal.y) != 1)
 		tangent = normalize(cross(vec3(0, 1, 0), normal));
@@ -50,50 +46,97 @@ vec3 bounce(vec3 normal)
 		tangent = normalize(cross(vec3(1, 0, 0), normal));
 	vec3 bitangent = cross(normal, tangent);
 
-	// Convert local space coordinates to world space
 	vec3 bounce = normalize(x * tangent + y * bitangent + z * normal);
 
 	return (bounce);
 }
 
+vec3 sample_half_vector(vec3 normal, float roughness)
+{
+	float u = rand() * 1.1;
+	float v = rand() * 1.1;
+
+	float theta = acos(sqrt(u));
+	float phi = 2.0 * M_PI * v;
+
+	float x = sin(theta) * cos(phi);
+	float y = sin(theta) * sin(phi);
+	float z = cos(theta);
+
+	vec3 tangent;
+	if (abs(normal.y) != 1)
+		tangent = normalize(cross(vec3(0, 1, 0), normal));
+	else
+		tangent = normalize(cross(vec3(1, 0, 0), normal));
+	vec3 bitangent = cross(normal, tangent);
+
+	vec3 bounce = normalize(x * tangent + y * bitangent + z * normal);
+
+	return (bounce);
+}
+
+vec3 mirror(vec3 incoming, vec3 normal)
+{
+	return (normalize(incoming - (2.0 * dot(incoming, normal) * normal)));
+}
+
 vec3 reflect(vec3 incoming, vec3 normal, float roughness)
 {
 	vec3 reflection;
-	vec3 mirror;
-
-	if (roughness < 1.0)
-		mirror = normalize(incoming - (2.0 * dot(incoming, normal) * normal));
 
 	if (roughness == 0.0)
-		reflection = mirror;
+		reflection = mirror(incoming, normal);
 	else if (roughness == 1.0)
 		reflection = bounce(normal);
 	else
-		reflection = slerp(mirror, bounce(normal), roughness);
+	{
+		reflection = mirror(incoming, normal);
+		reflection = slerp(reflection, bounce(reflection), roughness);
+	}
 
 	return (reflection);
 }
 
-vec3 reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness)
-{
-	vec3 reflection;
-	vec3 mirror;
+// vec3 reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness)
+// {
+// 	vec3 reflection;
 
-	if (roughness < 1.0)
-		mirror = normalize(incoming - (2.0 * dot(incoming, normal) * normal));
+// 	if (rt.debug < 0)
+// 		roughness = -rt.debug/100;
 
-	if (roughness == 0.0)
-		reflection = mirror;
-	else if (roughness == 1.0)
-		reflection = bounce(normal);
-	else
-		reflection = slerp(mirror, bounce(normal), roughness);
 
-	if (dot(reflection, object_normal) < 0)
-		reflection = reflect(reflection, object_normal, roughness);
 
-	return (reflection);
-}
+// 	if (roughness == 0.0)
+// 		reflection = mirror(incoming, normal);
+// 	else if (roughness == 1.0)
+// 		reflection = bounce(normal);
+// 	else
+// 	{
+
+
+// 		vec3 F0 = 0.04; // incorrect hack
+// 		vec3 N  = normal;
+// 		vec3 V  = normalize(-incoming);
+// 		vec3 L  = mirror(incoming, normal);
+// 		vec3 H  = normalize(V + L);
+// 		vec3 ks = fresnel(F0, V, H);
+// 		// vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+// 		vec3 kd = vec3(1.0) - ks;
+// 		float a = roughness * roughness;
+// 		vec3  specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+
+// 		reflection = normalize(specular);
+
+// 		// reflection = mirror(incoming, normal);
+// 		// reflection = slerp(reflection, bounce(reflection), roughness);
+// 	}
+	
+
+// 	// if (dot(reflection, object_normal) < 0)
+// 	// 	reflection = reflect(reflection, object_normal, roughness);
+
+// 	return (reflection);
+// }
 
 float	lambert_diffuse(vec3 N, vec3 L)
 {
@@ -144,7 +187,7 @@ float	G1(float a, vec3 N, vec3 X)
 	return (numerator / denominator);
 }
 
-float	G(float a, vec3 N, vec3 V, vec3 L)
+float	geometryShadowing(float a, vec3 N, vec3 V, vec3 L)
 {
 	// SMITH MODEL
 	return ( G1(a, N, V) * G1(a, N, L) );
@@ -154,9 +197,22 @@ vec3	specular_cookTorrance(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks, boo
 {
 	vec3	ct_numerator;
 	if (hacky_ndf == true)
-		ct_numerator = hacky_normalDistribution(a, N, H) * G(a, N, V, L) * ks;
+		ct_numerator = hacky_normalDistribution(a, N, H) * geometryShadowing(a, N, V, L) * ks;
 	else
-		ct_numerator = normalDistribution(a, N, H) * G(a, N, V, L) * ks;
+		ct_numerator = normalDistribution(a, N, H) * geometryShadowing(a, N, V, L) * ks;
+	float	ct_denominator	= 4.0 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0);
+			ct_denominator	= max(ct_denominator, 0.000001);
+
+	return	(ct_numerator / ct_denominator);
+}
+
+vec3	specular_cookTorrance2(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks, bool hacky_ndf)
+{
+	vec3	ct_numerator;
+	if (hacky_ndf == true)
+		ct_numerator = ks;
+	else
+		ct_numerator = ks;
 	float	ct_denominator	= 4.0 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0);
 			ct_denominator	= max(ct_denominator, 0.000001);
 
@@ -213,7 +269,7 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 	specular = max(clamp(specular, vec3(0.0), ks), ks);
 
 	specular *= previous_specular;
-	out_hitpoint_color.rgb = specular; // out_hitpoint_color is actually out_hitpoint_specular_accumulated in this case
+	out_specular.rgb = specular;
 
 	// vec3 col = (kd * mat.color + specular) * radiance * diffuse;
 	// vec3 col = (kd * mat.color + specular * reflection_col);
@@ -224,29 +280,57 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	t_ray ray;
+
+	// vec3 H = sample_half_vector(N, mat.roughness);
+	// vec3 L = mirror(-V, H);
+
+
 	ray.origin = hit_pos;
-	ray.dir = reflect(hitpoint.ray, hitpoint.normal, hitpoint.object_normal, pow(mat.roughness, 1.5));
+	// ray.dir = reflect(hitpoint.ray, hitpoint.normal, hitpoint.object_normal, pow(mat.roughness, 1.5));
+	ray.dir = reflect(hitpoint.ray, hitpoint.normal, hitpoint.object_normal, mat.roughness);
+	// ray.dir = L;
 	vec3 ambient_specular_light = clamp(get_sky_color_from_ray(ray), 0, 16);
 	vec3 ambient_diffuse_light	= get_sky_color(hitpoint);
 
-	vec3 L  = normalize(ray.dir);
-	vec3 H  = normalize(V + L);
-	vec3 ks = fresnel(F0, V, H);
-	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+	// return (ambient_specular_light);
 
-	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
+	vec3  L = normalize(ray.dir);
+	vec3  H = normalize(V + L);
 
-	vec3 col = kd * mat.color * ambient_diffuse_light + max(clamp(specular, vec3(0.0), ks), ks) * ambient_specular_light;
+	float G = geometryShadowing(a, N, V, L);
+	vec3  F = fresnel(F0, V, H);
+	float D = normalDistribution(a, N, H);
 
+	vec3 ks = max(F, clamp(F * D * G, vec3(0.0), F));
+	vec3 kd = (vec3(1.0) - F);// * (1.0 - mat.metallic);
+	// if (rt.debug < 0)
+	// 	kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+
+	// return (kd * mat.color * ambient_diffuse_light + ks * ambient_specular_light);
+
+	vec3 specular = specular_cookTorrance2(N, V, L, H, a, ks, false);
+
+	vec3 col;
+	col = kd * mat.color * ambient_diffuse_light + max(clamp(specular, vec3(0.0), F), F) * ambient_specular_light;
+	// if (rt.debug < 0)
+	// 	col = kd * mat.color * ambient_diffuse_light + clamp(specular, vec3(0.0), ks) * ambient_specular_light;
+
+	if (rt.debug == 1)
+		return (ks);
+	if (rt.debug == 2)
+		return (kd);
+	if (rt.debug == 3)
+		return (specular);
+	if (rt.debug == 4)
+		return (ambient_specular_light);
+	if (rt.debug == 5)
+		return (ambient_diffuse_light);
 	return (clamp(col, 0, 16));
 }
 
 vec3	render_hitpoint(t_hitpoint hitpoint)
 {
 	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
-	out_hitpoint_pos.rgb = hit_pos;
-	out_hitpoint_normal.rgb = hitpoint.normal;
-	out_hitpoint_normal.a = hitpoint.material_idx;
 	vec3 col = VEC3_BLACK;
 	t_material mat = materials[hitpoint.material_idx];
 
@@ -255,11 +339,6 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 	mat.color		= hitpoint.color;
 	mat.metallic	= get_hitpoint_metallic(hitpoint);
 	mat.roughness	= get_hitpoint_roughness(hitpoint);
-	if (rt.diffuse_bounce_count == 0 && rt.glossy_bounce_count == 0)
-	{
-		out_hitpoint_render.a		= mat.metallic;
-		out_glossy_hitpoint_ray.a	= mat.roughness;
-	}
 
 	vec3  N   = hitpoint.normal;
 	vec3  V   = normalize(-hitpoint.ray);
@@ -281,14 +360,43 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 	return (clamp(col, 0, 16));
 }
 
-vec3	trace_ray(t_ray ray)
+vec3	get_bounce_light(t_hitpoint hitpoint)
+{
+	vec3 hit_pos = get_offset_hitpoint_pos(hitpoint);
+	vec3 col = VEC3_BLACK;
+	t_material mat = materials[hitpoint.material_idx];
+
+	mat.color		= hitpoint.color;
+	mat.metallic	= 0;
+	mat.roughness	= 0;
+
+	vec3  N   = hitpoint.normal;
+	vec3  V   = normalize(-hitpoint.ray);
+	vec3  F0  = dielectric_F0(mat.ior);
+	float a   = 0;
+
+	// POINT LIGHTS
+	int i = -1;
+	for (int type = next_light_type(i); type != LIGHT_NONE; type = next_light_type(i))
+		col += get_point_light_contribution(hit_pos, get_point_light(i), N, V, F0 * 1.6, a, mat);
+
+	// AMBIENT LIGHT
+	col += get_ambient_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+
+	// EMISSION
+	col += mat.emission_color * mat.emission_strength;
+
+	return (clamp(col, 0, 16));
+}
+
+vec3	trace_camera_ray(t_ray ray)
 {
 	vec3 col;
 	t_hitpoint hitpoint = get_closest_hitpoint(ray, true);
-	out_hitpoint_pos.a = float(hitpoint.hit);
+	out_camera_ray_dir.a = float(hitpoint.object_idx);
 	hitpoint.color = get_hitpoint_color(hitpoint);
-	out_hitpoint_color.rgb = hitpoint.color;
-	out_glossy_hitpoint_ray.rgb	= hitpoint.ray;
+	out_diffuse.rgb = hitpoint.color * (1.0 - get_hitpoint_metallic(hitpoint));
+	out_specular.rgb = hitpoint.color;
 
 	if (hitpoint.hit == false)
 		return (get_sky_color_from_ray(ray));
@@ -297,29 +405,31 @@ vec3	trace_ray(t_ray ray)
 	return (col);
 }
 
-vec3	add_bounce_light(t_ray bounce_ray, t_hitpoint previous)
+vec3	trace_bounce_ray(t_ray bounce_ray, t_hitpoint previous)
 {
-	vec3 col;
+	vec3 diffuse = out_diffuse.rgb;
+	if (diffuse == VEC3_BLACK)
+	{
+		out_previous_ray_dir.a = -1;
+		return (VEC3_BLACK);
+	}
 	t_hitpoint hitpoint = get_closest_hitpoint(bounce_ray, true);
-	out_hitpoint_pos.a = float(hitpoint.hit);
-	hitpoint.color = get_hitpoint_color(hitpoint);
-	// out_hitpoint_color = hitpoint.color;
+	out_previous_ray_dir.a = float(hitpoint.object_idx);
 	if (hitpoint.hit == false)
 		return (VEC3_BLACK);
+	hitpoint.color = get_hitpoint_color(hitpoint);
+	out_diffuse.rgb *= hitpoint.color * (1.0 - get_hitpoint_metallic(hitpoint));
 
-	float distance = distance(hitpoint.pos, previous.pos);
-	vec3  radiance = render_hitpoint(hitpoint);
-	vec3 bounce_direction = normalize(previous.pos - hitpoint.pos);
-	col = previous.color * radiance;
-	out_hitpoint_color.rgb = previous.color * hitpoint.color;
-	return (col);
+	vec3 bounce_light = get_bounce_light(hitpoint);
+
+	return (diffuse * bounce_light);
 }
 
-vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous, vec3 specular, float previous_metallic, float previous_roughness)
+vec3	trace_reflection_ray(t_ray reflection_ray, t_hitpoint previous, vec3 specular, float previous_metallic, float previous_roughness)
 {
 	vec3 col;
 	t_hitpoint hitpoint = get_closest_hitpoint(reflection_ray, true);
-	out_glossy_hitpoint_pos.a = float(hitpoint.hit);
+	out_previous_ray_dir.a = float(hitpoint.object_idx);
 	if (hitpoint.hit == false)
 		return vec3(0);
 
@@ -335,11 +445,132 @@ vec3	add_reflection_light(t_ray reflection_ray, t_hitpoint previous, vec3 specul
 
 	col = get_reflection_light_contribution(previous.pos, col, previous.normal, normalize(previous.ray), normalize(reflection_ray.dir), previous_material, specular);
 
-	out_glossy_hitpoint_pos		= out_hitpoint_pos;
-	out_glossy_hitpoint_normal	= out_hitpoint_normal;
-	out_glossy_hitpoint_ray.rgb = hitpoint.ray;
-
-	if (rt.debug == 1)
-		return (col);
 	return (clamp(col, 0, 16));
 }
+
+vec3 sampleGGXNormal(vec3 N, float roughness) {
+    // Step 1: Convert roughness to GGX alpha parameter
+    float alpha = roughness * roughness;
+
+    // Step 2: Generate random values for spherical coordinates (u1 and u2)
+    float u1 = rand();  // Replace rand() with a random number generator (0 to 1)
+    float u2 = rand();
+
+    // Step 3: Compute theta and phi for GGX distribution
+    float theta = atan(alpha * sqrt(u1 / (1.0 - u1)));
+    float phi = 2.0 * M_PI * u2;
+
+    // Step 4: Convert spherical coordinates to Cartesian (tangent space)
+    float x = sin(theta) * cos(phi);
+    float y = sin(theta) * sin(phi);
+    float z = cos(theta);
+
+    // Step 5: Create the tangent and bitangent vectors for N
+    vec3 up = abs(N.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
+    vec3 tangent = normalize(cross(up, N));
+    vec3 bitangent = cross(N, tangent);
+
+    // Step 6: Transform the sample to world space
+    vec3 H = x * tangent + y * bitangent + z * N;
+    return normalize(H);  // Ensure the sampled normal is normalized
+}
+
+vec3 reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness)
+{
+	vec3 reflection;
+
+	incoming = normalize(incoming);
+	// if (rt.debug < 0)
+	// 	roughness = -rt.debug/100;
+
+
+
+	if (roughness == 0.0)
+		reflection = mirror(incoming, normal);
+	// else if (roughness == 1.0)
+	// 	reflection = bounce(normal);
+	else
+	{
+		// float D = normalDistribution(roughness, normal, H);
+
+		// vec3 H = sample_half_vector(normal, roughness);
+		// // reflection = sample_half_vector(normal, roughness);
+		// reflection = mirror(incoming, H);
+		// if (dot(H, normal) < 0)
+		// 	reflection = mirror(incoming, normal);
+
+		// reflection = mirror(incoming, normal);
+		// reflection = normalize(slerp(reflection, bounce(reflection), roughness));
+
+		vec3 new_normal = normalize(slerp(normal, bounce(normal), roughness*roughness));
+		reflection = mirror(incoming, new_normal);
+		if (dot(reflection, object_normal) < 0)
+			reflection = mirror(reflection, object_normal);
+		// if (dot(reflection, object_normal) < 0 && rt.debug == -1)
+		// 	reflection = mirror(incoming, object_normal);
+		// if (dot(reflection, object_normal) < 0 && rt.debug == -2)
+		// 	reflection = mirror(reflection, object_normal);
+
+
+
+
+
+		// vec3 H = sampleGGXNormal(normal, roughness);
+
+		// reflection = normalize(incoming - (2.0 * dot(incoming, normal) * H));
+		// reflection = normalize(reflection);
+
+		// reflection = mirror(incoming, normal);
+		// reflection = slerp(reflection, bounce(reflection), roughness);
+	}
+	
+
+	// if (dot(reflection, object_normal) < 0)
+	// 	reflection = reflect(reflection, object_normal, roughness);
+
+	return (reflection);
+}
+
+// vec3 reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness)
+// {
+// 	vec3 reflection;
+
+// 	if (rt.debug < 0)
+// 		roughness = -rt.debug/100;
+
+
+
+// 	if (roughness == 0.0)
+// 		reflection = mirror(incoming, normal);
+// 	else if (roughness == 1.0)
+// 		reflection = bounce(normal);
+// 	else
+// 	{
+
+
+// 		vec3 F0 = vec3(0.04);
+// 		vec3 N  = normal;
+// 		vec3 V  = normalize(-incoming);
+// 		vec3 L  = mirror(incoming, normal);
+// 		vec3 H  = normalize(V + L);
+// 		vec3 ks = fresnel(F0, V, H);
+// 		// vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+// 		vec3 kd = vec3(1.0) - ks;
+// 		float a = roughness * roughness;
+// 		vec3  specular = specular_cookTorrance(N, V, L, H, a, ks, false);
+
+// 		float factor = dot(specular, vec3(1)) / 3;
+
+// 		reflection = slerp(mirror(incoming, normal), bounce(normal), factor);
+// 		// reflection = normalize(reflection);
+
+// 		// reflection = mirror(incoming, normal);
+// 		// reflection = slerp(reflection, bounce(reflection), roughness);
+// 	}
+	
+
+// 	// if (dot(reflection, object_normal) < 0)
+// 	// 	reflection = reflect(reflection, object_normal, roughness);
+
+// 	return (reflection);
+// }

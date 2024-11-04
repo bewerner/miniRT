@@ -1,9 +1,6 @@
 debug.frag
 miniRT
 
-compare.rt
-brown_photostudio_02_2k_greyscale.hdr
-
 *.o
 *.a
 .DS_Store

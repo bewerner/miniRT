@@ -80,6 +80,8 @@ float	get_hitpoint_metallic(t_hitpoint hitpoint)
 	if (materials[hitpoint.material_idx].metallic >= 0.0)
 		return (materials[hitpoint.material_idx].metallic);
 	vec3 col = get_color_from_texture(materials[hitpoint.material_idx].metallic_tex_idx, hitpoint);
+	if (textures[materials[hitpoint.material_idx].metallic_tex_idx].type == TEX_IMAGE)
+		col = pow(col, vec3(1 / 2.2));
 	return (dot(col, vec3(1)) / 3);
 }
 
@@ -88,12 +90,35 @@ float	get_hitpoint_roughness(t_hitpoint hitpoint)
 	if (materials[hitpoint.material_idx].roughness >= 0.0)
 		return (materials[hitpoint.material_idx].roughness);
 	vec3 col = get_color_from_texture(materials[hitpoint.material_idx].roughness_tex_idx, hitpoint);
+	if (textures[materials[hitpoint.material_idx].roughness_tex_idx].type == TEX_IMAGE)
+		col = pow(col, vec3(1 / 2.2));
 	return (dot(col, vec3(1)) / 3);
 }
 
 vec3	get_offset_hitpoint_pos(t_hitpoint hitpoint)
 {
 	return (hitpoint.pos + (max(10, length(hitpoint.ray)) * 0.0001) * hitpoint.object_normal);
+}
+
+t_hitpoint	get_hitpoint(t_ray ray, int object_idx, bool init_all)
+{
+	if (object_idx < 0)
+		return (HP_INF);
+
+	t_hitpoint	hitpoint;
+
+	int type = int(texelFetch(objects, object_idx).r);
+	if (type == OBJ_SPHERE)
+		hitpoint = get_hitpoint_sphere(ray, get_sphere(object_idx), init_all);
+	else if (type == OBJ_PLANE)
+		hitpoint = get_hitpoint_plane(ray, get_plane(object_idx), init_all);
+	else if (type == OBJ_CYLINDER)
+		hitpoint = get_hitpoint_cylinder(ray, get_cylinder(object_idx), init_all);
+	else if (type == OBJ_HYPERBOLOID)
+		hitpoint = get_hitpoint_hyperboloid(ray, get_hyperboloid(object_idx), init_all);
+	hitpoint.object_idx = object_idx;
+
+	return (hitpoint);
 }
 
 t_hitpoint	get_closest_hitpoint(t_ray ray, bool init_all)
@@ -104,23 +129,34 @@ t_hitpoint	get_closest_hitpoint(t_ray ray, bool init_all)
 	closest = HP_INF;
 	current = HP_INF;
 
-	int i = -1;
-	int type = next_object_type(i);
-	while (type != OBJ_NONE)
+	int object_idx = 0;
+	while (object_idx >= 0)
 	{
-		if (type == OBJ_SPHERE)
-			current = get_hitpoint_sphere(ray, get_sphere(i), init_all);
-		else if (type == OBJ_PLANE)
-			current = get_hitpoint_plane(ray, get_plane(i), init_all);
-		else if (type == OBJ_CYLINDER)
-			current = get_hitpoint_cylinder(ray, get_cylinder(i), init_all);
-		else if (type == OBJ_HYPERBOLOID)
-			current = get_hitpoint_hyperboloid(ray, get_hyperboloid(i), init_all);
+		current = get_hitpoint(ray, object_idx, false);
 		if (length(current.ray) < length(closest.ray))
 			closest = current;
-		type = next_object_type(i);
+		object_idx = next_object_index(object_idx);
 	}
+	if (init_all == true && closest.hit == true)
+		return (get_hitpoint(ray, closest.object_idx, true));
 	return (closest);
+}
+
+t_hitpoint	get_previous_hitpoint(vec2 uv)
+{
+	int object_idx = int(texture(buffer, vec3(uv, 2.0)).a);
+	if (object_idx < 0)
+		return (HP_INF);
+
+	t_ray		ray;
+	t_hitpoint	hitpoint;
+
+	hitpoint.object_idx = object_idx;
+
+	ray.origin = texture(buffer, vec3(uv, 3.0)).rgb;
+	ray.dir    = texture(buffer, vec3(uv, 2.0)).rgb;
+
+	return (get_hitpoint(ray, object_idx, true));
 }
 
 // The following two functions could be replaced with a flag in the material
@@ -140,19 +176,19 @@ bool	has_image_texture(t_hitpoint hitpoint, out bool texture_is_square)
 		texture_is_square = (resolution.x == resolution.y);
 		return (true);
 	}
-	if (material.normal_map_idx >= 0)
+	else if (material.normal_map_idx >= 0)
 	{
 		ivec2 resolution = get_texture_resolution(material.normal_map_idx);
 		texture_is_square = (resolution.x == resolution.y);
 		return (true);
 	}
-	if (material.metallic_tex_idx >= 0)
+	else if (material.metallic_tex_idx >= 0)
 	{
 		ivec2 resolution = get_texture_resolution(material.metallic_tex_idx);
 		texture_is_square = (resolution.x == resolution.y);
 		return (true);
 	}
-	if (material.roughness_tex_idx >= 0)
+	else if (material.roughness_tex_idx >= 0)
 	{
 		ivec2 resolution = get_texture_resolution(material.roughness_tex_idx);
 		texture_is_square = (resolution.x == resolution.y);
@@ -166,10 +202,14 @@ bool	has_image_texture(t_hitpoint hitpoint)
 	if (hitpoint.material_idx <= 0)
 		return (false);
 
-	t_material material = materials[hitpoint.material_idx]; // instantiating a t_material here actually increases performance a lot
+	t_material material = materials[hitpoint.material_idx];
 	if (material.color_tex_idx >= 0)
 		return (true);
-	if (material.normal_map_idx >= 0)
+	else if (material.normal_map_idx >= 0)
+		return (true);
+	else if (material.metallic_tex_idx >= 0)
+		return (true);
+	else if (material.roughness_tex_idx >= 0)
 		return (true);
 	return (false);
 }
@@ -179,7 +219,8 @@ bool	has_normal_map_material(t_hitpoint hitpoint)
 	if (hitpoint.material_idx <= 0)
 		return (false);
 
-	if (materials[hitpoint.material_idx].normal_map_idx >= 0)
+	t_material material = materials[hitpoint.material_idx];
+	if (material.normal_map_idx >= 0)
 		return (true);
 	return (false);
 }

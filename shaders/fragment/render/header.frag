@@ -7,7 +7,7 @@
 #define VEC3_BLACK	vec3(0, 0, 0)
 #define VEC3_WHITE	vec3(1, 1, 1)
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
-#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, -1)
+#define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, -1, -1)
 
 #define MODE_SOLID		0
 #define MODE_NORMAL		1
@@ -39,6 +39,7 @@ struct t_hitpoint
 	vec2			uv;
 	vec3			color;
 	int				material_idx;
+	int				object_idx;
 };
 
 #define OBJ_NONE		0
@@ -226,8 +227,9 @@ vec3			get_sky_color_from_ray(t_ray ray);
 vec3			get_sky_color_from_dir(vec3 dir);
 
 // trace_ray.frag
-vec3			add_bounce_light(t_ray bounce_ray, t_hitpoint previous);
-vec3			trace_ray(t_ray ray);
+vec3			trace_bounce_ray(t_ray bounce_ray, t_hitpoint previous);
+vec3			trace_camera_ray(t_ray ray);
+vec3			reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness);
 
 // ┌─────────┐
 // │ Objects │
@@ -236,6 +238,8 @@ vec3			trace_ray(t_ray ray);
 // objects/object_utils.frag
 int				next_object_type(inout int i);
 int				next_light_type(inout int i);
+int				get_object_type(int object_idx);
+int				next_object_index(int current_idx);
 
 // objects/sphere.frag
 t_hitpoint		get_hitpoint_sphere(t_ray ray, t_sphere sphere, bool init_all);
@@ -275,6 +279,7 @@ float			get_hitpoint_metallic(t_hitpoint hitpoint);
 float			get_hitpoint_roughness(t_hitpoint hitpoint);
 vec3			get_offset_hitpoint_pos(t_hitpoint hitpoint);
 t_hitpoint		get_closest_hitpoint(t_ray ray, bool init_all);
+t_hitpoint		get_previous_hitpoint(vec2 uv);
 bool			has_image_texture(t_hitpoint hitpoint, out bool texture_is_square);
 bool			has_image_texture(t_hitpoint hitpoint);
 bool			has_normal_map_material(t_hitpoint hitpoint);

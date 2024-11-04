@@ -1,13 +1,13 @@
 #version 330 core
 
 layout(location = 0) out vec4 FragColor;
-layout(location = 1) out vec4 out_hitpoint_pos;				// alpha is hitpoint.hit
-layout(location = 2) out vec4 out_hitpoint_normal;			// alpha is hitpoint.material_idx
-layout(location = 3) out vec4 out_hitpoint_render;			// alpha is glossy_hitpoint metallic
-layout(location = 4) out vec4 out_hitpoint_color;			// this doubles as glossy_specular_accumulation
-layout(location = 5) out vec4 out_glossy_hitpoint_pos;		// alpha is hitpoint.hit
-layout(location = 6) out vec4 out_glossy_hitpoint_normal;	// alpha is hitpoint.material_idx
-layout(location = 7) out vec4 out_glossy_hitpoint_ray;		// alpha is glossy_hitpoint roughness
+layout(location = 1) out vec4 out_camera_ray_dir;			// rgb is ray direction. alpha is object offset (-1 if no hit)
+layout(location = 2) out vec4 out_previous_ray_dir;			// rgb is ray direction. alpha is object offset (-1 if no hit)
+layout(location = 3) out vec4 out_previous_ray_origin;		// alpha is ???
+layout(location = 4) out vec4 out_render;					// alpha is ???
+layout(location = 5) out vec4 out_specular;					// alpha is ???
+layout(location = 6) out vec4 out_camera_ray_origin;		// alpha is ???
+layout(location = 7) out vec4 out_diffuse;					// alpha is ???
 
 #import header.frag
 #import checker_texture.frag
@@ -53,6 +53,9 @@ t_ray	get_camera_ray(void)
 
 	ray.dir = target - ray.origin;
 
+	out_camera_ray_dir.rgb = ray.dir;
+	out_camera_ray_origin.rgb = ray.origin;
+
 	return (ray);
 }
 
@@ -60,87 +63,66 @@ void	main(void)
 {
 	vec2 uv = vec2(coord.x, 1.0 - coord.y);
 
-	out_hitpoint_pos			= texture(buffer, vec3(uv, 1.0)).rgba;
-	out_hitpoint_normal			= texture(buffer, vec3(uv, 2.0)).rgba;
-	out_hitpoint_render			= texture(buffer, vec3(uv, 3.0)).rgba;
-	out_hitpoint_color			= texture(buffer, vec3(uv, 4.0)).rgba;
-	out_glossy_hitpoint_pos		= texture(buffer, vec3(uv, 5.0)).rgba;
-	out_glossy_hitpoint_normal	= texture(buffer, vec3(uv, 6.0)).rgba;
-	out_glossy_hitpoint_ray		= texture(buffer, vec3(uv, 7.0)).rgba;
+	FragColor               = texture(buffer, vec3(uv, 0.0)).rgba;
+	out_camera_ray_dir		= texture(buffer, vec3(uv, 1.0)).rgba;
+	out_previous_ray_dir	= texture(buffer, vec3(uv, 2.0)).rgba;
+	out_previous_ray_origin	= texture(buffer, vec3(uv, 3.0)).rgba;
+	out_render				= texture(buffer, vec3(uv, 4.0)).rgba;
+	out_specular			= texture(buffer, vec3(uv, 5.0)).rgba;
+	out_camera_ray_origin	= texture(buffer, vec3(uv, 6.0)).rgba;
+	out_diffuse				= texture(buffer, vec3(uv, 7.0)).rgba;
+	FragColor.a = 1.0;
+
+	bool previous_hit = bool(out_previous_ray_dir.a + 1);
 
 	init_seed();
 
-	vec3 render;
 	if (rt.diffuse_bounce_count == 0 && rt.glossy_bounce_count == 0)
 	{
-		render = trace_ray(get_camera_ray());
+		out_render.rgb = trace_camera_ray(get_camera_ray());
 
-		out_glossy_hitpoint_pos		= out_hitpoint_pos;
-		out_glossy_hitpoint_normal	= out_hitpoint_normal;
+		out_previous_ray_dir = out_camera_ray_dir;
+		out_previous_ray_origin = out_camera_ray_origin;
 	}
-	else if (rt.glossy_bounce_count == 0)
+	else if (rt.glossy_bounce_count == 0 && previous_hit == true)
 	{
-		t_hitpoint previous;
-		previous.hit = bool(texture(buffer, vec3(uv, 1.0)).a);
-		if (previous.hit == true)
-		{
-			previous.pos			= texture(buffer, vec3(uv, 1.0)).rgb;
-			previous.normal			= texture(buffer, vec3(uv, 2.0)).rgb;
-			previous.material_idx	= int(texture(buffer, vec3(uv, 2.0)).a);
-			previous.color			= texture(buffer, vec3(uv, 4.0)).rgb;
+		t_hitpoint previous = get_previous_hitpoint(uv);
 
-			t_ray bounce_ray;
-			bounce_ray.origin = previous.pos;
-			bounce_ray.dir = bounce(previous.normal);
+		t_ray bounce_ray;
+		bounce_ray.origin = get_offset_hitpoint_pos(previous);
+		bounce_ray.dir = bounce(previous.normal);
 
-			render = texture(buffer, vec3(uv, 3.0)).rgb;
-			render += add_bounce_light(bounce_ray, previous);
-			out_hitpoint_render.a	= texture(buffer, vec3(uv, 3.0)).a;
-		}
-		else
-		{
-			render = texture(buffer, vec3(uv, 3.0)).rgb;
-			out_hitpoint_pos.a = float(false); // hitpoint.hit
-		}
+		out_previous_ray_origin.rgb = bounce_ray.origin;
+		out_previous_ray_dir.rgb = bounce_ray.dir;
+
+		out_render.rgb += trace_bounce_ray(bounce_ray, previous);
 	}
-	else
+	else if (previous_hit == true)
 	{
-		t_hitpoint previous;
-		previous.hit = bool(texture(buffer, vec3(uv, 5.0)).a);
-		if (previous.hit == true)
-		{
-			previous.pos			= texture(buffer, vec3(uv, 5.0)).rgb;
-			previous.normal			= texture(buffer, vec3(uv, 6.0)).rgb;
-			previous.material_idx	= int(texture(buffer, vec3(uv, 6.0)).a);
-			previous.ray			= texture(buffer, vec3(uv, 7.0)).rgb;
+		t_hitpoint previous = get_previous_hitpoint(uv);
+		float previous_metallic  = get_hitpoint_metallic(previous);
+		float previous_roughness = get_hitpoint_roughness(previous);
 
-			float previous_metallic		= texture(buffer, vec3(uv, 3.0)).a;
-			float previous_roughness	= texture(buffer, vec3(uv, 7.0)).a;
+		vec3 specular = out_specular.rgb;
 
-			vec3 specular			= vec3(0.0);
-			if (rt.glossy_bounce_count > 0)
-				specular = texture(buffer, vec3(uv, 4.0)).rgb;
+		t_ray reflection_ray;
+		reflection_ray.origin	= get_offset_hitpoint_pos(previous);
+		reflection_ray.dir		= reflect(previous.ray, previous.normal, previous_roughness);
 
-			t_ray reflection_ray;
-			reflection_ray.origin	= previous.pos;
-			reflection_ray.dir		= reflect(previous.ray, previous.normal, previous_roughness);
+		out_previous_ray_origin.rgb = reflection_ray.origin;
+		out_previous_ray_dir.rgb = reflection_ray.dir;
 
-			render = texture(buffer, vec3(uv, 3.0)).rgb;
-			render += add_reflection_light(reflection_ray, previous, specular, previous_metallic, previous_roughness);
-		}
-		else
-		{
-			render = texture(buffer, vec3(uv, 3.0)).rgb;
-			out_glossy_hitpoint_pos.a = float(false); // hitpoint.hit
-		}
+		out_render.rgb += trace_reflection_ray(reflection_ray, previous, specular, previous_metallic, previous_roughness);
 	}
-	out_hitpoint_render.rgb = render;
 
-	vec3 cumulative_render_buffer = texture(buffer, vec3(uv, 0.0)).rgb;
+	if (rt.diffuse_bounce_count == rt.max_diffuse_bounces && rt.diffuse_bounce_count > 0 && rt.glossy_bounce_count == 0)
+	{
+		out_previous_ray_dir = out_camera_ray_dir;
+		out_previous_ray_origin = out_camera_ray_origin;
+	}
+
 	if (rt.diffuse_bounce_count == rt.max_diffuse_bounces && rt.glossy_bounce_count == rt.max_glossy_bounces)
 	{
-		FragColor.rgb = mix(cumulative_render_buffer, render, 1.0 / rt.sample_count);
+		FragColor.rgb = mix(FragColor.rgb, out_render.rgb, 1.0 / rt.sample_count);
 	}
-	else
-		FragColor.rgb = cumulative_render_buffer;
 }

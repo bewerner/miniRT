@@ -20,25 +20,13 @@ void	set_drawbuffers(t_rt *rt)
 		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
 	static const GLenum	one[8] = {
 		GL_COLOR_ATTACHMENT0, GL_NONE, GL_NONE,
-		GL_NONE, GL_NONE, GL_NONE, GL_NONE, GL_NONE};
-	static const GLenum	diffuse_bounce[8] = {
-		GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
-		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_NONE, GL_NONE, GL_NONE};
-	static const GLenum	glossy_bounce[8] = {
-		GL_COLOR_ATTACHMENT0, GL_NONE, GL_NONE,
-		GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
-		GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7};
+		GL_NONE, GL_NONE, GL_NONE,
+		GL_NONE, GL_NONE};
 
-	if (rt->mode != MODE_PREVIEW)
-		glDrawBuffers(8, one);
-	else if (rt->glossy_bounce_count > 0
-		&& rt->glossy_bounce_count <= rt->max_glossy_bounces)
-		glDrawBuffers(8, glossy_bounce);
-	else if (rt->diffuse_bounce_count > 0
-		&& rt->diffuse_bounce_count <= rt->max_diffuse_bounces)
-		glDrawBuffers(8, diffuse_bounce);
-	else
+	if (rt->mode == MODE_PREVIEW)
 		glDrawBuffers(8, all);
+	else
+		glDrawBuffers(8, one);
 }
 
 void	bind_framebuffer(GLuint id, GLuint shader_program, t_rt *rt)
