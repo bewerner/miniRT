@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:15:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/01 05:54:10 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	update_ubo_rt(t_rt *rt)
 
 void	update(t_rt *rt)
 {
-	update_delta_time(rt);
 	handle_move_input(rt);
 	move_camera(rt);
+	update_delta_time(rt);
 	if (rt->mode == MODE_PREVIEW && rt->sample_count <= rt->max_samples)
 	{
 		glfwSwapInterval(0);

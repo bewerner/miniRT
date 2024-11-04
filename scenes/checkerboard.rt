@@ -1,4 +1,4 @@
-tex		tex_checker_roughness		checker		2			  1,  0,  0       250,250,250
+tex		tex_checker_roughness		checker		2			 26, 26, 26       250,250,250
 tex		tex_checker_metallic		checker		2			255,255,255       0,  0,  0
 
 # MATERIALS

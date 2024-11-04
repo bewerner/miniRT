@@ -4,7 +4,7 @@
 #import AgX.frag
 #import ../render/utils/random.frag
 
-out vec3 FragColor;
+out vec4 FragColor;
 
 void	main(void)
 {
@@ -18,5 +18,5 @@ void	main(void)
 		col = to_agx(col.rgb);
 	col = dither(col);
 
-	FragColor = col;
+	FragColor.rgb = col;
 }
