@@ -117,9 +117,7 @@ void	main(void)
 			float previous_metallic		= texture(buffer, vec3(uv, 3.0)).a;
 			float previous_roughness	= texture(buffer, vec3(uv, 7.0)).a;
 
-			vec3 specular			= vec3(0.0);
-			if (rt.glossy_bounce_count > 0)
-				specular = texture(buffer, vec3(uv, 4.0)).rgb;
+			vec3 specular = texture(buffer, vec3(uv, 4.0)).rgb;
 
 			t_ray reflection_ray;
 			reflection_ray.origin	= previous.pos;
