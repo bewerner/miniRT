@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/07 14:52:44 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode,
 	{
 		rt->sample_count = 0;
 		rt->mode++;
-		if (rt->mode > MODE_PREVIEW)
+		if (rt->mode > MODE_RENDER)
 			rt->mode = MODE_SOLID;
 	}
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)

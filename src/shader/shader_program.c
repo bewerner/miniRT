@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/01 01:47:22 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/07 15:43:31 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,17 @@ void	init_shader_programs(t_rt *rt)
 	rt->postprocessing_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
 			"shaders/fragment/postprocessing/postprocessing.frag", rt);
-	rt->preview_shader_program = create_shader_program(
+	rt->render_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
-			"shaders/fragment/render/raytracer.frag", rt);
+			"shaders/fragment/render/render.frag", rt);
+	if (rt->max_diffuse_bounces)
+		rt->render_diffuse_bounce_shader_program = create_shader_program(
+			"shaders/vertex/screen.vert",
+			"shaders/fragment/render/render_diffuse_bounce.frag", rt);
+	if (rt->max_glossy_bounces)
+		rt->render_glossy_bounce_shader_program = create_shader_program(
+			"shaders/vertex/screen.vert",
+			"shaders/fragment/render/render_glossy_bounce.frag", rt);
 	rt->gizmo_shader_program = create_shader_program(
 			"shaders/vertex/gizmo.vert",
 			"shaders/fragment/gizmo/gizmo.frag", rt);

@@ -11,7 +11,7 @@
 
 #define MODE_SOLID		0
 #define MODE_NORMAL		1
-#define MODE_PREVIEW	2
+#define MODE_RENDER	2
 
 #define MAX_IMAGE_TEXTURES 10
 

@@ -14,7 +14,7 @@ void	main(void)
 
 	vec3 col = texture(buffer, vec3(uv, 0.0)).rgb;
 
-	if (rt.mode == MODE_PREVIEW)
+	if (rt.mode == MODE_RENDER)
 		col = to_agx(col.rgb);
 	col = dither(col);
 

@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:15:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/07 14:52:44 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	update_window_title(t_rt *rt)
 	ft_strlcat(title, fps_str, 1024);
 	ft_strlcat(title, " FPS | miniRT | ", 1024);
 	ft_strlcat(title, rt->filename, 1024);
-	if (rt->mode == MODE_PREVIEW)
+	if (rt->mode == MODE_RENDER)
 	{
 		add_time_to_title(title, rt);
 		add_sample_to_title(title, rt);

@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/30 03:48:10 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/07 14:52:44 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef enum e_mode
 {
 	MODE_SOLID,
 	MODE_NORMAL,
-	MODE_PREVIEW
+	MODE_RENDER
 }	t_mode;
 
 typedef union u_color
@@ -361,7 +361,9 @@ typedef struct s_rt
 	size_t			render_time;
 	GLuint			solid_shader_program;
 	GLuint			normal_shader_program;
-	GLuint			preview_shader_program;
+	GLuint			render_shader_program;
+	GLuint			render_diffuse_bounce_shader_program;
+	GLuint			render_glossy_bounce_shader_program;
 	GLuint			postprocessing_shader_program;
 	GLuint			gizmo_shader_program;
 	char			*filename;
