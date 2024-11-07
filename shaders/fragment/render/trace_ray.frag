@@ -426,12 +426,12 @@ vec3	get_bounce_light(t_hitpoint hitpoint)
 
 	mat.color		= hitpoint.color;
 	mat.metallic	= 0;
-	mat.roughness	= 0;
+	mat.roughness	= 1;
 
 	vec3  N   = hitpoint.normal;
 	vec3  V   = normalize(-hitpoint.ray);
 	vec3  F0  = dielectric_F0(mat.ior);
-	float a   = 0;
+	float a   = 1;
 
 	// POINT LIGHTS
 	int i = -1;
@@ -480,6 +480,7 @@ vec3	trace_bounce_ray(t_ray bounce_ray, t_hitpoint previous)
 
 	vec3 bounce_light = get_bounce_light(hitpoint);
 
+	// return (clamp(diffuse * bounce_light, 0, 1));
 	return (diffuse * bounce_light);
 }
 
@@ -538,8 +539,8 @@ vec3 reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness)
 	vec3 reflection;
 
 	incoming = normalize(incoming);
-	normal = normalize(slerp(normal, bounce(normal), roughness));
-	// normal = normalize(slerp(normal, bounce(normal), roughness*roughness));
+	// normal = normalize(slerp(normal, bounce(normal), roughness));
+	normal = normalize(slerp(normal, bounce(normal), roughness*roughness));
 	reflection = mirror(incoming, normal);
 	// if (dot(reflection, object_normal) < 0)
 	// 	reflection = mirror(reflection, object_normal);
