@@ -60,7 +60,7 @@ void	main(void)
 		out_render.rgb += trace_bounce_ray(bounce_ray, previous);
 
 	}
-	if (rt.diffuse_bounce_count == rt.max_diffuse_bounces && rt.diffuse_bounce_count > 0)
+	if (rt.diffuse_bounce_count == rt.max_diffuse_bounces && rt.max_glossy_bounces > 0)
 	{
 		out_previous_ray_dir = out_camera_ray_dir;
 		out_previous_ray_origin = out_camera_ray_origin;
