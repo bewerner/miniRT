@@ -58,7 +58,7 @@ void	main(void)
 
 		t_ray reflection_ray;
 		reflection_ray.origin	= get_offset_hitpoint_pos(previous);
-		reflection_ray.dir		= reflect(previous.ray, previous.normal, previous_roughness);
+		reflection_ray.dir		= reflect(previous.ray, previous.normal, previous.object_normal, previous_roughness);
 
 		out_previous_ray_origin.rgb = reflection_ray.origin;
 		out_previous_ray_dir.rgb = reflection_ray.dir;
