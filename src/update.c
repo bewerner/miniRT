@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/01 05:54:10 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/07 15:58:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	update(t_rt *rt)
 	handle_move_input(rt);
 	move_camera(rt);
 	update_delta_time(rt);
-	if (rt->mode == MODE_PREVIEW && rt->sample_count <= rt->max_samples)
+	if (rt->mode == MODE_RENDER && rt->sample_count <= rt->max_samples)
 	{
 		glfwSwapInterval(0);
 		rt->sample_count++;
@@ -83,7 +83,7 @@ void	update(t_rt *rt)
 	{
 		render_raw_image(rt);
 		postprocess_raw_image(rt);
-		if (!rt->hide_gizmo || rt->mode != MODE_PREVIEW)
+		if (!rt->hide_gizmo || rt->mode != MODE_RENDER)
 			draw_gizmo(rt);
 		glfwSwapBuffers(rt->window);
 	}

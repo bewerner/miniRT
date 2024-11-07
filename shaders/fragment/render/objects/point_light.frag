@@ -10,7 +10,7 @@ t_point_light	get_point_light(int offset)
 	point_light.intensity = texelFetch(lights, offset++).r;
 	point_light.radius = texelFetch(lights, offset++).r;
 
-	if (rt.mode == MODE_PREVIEW && point_light.radius > 0.0)
+	if (rt.mode == MODE_RENDER && point_light.radius > 0.0)
 	{
 		float	z = mix(-1.0, 1.0, rand());
 		float	radial_distance = sqrt(1 - z * z);

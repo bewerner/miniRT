@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/02 09:25:19 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/07 16:48:59 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	create_ubo_rt(t_rt *rt)
 	glGenBuffers(1, &rt->ubo_rt_id);
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(t_ubo), NULL, GL_STATIC_DRAW);
-	block_index = glGetUniformBlockIndex(rt->preview_shader_program, "u_rt");
+	block_index = glGetUniformBlockIndex(rt->render_shader_program, "u_rt");
 	if (block_index == GL_INVALID_INDEX)
 		terminate("u_rt not found in shader program", NULL, 1, rt);
-	glUniformBlockBinding(rt->preview_shader_program, block_index, 0);
+	glUniformBlockBinding(rt->render_shader_program, block_index, 0);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rt->ubo_rt_id);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

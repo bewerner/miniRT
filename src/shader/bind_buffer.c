@@ -23,7 +23,7 @@ void	set_drawbuffers(t_rt *rt)
 		GL_NONE, GL_NONE, GL_NONE,
 		GL_NONE, GL_NONE};
 
-	if (rt->mode == MODE_PREVIEW)
+	if (rt->mode == MODE_RENDER)
 		glDrawBuffers(8, all);
 	else
 		glDrawBuffers(8, one);
@@ -36,7 +36,7 @@ void	bind_framebuffer(GLuint id, GLuint shader_program, t_rt *rt)
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
-	if (shader_program == rt->preview_shader_program
+	if (shader_program == rt->render_shader_program
 		|| shader_program == rt->postprocessing_shader_program)
 	{
 		uniform_location = glGetUniformLocation(shader_program, "buffer");

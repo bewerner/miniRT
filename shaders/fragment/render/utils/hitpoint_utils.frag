@@ -72,7 +72,8 @@ vec3	get_hitpoint_color(t_hitpoint hitpoint)
 		return (hitpoint.color);
 	if (materials[hitpoint.material_idx].color.r >= 0)
 		return (materials[hitpoint.material_idx].color);
-	return (get_color_from_texture(materials[hitpoint.material_idx].color_tex_idx, hitpoint));
+	// return (get_color_from_texture(materials[hitpoint.material_idx].color_tex_idx, hitpoint));
+	return (pow(get_color_from_texture(materials[hitpoint.material_idx].color_tex_idx, hitpoint), vec3(2.2)));
 }
 
 float	get_hitpoint_metallic(t_hitpoint hitpoint)
@@ -80,8 +81,8 @@ float	get_hitpoint_metallic(t_hitpoint hitpoint)
 	if (materials[hitpoint.material_idx].metallic >= 0.0)
 		return (materials[hitpoint.material_idx].metallic);
 	vec3 col = get_color_from_texture(materials[hitpoint.material_idx].metallic_tex_idx, hitpoint);
-	if (textures[materials[hitpoint.material_idx].metallic_tex_idx].type == TEX_IMAGE)
-		col = pow(col, vec3(1 / 2.2));
+	// if (textures[materials[hitpoint.material_idx].metallic_tex_idx].type == TEX_IMAGE)
+	// 	col = pow(col, vec3(1 / 2.2));
 	return (dot(col, vec3(1)) / 3);
 }
 
@@ -90,8 +91,8 @@ float	get_hitpoint_roughness(t_hitpoint hitpoint)
 	if (materials[hitpoint.material_idx].roughness >= 0.0)
 		return (materials[hitpoint.material_idx].roughness);
 	vec3 col = get_color_from_texture(materials[hitpoint.material_idx].roughness_tex_idx, hitpoint);
-	if (textures[materials[hitpoint.material_idx].roughness_tex_idx].type == TEX_IMAGE)
-		col = pow(col, vec3(1 / 2.2));
+	// if (textures[materials[hitpoint.material_idx].roughness_tex_idx].type == TEX_IMAGE)
+	// 	col = pow(col, vec3(1 / 2.2));
 	return (dot(col, vec3(1)) / 3);
 }
 

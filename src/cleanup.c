@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/31 07:15:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/07 14:50:00 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt)
 {
 	if (rt->window)
 		glUseProgram(0);
-	delete_shader_program(rt->preview_shader_program);
+	delete_shader_program(rt->render_shader_program);
 	delete_shader_program(rt->normal_shader_program);
 	delete_shader_program(rt->solid_shader_program);
 	delete_shader_program(rt->postprocessing_shader_program);
