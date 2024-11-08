@@ -274,7 +274,7 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 	// vec3 col = (kd * mat.color + specular) * radiance * diffuse;
 	// vec3 col = (kd * mat.color + specular * reflection_col);
 	vec3 col = min(specular * reflection_col, reflection_col);
-	if (rt.debug == -1)
+	if (rt.debug == -2)
 	{
 		out_render.rgb = specular;
 		col = specular;
@@ -576,23 +576,63 @@ vec3 sampleGGXNormal(vec3 N, float roughness) {
     return normalize(H);  // Ensure the sampled normal is normalized
 }
 
+vec3 sample_normal(vec3 normal, float theta_min, float theta_max, float roughness)
+{
+	float u = rand();
+	float v = rand();
+	u = pow(u, 999999);
+
+	float theta = acos(sqrt(u));
+	theta = mix(theta * theta_min, theta * theta_max, rand());
+	float phi = 2.0 * M_PI * v;
+
+	float x = sin(theta) * cos(phi);
+	float y = sin(theta) * sin(phi);
+	float z = cos(theta);
+
+	vec3 tangent;
+	if (abs(normal.y) != 1)
+		tangent = normalize(cross(vec3(0, 1, 0), normal));
+	else
+		tangent = normalize(cross(vec3(1, 0, 0), normal));
+	vec3 bitangent = cross(normal, tangent);
+
+	vec3 bounce = normalize(x * tangent + y * bitangent + z * normal);
+
+	return (normalize(mix(normal, bounce, roughness)));
+}
+
+vec3 reflect_new(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
+{
+	vec3 reflection = -N;
+	int i = 0;
+
+	while (dot(reflection, object_normal) < 0 && i < pow(10.0, rt.debug2))
+	{
+		incoming = normalize(incoming);
+		vec3 V = -incoming;
+		vec3 N_min = normalize(mix(cross(normalize(cross(N, V)), N), N, 0.5));
+		vec3 N_max = cross(N_min, normalize(cross(N, V)));
+		float theta_min = acos(dot(N_min, N)) / (M_PI / 2.0);
+		float theta_max = acos(dot(N_max, N)) / (M_PI / 2.0);
+		N = sample_normal(N, theta_min, theta_max, roughness);
+		// N = normalize(slerp(N, bounce(N), roughness*roughness));
+		reflection = mirror(incoming, N);
+		i++;
+	}
+	return (reflection);
+}
+
 vec3 reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness)
 {
+	if (rt.debug == -1)
+		return (reflect_new(incoming, normal, object_normal, roughness));
 	vec3 reflection;
 
 	incoming = normalize(incoming);
 	vec3 initial_normal = normal;
-	// normal = normalize(slerp(normal, bounce2(normal), roughness));
 	normal = normalize(slerp(normal, bounce(normal), roughness*roughness));
-	// normal = normalize(slerp(normal, bounce(normal), pow(roughness, -rt.debug/10)));
 	reflection = mirror(incoming, normal);
-	// int i = 0;
-	// while (rt.debug2 == -1 && dot(reflection, object_normal) < 0 && i < 10)
-	// {
-	// 	normal = normalize(slerp(normal, object_normal, float(i)/10));
-	// 	reflection = mirror(incoming, normal);
-	// 	i++;
-	// }
 	if (rt.debug2 == -1 && dot(reflection, object_normal) < 0)
 		reflection = mirror(reflection, object_normal);
 	if (rt.debug2 == -2 && dot(reflection, object_normal) < 0)
