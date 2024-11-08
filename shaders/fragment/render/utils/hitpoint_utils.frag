@@ -74,7 +74,9 @@ vec3	get_hitpoint_color(t_hitpoint hitpoint)
 		return (materials[hitpoint.material_idx].color);
 	// return (get_color_from_texture(materials[hitpoint.material_idx].color_tex_idx, hitpoint));
 	vec3 col = get_color_from_texture(materials[hitpoint.material_idx].color_tex_idx, hitpoint);
-	return (pow(col, vec3(2.2)));
+	if (textures[materials[hitpoint.material_idx].color_tex_idx].type == TEX_IMAGE)
+		col = pow(col, vec3(2.2));
+	return (col);
 }
 
 float	get_hitpoint_metallic(t_hitpoint hitpoint)
