@@ -167,7 +167,7 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
 	float a = mat.roughness * mat.roughness;
 
-	vec3  specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
 	specular = max(clamp(specular, vec3(0.0), ks), ks);
 
 	specular *= previous_specular;
@@ -241,13 +241,26 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	vec3 ambient_diffuse_light	= get_sky_color(hitpoint);
 
 	vec3 L  = normalize(ray.dir);
+	if (rt.debug2 == 1 && rand() < mat.roughness*mat.roughness)
+	{
+
+		ambient_specular_light = get_sky_color(hitpoint);
+		// L = g_tmp;
+	}
 	vec3 H  = normalize(V + L);
 	vec3 ks = fresnel(F0, V, H);
 	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
 
-	if (rt.debug2 == 1)
-		a = max(a, 0.0001);
+	// if (rt.debug2 == 1)
+	// 	a = max(a, 0.0001);
 	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
+
+	// if (rt.debug2 == 1)
+	// 	ambient_specular_light = mix(ambient_specular_light, ambient_diffuse_light, mat.roughness*mat.roughness);
+	// if (rt.debug2 == 1)
+	// 	ambient_specular_light += ambient_diffuse_light*mat.roughness*mat.roughness;
+	// if (rt.debug2 == 1)
+		// kd = max(kd, mat.roughness*mat.roughness);
 
 	vec3 col = kd * mat.color * ambient_diffuse_light + max(clamp(specular, vec3(0.0), ks), ks) * ambient_specular_light;
 
@@ -373,56 +386,92 @@ vec3	trace_reflection_ray(t_ray reflection_ray, t_hitpoint previous, vec3 specul
 	return (clamp(col, 0, 16));
 }
 
-vec3 sample_normal(vec3 normal, float theta_min, float theta_max, float roughness)
-{
-	float u = rand();
-	float v = rand();
-
-	float theta = acos(sqrt(u)) * roughness;
-	theta *= mix(theta_min, theta_max, abs(v - 0.5) * 2);
-	float phi = 2.0 * M_PI * v;
-
-	float x = sin(theta) * cos(phi);
-	float y = sin(theta) * sin(phi);
-	float z = cos(theta);
-
-	vec3 tangent;
-	if (abs(normal.y) != 1)
-		tangent = normalize(cross(vec3(0, 1, 0), normal));
-	else
-		tangent = normalize(cross(vec3(1, 0, 0), normal));
-	vec3 bitangent = cross(normal, tangent);
-
-	vec3 new_normal = normalize(x * tangent + y * bitangent + z * normal);
-
-	return (new_normal);
-}
-
 vec3 reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 {
+	roughness = roughness * roughness;
 	vec3 reflection = -N;
 	incoming = normalize(incoming);
-	vec3 V = -incoming;
-	vec3 N_min = normalize(mix(cross(normalize(cross(N, V)), N), N, 0.5));
-	vec3 N_max = cross(N_min, normalize(cross(N, V)));
-	float theta_min = acos(dot(N_min, N)) / (M_PI / 2.0);
-	float theta_max = acos(dot(N_max, N)) / (M_PI / 2.0);
+	vec3 N_new;
 
 	int i = 0;
 	while (dot(reflection, object_normal) < 0 && i < 10)
 	{
-		N = sample_normal(N, theta_min, theta_max, roughness);
-		reflection = mirror(incoming, N);
+		N_new = slerp(N, bounce(N), roughness);
+		reflection = mirror(incoming, N_new);
 		i++;
 	}
 	i = 0;
 	while (dot(reflection, object_normal) < 0 && i < 10)
 	{
-		N = sample_normal(object_normal, theta_min, theta_max, roughness);
-		reflection = mirror(incoming, N);
+		N_new = slerp(N, bounce(object_normal), roughness);
+		reflection = mirror(incoming, N_new);
 		i++;
 	}
 	if (dot(reflection, object_normal) < 0)
 		reflection = mirror(incoming, object_normal);
 	return (reflection);
 }
+
+
+// vec3 sample_normal(vec3 normal, float theta_min, float theta_max, float roughness)
+// {
+// 	float u = rand();
+// 	float v = rand();
+
+// 	float theta = acos(sqrt(u)) * roughness;
+// 	if (rt.debug2 == 1)
+// 		theta = acos(sqrt(u));
+// 	theta *= mix(theta_min, theta_max, abs(v - 0.5) * 2);
+// 	float phi = 2.0 * M_PI * v;
+
+// 	float x = sin(theta) * cos(phi);
+// 	float y = sin(theta) * sin(phi);
+// 	float z = cos(theta);
+
+// 	vec3 tangent;
+// 	if (abs(normal.y) != 1)
+// 		tangent = normalize(cross(vec3(0, 1, 0), normal));
+// 	else
+// 		tangent = normalize(cross(vec3(1, 0, 0), normal));
+// 	vec3 bitangent = cross(normal, tangent);
+
+// 	vec3 new_normal = normalize(x * tangent + y * bitangent + z * normal);
+
+// 	return (new_normal);
+// }
+
+// vec3 reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
+// {
+// 	if (rt.debug2 != 1)
+// 		roughness = pow(roughness, 1.5);
+// 	vec3 reflection = -N;
+// 	incoming = normalize(incoming);
+// 	vec3 V = -incoming;
+// 	vec3 N_min = normalize(mix(cross(normalize(cross(N, V)), N), N, 0.5));
+// 	vec3 N_max = cross(N_min, normalize(cross(N, V)));
+// 	vec3 N_new;
+// 	float theta_min = acos(dot(N_min, N)) / (M_PI / 2.0);
+// 	float theta_max = acos(dot(N_max, N)) / (M_PI / 2.0);
+
+// 	int i = 0;
+// 	while (dot(reflection, object_normal) < 0 && i < 10)
+// 	{
+// 		N_new = sample_normal(N, theta_min, theta_max, roughness);
+// 		if (rt.debug2 == 1)
+// 			N_new = normalize(slerp(N, bounce(N), pow(roughness, 2)));
+// 		reflection = mirror(incoming, N_new);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (dot(reflection, object_normal) < 0 && i < 10)
+// 	{
+// 		N_new = sample_normal(object_normal, theta_min, theta_max, roughness);
+// 		if (rt.debug2 == 1)
+// 			N_new = normalize(slerp(N, bounce(N), pow(roughness, 2)));
+// 		reflection = mirror(incoming, N_new);
+// 		i++;
+// 	}
+// 	if (dot(reflection, object_normal) < 0)
+// 		reflection = mirror(incoming, object_normal);
+// 	return (reflection);
+// }
