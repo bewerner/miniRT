@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/07 18:12:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 08:40:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,11 @@ void	init_cursor_is_settable(t_rt *rt)
 		rt->cursor_is_settable = 0;
 }
 
-void	create_fbo(t_rt *rt)
+void	create_fbo(t_rt *rt, float render_scale)
 {
-	int	i;
-
 	glGenTextures(1, &rt->tex_fbo_id);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
-	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA32F, rt->width, rt->height,
-		8, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA32F, (rt->width * render_scale), (rt->height * render_scale), 8, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -78,13 +75,8 @@ void	create_fbo(t_rt *rt)
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	glGenFramebuffers(1, &rt->fbo_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo_id);
-	i = 0;
-	while (i < 8)
-	{
-		glFramebufferTextureLayer(
-			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rt->tex_fbo_id, 0, i);
-		i++;
-	}
+	for (int i = 0; i < 8; i++)
+		glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rt->tex_fbo_id, 0, i);
 	set_drawbuffers(rt);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		terminate("Framebuffer creation failed!\n", NULL, 1, rt);
@@ -108,7 +100,9 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	create_ubo_textures(rt);
 	create_ubo_materials(rt);
 	create_tbo_agx_lut(LUT_PATH, rt);
-	create_fbo(rt);
+	rt->max_render_scale = 1;
+	rt->render_scale = 1;
+	create_fbo(rt, rt->render_scale);
 	create_environment_map(rt);
 	load_textures(rt);
 }

@@ -37,6 +37,7 @@ void	bind_framebuffer(GLuint id, GLuint shader_program, t_rt *rt)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->tex_fbo_id);
 	if (shader_program == rt->render_shader_program
+		|| shader_program == rt->accumulate_shader_program
 		|| shader_program == rt->postprocessing_shader_program)
 	{
 		uniform_location = glGetUniformLocation(shader_program, "buffer");

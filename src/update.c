@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/07 15:58:21 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 08:40:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	update_ubo_rt(t_rt *rt)
 	ubo_rt.ambient = rt->ambient;
 	ubo_rt.aspect_ratio = rt->aspect_ratio;
 	ubo_rt.camera = rt->camera;
-	ubo_rt.width = rt->width;
-	ubo_rt.height = rt->height;
+	ubo_rt.width = rt->width * rt->render_scale;
+	ubo_rt.height = rt->height * rt->render_scale;
 	ubo_rt.mode = (int)rt->mode;
 	ubo_rt.mac_os = MAC_OS;
 	ubo_rt.diffuse_bounce_count = rt->diffuse_bounce_count;
@@ -65,11 +65,32 @@ void	update_ubo_rt(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
+void	update_render_scale(t_rt *rt)
+{
+	if (rt->moving)
+	{
+		if (rt->delta_time > 0.12f)
+		{
+			rt->render_scale *= sqrtf(0.1f / rt->delta_time);
+			rt->render_scale = fminf(rt->render_scale, rt->max_render_scale);
+			resize_framebuffer(rt, rt->render_scale);
+		}
+	}
+	else if (rt->render_scale != rt->max_render_scale)
+	{
+		rt->render_scale *= 2;
+		rt->render_scale = fminf(rt->render_scale, rt->max_render_scale);
+		resize_framebuffer(rt, rt->render_scale);
+		rt->sample_count = 0;
+	}
+}
+
 void	update(t_rt *rt)
 {
-	handle_move_input(rt);
-	move_camera(rt);
+	handle_movement_input(rt);
 	update_delta_time(rt);
+	update_render_scale(rt);
+	glViewport(0, 0, (rt->width * rt->render_scale), (rt->height * rt->render_scale));
 	if (rt->mode == MODE_RENDER && rt->sample_count <= rt->max_samples)
 	{
 		glfwSwapInterval(0);
@@ -82,13 +103,14 @@ void	update(t_rt *rt)
 	if (rt->sample_count <= rt->max_samples)
 	{
 		render_raw_image(rt);
+		glViewport(0, 0, rt->width, rt->height);
 		postprocess_raw_image(rt);
 		if (!rt->hide_gizmo || rt->mode != MODE_RENDER)
 			draw_gizmo(rt);
 		glfwSwapBuffers(rt->window);
 	}
 	else
-		usleep(1000000 / 60);
+		usleep(1000000 / 30);
 	glfwPollEvents();
 	rt->first_update_finished = true;
 }
