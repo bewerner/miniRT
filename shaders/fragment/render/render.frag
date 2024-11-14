@@ -81,7 +81,4 @@ void	main(void)
 
 	out_previous_ray_dir = out_camera_ray_dir;
 	out_previous_ray_origin = out_camera_ray_origin;
-
-	if (rt.max_diffuse_bounces == 0 && rt.max_glossy_bounces == 0)
-		FragColor.rgb = mix(FragColor.rgb, out_render.rgb, 1.0 / rt.sample_count);
 }
