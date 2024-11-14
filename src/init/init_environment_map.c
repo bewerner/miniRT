@@ -6,13 +6,13 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 01:05:17 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/31 07:19:57 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 19:57:17 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
 
-void	apply_strength(double strength, t_vec4 *image, int width, int height)
+void	apply_strength(double strength, t_vec3 *env_map, int width, int height)
 {
 	size_t	length;
 	size_t	i;
@@ -21,9 +21,9 @@ void	apply_strength(double strength, t_vec4 *image, int width, int height)
 	i = 0;
 	while (i < length)
 	{
-		image[i].r *= strength;
-		image[i].g *= strength;
-		image[i].b *= strength;
+		env_map[i].r *= strength;
+		env_map[i].g *= strength;
+		env_map[i].b *= strength;
 		i++;
 	}
 }
@@ -32,24 +32,33 @@ void	create_environment_map(t_rt *rt)
 {
 	int		width;
 	int		height;
-	t_vec4	*image;
+	t_vec3	*env_map;
+	t_vec3	*weights;
 
 	if (rt->ambient.r >= 0)
 		return ;
 	stbi_set_flip_vertically_on_load(true);
-	image = (t_vec4 *)stbi_loadf(
-			rt->ambient_env_file, &width, &height, NULL, 4);
-	if (!image)
+	env_map = (t_vec3 *)stbi_loadf(rt->ambient_env_file, &width, &height, NULL, 3);
+	if (!env_map)
 		terminate(rt->ambient_env_file, NULL, 1, rt);
-	apply_strength(rt->ambient_strength, image, width, height);
-	set_importance_weight(image, width, height);
-	set_cumulative_distribution(image, width, height);
+	weights = (t_vec3 *)malloc(width * height * sizeof(t_vec3));
+	if (!weights)
+	{
+		stbi_image_free(env_map);
+		terminate("environment map weights", NULL, 1, rt);
+	}
+	apply_strength(rt->ambient_strength, env_map, width, height);
+	set_importance_weight(env_map, weights, width, height);
+	set_cumulative_distribution(weights, width, height);
+	compensate_weights(weights, width, height);
 	glGenTextures(1, &rt->environment_map_id);
 	glActiveTexture(GL_TEXTURE0 + 4);
-	glBindTexture(GL_TEXTURE_2D, rt->environment_map_id);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0,
-		GL_RGBA, GL_FLOAT, image);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	stbi_image_free(image);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->environment_map_id);
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGB32F, width, height, 2, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, width, height, 1, GL_RGB, GL_FLOAT, env_map);
+	glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 1, width, height, 1, GL_RGB, GL_FLOAT, weights);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	stbi_image_free(env_map);
+	free(weights);
 }

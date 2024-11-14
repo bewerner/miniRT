@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/14 08:40:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 18:39:46 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -452,24 +452,20 @@ void			init_hooks(t_rt *rt);
 
 // hooks/key_hook.c
 void			reset_camera(t_camera *camera, t_rt *rt);
-void			key_hook(GLFWwindow *window,
-					int key, int scancode, int action, int mods);
+void			key_hook(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 // hooks/cursor_hook.c
-void			cursor_hook(GLFWwindow *window,
-					double cursor_x, double cursor_y);
+void			cursor_hook(GLFWwindow *window, double cursor_x, double cursor_y);
 
 // hooks/mouse_hook.c
-void			mouse_hook(GLFWwindow *window,
-					int button, int action, int mods);
+void			mouse_hook(GLFWwindow *window, int button, int action, int mods);
 
 // hooks/resize_hook.c
 void			resize_framebuffer(t_rt *rt, float render_scale);
 void			resize_hook(GLFWwindow *window, int width, int height);
 
 // hooks/scroll_hook.c
-void			scroll_hook(GLFWwindow *window,
-					double xoffset, double yoffset);
+void			scroll_hook(GLFWwindow *window, double xoffset, double yoffset);
 
 // ┌──────┐
 // │ Init │
@@ -482,9 +478,9 @@ void			create_tbo_agx_lut(char *filepath, t_rt *rt);
 void			create_environment_map(t_rt *rt);
 
 // init/init_environment_map_importance.c
-void			set_cumulative_distribution(
-					t_vec4 *image, int width, int height);
-void			set_importance_weight(t_vec4 *image, int width, int height);
+void			compensate_weights(t_vec3 *weights, int width, int height);
+void			set_cumulative_distribution(t_vec3 *weights, int width, int height);
+void			set_importance_weight(t_vec3 *image, t_vec3 *weights, int width, int height);
 
 // init/init_lights_tbo.c
 void			create_tbo_lights(t_rt *rt);
@@ -498,10 +494,8 @@ void			create_ubo_materials(t_rt *rt);
 // init/init_objects_primitives.c
 void			init_gpu_sphere(float *buffer, size_t *i, t_sphere *sphere);
 void			init_gpu_plane(float *buffer, size_t *i, t_plane *plane);
-void			init_gpu_cylinder(float *buffer, size_t *i,
-					t_cylinder *cylinder);
-void			init_gpu_hyperboloid(float *buffer, size_t *i,
-					t_hyperboloid *hyperboloid);
+void			init_gpu_cylinder(float *buffer, size_t *i, t_cylinder *cylinder);
+void			init_gpu_hyperboloid(float *buffer, size_t *i, t_hyperboloid *hyperboloid);
 
 // init/init_objects_tbo.c
 void			create_tbo_objects(t_rt *rt);
@@ -531,10 +525,8 @@ int				texid_from_name(char **line, t_rt *rt);
 t_error			create_materials(size_t mat_cnt, t_rt *rt);
 
 // parser/parse_material2.c
-void			set_material_metallic_textureid(
-					t_material *mat, char **line, t_rt *rt);
-void			set_material_roughness_textureid(
-					t_material *mat, char **line, t_rt *rt);
+void			set_material_metallic_textureid(t_material *mat, char **line, t_rt *rt);
+void			set_material_roughness_textureid(t_material *mat, char **line, t_rt *rt);
 void			create_default_material(size_t mat_cnt, t_material *mat);
 void			parse_normal_values(t_material *mat, char **line, t_rt *rt);
 
@@ -555,8 +547,7 @@ t_error			parse_plane(t_plane *plane, t_rt *rt);
 t_error			parse_cylinder(t_cylinder *cylinder, t_rt *rt);
 
 // parser/parse_primitives2.c
-void			set_color_and_material_and_uv_scale(
-					t_object *o, char *line, t_rt *rt);
+void			set_color_and_material_and_uv_scale(t_object *o, char *line, t_rt *rt);
 t_error			parse_hyperboloid(t_hyperboloid *hb, t_rt *rt);
 
 // parser/parser_utils1.c
@@ -613,13 +604,11 @@ char			*assemble_shader_source(const char *file);
 size_t			file_size(const char *file);
 int				is_import(char *str);
 void			extract_shader_path(char *shader_path, const char *file);
-void			prepares_import_filename(char *filename, char *str,
-					char *shader_path);
+void			prepares_import_filename(char *filename, char *str, char *shader_path);
 GLuint			compile_shader_src(GLenum shader_type, const char *shader_src);
 
 // shader/shader_program.c
-GLuint			create_shader_program(const char *vert,
-					const char *freg, t_rt *rt);
+GLuint			create_shader_program(const char *vert, const char *freg, t_rt *rt);
 void			init_shader_programs(t_rt *rt);
 
 // shader/bind_buffer2.c
