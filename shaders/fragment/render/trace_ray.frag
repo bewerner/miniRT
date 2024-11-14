@@ -159,53 +159,161 @@ vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 
 	return (col);
 }
 
-vec3	get_ambient_light_contribution_new(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
+vec3	get_ambient_diffuse_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
 {
 	vec3	col_importance = VEC3_BLACK;
 	vec3	col_cosine = VEC3_BLACK;
+	vec3	col_reflection = VEC3_BLACK;
 	t_ray	ray_importance;
 	t_ray	ray_cosine;
+	t_ray	ray_reflection;
+	// float	weight_importance_diffuse;
+	// float	weight_importance_specular;
+	// float	weight_cosine_diffuse;
 	float	weight_importance;
 	float	weight_cosine;
+	// float	weight_reflection_specular;
 	float	pdf_importance;
 	float	pdf_cosine;
+	float	pdf_reflection;
 	vec3  col = VEC3_BLACK;
 	t_ray ray;
 
 	ray_cosine.origin = hit_pos;
 	ray_cosine.dir = bounce(N);
-	pdf_cosine = max(cos(dot(N, ray_cosine.dir)) / M_PI, 1e-6);
+	pdf_cosine = dot(N, ray_cosine.dir) / M_PI;
+	// pdf_cosine *= 1.0 - rt.debug/10;
 
 	ray_importance.origin = hit_pos;
 	ray_importance.dir = get_random_importance_weighted_direction(pdf_importance);
-	pdf_importance = max(pdf_importance, 1e-6);
+	// if (rt.debug == 1)
+		// pdf_importance *= textureSize(environment_map, 0).x * textureSize(environment_map, 0).y;
+	int resolution = textureSize(environment_map, 0).x * textureSize(environment_map, 0).y;
+	// pdf_importance *= pow(10, rt.debug/10);
+	// pdf_importance *= resolution / (4 * M_PI);
+	// pdf_importance *= 2048 * 1024 / resolution;
+	// pdf_cosine /= 2*M_PI;
+
+	ray_reflection.origin = hit_pos;
+	ray_reflection.dir = reflect(-V, N, hitpoint.object_normal, mat.roughness);
 
 	weight_importance = pdf_importance / (pdf_importance + pdf_cosine);
 	weight_cosine = pdf_cosine / (pdf_cosine + pdf_importance);
+	// if (rt.debug != 0)
+	// {
+	// 	// weight_importance = pow(0.1, rt.debug);
+	// 	weight_importance = 0.0000017;
+	// 	weight_cosine = 0.25;
+	// }
 
-	if (reaches_sky(ray_cosine) == true)
+	if (reaches_sky(ray_cosine) == true && pdf_cosine > 1e-6)
 	{
 		vec3 L  = ray_cosine.dir;
 		vec3 H  = normalize(V + L);
 		vec3 ks = fresnel(F0, V, H);
 		vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-		float diffuse = lambert_diffuse(N, L);
-		vec3 radiance = get_sky_color_from_dir(L) / pdf_cosine * weight_cosine * (((0.3)));
+		float NdotL = max(0.0, dot(N, L));
+		vec3 radiance = get_sky_color_from_dir(L) * weight_cosine / pdf_cosine * (((0.45)));// (rt.debug/100); (((0.3)));
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-		col += (kd * mat.color + specular) * radiance * diffuse;
+		col += (kd * mat.color + specular) * radiance * NdotL;
+		// col += kd * mat.color * radiance * NdotL;
 	}
 
-	if (reaches_sky(ray_importance) == true)
+	if (reaches_sky(ray_importance) == true && pdf_importance > 1e-6)
 	{
 		vec3 L  = ray_importance.dir;
 		vec3 H  = normalize(V + L);
 		vec3 ks = fresnel(F0, V, H);
 		vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-		float diffuse = lambert_diffuse(N, L);
-		vec3 radiance = get_sky_color_from_dir(L) / (((50000))) * diffuse / pdf_importance * weight_importance;
+		float NdotL = max(0.0, dot(N, L));
+		// vec3 radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance;// / (rt.debug*1000);
+		vec3 radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance / (resolution / (4 * M_PI)) * M_PI;// / (rt.debug*1000);
+		// if (rt.debug >= 1)
+		// 	radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance / (resolution / rt.debug);
+		// if (rt.debug >= 2)
+		// 	radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance / resolution / (4 * M_PI);
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-		col += (kd * mat.color + specular) * radiance * diffuse;
+		// vec3 specular = vec3(0);
+		col += (kd * mat.color + specular) * radiance * NdotL;
 	}
+
+	return (col);
+	// return (clamp(col, 0, 16));
+}
+
+vec3	get_ambient_specular_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
+{
+
+	t_ray	ray_importance;
+	t_ray	ray_reflection;
+	float	weight_importance;
+	float	weight_reflection;
+	float	pdf_importance;
+	float	pdf_reflection;
+	vec3  col = VEC3_BLACK;
+	t_ray ray;
+	return (col);
+	int resolution = textureSize(environment_map, 0).x * textureSize(environment_map, 0).y;
+
+	ray_reflection.origin = hit_pos;
+	ray_reflection.dir = reflect(-V, N, hitpoint.object_normal, mat.roughness);
+	// pdf_reflection = dot(N, normalize(V + ray_reflection.dir)) / M_PI;
+	pdf_reflection = hacky_normalDistribution(a, N, normalize(V + ray_reflection.dir));
+	// if (rt.debug >= 2)
+	// 	pdf_reflection = hacky_normalDistribution(a, N, normalize(V + ray_reflection.dir));
+	// if (rt.debug == 1 || rt.debug == 3)
+		pdf_reflection = clamp(pdf_reflection, 0, 1);
+	// pdf_reflection = 1;
+
+	ray_importance.origin = hit_pos;
+	ray_importance.dir = get_random_importance_weighted_direction(pdf_importance);
+	// pdf_importance = 0;
+
+	weight_importance = pdf_importance / (pdf_importance + pdf_reflection);
+	weight_reflection = pdf_reflection / (pdf_reflection + pdf_importance);
+	weight_importance = 1;
+	weight_reflection = 1;
+
+	if (reaches_sky(ray_reflection) == true)
+	{
+		vec3 L  = ray_reflection.dir;
+		vec3 H  = normalize(V + L);
+		vec3 ks = fresnel(F0, V, H);
+		float NdotL = max(0.0, dot(N, L));
+		// vec3 radiance = get_sky_color_from_dir(L) * (rt.debug/10) * 0;
+		vec3 radiance = get_sky_color_from_dir(L);// * weight_reflection / pdf_reflection;// * (((0.45)));// (rt.debug/100); (((0.3)));
+		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
+		specular = max(clamp(specular, vec3(0.0), ks), ks);
+		col += specular * radiance;// * NdotL;
+	}
+
+	if (reaches_sky(ray_importance) == true && pdf_importance > 1e-6)
+	{
+		vec3 L  = ray_importance.dir;
+		vec3 H  = normalize(V + L);
+		vec3 ks = fresnel(F0, V, H);
+		float NdotL = max(0.0, dot(N, L));
+		// vec3 radiance = get_sky_color_from_dir(L) * 0.0000017 / pdf_importance;
+		// vec3 radiance = get_sky_color_from_dir(L) / (resolution / (4 * M_PI)) * (rt.debug/10);
+		vec3 radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance / (resolution / (4 * M_PI)) * M_PI;// / (rt.debug*1000);
+		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
+		specular = clamp(specular, vec3(0.0), ks);
+		col += specular * radiance * NdotL;
+	}
+
+	// if (reaches_sky(ray_reflection) == true)
+	// {
+	// 	vec3 L  = ray_reflection.dir;
+	// 	vec3 H  = normalize(V + L);
+	// 	vec3 ks = fresnel(F0, V, H);
+	// 	// vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+	// 	vec3 kd = vec3(0);
+	// 	float diffuse = lambert_diffuse(N, L);
+	// 	vec3 radiance = get_sky_color_from_dir(L) * (rt.debug/10000);
+	// 	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+	// 	// vec3 specular = vec3(0);
+	// 	col += (kd * mat.color + specular) * radiance * diffuse;
+	// }
 
 
 
@@ -361,7 +469,11 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 
 	// AMBIENT LIGHT
 	if (rt.debug2 == 1)
-		col += get_ambient_light_contribution_new(hit_pos, hitpoint, N, V, F0, a, mat);
+	{
+		col += get_ambient_diffuse_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+		col += get_ambient_specular_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+
+	}
 	else
 		col += get_ambient_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
 
