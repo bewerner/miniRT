@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:39:42 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/07 15:43:31 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 01:59:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,9 @@ void	init_shader_programs(t_rt *rt)
 	rt->postprocessing_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
 			"shaders/fragment/postprocessing/postprocessing.frag", rt);
+	rt->accumulate_shader_program = create_shader_program(
+			"shaders/vertex/screen.vert",
+			"shaders/fragment/accumulate/accumulate.frag", rt);
 	rt->render_shader_program = create_shader_program(
 			"shaders/vertex/screen.vert",
 			"shaders/fragment/render/render.frag", rt);

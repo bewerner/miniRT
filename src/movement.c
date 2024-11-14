@@ -6,30 +6,11 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:15:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 08:12:08 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
-
-void	handle_move_input(t_rt *rt)
-{
-	rt->move.acc = (t_vec3){{0, 0, 0}};
-	if (glfwGetKey(rt->window, GLFW_KEY_A))
-		rt->move.acc.x -= ACC * rt->delta_time;
-	if (glfwGetKey(rt->window, GLFW_KEY_D))
-		rt->move.acc.x += ACC * rt->delta_time;
-	if (glfwGetKey(rt->window, GLFW_KEY_W))
-		rt->move.acc.z += ACC * rt->delta_time;
-	if (glfwGetKey(rt->window, GLFW_KEY_S))
-		rt->move.acc.z -= ACC * rt->delta_time;
-	if (glfwGetKey(rt->window, GLFW_KEY_E)
-		|| glfwGetKey(rt->window, GLFW_KEY_SPACE))
-		rt->move.acc.y += ACC * rt->delta_time;
-	if (glfwGetKey(rt->window, GLFW_KEY_C))
-		rt->move.acc.y -= ACC * rt->delta_time;
-	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
-}
 
 void	move_camera(t_rt *rt)
 {
@@ -50,5 +31,29 @@ void	move_camera(t_rt *rt)
 	rt->camera.viewport_light = vec3_rotate_x(rt->camera.viewport_light, rt->camera.pitch);
 	rt->camera.viewport_light = vec3_rotate_z(rt->camera.viewport_light, rt->camera.yaw);
 	if (ft_memcmp(&initial_camera, &rt->camera, sizeof(t_camera)))
+	{
+		rt->moving = true;
 		rt->sample_count = 0;
+	}
+	else
+		rt->moving = false;
+}
+
+void	handle_movement_input(t_rt *rt)
+{
+	rt->move.acc = (t_vec3){{0, 0, 0}};
+	if (glfwGetKey(rt->window, GLFW_KEY_A))
+		rt->move.acc.x -= ACC * fminf(rt->delta_time, 0.1);
+	if (glfwGetKey(rt->window, GLFW_KEY_D))
+		rt->move.acc.x += ACC * fminf(rt->delta_time, 0.1);
+	if (glfwGetKey(rt->window, GLFW_KEY_W))
+		rt->move.acc.z += ACC * fminf(rt->delta_time, 0.1);
+	if (glfwGetKey(rt->window, GLFW_KEY_S))
+		rt->move.acc.z -= ACC * fminf(rt->delta_time, 0.1);
+	if (glfwGetKey(rt->window, GLFW_KEY_E) || glfwGetKey(rt->window, GLFW_KEY_SPACE))
+		rt->move.acc.y += ACC * fminf(rt->delta_time, 0.1);
+	if (glfwGetKey(rt->window, GLFW_KEY_C))
+		rt->move.acc.y -= ACC * fminf(rt->delta_time, 0.1);
+	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
+	move_camera(rt);
 }

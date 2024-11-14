@@ -65,7 +65,4 @@ void	main(void)
 
 		out_render.rgb += trace_reflection_ray(reflection_ray, previous, specular, previous_metallic, previous_roughness);
 	}
-
-	if (rt.diffuse_bounce_count == rt.max_diffuse_bounces && rt.glossy_bounce_count == rt.max_glossy_bounces)
-		FragColor.rgb = mix(FragColor.rgb, out_render.rgb, 1.0 / rt.sample_count);
 }
