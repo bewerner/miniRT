@@ -9,11 +9,11 @@
 #define VEC4_BLACK	vec4(0, 0, 0, 1)
 #define HP_INF		t_hitpoint(false, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC3_INF, VEC2_INF, VEC3_BLACK, -1, -1)
 
+#define MAX_IMAGE_TEXTURES 10
+
 #define MODE_SOLID		0
 #define MODE_NORMAL		1
-#define MODE_RENDER	2
-
-#define MAX_IMAGE_TEXTURES 10
+#define MODE_RENDER		2
 
 #define TEX_NONE		0
 #define TEX_IMAGE		1
@@ -206,7 +206,7 @@ uniform samplerBuffer	objects;
 uniform samplerBuffer	lights;
 uniform sampler3D		agx_lut;
 uniform sampler2DArray	buffer;
-uniform sampler2D		environment_map;
+uniform sampler2DArray	environment_map;
 uniform sampler2D		texture_units[MAX_IMAGE_TEXTURES];
 
 // AgX.frag

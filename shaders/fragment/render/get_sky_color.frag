@@ -92,10 +92,7 @@ vec3	get_environment_map_color(vec3 direction)
 	uv.x = 0.5 + atan(-normal.y, normal.x) / (2.0 * M_PI);
 	uv.y = 0.5 - asin(-normal.z) / M_PI;
 
-	// return (clamp(texture(environment_map, uv).rgb, 3, 999999) - 3);
-	return (texture(environment_map, uv).rgb);
-	// return (texture(environment_map, uv).rgb);
-	// return(clamp(texture(environment_map, uv).rgb, 0, 16));
+	return (texture(environment_map, vec3(uv, 0)).rgb);
 }
 
 // Function to retrieve the pixel position based on a random value and the CDF using binary search
@@ -118,7 +115,7 @@ ivec2 get_pixel_pos(float target, int width, int height)
 		pos.y = middle / width;
 
 		// Sample the environment map at the middle pixel position
-		cdf = texture(environment_map, vec2(float(pos.x) / width, float(pos.y) / height), 0).a;
+		cdf = texture(environment_map, vec3(float(pos.x) / width, float(pos.y) / height, 1), 0).r;
 		if (cdf < target)
 			lower = middle + 1;
 		else if (cdf > target)
@@ -147,17 +144,8 @@ float	get_pdf(ivec2 pos, int width, int height)
 	// 	power = 2.2;
 	// if (rt.debug == 2)
 	// 	power = 1.0/2.2;
-	float cdf = pow(texelFetch(environment_map, pos, 0).a, power);
-	pos.x--;
-	if (pos.x < 0)
-	{
-		pos.y--;
-		pos.x = width - 1;
-	}
-	if (pos.y < 0)
-		return (cdf);
-	float previous_cdf = pow(texelFetch(environment_map, pos, 0).a, power);
-	return (cdf - previous_cdf);
+	float pdf = pow(texelFetch(environment_map, ivec3(pos, 1), 0).g, power);
+	return (pdf);
 }
 
 // float	get_pdf(ivec2 pos, int width, int height)
@@ -218,45 +206,45 @@ vec3	get_ambient_color(t_hitpoint hitpoint)
 	return (col);
 }
 
-vec3	get_sky_color(t_hitpoint hitpoint)
-{
-	if (rt.ambient.r >= 0)
-		return (get_ambient_color(hitpoint));
+// vec3	get_sky_color(t_hitpoint hitpoint)
+// {
+// 	if (rt.ambient.r >= 0)
+// 		return (get_ambient_color(hitpoint));
 
-	vec3	col_importance = VEC3_BLACK;
-	vec3	col_cosine = VEC3_BLACK;
-	vec3	col_final;
-	t_ray	ray_importance;
-	t_ray	ray_cosine;
-	float	weight_importance;
-	float	weight_cosine;
-	float	pdf_importance;
-	float	pdf_cosine;
+// 	vec3	col_importance = VEC3_BLACK;
+// 	vec3	col_cosine = VEC3_BLACK;
+// 	vec3	col_final;
+// 	t_ray	ray_importance;
+// 	t_ray	ray_cosine;
+// 	float	weight_importance;
+// 	float	weight_cosine;
+// 	float	pdf_importance;
+// 	float	pdf_cosine;
 
-	ray_importance.origin	= get_offset_hitpoint_pos(hitpoint);
-	ray_importance.dir		= get_random_importance_weighted_direction(pdf_importance);
+// 	ray_importance.origin	= get_offset_hitpoint_pos(hitpoint);
+// 	ray_importance.dir		= get_random_importance_weighted_direction(pdf_importance);
 
-	ray_cosine.origin	= ray_importance.origin;
-	ray_cosine.dir		= get_random_cosine_weighted_hemisphere_direction(hitpoint.normal);
+// 	ray_cosine.origin	= ray_importance.origin;
+// 	ray_cosine.dir		= get_random_cosine_weighted_hemisphere_direction(hitpoint.normal);
 
-	pdf_cosine = cos(dot(hitpoint.normal, ray_cosine.dir)) / M_PI;
-	pdf_cosine = max(pdf_cosine, 1e-6);
-	// if (pdf_importance <= 1e-6)
-	// 	return(vec3(1,0,0));
-	pdf_importance = max(pdf_importance, 1e-6);
+// 	pdf_cosine = cos(dot(hitpoint.normal, ray_cosine.dir)) / M_PI;
+// 	pdf_cosine = max(pdf_cosine, 1e-6);
+// 	// if (pdf_importance <= 1e-6)
+// 	// 	return(vec3(1,0,0));
+// 	pdf_importance = max(pdf_importance, 1e-6);
 
-	weight_importance = pdf_importance / (pdf_importance + pdf_cosine);
-	weight_cosine = pdf_cosine / (pdf_cosine + pdf_importance);
+// 	weight_importance = pdf_importance / (pdf_importance + pdf_cosine);
+// 	weight_cosine = pdf_cosine / (pdf_cosine + pdf_importance);
 
-	if (reaches_sky(ray_importance) == true)
-		col_importance = get_environment_map_color(ray_importance.dir) / (((50000))) * max(0, dot(hitpoint.normal, ray_importance.dir)) / pdf_importance;
-	if (reaches_sky(ray_cosine) == true)
-		col_cosine = clamp(get_environment_map_color(ray_cosine.dir) / pdf_cosine, 0, 16);
+// 	if (reaches_sky(ray_importance) == true)
+// 		col_importance = get_environment_map_color(ray_importance.dir) / (((50000))) * max(0, dot(hitpoint.normal, ray_importance.dir)) / pdf_importance;
+// 	if (reaches_sky(ray_cosine) == true)
+// 		col_cosine = clamp(get_environment_map_color(ray_cosine.dir) / pdf_cosine, 0, 16);
 
-	col_final = col_importance * weight_importance + (col_cosine * (((0.3)))) * weight_cosine;
+// 	col_final = col_importance * weight_importance + (col_cosine * (((0.3)))) * weight_cosine;
 
-	return (col_final);
-}
+// 	return (col_final);
+// }
 
 vec3	get_sky_color_from_ray(t_ray ray)
 {

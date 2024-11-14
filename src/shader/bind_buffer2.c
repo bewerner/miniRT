@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:33:16 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 19:45:14 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	bind_environment_map(GLuint shader_program, t_rt *rt)
 {
 	GLint	uniform_location;
 
+	glActiveTexture(GL_TEXTURE0 + 4);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->environment_map_id);
 	uniform_location = glGetUniformLocation(shader_program, "environment_map");
 	if (uniform_location == -1)
 		terminate("environment_map not found in shader program", NULL, 1, rt);

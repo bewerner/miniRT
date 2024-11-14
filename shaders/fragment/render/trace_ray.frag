@@ -167,12 +167,10 @@ vec3	get_ambient_diffuse_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, v
 	t_ray	ray_importance;
 	t_ray	ray_cosine;
 	t_ray	ray_reflection;
-	// float	weight_importance_diffuse;
-	// float	weight_importance_specular;
-	// float	weight_cosine_diffuse;
-	float	weight_importance;
+	float	weight_importance_diffuse;
+	float	weight_importance_specular;
 	float	weight_cosine;
-	// float	weight_reflection_specular;
+	float	weight_reflection;
 	float	pdf_importance;
 	float	pdf_cosine;
 	float	pdf_reflection;
@@ -181,30 +179,27 @@ vec3	get_ambient_diffuse_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, v
 
 	ray_cosine.origin = hit_pos;
 	ray_cosine.dir = bounce(N);
-	pdf_cosine = dot(N, ray_cosine.dir) / M_PI;
-	// pdf_cosine *= 1.0 - rt.debug/10;
+	pdf_cosine = dot(N, ray_cosine.dir) / M_PI * 0.33;
+
+	ray_reflection.origin = hit_pos;
+	ray_reflection.dir = reflect(-V, N, hitpoint.object_normal, mat.roughness);
+	pdf_reflection = dot(N, ray_reflection.dir);
 
 	ray_importance.origin = hit_pos;
 	ray_importance.dir = get_random_importance_weighted_direction(pdf_importance);
-	// if (rt.debug == 1)
-		// pdf_importance *= textureSize(environment_map, 0).x * textureSize(environment_map, 0).y;
-	int resolution = textureSize(environment_map, 0).x * textureSize(environment_map, 0).y;
-	// pdf_importance *= pow(10, rt.debug/10);
-	// pdf_importance *= resolution / (4 * M_PI);
-	// pdf_importance *= 2048 * 1024 / resolution;
-	// pdf_cosine /= 2*M_PI;
 
 	ray_reflection.origin = hit_pos;
 	ray_reflection.dir = reflect(-V, N, hitpoint.object_normal, mat.roughness);
 
-	weight_importance = pdf_importance / (pdf_importance + pdf_cosine);
 	weight_cosine = pdf_cosine / (pdf_cosine + pdf_importance);
-	// if (rt.debug != 0)
-	// {
-	// 	// weight_importance = pow(0.1, rt.debug);
-	// 	weight_importance = 0.0000017;
-	// 	weight_cosine = 0.25;
-	// }
+	weight_importance_diffuse = 1.0 - weight_cosine;
+	// weight_importance_diffuse = pdf_importance / (pdf_importance + pdf_cosine);
+
+	weight_reflection = pdf_reflection / (pdf_reflection + pdf_importance);
+	weight_importance_specular = 1.0 - weight_reflection;
+	weight_importance_specular *= mat.roughness;
+	weight_reflection = 1.0 - weight_importance_specular;
+	// weight_importance_specular =  pdf_importance / (pdf_importance + pdf_reflection);
 
 	if (reaches_sky(ray_cosine) == true && pdf_cosine > 1e-6)
 	{
@@ -213,10 +208,8 @@ vec3	get_ambient_diffuse_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, v
 		vec3 ks = fresnel(F0, V, H);
 		vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
 		float NdotL = max(0.0, dot(N, L));
-		vec3 radiance = get_sky_color_from_dir(L) * weight_cosine / pdf_cosine * (((0.45)));// (rt.debug/100); (((0.3)));
-		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-		col += (kd * mat.color + specular) * radiance * NdotL;
-		// col += kd * mat.color * radiance * NdotL;
+		vec3 radiance = get_sky_color_from_dir(L) * weight_cosine / pdf_cosine; // * 2.87
+		col += kd * mat.color * radiance * NdotL;
 	}
 
 	if (reaches_sky(ray_importance) == true && pdf_importance > 1e-6)
@@ -226,15 +219,25 @@ vec3	get_ambient_diffuse_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, v
 		vec3 ks = fresnel(F0, V, H);
 		vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
 		float NdotL = max(0.0, dot(N, L));
-		// vec3 radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance;// / (rt.debug*1000);
-		vec3 radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance / (resolution / (4 * M_PI)) * M_PI;// / (rt.debug*1000);
-		// if (rt.debug >= 1)
-		// 	radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance / (resolution / rt.debug);
-		// if (rt.debug >= 2)
-		// 	radiance = get_sky_color_from_dir(L) * weight_importance / pdf_importance / resolution / (4 * M_PI);
+		vec3 radiance_diffuse = get_sky_color_from_dir(L) * weight_importance_diffuse / pdf_importance;
+		radiance_diffuse = clamp(radiance_diffuse, 0, 16);
+		vec3 radiance_specular = get_sky_color_from_dir(L) * weight_importance_specular / pdf_importance * 1.73;
+		radiance_specular = clamp(radiance_specular, 0, 16);
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-		// vec3 specular = vec3(0);
-		col += (kd * mat.color + specular) * radiance * NdotL;
+		// col += (kd * mat.color + specular) * radiance * NdotL;
+		col += (kd * mat.color * radiance_diffuse * NdotL) + (specular * radiance_specular * NdotL);
+	}
+
+	if (reaches_sky(ray_reflection) == true && pdf_reflection > 1e-6)
+	{
+		vec3 L  = ray_reflection.dir;
+		vec3 H  = normalize(V + L);
+		vec3 ks = fresnel(F0, V, H);
+		float NdotL = max(0.0, dot(N, L));
+		vec3 radiance = get_sky_color_from_dir(L);// * weight_reflection;
+		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+		specular = max(clamp(specular, vec3(0.0), ks), ks);
+		col += specular * radiance;// * NdotL;
 	}
 
 	return (col);
@@ -337,65 +340,15 @@ vec3	get_ambient_specular_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, 
 	// return (clamp(col, 0, 16));
 }
 
-// vec3	get_ambient_light_contribution_new(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
-// {
-// 	vec3  col = VEC3_BLACK;
-// 	t_ray ray;
+vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
+{
+	vec3 col = VEC3_BLACK;
 
-// 	ray.origin = hit_pos;
-// 	ray.dir = bounce(N);
-
-// 	if (reaches_sky(ray) == true)// && rt.debug == 0)
-// 	{
-// 		vec3 L  = ray.dir;
-// 		vec3 H  = normalize(V + L);
-// 		vec3 ks = fresnel(F0, V, H);// * 1.6;
-// 		vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-// 		float diffuse = lambert_diffuse(N, L);
-// 		vec3 radiance = get_sky_color_from_dir(L);
-// 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-// 		col += (kd * mat.color + specular) * radiance * diffuse;
-// 	}
-
-// 	// if (rt.debug == 0)
-// 	// 	return (col);
-
-// 	float	pdf;
-// 	float	weight;
-
-// 	ray.dir = get_random_importance_weighted_direction(weight);
-
-// 	if (reaches_sky(ray) == true)
-// 	{
-// 		vec3 L  = ray.dir;
-// 		vec3 H  = normalize(V + L);
-// 		vec3 ks = fresnel(F0, V, H);// * 1.6;
-// 		vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-// 		float diffuse = lambert_diffuse(N, L);
-// 		vec3 radiance = get_sky_color_from_dir(L) / weight / pow(10, 5.0 + rt.debug/10);// * (rt.debug / 1000);
-// 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-// 		col += (kd * mat.color + specular) * radiance * diffuse;
-// 	}
-
-
-
-// 	// ray.dir = get_random_importance_weighted_direction(weight);
-
-// 	// if (reaches_sky(ray) == true)
-// 	// {
-// 	// 	vec3 L  = ray.dir;
-// 	// 	vec3 H  = normalize(V + L);
-// 	// 	vec3 ks = fresnel(F0, V, H);// * 1.6;
-// 	// 	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
-// 	// 	float diffuse = lambert_diffuse(N, L);
-// 	// 	vec3 radiance = get_sky_color_from_dir(L) / weight / pow(10, 5.0 + rt.debug/10);// * (rt.debug / 1000);
-// 	// 	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-// 	// 	col += (kd * mat.color + specular) * radiance * diffuse;
-// 	// }
-
-// 	return (col);
-// 	// return (clamp(col, 0, 16));
-// }
+	col += get_ambient_diffuse_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+	col += get_ambient_specular_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+	
+	return (col);
+}
 
 vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N, vec3 V, vec3 L, t_material mat, vec3 previous_specular)
 {
@@ -415,34 +368,34 @@ vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N
 	return (col);
 }
 
-vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
-{
-	t_ray ray;
-	ray.origin = hit_pos;
-	ray.dir = reflect(hitpoint.ray, hitpoint.normal, hitpoint.object_normal, mat.roughness);
-	vec3 ambient_specular_light = clamp(get_sky_color_from_ray(ray), 0, 16);
-	vec3 ambient_diffuse_light	= get_sky_color(hitpoint);
+// vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, vec3 V, vec3 F0, float a, t_material mat)
+// {
+// 	t_ray ray;
+// 	ray.origin = hit_pos;
+// 	ray.dir = reflect(hitpoint.ray, hitpoint.normal, hitpoint.object_normal, mat.roughness);
+// 	vec3 ambient_specular_light = clamp(get_sky_color_from_ray(ray), 0, 16);
+// 	vec3 ambient_diffuse_light	= get_sky_color(hitpoint);
 
-	vec3 L  = normalize(ray.dir);
-	vec3 H  = normalize(V + L);
-	vec3 ks = fresnel(F0, V, H);
-	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
+// 	vec3 L  = normalize(ray.dir);
+// 	vec3 H  = normalize(V + L);
+// 	vec3 ks = fresnel(F0, V, H);
+// 	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
 
-	// if (rt.debug2 == 1)
-	// 	a = max(a, 0.0001);
-	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
+// 	// if (rt.debug2 == 1)
+// 	// 	a = max(a, 0.0001);
+// 	vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, false);
 
-	// if (rt.debug2 == 1)
-	// 	ambient_specular_light = mix(ambient_specular_light, ambient_diffuse_light, mat.roughness*mat.roughness);
-	// if (rt.debug2 == 1)
-	// 	ambient_specular_light += ambient_diffuse_light*mat.roughness*mat.roughness;
-	// if (rt.debug2 == 1)
-		// kd = max(kd, mat.roughness*mat.roughness);
+// 	// if (rt.debug2 == 1)
+// 	// 	ambient_specular_light = mix(ambient_specular_light, ambient_diffuse_light, mat.roughness*mat.roughness);
+// 	// if (rt.debug2 == 1)
+// 	// 	ambient_specular_light += ambient_diffuse_light*mat.roughness*mat.roughness;
+// 	// if (rt.debug2 == 1)
+// 		// kd = max(kd, mat.roughness*mat.roughness);
 
-	vec3 col = kd * mat.color * ambient_diffuse_light + max(clamp(specular, vec3(0.0), ks), ks) * ambient_specular_light;
+// 	vec3 col = kd * mat.color * ambient_diffuse_light + max(clamp(specular, vec3(0.0), ks), ks) * ambient_specular_light;
 
-	return (clamp(col, 0, 16));
-}
+// 	return (clamp(col, 0, 16));
+// }
 
 vec3	render_hitpoint(t_hitpoint hitpoint)
 {
@@ -468,13 +421,13 @@ vec3	render_hitpoint(t_hitpoint hitpoint)
 		col += get_point_light_contribution(hit_pos, get_point_light(i), N, V, F0p, a, mat);
 
 	// AMBIENT LIGHT
-	if (rt.debug2 == 1)
-	{
-		col += get_ambient_diffuse_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
-		col += get_ambient_specular_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+	// if (rt.debug2 == 1)
+	// {
+		// col += get_ambient_diffuse_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
+		// col += get_ambient_specular_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
 
-	}
-	else
+	// }
+	// else
 		col += get_ambient_light_contribution(hit_pos, hitpoint, N, V, F0, a, mat);
 
 	// EMISSION
@@ -595,67 +548,3 @@ vec3 reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 		reflection = mirror(incoming, object_normal);
 	return (reflection);
 }
-
-
-// vec3 sample_normal(vec3 normal, float theta_min, float theta_max, float roughness)
-// {
-// 	float u = rand();
-// 	float v = rand();
-
-// 	float theta = acos(sqrt(u)) * roughness;
-// 	if (rt.debug2 == 1)
-// 		theta = acos(sqrt(u));
-// 	theta *= mix(theta_min, theta_max, abs(v - 0.5) * 2);
-// 	float phi = 2.0 * M_PI * v;
-
-// 	float x = sin(theta) * cos(phi);
-// 	float y = sin(theta) * sin(phi);
-// 	float z = cos(theta);
-
-// 	vec3 tangent;
-// 	if (abs(normal.y) != 1)
-// 		tangent = normalize(cross(vec3(0, 1, 0), normal));
-// 	else
-// 		tangent = normalize(cross(vec3(1, 0, 0), normal));
-// 	vec3 bitangent = cross(normal, tangent);
-
-// 	vec3 new_normal = normalize(x * tangent + y * bitangent + z * normal);
-
-// 	return (new_normal);
-// }
-
-// vec3 reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
-// {
-// 	if (rt.debug2 != 1)
-// 		roughness = pow(roughness, 1.5);
-// 	vec3 reflection = -N;
-// 	incoming = normalize(incoming);
-// 	vec3 V = -incoming;
-// 	vec3 N_min = normalize(mix(cross(normalize(cross(N, V)), N), N, 0.5));
-// 	vec3 N_max = cross(N_min, normalize(cross(N, V)));
-// 	vec3 N_new;
-// 	float theta_min = acos(dot(N_min, N)) / (M_PI / 2.0);
-// 	float theta_max = acos(dot(N_max, N)) / (M_PI / 2.0);
-
-// 	int i = 0;
-// 	while (dot(reflection, object_normal) < 0 && i < 10)
-// 	{
-// 		N_new = sample_normal(N, theta_min, theta_max, roughness);
-// 		if (rt.debug2 == 1)
-// 			N_new = normalize(slerp(N, bounce(N), pow(roughness, 2)));
-// 		reflection = mirror(incoming, N_new);
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (dot(reflection, object_normal) < 0 && i < 10)
-// 	{
-// 		N_new = sample_normal(object_normal, theta_min, theta_max, roughness);
-// 		if (rt.debug2 == 1)
-// 			N_new = normalize(slerp(N, bounce(N), pow(roughness, 2)));
-// 		reflection = mirror(incoming, N_new);
-// 		i++;
-// 	}
-// 	if (dot(reflection, object_normal) < 0)
-// 		reflection = mirror(incoming, object_normal);
-// 	return (reflection);
-// }
