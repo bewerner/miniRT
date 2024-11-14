@@ -142,7 +142,12 @@ ivec2 get_pixel_pos(float target, int width, int height)
 
 float	get_pdf(ivec2 pos, int width, int height)
 {
-	float weight = texelFetch(environment_map, pos, 0).a;
+	float power = 1.0;
+	// if (rt.debug == 1)
+	// 	power = 2.2;
+	// if (rt.debug == 2)
+	// 	power = 1.0/2.2;
+	float cdf = pow(texelFetch(environment_map, pos, 0).a, power);
 	pos.x--;
 	if (pos.x < 0)
 	{
@@ -150,14 +155,29 @@ float	get_pdf(ivec2 pos, int width, int height)
 		pos.x = width - 1;
 	}
 	if (pos.y < 0)
-		return (weight);
-	return (weight - texelFetch(environment_map, pos, 0).a);
+		return (cdf);
+	float previous_cdf = pow(texelFetch(environment_map, pos, 0).a, power);
+	return (cdf - previous_cdf);
 }
+
+// float	get_pdf(ivec2 pos, int width, int height)
+// {
+// 	float weight = texelFetch(environment_map, pos, 0).a;
+// 	pos.x--;
+// 	if (pos.x < 0)
+// 	{
+// 		pos.y--;
+// 		pos.x = width - 1;
+// 	}
+// 	if (pos.y < 0)
+// 		return (weight);
+// 	return (weight - texelFetch(environment_map, pos, 0).a);
+// }
 
 vec3	get_random_importance_weighted_direction(out float pdf)
 {
-	int		width = 2048;
-	int		height = 1024;
+	int		width = textureSize(environment_map, 0).x;
+	int		height = textureSize(environment_map, 0).y;
 	float	random_value;
 	vec3	direction;
 	ivec2	pixel_pos;
