@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/07 18:26:19 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 08:40:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,6 +365,7 @@ typedef struct s_rt
 	GLuint			render_diffuse_bounce_shader_program;
 	GLuint			render_glossy_bounce_shader_program;
 	GLuint			postprocessing_shader_program;
+	GLuint			accumulate_shader_program;
 	GLuint			gizmo_shader_program;
 	char			*filename;
 
@@ -410,13 +411,16 @@ typedef struct s_rt
 	int				max_diffuse_bounces;
 	int				glossy_bounce_count;
 	int				max_glossy_bounces;
+	float			render_scale;
+	float			max_render_scale;
+	bool			moving;
 }	t_rt;
 
 // main.c
 t_rt			*get_rt(void);
 
 // init_miniRT.c
-void			create_fbo(t_rt *rt);
+void			create_fbo(t_rt *rt, float render_scale);
 void			init_mini_rt(char **argv, t_rt *rt);
 
 // cleanup.c
@@ -426,8 +430,7 @@ void			error(char *message, char *msg2, t_rt *rt);
 void			terminate(char *msg, char *msg2, uint8_t exit_code, t_rt *rt);
 
 // movement.c
-void			handle_move_input(t_rt *rt);
-void			move_camera(t_rt *rt);
+void			handle_movement_input(t_rt *rt);
 
 // render.c
 void			postprocess_raw_image(t_rt *rt);
@@ -461,6 +464,7 @@ void			mouse_hook(GLFWwindow *window,
 					int button, int action, int mods);
 
 // hooks/resize_hook.c
+void			resize_framebuffer(t_rt *rt, float render_scale);
 void			resize_hook(GLFWwindow *window, int width, int height);
 
 // hooks/scroll_hook.c

@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/07 14:52:44 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 08:40:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,36 +66,73 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 	}
 }
 
-void	check_debug_key_presses(int key, int action, t_rt *rt)
+void	key_hook_debug(int key, int action, t_rt *rt)
 {
 	if (key == GLFW_KEY_UP && action)
 	{
 		rt->debug += 1;
 		rt->sample_count = 0;
-		printf("debug is %f\n", rt->debug);
+		printf("debug:  %f\n", rt->debug);
 	}
 	else if (key == GLFW_KEY_DOWN && action)
 	{
 		rt->debug -= 1;
 		rt->sample_count = 0;
-		printf("debug is %f\n", rt->debug);
+		printf("debug:  %f\n", rt->debug);
 	}
 	if (key == GLFW_KEY_RIGHT && action)
 	{
 		rt->debug2 += 1;
 		rt->sample_count = 0;
-		printf("debug2 is %f\n", rt->debug2);
+		printf("debug2: %f\n", rt->debug2);
 	}
 	else if (key == GLFW_KEY_LEFT && action)
 	{
 		rt->debug2 -= 1;
 		rt->sample_count = 0;
-		printf("debug2 is %f\n", rt->debug2);
+		printf("debug2: %f\n", rt->debug2);
 	}
 }
 
-void	key_hook(GLFWwindow *window, int key, int scancode,
-			int action, int mods)
+void	key_hook_render_scale(int key, int action, t_rt *rt)
+{
+	float before = rt->max_render_scale;
+	if (key == GLFW_KEY_I && action)
+		rt->max_render_scale *= 2;
+	else if (key == GLFW_KEY_K && action)
+		rt->max_render_scale /= 2;
+	else
+		return ;
+	float after = rt->max_render_scale;
+	rt->max_render_scale = fmaxf(1.0f / 64, rt->max_render_scale);
+	rt->max_render_scale = fminf(1.0f, rt->max_render_scale);
+	if (before == after)
+		return ;
+	rt->render_scale = rt->max_render_scale;
+	resize_framebuffer(rt, rt->render_scale);
+	printf("Render Scale: %3.2f %%\n", 100.0f * rt->render_scale);
+}
+
+void	key_hook_mode(int key, int action, t_rt *rt)
+{
+	if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+	{
+		rt->mode++;
+		if (rt->mode > MODE_RENDER)
+			rt->mode = MODE_SOLID;
+	}
+	else if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+		rt->mode = MODE_SOLID;
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+		rt->mode = MODE_NORMAL;
+	else if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+		rt->mode = MODE_RENDER;
+	else
+		return ;
+	rt->sample_count = 0;
+}
+
+void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	t_rt	*rt;
 
@@ -104,20 +141,14 @@ void	key_hook(GLFWwindow *window, int key, int scancode,
 	if (((key == GLFW_KEY_ESCAPE) || (key == GLFW_KEY_Q))
 		&& action == GLFW_PRESS && !mods)
 		glfwSetWindowShouldClose(window, true);
-	else if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
-	{
-		rt->sample_count = 0;
-		rt->mode++;
-		if (rt->mode > MODE_RENDER)
-			rt->mode = MODE_SOLID;
-	}
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		reset_camera(&rt->camera, rt);
 	else if (key == GLFW_KEY_G && action == GLFW_PRESS)
 		rt->hide_gizmo = !rt->hide_gizmo;
 	else if (key == GLFW_KEY_P && action == GLFW_PRESS)
 		print_camera_info(rt);
-	else
-		key_hook_axial_view(key, action, rt);
-	check_debug_key_presses(key, action, rt);
+	key_hook_axial_view(key, action, rt);
+	key_hook_debug(key, action, rt);
+	key_hook_render_scale(key, action, rt);
+	key_hook_mode(key, action, rt);
 }

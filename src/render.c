@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:52:08 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/07 15:33:53 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/14 01:54:47 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,12 @@ void	render_raw_image(t_rt *rt)
 	glFinish();
 	if (rt->mode == MODE_RENDER && (rt->max_diffuse_bounces || rt->max_glossy_bounces))
 		render_bounces(rt);
+	if (rt->mode == MODE_RENDER)
+	{
+		shader_program = rt->accumulate_shader_program;
+		bind_framebuffer(rt->fbo_id, shader_program, rt);
+		glUseProgram(shader_program);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glFinish();
+	}
 }
