@@ -222,6 +222,7 @@ vec3			get_noise_color(int tex_idx, t_hitpoint hitpoint);
 vec3			get_random_cosine_weighted_hemisphere_direction(vec3 hemisphere_normal);
 vec3			get_real_random_hemisphere_direction(t_hitpoint hitpoint);
 vec3			get_environment_map_color(vec3 direction);
+vec3			get_importance_weighted_direction(out float pdf);
 vec3			get_sky_color(t_hitpoint hitpoint);
 vec3			get_sky_color_from_ray(t_ray ray);
 vec3			get_sky_color_from_dir(vec3 dir);
