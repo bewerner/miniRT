@@ -162,8 +162,14 @@ float	get_pdf(ivec2 pos, int width, int height)
 // 	return (weight - texelFetch(environment_map, pos, 0).a);
 // }
 
-vec3	get_random_importance_weighted_direction(out float pdf)
+vec3	get_importance_weighted_direction(out float pdf)
 {
+	if (rt.ambient.r >= 0)
+	{
+		pdf = 0;
+		return (VEC3_INF);
+	}
+
 	int		width = textureSize(environment_map, 0).x;
 	int		height = textureSize(environment_map, 0).y;
 	float	random_value;
@@ -172,11 +178,8 @@ vec3	get_random_importance_weighted_direction(out float pdf)
 	vec2	uv;
 
 	random_value = rand();
-	// random_value = rand() * 1000;
-	// random_value = 658;
 	pixel_pos = get_pixel_pos(random_value, width, height);
 	pdf = get_pdf(pixel_pos, width, height);
-	// pdf /= 1000;
 
 	// uv.x = (float(pixel_pos.x + 1)) / width;
 	// uv.y = (float(pixel_pos.y + 1)) / height;
@@ -222,7 +225,7 @@ vec3	get_ambient_color(t_hitpoint hitpoint)
 // 	float	pdf_cosine;
 
 // 	ray_importance.origin	= get_offset_hitpoint_pos(hitpoint);
-// 	ray_importance.dir		= get_random_importance_weighted_direction(pdf_importance);
+// 	ray_importance.dir		= get_importance_weighted_direction(pdf_importance);
 
 // 	ray_cosine.origin	= ray_importance.origin;
 // 	ray_cosine.dir		= get_random_cosine_weighted_hemisphere_direction(hitpoint.normal);
