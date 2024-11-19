@@ -12,7 +12,7 @@ layout(location = 7) out vec4 out_diffuse;					// alpha is ???
 #import header.frag
 #import checker_texture.frag
 #import noise_texture.frag
-#import get_sky_color.frag
+#import utils/environment.frag
 #import trace_ray.frag
 
 #import objects/object_utils.frag
@@ -22,6 +22,7 @@ layout(location = 7) out vec4 out_diffuse;					// alpha is ???
 #import objects/cylinder.frag
 #import objects/hyperboloid.frag
 
+#import utils/sample.frag
 #import utils/normal_map.frag
 #import utils/ray_utils.frag
 #import utils/hitpoint_utils.frag
@@ -35,14 +36,14 @@ t_ray	get_camera_ray(void)
 	vec2 screen = (coord * 2 - 1);
 	vec2 pixel_distance = vec2(2.0) / vec2(rt.width, rt.height);
 	if (rt.sample_count > 1)
-			screen += pixel_distance * random_point_in_circle(1.5); // Film Pixel Filter Width = 1.5
+			screen += pixel_distance * sample_uniform_disc(1.5); // Film Pixel Filter Width = 1.5
 	screen /= vec2(1, rt.aspect_ratio);
 
 	ray.origin = rt.camera.origin;
 	if (rt.camera.f_stop > 0)
 	{
 		float aperture = (rt.camera.focal_length * 0.018) / rt.camera.f_stop; // screen size (2000mm) * 0.018 = sensor size (36mm)
-		vec2 defocus = random_point_in_circle(aperture);
+		vec2 defocus = sample_uniform_disc(aperture);
 		ray.origin += defocus.x * rt.camera.right + defocus.y * rt.camera.up;
 	}
 

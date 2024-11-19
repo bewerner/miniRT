@@ -1,7 +1,7 @@
 vec3	apply_normal_map(t_hitpoint hitpoint)
 {
 	float	strength = materials[hitpoint.material_idx].normal_strength;
-	vec3	tex_normal = get_color_from_texture(materials[hitpoint.material_idx].normal_map_idx, hitpoint);
+	vec3	tex_normal = get_texture_color(materials[hitpoint.material_idx].normal_map_idx, hitpoint);
 	// tex_normal = pow(tex_normal, vec3(rt.debug2/10));
 
 	// if (rt.debug2 == 1)

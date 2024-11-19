@@ -1,5 +1,3 @@
-
-// doesn't check obstruction from any object
 vec3	solid_illuminate_from_point_light(t_point_light point_light, t_hitpoint hitpoint)
 {
 	t_ray	light_ray;
@@ -29,13 +27,13 @@ vec3	get_solid_specular_color(t_point_light light, float roughness, t_hitpoint h
 
 	col = VEC3_BLACK;
 
-	bounce_dir = normalize(create_bounce_dir(hitpoint.ray, hitpoint.normal));
+	bounce_dir = normalize(mirror(hitpoint.ray, hitpoint.normal));
 	light_dir = normalize(light.origin - hitpoint.pos);
 
 	intensity = dot(bounce_dir, light_dir);
 	if (intensity > 0)
 	{
-		intensity = 1 * pow(intensity, roughness); // multiply with specular value (0.0 - 1.0) and to the power of some roughness calculation
+		intensity = 1 * pow(intensity, roughness);
 		col += intensity * solid_illuminate_from_point_light(light, hitpoint);
 	}
 

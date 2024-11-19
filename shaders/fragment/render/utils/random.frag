@@ -12,17 +12,6 @@ float	rand(void)
     return (float((g_seed >> 5) & 0x3FFFFFF) / 67108864.0);
 }
 
-vec2 random_point_in_circle(float diameter)
-{
-	if (diameter == 0)
-		return (vec2(0, 0));
-	float angle = rand() * M_PI * 2;
-	vec2  point = vec2(cos(angle), sin(angle));
-	point *= sqrt(rand()) * (diameter / 2);
-
-	return (point);
-}
-
 vec3	dither(vec3 in_col)
 {
 	vec3 out_col;

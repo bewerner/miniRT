@@ -12,7 +12,7 @@ layout(location = 7) out vec4 out_diffuse;					// alpha is ???
 #import header.frag
 #import checker_texture.frag
 #import noise_texture.frag
-#import get_sky_color.frag
+#import utils/environment.frag
 #import trace_ray.frag
 
 #import objects/object_utils.frag
@@ -22,6 +22,7 @@ layout(location = 7) out vec4 out_diffuse;					// alpha is ???
 #import objects/cylinder.frag
 #import objects/hyperboloid.frag
 
+#import utils/sample.frag
 #import utils/normal_map.frag
 #import utils/ray_utils.frag
 #import utils/hitpoint_utils.frag
@@ -52,7 +53,7 @@ void	main(void)
 
 		t_ray bounce_ray;
 		bounce_ray.origin = get_offset_hitpoint_pos(previous);
-		bounce_ray.dir = bounce(previous.normal);
+		bounce_ray.dir = sample_hemisphere(previous.normal);
 
 		out_previous_ray_origin.rgb = bounce_ray.origin;
 		out_previous_ray_dir.rgb = bounce_ray.dir;
