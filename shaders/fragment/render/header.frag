@@ -218,19 +218,9 @@ vec3			get_checker_color(int tex_idx, t_hitpoint hitpoint);
 // noise_texture.frag
 vec3			get_noise_color(int tex_idx, t_hitpoint hitpoint);
 
-// get_sky_color.frag
-vec3			get_random_cosine_weighted_hemisphere_direction(vec3 hemisphere_normal);
-vec3			get_real_random_hemisphere_direction(t_hitpoint hitpoint);
-vec3			get_environment_map_color(vec3 direction);
-vec3			get_importance_weighted_direction(out float pdf);
-vec3			get_sky_color(t_hitpoint hitpoint);
-vec3			get_sky_color_from_ray(t_ray ray);
-vec3			get_sky_color_from_dir(vec3 dir);
-
 // trace_ray.frag
 vec3			trace_bounce_ray(t_ray bounce_ray, t_hitpoint previous);
 vec3			trace_camera_ray(t_ray ray);
-vec3			reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness);
 
 // ┌─────────┐
 // │ Objects │
@@ -266,15 +256,23 @@ t_point_light	get_point_light(int offset);
 // │ Utilities │
 // └───────────┘
 
+// utils/sample.frag
+vec3			sample_environment_map(out float pdf);
+vec3			sample_hemisphere(vec3 N);
+vec2			sample_uniform_disc(float diameter);
+vec3			sample_visible_normal(vec3 V, vec3 N, float roughness);
+
 // utils/normal_map.frag
 vec3			apply_normal_map(t_hitpoint hitpoint);
 
 // utils/ray_utils.frag
-vec3			create_bounce_dir(vec3 incoming_dir, vec3 normal);
+vec3			mirror(vec3 incoming, vec3 normal);
+vec3			reflect(vec3 incoming, vec3 normal, vec3 object_normal, float roughness);
 bool			is_obstructed(t_ray ray);
+bool			reaches_sky(t_ray ray);
 
 // utils/hitpoint_utils.frag
-vec3			get_color_from_texture(int tex_idx, t_hitpoint hitpoint);
+vec3			get_texture_color(int tex_idx, t_hitpoint hitpoint);
 vec3			get_hitpoint_color(t_hitpoint hitpoint);
 float			get_hitpoint_metallic(t_hitpoint hitpoint);
 float			get_hitpoint_roughness(t_hitpoint hitpoint);
@@ -285,14 +283,16 @@ bool			has_image_texture(t_hitpoint hitpoint, out bool texture_is_square);
 bool			has_image_texture(t_hitpoint hitpoint);
 bool			has_normal_map_material(t_hitpoint hitpoint);
 
+// utils/environment.frag
+vec3			get_sky_color(vec3 dir);
+
 // utils/random.frag
-void	init_seed(void);
-float	rand(void);
-vec2	random_point_in_circle(float diameter);
-vec3	dither(vec3 col);
+void			init_seed(void);
+float			rand(void);
+vec3			dither(vec3 col);
 
 // utils/vec3_rotations.frag
-vec3	vec3_rotate_x(vec3 v, float rad);
-vec3	vec3_rotate_y(vec3 v, float rad);
-vec3	vec3_rotate_z(vec3 v, float rad);
-vec3	vec3_rotate_axis(vec3 v, vec3 axis, float rad);
+vec3			vec3_rotate_x(vec3 v, float rad);
+vec3			vec3_rotate_y(vec3 v, float rad);
+vec3			vec3_rotate_z(vec3 v, float rad);
+vec3			vec3_rotate_axis(vec3 v, vec3 axis, float rad);

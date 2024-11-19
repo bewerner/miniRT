@@ -13,35 +13,6 @@ vec3	slerp(vec3 v0, vec3 v1, float t)
 	return ( normalize(v0 * cos(angle) + orthonormal * sin(angle)) );
 }
 
-vec3 bounce(vec3 normal)
-{
-	float u = rand();
-	float v = rand();
-
-	float theta = acos(sqrt(u));
-	float phi = 2.0 * M_PI * v;
-
-	float x = sin(theta) * cos(phi);
-	float y = sin(theta) * sin(phi);
-	float z = cos(theta);
-
-	vec3 tangent;
-	if (abs(normal.y) != 1)
-		tangent = normalize(cross(vec3(0, 1, 0), normal));
-	else
-		tangent = normalize(cross(vec3(1, 0, 0), normal));
-	vec3 bitangent = cross(normal, tangent);
-
-	vec3 bounce = normalize(x * tangent + y * bitangent + z * normal);
-
-	return (bounce);
-}
-
-vec3 mirror(vec3 incoming, vec3 normal)
-{
-	return (normalize(incoming - (2.0 * dot(incoming, normal) * normal)));
-}
-
 float	lambert_diffuse(vec3 N, vec3 L)
 {
 	return (max(dot(N, L), 0.0));
@@ -177,7 +148,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	vec3	diffuse_reflectance;
 
 	ray_cosine.origin = hit_pos;
-	ray_cosine.dir = bounce(N);
+	ray_cosine.dir = sample_hemisphere(N);
 	pdf_cosine = dot(N, ray_cosine.dir) / M_PI;// * 0.33;
 
 	ray_reflection.origin = hit_pos;
@@ -185,13 +156,13 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	pdf_reflection = dot(N, ray_reflection.dir);
 
 	ray_importance.origin = hit_pos;
-	ray_importance.dir = get_importance_weighted_direction(pdf_importance);
+	ray_importance.dir = sample_environment_map(pdf_importance);
 
 	ray_reflection.origin = hit_pos;
 	ray_reflection.dir = reflect(-V, N, hitpoint.object_normal, mat.roughness);
 
 	weight_cosine = pdf_cosine / (pdf_cosine + pdf_importance);
-	weight_cosine *= 0.85;
+	// weight_cosine *= 0.85;
 	weight_importance_diffuse = 1.0 - weight_cosine;
 
 	weight_reflection = pdf_reflection / (pdf_reflection + pdf_importance);
@@ -210,10 +181,12 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	{
 		vec3 L  = ray_cosine.dir;
 		vec3 H  = normalize(V + L);
-		vec3 ks = specular_reflectance;
-		vec3 kd = diffuse_reflectance;
+		vec3 ks = mix(specular_reflectance, fresnel(F0, V, H), mat.roughness);
+		// if (rt.debug == 1)
+		// 	ks = mix(specular_reflectance, fresnel(F0, V, H), sqrt(mat.roughness));
+		vec3 kd = (1.0 - ks) * (1.0 - mat.metallic);
 		float NdotL = max(0.0, dot(N, L));
-		vec3 radiance = get_sky_color_from_dir(L);// * weight_cosine;//1 / pdf_cosine; // * 2.87
+		vec3 radiance = get_sky_color(L);// * weight_cosine;//1 / pdf_cosine; // * 2.87
 		col += kd * mat.color * radiance * NdotL;
 	}
 
@@ -221,10 +194,14 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	{
 		vec3 L  = ray_importance.dir;
 		vec3 H  = normalize(V + L);
-		vec3 ks = specular_reflectance;
-		vec3 kd = diffuse_reflectance;
+		// vec3 ks = specular_reflectance;
+		// vec3 kd = diffuse_reflectance;
+		vec3 ks = mix(specular_reflectance, fresnel(F0, V, H), mat.roughness);
+		// if (rt.debug == 1)
+		// 	ks = mix(specular_reflectance, fresnel(F0, V, H), sqrt(mat.roughness));
+		vec3 kd = (1.0 - ks) * (1.0 - mat.metallic);
 		float NdotL = max(0.0, dot(N, L));
-		vec3 sky_color = get_sky_color_from_dir(L);
+		vec3 sky_color = get_sky_color(L);
 		vec3 radiance_diffuse  = sky_color * weight_importance_diffuse / pdf_importance;
 		vec3 radiance_specular = sky_color * weight_importance_specular / pdf_importance * 1.73;
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
@@ -237,7 +214,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		vec3 H  = normalize(V + L);
 		vec3 ks = specular_reflectance;
 		float NdotL = max(0.0, dot(N, L));
-		vec3 radiance = get_sky_color_from_dir(L);
+		vec3 radiance = get_sky_color(L);
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 		specular = max(clamp(specular, vec3(0.0), ks), ks);
 		col += specular * radiance;// * NdotL;
@@ -317,22 +294,6 @@ vec3	get_bounce_light(t_hitpoint hitpoint)
 	return (clamp(col, 0, 16));
 }
 
-vec3	trace_camera_ray(t_ray ray)
-{
-	vec3 col;
-	t_hitpoint hitpoint = get_closest_hitpoint(ray, true);
-	out_camera_ray_dir.a = float(hitpoint.object_idx);
-	hitpoint.color = get_hitpoint_color(hitpoint);
-	out_diffuse.rgb = hitpoint.color * (1.0 - get_hitpoint_metallic(hitpoint));
-	out_specular.rgb = hitpoint.color;
-
-	if (hitpoint.hit == false)
-		return (get_sky_color_from_ray(ray));
-	col = render_hitpoint(hitpoint);
-
-	return (col);
-}
-
 vec3	trace_bounce_ray(t_ray bounce_ray, t_hitpoint previous)
 {
 	vec3 diffuse = out_diffuse.rgb;
@@ -375,28 +336,18 @@ vec3	trace_reflection_ray(t_ray reflection_ray, t_hitpoint previous, vec3 specul
 	return (clamp(col, 0, 16));
 }
 
-vec3 reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
+vec3	trace_camera_ray(t_ray ray)
 {
-	roughness = roughness * roughness;
-	vec3 reflection = -N;
-	incoming = normalize(incoming);
-	vec3 N_new;
+	vec3 col;
+	t_hitpoint hitpoint = get_closest_hitpoint(ray, true);
+	out_camera_ray_dir.a = float(hitpoint.object_idx);
+	hitpoint.color = get_hitpoint_color(hitpoint);
+	out_diffuse.rgb = hitpoint.color * (1.0 - get_hitpoint_metallic(hitpoint));
+	out_specular.rgb = hitpoint.color;
 
-	int i = 0;
-	while (dot(reflection, object_normal) < 0 && i < 10)
-	{
-		N_new = slerp(N, bounce(N), roughness);
-		reflection = mirror(incoming, N_new);
-		i++;
-	}
-	i = 0;
-	while (dot(reflection, object_normal) < 0 && i < 10)
-	{
-		N_new = slerp(N, bounce(object_normal), roughness);
-		reflection = mirror(incoming, N_new);
-		i++;
-	}
-	if (dot(reflection, object_normal) < 0)
-		reflection = mirror(incoming, object_normal);
-	return (reflection);
+	if (hitpoint.hit == false)
+		return (get_sky_color(ray.dir));
+	col = render_hitpoint(hitpoint);
+
+	return (col);
 }
