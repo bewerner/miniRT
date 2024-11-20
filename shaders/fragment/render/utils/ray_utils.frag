@@ -11,15 +11,15 @@ vec3	reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 	for (int i = 0; dot(reflection, object_normal) < 0 && i < 32; i++)
 	{
 		vec3 H = sample_visible_normal(-incoming, N, roughness);
-		reflection = reflect(incoming, H);
+		reflection = mirror(incoming, H);
 	}
 	for (int i = 0; dot(reflection, object_normal) < 0 && i < 32; i++)
 	{
 		vec3 H = sample_visible_normal(-incoming, object_normal, roughness);
-		reflection = reflect(incoming, H);
+		reflection = mirror(incoming, H);
 	}
 	if (dot(reflection, object_normal) < 0.0)
-		reflection = reflect(incoming, object_normal);
+		reflection = mirror(incoming, object_normal);
 
 	return (reflection);
 }

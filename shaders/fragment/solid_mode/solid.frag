@@ -14,6 +14,7 @@
 #import ../render/objects/point_light.frag
 #import trace_ray_solid.frag
 
+#import ../render/utils/sample.frag
 #import ../render/utils/normal_map.frag
 #import ../render/utils/ray_utils.frag
 #import ../render/utils/hitpoint_utils.frag
