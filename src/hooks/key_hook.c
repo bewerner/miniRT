@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/22 07:42:45 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/22 07:51:51 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ static void	write_png(t_rt *rt)
 	char	*scene_name;
 
 	scene_name = ft_strrchr(rt->filename, '/');
-	if (!scene_name)
+	if (scene_name)
+		scene_name += 1;
+	else
 		scene_name = rt->filename;
 
 	path[0] = '\0';
@@ -47,6 +49,7 @@ static void	write_png(t_rt *rt)
 	}
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
 	glReadPixels(0, 0, rt->width, rt->height, GL_RGB, GL_UNSIGNED_BYTE, image);
+	stbi_flip_vertically_on_write(true);
 	if (stbi_write_png(path, rt->width, rt->height, 3, image, rt->width * 3))
 		printf("Saved render image: %s\n", path);
 	else
