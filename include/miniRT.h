@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/14 18:39:46 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/22 01:09:28 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -478,9 +478,9 @@ void			create_tbo_agx_lut(char *filepath, t_rt *rt);
 void			create_environment_map(t_rt *rt);
 
 // init/init_environment_map_importance.c
-void			compensate_weights(t_vec3 *weights, int width, int height);
-void			set_cumulative_distribution(t_vec3 *weights, int width, int height);
-void			set_importance_weight(t_vec3 *image, t_vec3 *weights, int width, int height);
+void			compensate_weights(t_vec3 *weights, size_t length);
+void			set_cumulative_distribution(t_vec3 *weights, size_t length);
+void			set_importance_weight(t_vec3 *image, t_vec3 *weights, int width, int height, size_t length);
 
 // init/init_lights_tbo.c
 void			create_tbo_lights(t_rt *rt);
