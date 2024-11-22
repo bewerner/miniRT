@@ -6,11 +6,12 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/07 15:56:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/22 06:22:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../include/miniRT.h"
 
 void	validate_args(int argc, char **argv, t_rt *rt)

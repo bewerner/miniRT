@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/22 01:09:28 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/22 07:09:49 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@
 # include "glad/glad.h"
 # include <GLFW/glfw3.h>
 # include "stb/stb_image.h"
+# include "stb/stb_image_write.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
 # include <sys/errno.h>
 # include <stdbool.h>
+# include <sys/stat.h>
 
 # include "minirt_errors.h"
 # include "minirt_vec_types.h"
