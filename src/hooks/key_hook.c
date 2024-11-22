@@ -6,11 +6,53 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/14 08:40:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/22 07:42:45 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
+
+static void	write_png(t_rt *rt)
+{
+	uint8_t	*image;
+	char	path[1024];
+	char	*scene_name;
+
+	scene_name = ft_strrchr(rt->filename, '/');
+	if (!scene_name)
+		scene_name = rt->filename;
+
+	path[0] = '\0';
+	ft_strlcat(path, "images/", 1024);
+	ft_strlcat(path, scene_name, 1024);
+	*ft_strrchr(path, '.') = '\0';
+	ft_strlcat(path, "__", 1024);
+	char *samples = ft_itoa(ft_imin(rt->sample_count, rt->max_samples));
+	if (!samples)
+	{
+		perror("Failed to allocate memory for saving render image");
+		return ;
+	}
+	free (samples);
+	ft_strlcat(path, samples, 1024);
+	ft_strlcat(path, "_samples.png", 1024);
+
+	mkdir("images", 0755);
+
+	image = (uint8_t *)malloc(rt->width * rt->height * 3 * sizeof(uint8_t));
+	if (!image)
+	{
+		perror("Failed to allocate memory for saving render image");
+		return ;
+	}
+	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+	glReadPixels(0, 0, rt->width, rt->height, GL_RGB, GL_UNSIGNED_BYTE, image);
+	if (stbi_write_png(path, rt->width, rt->height, 3, image, rt->width * 3))
+		printf("Saved render image: %s\n", path);
+	else
+		perror("Failed to save render image");
+	free(image);
+}
 
 static void	print_camera_info(t_rt *rt)
 {
@@ -147,6 +189,8 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 		rt->hide_gizmo = !rt->hide_gizmo;
 	else if (key == GLFW_KEY_P && action == GLFW_PRESS)
 		print_camera_info(rt);
+	else if (key == GLFW_KEY_O && action == GLFW_PRESS)
+		write_png(rt);
 	key_hook_axial_view(key, action, rt);
 	key_hook_debug(key, action, rt);
 	key_hook_render_scale(key, action, rt);
