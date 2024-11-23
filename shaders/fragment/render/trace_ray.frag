@@ -142,6 +142,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	float	pdf_importance;
 	float	pdf_cosine;
 	float	pdf_reflection;
+	vec3	radiance_importance;
 	vec3	col = VEC3_BLACK;
 
 	vec3	specular_reflectance;
@@ -156,7 +157,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	pdf_reflection = dot(N, ray_reflection.dir);
 
 	ray_importance.origin = hit_pos;
-	ray_importance.dir = sample_environment_map(pdf_importance);
+	ray_importance.dir = sample_environment_map(pdf_importance, radiance_importance);
 
 	ray_reflection.origin = hit_pos;
 	ray_reflection.dir = reflect(-V, N, hitpoint.object_normal, mat.roughness);
@@ -186,7 +187,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		// 	ks = mix(specular_reflectance, fresnel(F0, V, H), sqrt(mat.roughness));
 		vec3 kd = (1.0 - ks) * (1.0 - mat.metallic);
 		float NdotL = max(0.0, dot(N, L));
-		vec3 radiance = get_sky_color(L);// * weight_cosine;//1 / pdf_cosine; // * 2.87
+		vec3 radiance = get_ambient_color(L);// * weight_cosine;//1 / pdf_cosine; // * 2.87
 		col += kd * mat.color * radiance * NdotL;
 	}
 
@@ -201,9 +202,8 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		// 	ks = mix(specular_reflectance, fresnel(F0, V, H), sqrt(mat.roughness));
 		vec3 kd = (1.0 - ks) * (1.0 - mat.metallic);
 		float NdotL = max(0.0, dot(N, L));
-		vec3 sky_color = get_sky_color(L);
-		vec3 radiance_diffuse  = sky_color * weight_importance_diffuse / pdf_importance;
-		vec3 radiance_specular = sky_color * weight_importance_specular / pdf_importance * 1.73;
+		vec3 radiance_diffuse  = radiance_importance * weight_importance_diffuse;
+		vec3 radiance_specular = radiance_importance * weight_importance_specular * 1.73;
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 		col += (kd * mat.color * radiance_diffuse * NdotL) + (specular * radiance_specular * NdotL);
 	}
@@ -214,7 +214,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		vec3 H  = normalize(V + L);
 		vec3 ks = specular_reflectance;
 		float NdotL = max(0.0, dot(N, L));
-		vec3 radiance = get_sky_color(L);
+		vec3 radiance = get_ambient_color(L);
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
 		specular = max(clamp(specular, vec3(0.0), ks), ks);
 		col += specular * radiance;// * NdotL;
@@ -346,7 +346,7 @@ vec3	trace_camera_ray(t_ray ray)
 	out_specular.rgb = hitpoint.color;
 
 	if (hitpoint.hit == false)
-		return (get_sky_color(ray.dir));
+		return (get_ambient_color(ray.dir));
 	col = render_hitpoint(hitpoint);
 
 	return (col);
