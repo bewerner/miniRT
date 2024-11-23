@@ -257,7 +257,7 @@ t_point_light	get_point_light(int offset);
 // └───────────┘
 
 // utils/sample.frag
-vec3			sample_environment_map(out float pdf);
+vec3			sample_environment_map(out float pdf, out vec3 radiance);
 vec3			sample_hemisphere(vec3 N);
 vec2			sample_uniform_disc(float diameter);
 vec3			sample_visible_normal(vec3 V, vec3 N, float roughness);
@@ -284,7 +284,7 @@ bool			has_image_texture(t_hitpoint hitpoint);
 bool			has_normal_map_material(t_hitpoint hitpoint);
 
 // utils/environment.frag
-vec3			get_sky_color(vec3 dir);
+vec3			get_ambient_color(vec3 dir);
 
 // utils/random.frag
 void			init_seed(void);

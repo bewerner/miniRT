@@ -9,7 +9,7 @@ vec3	get_environment_map_color(vec3 direction)
 	return (texture(environment_map, vec3(uv, 0)).rgb);
 }
 
-vec3	get_sky_color(vec3 dir)
+vec3	get_ambient_color(vec3 dir)
 {
 	if (rt.ambient.r >= 0)
 		return (rt.ambient);

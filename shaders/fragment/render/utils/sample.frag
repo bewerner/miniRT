@@ -1,13 +1,14 @@
-ivec2 sample_environment_cdf(int width, int height)
+ivec2 sample_environment_cdf(ivec2 resolution)
 {
 	float	target = rand();
-	int		total_pixels = width * height;
+	int		width = resolution.x;
+	int		height = resolution.y;
 	int		lower = 0;
 	int		middle;
-	int		upper = total_pixels - 1;
+	int		upper = (width * height) - 1;
 	float	cdf;
 	float	delta;
-	float	best_delta = 2;
+	float	best_delta = INF;
 	ivec2	pos;
 	ivec2	best_pos;
 
@@ -38,24 +39,25 @@ ivec2 sample_environment_cdf(int width, int height)
 	return (best_pos);
 }
 
-vec3	sample_environment_map(out float pdf)
+vec3	sample_environment_map(out float pdf, out vec3 radiance)
 {
 	pdf = 0;
 	if (rt.ambient.r >= 0)
 		return (VEC3_INF);
 
-	int		width = textureSize(environment_map, 0).x;
-	int		height = textureSize(environment_map, 0).y;
+	ivec2	resolution = textureSize(environment_map, 0).xy;
 	float	random_value;
 	vec3	direction;
 	ivec2	pixel_pos;
 	vec2	uv;
 
-	pixel_pos = sample_environment_cdf(width, height);
+	pixel_pos = sample_environment_cdf(resolution);
+
 	pdf = texelFetch(environment_map, ivec3(pixel_pos, 1), 0).g;
+	radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / pdf;
 
 	// random offset to prevent 'stadium lights effect'
-	uv = (vec2(pixel_pos) + 0.5 + sample_uniform_disc(1.0)) / vec2(width, height);
+	uv = (vec2(pixel_pos) + 0.5 + sample_uniform_disc(2.0)) / resolution;
 
 	float theta = (uv.x - 0.5) * (2.0 * M_PI);
 	float phi = (0.5 - uv.y) * (M_PI);
