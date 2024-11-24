@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/22 07:51:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/24 07:34:16 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void	write_png(t_rt *rt)
 		perror("Failed to allocate memory for saving render image");
 		return ;
 	}
-	free (samples);
 	ft_strlcat(path, samples, 1024);
+	free (samples);
 	ft_strlcat(path, "_samples.png", 1024);
 
 	mkdir("images", 0755);
