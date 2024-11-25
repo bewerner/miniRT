@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/25 15:46:12 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ t_error	parse_camera(t_rt *rt)
 	cam->focus_distance = 1;
 	if (has_next_value(line))
 	{
-		cam->f_stop = vr(gnv(&line, rt), (t_vec2){0.01, INFINITY}, rt);
-		cam->focus_distance = vr(gnv(&line, rt), (t_vec2){0.01, INFINITY}, rt);
+		cam->f_stop = vr(gnv(&line, rt), (t_vec2){0.0001, INFINITY}, rt);
+		cam->focus_distance = vr(gnv(&line, rt), (t_vec2){0.0001, INFINITY}, rt);
 	}
 	return (RT_SUCCESS);
 }
