@@ -6,11 +6,26 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/24 07:34:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/25 12:58:14 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
+
+static t_vec3 P3_to_sRGB(t_vec3 in)
+{
+	t_vec3	out;
+	
+	out.r =  1.2249 * in.r - 0.2247 * in.g - 0.0003 * in.b;
+	out.g = -0.0421 * in.r + 1.0424 * in.g - 0.0004 * in.b;
+	out.b = -0.0196 * in.r - 0.0786 * in.g + 1.0984 * in.b;
+
+	out.r = fminf(1.0, fmaxf(0.0, out.r));
+	out.g = fminf(1.0, fmaxf(0.0, out.g));
+	out.b = fminf(1.0, fmaxf(0.0, out.b));
+	
+	return (out);
+}
 
 static void	write_png(t_rt *rt)
 {
@@ -49,6 +64,17 @@ static void	write_png(t_rt *rt)
 	}
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
 	glReadPixels(0, 0, rt->width, rt->height, GL_RGB, GL_UNSIGNED_BYTE, image);
+	if (MAC_OS)
+	{
+		for (size_t i = 0; i < (size_t)rt->width * rt->height * 3; i += 3)
+		{
+			t_vec3 col = (t_vec3){{(float)image[i] / 255, (float)image[i+1] / 255, (float)image[i+2] / 255}};
+			col = P3_to_sRGB(col);
+			image[i]   = roundf(col.r * 255);
+			image[i+1] = roundf(col.g * 255);
+			image[i+2] = roundf(col.b * 255);
+		}
+	}
 	stbi_flip_vertically_on_write(true);
 	if (stbi_write_png(path, rt->width, rt->height, 3, image, rt->width * 3))
 		printf("Saved render image: %s\n", path);
