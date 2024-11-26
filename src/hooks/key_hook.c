@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/25 12:58:14 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/26 16:06:11 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,14 +174,12 @@ void	key_hook_render_scale(int key, int action, t_rt *rt)
 		rt->max_render_scale /= 2;
 	else
 		return ;
-	float after = rt->max_render_scale;
 	rt->max_render_scale = fmaxf(1.0f / 64, rt->max_render_scale);
 	rt->max_render_scale = fminf(1.0f, rt->max_render_scale);
-	if (before == after)
-		return ;
 	rt->render_scale = rt->max_render_scale;
-	resize_framebuffer(rt, rt->render_scale);
-	printf("Render Scale: %3.2f %%\n", 100.0f * rt->render_scale);
+	if (rt->max_render_scale != before)
+		resize_framebuffer(rt, rt->render_scale);
+	printf("Render Scale: %3.2f%%\n", 100.0f * rt->render_scale);
 }
 
 void	key_hook_mode(int key, int action, t_rt *rt)
