@@ -30,7 +30,7 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos, vec2 uv_scale)
 
 void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint, bool backface)
 {
-	if (abs(hitpoint.normal.z) == 1)
+	if (abs(hitpoint.normal.z) > 0.9999)
 	{
 		hitpoint.tangent = vec3(hitpoint.normal.z, 0, 0);
 		hitpoint.bitangent = vec3(0, hitpoint.normal.z, 0);

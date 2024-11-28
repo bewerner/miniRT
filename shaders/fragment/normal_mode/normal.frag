@@ -1,6 +1,5 @@
 #version 330 core
 
-
 #import ../render/header.frag
 
 #import ../render/checker_texture.frag

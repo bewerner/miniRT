@@ -1,5 +1,10 @@
+# TEXTURES
+#tex	name			type		path
+tex		water_normal	image		assets/materials/Water_001_4K/Water_001_NORM.png
+
 # MATERIALS
-#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
+#	name                          color             metallic       roughness          ior            transmission   emission_strength   emission_color           
+mat	water                          85,135,197       0.800000       0.002500           1.450000       0.000000       0.000000            255,255,255        water_normal     0.2
 mat	RandomMaterial_Cylinder.094   141,192,255       0.800000       0.200000       1.450000       0.000000       0.000000            255,255,255
 
 # CYLINDERS
@@ -99,6 +104,10 @@ cy	   -0.065236,   10.794209,    1.358030         -0.019719,    0.223472,   -0.9
 cy	   -0.065478,   10.834373,    1.006243         -0.013297,    0.193335,   -0.981043             3.163070       0.050000       RandomMaterial_Cylinder.094
 cy	   -0.065652,   10.863094,    0.653306         -0.008163,    0.162912,   -0.986607             1.875097       0.050000       RandomMaterial_Cylinder.094
 cy	   -0.065756,   10.880348,    0.299574         -0.004319,    0.132281,   -0.991203             0.301807       0.050000       RandomMaterial_Cylinder.094
+
+# PLANES
+#	origin                                          normal                                         material        uv_scale
+pl	    0.000000,    0.000000,   -2.800000          0.000000,    0.000000,    1.000000             water           0.03
 
 # CAMERA
 #	origin                                          orientation                                    fiew of view

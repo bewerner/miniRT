@@ -6,20 +6,29 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 01:05:17 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/22 01:10:43 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/28 20:08:54 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
 
-static void	apply_strength(double strength, t_vec3 *image, size_t length)
+static void apply_strength(double strength, t_vec3 *image, size_t length, t_rt *rt)
 {
-	for (size_t i = 0; i < length; i++)
-	{
-		image[i].r *= strength;
-		image[i].g *= strength;
-		image[i].b *= strength;
-	}
+	(void)rt;
+    // // Compute a normalization factor based on max or average luminance
+    // double total_luminance = 0.0;
+    // for (size_t i = 0; i < length; i++) {
+    //     double lum = image[i].r * 0.2126 + image[i].g * 0.7152 + image[i].b * 0.0722;
+    //     total_luminance += lum;
+    // }
+    
+    // rt->average_luminance = total_luminance;
+    
+    for (size_t i = 0; i < length; i++) {
+        image[i].r *= strength;
+        image[i].g *= strength;
+        image[i].b *= strength;
+    }
 }
 
 void	create_environment_map(t_rt *rt)
@@ -43,7 +52,7 @@ void	create_environment_map(t_rt *rt)
 		terminate("environment map weights", NULL, 1, rt);
 	}
 	length = (size_t)width * height;
-	apply_strength(rt->ambient_strength, image, length);
+	apply_strength(rt->ambient_strength, image, length, rt);
 	set_importance_weight(image, weights, width, height, length);
 	set_cumulative_distribution(weights, length);
 	compensate_weights(weights, length);

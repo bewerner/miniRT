@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/22 07:09:49 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/26 23:44:54 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,6 +349,7 @@ typedef struct s_ubo
 	int				max_diffuse_bounces;
 	int				glossy_bounce_count;
 	int				max_glossy_bounces;
+	float			average_luminance;
 }	t_ubo;
 
 typedef struct s_rt
@@ -416,6 +417,7 @@ typedef struct s_rt
 	float			render_scale;
 	float			max_render_scale;
 	bool			moving;
+	float			average_luminance;
 }	t_rt;
 
 // main.c
