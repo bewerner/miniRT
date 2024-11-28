@@ -1,6 +1,8 @@
 debug.frag
 miniRT
 
+images
+
 *.o
 *.a
 .DS_Store

@@ -180,6 +180,7 @@ struct t_rt
 	int				max_diffuse_bounces;
 	int				glossy_bounce_count;
 	int				max_glossy_bounces;
+	float			average_luminance;
 };
 
 // ┌───────────────────────────┐

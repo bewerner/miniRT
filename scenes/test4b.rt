@@ -38,8 +38,8 @@ C	   -6.425005,  -15.536457,    7.599393          0.095492,    0.924601,   -0.36
 # A	1.000000             assets/environments/syferfontein_18d_clear_4k.hdr
 # A	1.000000             assets/environments/syferfontein_18d_clear_2k.hdr
 # A	1.000000             assets/environments/syferfontein_18d_clear_1k.hdr
-A	1.000000             assets/environments/syferfontein_18d_clear_0k.hdr
-# A	1.000000             assets/environments/brown_photostudio_02_2k_greyscale.hdr
+# A	1.000000             assets/environments/syferfontein_18d_clear_0k.hdr
+A	1.000000             assets/environments/brown_photostudio_02_2k_greyscale.hdr
 
 
 R 0 0

@@ -18,7 +18,7 @@ vec3	reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 		vec3 H = sample_visible_normal(-incoming, object_normal, roughness);
 		reflection = mirror(incoming, H);
 	}
-	if (dot(reflection, object_normal) < 0.0)
+	if (dot(reflection, object_normal) < 0)
 		reflection = mirror(incoming, object_normal);
 
 	return (reflection);
