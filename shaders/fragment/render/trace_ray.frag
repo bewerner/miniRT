@@ -37,6 +37,8 @@ float	normalDistribution(float a, vec3 N, vec3 H)
 
 float	hacky_normalDistribution(float a, vec3 N, vec3 H)
 {
+	// if (a > 0.1 * 0.1 && rt.debug == 1)
+	// 	return (normalDistribution(a, N, H));
 	// GGX Trowbridge-Reitz Normal Distribution Function
 	a = max(a, 0.00001);
 
@@ -199,6 +201,9 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	// 	weight_importance_specular = 0.5;
 	// }
 
+	// if (rt.debug == 1)
+	// 	F0 *= 1.6;
+
 	{
 		vec3 L  = ray_reflection.dir;
 		vec3 H  = normalize(V + L);
@@ -206,7 +211,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		diffuse_reflectance = (1.0 - specular_reflectance) * (1.0 - mat.metallic);
 	}
 
-	if (pdf_cosine > 1e-6 && reaches_sky(ray_cosine) == true)
+	if (reaches_sky(ray_cosine) == true)
 	{
 		vec3 L  = ray_cosine.dir;
 		vec3 H  = normalize(V + L);
@@ -227,10 +232,10 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		vec3 radiance_diffuse  = radiance_importance * weight_importance_diffuse;
 		vec3 radiance_specular = radiance_importance * weight_importance_specular;
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
-		col += (kd * mat.color * radiance_diffuse * NdotL * (((0.4)))) + (specular * radiance_specular * NdotL * (((0.7))));
+		col += (kd * mat.color * radiance_diffuse * NdotL) + (specular * radiance_specular * NdotL);
 	}
 
-	if (pdf_reflection > 1e-6 && reaches_sky(ray_reflection) == true)
+	if (reaches_sky(ray_reflection) == true)
 	{
 		vec3 L  = ray_reflection.dir;
 		vec3 H  = normalize(V + L);
@@ -238,9 +243,9 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		float NdotL = max(0.0, dot(N, L));
 		vec3 radiance = get_ambient_color(L);// * pdf_reflection;
 		vec3 specular = specular_cookTorrance(N, V, L, H, a, ks, true);
+		// return (specular);
 		specular = max(clamp(specular, vec3(0.0), ks), ks);
 		col += specular * radiance * mix(1.0, NdotL, mat.roughness * (1.0 - mat.metallic));
-		// col += radiance;// * mix(1.0, NdotL, mat.roughness * (1.0 - mat.metallic));
 	}
 
 	return (col);
