@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:21:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/28 20:08:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/11/29 04:33:18 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 void	compensate_weights(t_vec3 *weights, size_t length)
 {
-	double scale = (double)length / (4 * M_PI);
+	double scale = (double)length / (4.0f * M_PI);
 
 	for (size_t i = 0; i < length; i++)
 		weights[i].g *= scale;
