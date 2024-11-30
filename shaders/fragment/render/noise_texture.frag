@@ -1,11 +1,10 @@
 float rand_seeded(int seed)
 {
-    seed = (214013 * seed + 2531011);
-    // Extract 26 bits instead of 15
-    return (float((seed >> 5) & 0x3FFFFFF) / 67108864.0);  // 0x3FFFFFF is 26 bits (67108863 in decimal)
+	seed = (214013 * seed + 2531011);
+	return (float((seed >> 5) & 0x3FFFFFF) / 67108864.0);
 }
 float easeInOutSine(float t) {
-    return 0.5 * (1.0 - cos(t * M_PI));
+	return 0.5 * (1.0 - cos(t * M_PI));
 }
 vec3	get_noise_color(int tex_idx, t_hitpoint hitpoint)
 {
