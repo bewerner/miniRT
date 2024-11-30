@@ -81,9 +81,9 @@ t_hitpoint	get_hitpoint_hyperboloid(t_ray ray, t_hyperboloid hyperboloid, bool i
 	float	dot_dp_va = dot(dp, va);
 
 	// version IV Coefficents
-    float A = pow(dot_v_wa, 2) / aa				+	pow(dot_v_ua, 2) / bb		-	pow(dot_v_va, 2) / cc;
-    float B = 2 * (dot_dp_wa * dot_v_wa / aa	+	dot_dp_ua * dot_v_ua / bb	-	dot_dp_va * dot_v_va / cc);
-    float C = pow(dot_dp_wa, 2) / aa			+	pow(dot_dp_ua, 2) / bb		-	pow(dot_dp_va, 2) / cc - hyperboloid.shape;
+	float A = pow(dot_v_wa, 2) / aa				+	pow(dot_v_ua, 2) / bb		-	pow(dot_v_va, 2) / cc;
+	float B = 2 * (dot_dp_wa * dot_v_wa / aa	+	dot_dp_ua * dot_v_ua / bb	-	dot_dp_va * dot_v_va / cc);
+	float C = pow(dot_dp_wa, 2) / aa			+	pow(dot_dp_ua, 2) / bb		-	pow(dot_dp_va, 2) / cc - hyperboloid.shape;
 
 	discriminant = B * B - 4 * A * C;
 	if (discriminant < 0)

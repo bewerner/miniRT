@@ -8,8 +8,8 @@ void	init_seed(void)
 
 float	rand(void)
 {
-    g_seed = (214013 * g_seed + 2531011);
-    return (float((g_seed >> 5) & 0x3FFFFFF) / 67108864.0);
+	g_seed = (214013 * g_seed + 2531011);
+	return (float((g_seed >> 5) & 0x3FFFFFF) / 67108864.0);
 }
 
 vec3	dither(vec3 in_col)
