@@ -59,7 +59,14 @@ vec3	sample_environment_map(out float pdf, out vec3 radiance)
 	// // radiance *= pow(rt.average_luminance, 2);
 
 	// pdf *= resolution.x * resolution.y / (4.0 * M_PI);// * (1 + rt.debug/10); // Convert to a true PDF over the hemisphere
+	// pdf *= rt.debug2/10;
+	// pdf *= 7;
+	// pdf *= 2.3;
+	// if (rt.debug2 > 0)
+	// 	pdf = pow(pdf, rt.debug2/10);
+	// pdf *= resolution.x * resolution.y / ((4.0f + rt.debug2/10) * M_PI);
 	radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf);// * (rt.average_luminance/100);
+	// radiance *= rt.debug2/10;
 
 	// pdf *= sqrt(resolution.x * resolution.y);
 	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf / (4.0 * M_PI));
@@ -98,6 +105,25 @@ vec3 sample_hemisphere(vec3 N)
 	vec2 r = vec2(rand(), rand());
 
 	float theta = acos(sqrt(r.x));
+	float phi = 2.0 * M_PI * r.y;
+
+	vec3 dir;
+	dir.x = sin(theta) * cos(phi);
+	dir.y = sin(theta) * sin(phi);
+	dir.z = cos(theta);
+
+	vec3 tangent = normalize(abs(N.y) == 1.0 ? cross(vec3(1, 0, 0), N) : cross(vec3(0, 1, 0), N));
+	vec3 bitangent = cross(N, tangent);
+	dir = dir.x * tangent + dir.y * bitangent + dir.z * N;
+
+	return (normalize(dir));
+}
+
+vec3 sample_uniform_hemisphere(vec3 N)
+{
+	vec2 r = vec2(rand(), rand());
+
+	float theta = acos(r.x);
 	float phi = 2.0 * M_PI * r.y;
 
 	vec3 dir;

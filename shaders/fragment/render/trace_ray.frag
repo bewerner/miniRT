@@ -23,20 +23,39 @@ vec3	fresnel(vec3 F0, vec3 V, vec3 H)
  	return ( F0 + (vec3(1.0) - F0) * pow((1 - max(dot(V, H), 0.0)), 5.0) );
 }
 
-// float	normalDistribution(float a, vec3 N, vec3 H)
-// {
-// 	// GGX Trowbridge-Reitz Normal Distribution Function
-// 	float	numerator = pow(a, 2.0);
-
-// 	float	NdotH = max(dot(N, H), 0.0);
-// 	float	denominator = M_PI * pow(pow(NdotH, 2.0) * (pow(a, 2.0) - 1.0) + 1.0, 2.0);
-// 	denominator = max(denominator, 0.0000001);
-
-// 	return (numerator / denominator);
-// }
-
-float	normalDistribution(float a, vec3 N, vec3 H)
+float	normalDistribution3(float a, vec3 N, vec3 H)
 {
+	a = max(a, 0.1);
+
+	float a2 = a * a;
+	float NdotH = max(dot(N, H), 0.0);
+	float NdotH2 = NdotH * NdotH;
+
+	float r = a2 / (M_PI * pow((1.0 - NdotH2) + (a2 * NdotH2) , 2));
+	return (r);
+}
+
+float	normalDistribution2(float a, vec3 N, vec3 H)
+{
+	a = max(a, 0.1);
+
+	// GGX Trowbridge-Reitz Normal Distribution Function
+	float aa = a * a;
+	float numerator = aa;
+	float NdotH = max(dot(N, H), 0.0);
+	float denominator = M_PI * pow((NdotH * NdotH) * (aa - 1.0) + 1.0, 2.0);
+	denominator = max(denominator, 0.0000001);
+
+	float r = numerator / denominator;
+	return (r);
+}
+
+float	normal_distribution(float a, vec3 N, vec3 H)
+{
+	// if (rt.debug == 1)
+	// 	return (normalDistribution2(a, N, H));
+	// if (rt.debug2 == 2)
+	// 	return (normalDistribution3(a, N, H));
 	// GGX Trowbridge-Reitz Normal Distribution Function
 	a = max(a, 0.00001);
 
@@ -62,15 +81,15 @@ float	G1(float a, vec3 N, vec3 X)
 	return (numerator / denominator);
 }
 
-float	geometryShadowing(float a, vec3 N, vec3 V, vec3 L)
+float	geometry_shadowing(float a, vec3 N, vec3 V, vec3 L)
 {
 	// SMITH MODEL
-	return ( G1(a, N, V) * G1(a, N, L) );
+	return (G1(a, N, V) * G1(a, N, L));
 }
 
-vec3	cookTorrance(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks)
+vec3	cook_torrance(vec3 N, vec3 V, vec3 L, vec3 H, float a, vec3 ks)
 {
-	vec3	ct_numerator = normalDistribution(a, N, H) * geometryShadowing(a, N, V, L) * ks;
+	vec3	ct_numerator = normal_distribution(a, N, H) * geometry_shadowing(a, N, V, L) * ks;
 	float	ct_denominator	= 4.0 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0);
 			ct_denominator	= max(ct_denominator, 0.000001);
 
@@ -107,7 +126,7 @@ vec3	get_point_light_contribution(vec3 hit_pos, t_point_light point_light, vec3 
 	vec3 radiance = radiance(hit_pos, point_light);
 	vec3 specular = vec3(0.0);
 	if (mat.roughness > 0.0265 || point_light.radius > 0.0) // incorrect hack to make it so surfaces with roughness=0 don't have specular hightlights of point-lights with radius=0
-		specular = cookTorrance(N, V, L, H, a, ks);
+		specular = cook_torrance(N, V, L, H, a, ks);
 
 	vec3 col = (kd * mat.color + specular) * radiance * diffuse;
 	return (col);
@@ -119,8 +138,8 @@ float get_pdf_reflection(vec3 V, vec3 N, vec3 L, float roughness)
 
 	float a = roughness * roughness;
 
-	float D = normalDistribution(a, N, H);
-	float G = geometryShadowing(a, N, V, L);
+	float D = normal_distribution(a, N, H);
+	float G = geometry_shadowing(a, N, V, L);
 
 	float NdotV = max(dot(N, V), 0.0);
 	float HdotV = max(dot(H, V), 0.0);
@@ -212,8 +231,9 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		float NdotL = max(0.0, dot(N, L));
 		vec3 radiance_diffuse  = radiance_importance * weight_importance_diffuse;
 		vec3 radiance_specular = radiance_importance * weight_importance_specular;
-		vec3 specular = cookTorrance(N, V, L, H, a, ks);
-		col += (kd * mat.color * radiance_diffuse * NdotL) + (specular * radiance_specular * NdotL);
+		vec3 specular = cook_torrance(N, V, L, H, a, ks);
+		col += (kd * mat.color * radiance_diffuse * NdotL);
+		col += (specular * radiance_specular * NdotL * (1.0 + cos((mat.roughness - 0.5) * (M_PI / 2))));
 	}
 
 	if (reaches_sky(ray_reflection) == true)
@@ -223,10 +243,16 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		vec3 ks = specular_reflectance;
 		float NdotL = max(0.0, dot(N, L));
 		vec3 radiance = get_ambient_color(L);// * pdf_reflection;
-		vec3 specular = cookTorrance(N, V, L, H, a, ks);
-		// return (specular);
+		vec3 specular = cook_torrance(N, V, L, H, a, ks);
 		specular = max(clamp(specular, vec3(0.0), ks), ks);
-		col += specular * radiance * mix(1.0, NdotL, mat.roughness * (1.0 - mat.metallic));
+		// if (rt.debug == 0)
+			col += specular * radiance * mix(1.0, NdotL, mat.roughness * (1.0 - mat.metallic));
+		// else if (rt.debug == 1)
+		// 	col += specular * radiance * mix(1.0, NdotL, mat.roughness);
+		// else if (rt.debug == 2)
+		// 	col += specular * radiance * mix(1.0, NdotL, mat.roughness) * (1.0 + (1.0 - mix(1.0, NdotL, mat.roughness)) * mat.metallic);
+		// else
+		// 	col += specular * radiance * NdotL;
 	}
 
 	return (col);
@@ -234,13 +260,13 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 
 vec3	get_reflection_light_contribution(vec3 hit_pos, vec3 reflection_col, vec3 N, vec3 V, vec3 L, t_material mat, vec3 previous_specular)
 {
-	vec3 F0 = mix(dielectric_F0(mat.ior), mat.color, mat.metallic) * 1.6; // incorrect hack
+	vec3 F0 = mix(dielectric_F0(mat.ior), mat.color, mat.metallic) * (((1.6))); // incorrect hack
 	vec3 H  = normalize(V + L);
 	vec3 ks = fresnel(F0, V, H);
 	vec3 kd = (vec3(1.0) - ks) * (1.0 - mat.metallic);
 	float a = mat.roughness * mat.roughness;
 
-	vec3 specular = cookTorrance(N, V, L, H, a, ks);
+	vec3 specular = cook_torrance(N, V, L, H, a, ks);
 	specular = max(clamp(specular, vec3(0.0), ks), ks);
 
 	specular *= previous_specular;
