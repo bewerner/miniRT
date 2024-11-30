@@ -1,13 +1,14 @@
 vec3	mirror(vec3 incoming, vec3 normal)
 {
-	return (normalize(incoming - (2.0 * dot(incoming, normal) * normal)));
+	return (incoming - (2.0 * dot(incoming, normal) * normal));
 }
 
 vec3	reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 {
-	incoming = normalize(incoming);
-	vec3 reflection = -object_normal;
+	if (rand() < (1.0 - dot(-incoming, N)) * roughness * roughness)
+		return (sample_hemisphere(object_normal) * length(incoming));
 
+	vec3 reflection = -object_normal;
 	for (int i = 0; dot(reflection, object_normal) < 0 && i < 32; i++)
 	{
 		vec3 H = sample_visible_normal(-incoming, N, roughness);
@@ -20,6 +21,17 @@ vec3	reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 	}
 	if (dot(reflection, object_normal) < 0)
 		reflection = mirror(incoming, object_normal);
+
+
+	if (rand() < (1.0 - dot(reflection, N)) * roughness * roughness)
+		return (sample_hemisphere(object_normal) * length(incoming));
+
+
+	// float r = rand();
+	// if (r > dot(reflection, object_normal) * dot(reflection, object_normal) && r < roughness * roughness)
+	// 	reflection = normalize(mix(reflection, sample_hemisphere(object_normal), roughness));
+		// reflection = sample_hemisphere(object_normal);
+
 
 	return (reflection);
 }
