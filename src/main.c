@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:10 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/22 06:22:21 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/03 22:39:55 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	main(int argc, char **argv)
 	validate_args(argc, argv, rt);
 	init_mini_rt(argv, rt);
 	rt->mode = MODE_RENDER;
-	printf("Loading time was %.0f seconds\n", glfwGetTime());
 	while (!glfwWindowShouldClose(rt->window))
 		update(rt);
 	terminate(NULL, NULL, 0, rt);

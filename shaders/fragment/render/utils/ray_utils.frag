@@ -26,13 +26,6 @@ vec3	reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 	if (rand() < (1.0 - dot(reflection, N)) * roughness * roughness)
 		return (sample_hemisphere(object_normal) * length(incoming));
 
-
-	// float r = rand();
-	// if (r > dot(reflection, object_normal) * dot(reflection, object_normal) && r < roughness * roughness)
-	// 	reflection = normalize(mix(reflection, sample_hemisphere(object_normal), roughness));
-		// reflection = sample_hemisphere(object_normal);
-
-
 	return (reflection);
 }
 

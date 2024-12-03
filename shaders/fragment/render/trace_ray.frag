@@ -35,27 +35,21 @@ float	normalDistribution3(float a, vec3 N, vec3 H)
 	return (r);
 }
 
-float	normalDistribution2(float a, vec3 N, vec3 H)
-{
-	a = max(a, 0.1);
+// float	normalDistribution(float a, vec3 N, vec3 H)
+// {
+// 	// GGX Trowbridge-Reitz Normal Distribution Function
+// 	float aa = a * a;
+// 	float numerator = aa;
+// 	float NdotH = max(dot(N, H), 0.0);
+// 	float denominator = M_PI * pow((NdotH * NdotH) * (aa - 1.0) + 1.0, 2.0);
+// 	denominator = max(denominator, 0.0000001);
 
-	// GGX Trowbridge-Reitz Normal Distribution Function
-	float aa = a * a;
-	float numerator = aa;
-	float NdotH = max(dot(N, H), 0.0);
-	float denominator = M_PI * pow((NdotH * NdotH) * (aa - 1.0) + 1.0, 2.0);
-	denominator = max(denominator, 0.0000001);
-
-	float r = numerator / denominator;
-	return (r);
-}
+// 	float r = numerator / denominator;
+// 	return (r);
+// }
 
 float	normal_distribution(float a, vec3 N, vec3 H)
 {
-	// if (rt.debug == 1)
-	// 	return (normalDistribution2(a, N, H));
-	// if (rt.debug2 == 2)
-	// 	return (normalDistribution3(a, N, H));
 	// GGX Trowbridge-Reitz Normal Distribution Function
 	a = max(a, 0.00001);
 
@@ -178,6 +172,26 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 
 	weight_importance_diffuse  = pdf_importance / (pdf_importance + pdf_cosine);
 	weight_importance_specular = pdf_importance / (pdf_importance + pdf_reflection);
+
+	// if (reaches_sky(ray_importance) == false)
+	// 	weight_importance_diffuse = 0;
+
+	// if (rt.debug == 0)
+	// {
+		weight_importance_diffuse  *= rt.env_weight_adjustment;
+		weight_importance_specular *= rt.env_weight_adjustment;
+	// }
+	// else
+	// 	radiance_importance *= rt.env_weight_adjustment;
+	// weight_importance_specular *= mat.roughness;
+	// weight_importance_specular *= mat.roughness;
+
+	// if (rt.debug == 1)
+	// 	return (vec3(weight_importance_diffuse));
+	// if (rt.debug == 2)
+	// 	return (vec3(1.0 - weight_importance_diffuse));
+	
+
 	// if (rt.debug == 1)
 	// {
 	// 	weight_importance_diffuse  = pow(pdf_importance, 2) / (pow(pdf_importance, 2) + pow(pdf_cosine, 2));
@@ -218,7 +232,7 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		vec3 ks = mix(specular_reflectance, fresnel(F0, V, H), mat.roughness);
 		vec3 kd = (1.0 - ks) * (1.0 - mat.metallic);
 		float NdotL = max(0.0, dot(N, L));
-		vec3 radiance = get_ambient_color(L);// * pdf_cosine;
+		vec3 radiance = get_ambient_color(L) * (1.0 - weight_importance_diffuse);
 		col += kd * mat.color * radiance;
 	}
 
@@ -242,17 +256,10 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 		vec3 H  = normalize(V + L);
 		vec3 ks = specular_reflectance;
 		float NdotL = max(0.0, dot(N, L));
-		vec3 radiance = get_ambient_color(L);// * pdf_reflection;
+		vec3 radiance = get_ambient_color(L);
 		vec3 specular = cook_torrance(N, V, L, H, a, ks);
 		specular = max(clamp(specular, vec3(0.0), ks), ks);
-		// if (rt.debug == 0)
-			col += specular * radiance * mix(1.0, NdotL, mat.roughness * (1.0 - mat.metallic));
-		// else if (rt.debug == 1)
-		// 	col += specular * radiance * mix(1.0, NdotL, mat.roughness);
-		// else if (rt.debug == 2)
-		// 	col += specular * radiance * mix(1.0, NdotL, mat.roughness) * (1.0 + (1.0 - mix(1.0, NdotL, mat.roughness)) * mat.metallic);
-		// else
-		// 	col += specular * radiance * NdotL;
+		col += specular * radiance * mix(1.0, NdotL, mat.roughness * (1.0 - mat.metallic));
 	}
 
 	return (col);
