@@ -34,17 +34,6 @@ vec3	trace_ray_solid(t_ray ray, vec2 uv)
 
 
 	col = col_diff + col_spec;
-	// col = (1.0 - g_metallic) * (col_diff + col_spec) + g_metallic * col_refl;
-	// col = (1.0 - g_metallic) * col_diff;
-
-
-	// Add Fresnel outline
-	// Actually Fresnel is wrong and it should be:
-	// "silhouette highlighting" or "silhouette edge highlighting"
-	// float fresnel_intensity = 1.0;
-	// float  fresnel = (abs(dot(ray.dir, hitpoint.normal)) * 0.5 + 0.5) * fresnel_intensity;
-	// col *= fresnel;
-	// col = vec3(fresnel,fresnel,fresnel,1); // DEBUG: Display Fresnel Color
 
 	return (col);
 }

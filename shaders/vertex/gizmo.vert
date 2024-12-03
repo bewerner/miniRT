@@ -46,13 +46,6 @@ void main()
 		0.0,	sin(-u_pitch - 3.14159265359 / 2),	cos(-u_pitch - 3.14159265359 / 2)
 	);
 
-	mat3 mat_rot_x3 = mat3
-	(
-		1.0,	0.0,			0.0,
-		0.0,	cos(debug/100),	-sin(debug/100),
-		0.0,	sin(debug/100),	cos(debug/100)
-	);
-
 	mat3 mat_rot_y = mat3
 	(
 		cos(-u_pitch),	0.0,	sin(-u_pitch),

@@ -51,41 +51,8 @@ vec3	sample_environment_map(out float pdf, out vec3 radiance)
 	pdf = texelFetch(environment_map, ivec3(pixel_pos, 1), 0).g;
 	float solid_angle = texelFetch(environment_map, ivec3(pixel_pos, 1), 0).b;
 
-	// if (rt.debug == 0)
-	// 	pdf *= resolution.x * resolution.y / (4 * M_PI);// * (1 + rt.debug/10); // Convert to a true PDF over the hemisphere
-	// else
-	// 	pdf /= solid_angle;// * (1 + rt.debug/10); // Convert to a true PDF over the hemisphere
-	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf);// * (rt.average_luminance/100);
-	// // radiance *= pow(rt.average_luminance, 2);
+	radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf);
 
-	// pdf *= resolution.x * resolution.y / (4.0 * M_PI);// * (1 + rt.debug/10); // Convert to a true PDF over the hemisphere
-	// pdf *= rt.debug2/10;
-	// pdf *= 7;
-	// pdf *= 2.3;
-	// if (rt.debug2 > 0)
-	// 	pdf = pow(pdf, rt.debug2/10);
-	// pdf *= resolution.x * resolution.y / ((4.0f + rt.debug2/10) * M_PI);
-	radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf);// * (rt.average_luminance/100);
-	// radiance *= rt.debug2/10;
-
-	// pdf *= sqrt(resolution.x * resolution.y);
-	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf / (4.0 * M_PI));
-
-
-
-
-	// pdf *= resolution.x * resolution.y / (rt.average_luminance / M_PI);
-	// pdf /= solid_angle;
-
-	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / pdf;
-	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf) * (rt.average_luminance / (100 + rt.debug));
-
-
-	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf / (rt.average_luminance * 4 * M_PI));
-	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf * (rt.average_luminance / (4 * M_PI)));
-	// radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / pdf;
-
-	// random offset to prevent 'stadium lights effect'
 	vec2 uv = (vec2(pixel_pos) + 0.5 + sample_uniform_disc(2.0)) / resolution;
 
 	float theta = (uv.x - 0.5) * (2.0 * M_PI);
