@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:11:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:47:15 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static t_identifier	get_identifier_2(char *line)
 		return (ID_CAMERA);
 	else if (ft_strncmp(line, "R ", 2) == 0)
 		return (ID_RENDER_SETTINGS);
+	else if (ft_strncmp(line, "W ", 2) == 0)
+		return (ID_WINDOW);
 	else if (ft_strncmp(line, "mat ", 4) == 0)
 		return (ID_MATERIAL);
 	else if (ft_strncmp(line, "tex ", 4) == 0)

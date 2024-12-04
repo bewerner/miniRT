@@ -29,3 +29,4 @@ A	0.000000            255,255,255
 # RENDER SETTINGS
 #	max_diffuse_bounces    max_glossy_bounces    max_samples
 R	0                      17                    16
+W	1024 1024

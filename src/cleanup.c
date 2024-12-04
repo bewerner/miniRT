@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:14:02 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/07 14:50:00 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:52:38 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*error_msg(t_error error)
 		RT_ERROR_MSG_TOO_MANY_CAMERAS,
 		RT_ERROR_MSG_TOO_MANY_AMBIENT,
 		RT_ERROR_MSG_TOO_MANY_RENDER_SETTINGS,
+		RT_ERROR_MSG_TOO_WINDOW,
 		RT_ERROR_MSG_MISSING_SCENE_OBJS
 	};
 

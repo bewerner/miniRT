@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 12:30:47 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/25 15:46:12 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:45:37 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,19 @@ t_error	parse_render_settings(t_rt *rt)
 	rt->max_glossy_bounces = (int)vr(gnv(&line, rt), (t_vec2){0, 100}, rt);
 	if (has_next_value(line))
 		rt->max_samples = (int)vr(gnv(&line, rt), (t_vec2){1, 2147483646}, rt);
+	return (RT_SUCCESS);
+}
+
+t_error	parse_window(t_rt *rt)
+{
+	char			*line;
+	static size_t	count;
+
+	count++;
+	if (count > 1)
+		return (RT_ERROR_TOO_MANY_WINDOW);
+	line = (char *)rt->line->content + 1;
+	rt->width = (int)vr(gnv(&line, rt), (t_vec2){1, 100000}, rt);
+	rt->height = (int)vr(gnv(&line, rt), (t_vec2){1, 100000}, rt);
 	return (RT_SUCCESS);
 }

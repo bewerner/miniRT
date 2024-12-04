@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:02:03 by bwerner           #+#    #+#             */
-/*   Updated: 2024/10/31 07:19:55 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:48:59 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	init_glfw(t_rt *rt)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
-	rt->window = glfwCreateWindow(
-			WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT - LOADING...", NULL, NULL);
+	rt->window = glfwCreateWindow(rt->width, rt->height, "miniRT - LOADING...", NULL, NULL);
 	if (!rt->window)
 		terminate("glfw window creation failed", NULL, 1, rt);
 	glfwMakeContextCurrent(rt->window);
