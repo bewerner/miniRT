@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 11:09:09 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:34:50 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static t_error	evaluate_id(t_identifier id, t_pobjs objs, t_rt *rt)
 		return (parse_camera(rt));
 	else if (id == ID_RENDER_SETTINGS)
 		return (parse_render_settings(rt));
+	else if (id == ID_WINDOW)
+		return (parse_window(rt));
 	else if (id == ID_POINT_LIGHT)
 		return (parse_point_light((t_point_light *)objs.curr_light, rt));
 	else if (id == ID_SPHERE)

@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/04 00:12:36 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:58:03 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@
 # define LIGHTCYAN		"\033[96m"
 # define RESET			"\033[0m"
 
-# define WINDOW_WIDTH	1920
-# define WINDOW_HEIGHT	1080
+# define DEFAULT_WINDOW_WIDTH	1280
+# define DEFAULT_WINDOW_HEIGHT	 720
 
 # define ACC  4.5f
 # define SCROLL_SENSITIVITY 50.0f
@@ -87,6 +87,7 @@ typedef enum e_identifier
 	ID_COMMENT,
 	ID_AMBIENT,
 	ID_RENDER_SETTINGS,
+	ID_WINDOW,
 	ID_CAMERA,
 	ID_MATERIAL,
 	ID_TEXTURE,
@@ -541,6 +542,7 @@ t_error			create_textures(size_t tex_cnt, t_rt *rt);
 t_error			parse_ambient(t_rt *rt);
 t_error			parse_camera(t_rt *rt);
 t_error			parse_render_settings(t_rt *rt);
+t_error			parse_window(t_rt *rt);
 
 // parser/parse_lights.c
 t_error			parse_point_light(t_point_light *pl, t_rt *rt);

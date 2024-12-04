@@ -26,4 +26,5 @@ C	    0.000000,  -13.500000,    5.000000          0.000000,    1.000000,   -0.00
 A	1.000000             assets/environments/brown_photostudio_02_2k_greyscale.hdr
 # A	1.000000             255,255,255
 
-R	4 0
+R	2   0
+W	1024 1024

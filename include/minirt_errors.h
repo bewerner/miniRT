@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 13:11:26 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/23 19:46:57 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:39:32 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ force one light with capital L"
 "no objects in scene"
 # define RT_ERROR_MSG_TOO_MANY_RENDER_SETTINGS \
 "too many render settings definitions, only one allowed"
+# define RT_ERROR_MSG_TOO_WINDOW \
+"too many window definitions, only one allowed"
 
 typedef enum e_error
 {
@@ -48,6 +50,7 @@ typedef enum e_error
 	RT_ERROR_TOO_MANY_CAMERAS,
 	RT_ERROR_TOO_MANY_AMBIENT,
 	RT_ERROR_TOO_MANY_RENDER_SETTINGS,
+	RT_ERROR_TOO_MANY_WINDOW,
 	RT_ERROR_MISSING_SCENE_OBJS
 }					t_error;
 

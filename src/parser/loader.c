@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 18:47:55 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:54:47 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	load_scene(char *file, t_rt *rt)
 	t_error	error;
 	t_scene	scene;
 
+	rt->width = DEFAULT_WINDOW_WIDTH;
+	rt->height = DEFAULT_WINDOW_HEIGHT;
 	rt->fd = open(file, O_RDONLY);
 	if (rt->fd == -1)
 		terminate("failed to load file", file, 1, rt);
