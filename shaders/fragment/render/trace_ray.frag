@@ -162,61 +162,20 @@ vec3	get_ambient_light_contribution(vec3 hit_pos, t_hitpoint hitpoint, vec3 N, v
 	ray_cosine.origin = hit_pos;
 	ray_cosine.dir = sample_hemisphere(N);
 	pdf_cosine = dot(N, ray_cosine.dir) / M_PI;
+	pdf_cosine = max(pdf_cosine, 1e-6);
 
 	ray_reflection.origin = hit_pos;
 	ray_reflection.dir = reflect(-V, N, hitpoint.object_normal, mat.roughness);
 	pdf_reflection = get_pdf_reflection(V, N, ray_reflection.dir, mat.roughness);
+	pdf_reflection = max(pdf_reflection, 1e-6);
 
 	ray_importance.origin = hit_pos;
 	ray_importance.dir = sample_environment_map(pdf_importance, radiance_importance);
 
 	weight_importance_diffuse  = pdf_importance / (pdf_importance + pdf_cosine);
 	weight_importance_specular = pdf_importance / (pdf_importance + pdf_reflection);
-
-	// if (reaches_sky(ray_importance) == false)
-	// 	weight_importance_diffuse = 0;
-
-	// if (rt.debug == 0)
-	// {
-		weight_importance_diffuse  *= rt.env_weight_adjustment;
-		weight_importance_specular *= rt.env_weight_adjustment;
-	// }
-	// else
-	// 	radiance_importance *= rt.env_weight_adjustment;
-	// weight_importance_specular *= mat.roughness;
-	// weight_importance_specular *= mat.roughness;
-
-	// if (rt.debug == 1)
-	// 	return (vec3(weight_importance_diffuse));
-	// if (rt.debug == 2)
-	// 	return (vec3(1.0 - weight_importance_diffuse));
-	
-
-	// if (rt.debug == 1)
-	// {
-	// 	weight_importance_diffuse  = pow(pdf_importance, 2) / (pow(pdf_importance, 2) + pow(pdf_cosine, 2));
-	// 	weight_importance_specular = pow(pdf_importance, 2) / (pow(pdf_importance, 2) + pow(pdf_reflection, 2));
-	// }
-
-	// if (rt.debug == 1)
-	// 	return (vec3(weight_importance_diffuse));
-	// if (rt.debug == 2)
-	// 	return (vec3(weight_importance_specular));
-	// if (rt.debug == 3)
-	// 	return (vec3(pdf_cosine));
-	// if (rt.debug == 4)
-	// 	return (vec3(pdf_reflection));
-	// if (rt.debug == 5)
-	// 	return (vec3(pdf_importance));
-
-	// if (rt.debug == 1)
-	// {
-	// 	weight_importance_diffuse = 0.5;
-	// 	weight_importance_specular = 0.5;
-	// }
-
-	// if (rt.debug == 1)
-	// 	F0 *= 1.6;
+	weight_importance_diffuse  *= rt.env_weight_adjustment;
+	weight_importance_specular *= rt.env_weight_adjustment;
 
 	{
 		vec3 L  = ray_reflection.dir;
