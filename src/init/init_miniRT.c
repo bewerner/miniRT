@@ -41,28 +41,6 @@ void	create_ubo_rt(t_rt *rt)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void	init_cursor_is_settable(t_rt *rt)
-{
-	double	x;
-	double	y;
-	double	new_x;
-
-	glfwGetCursorPos(rt->window, &x, &y);
-	x = (int)x;
-	y = (int)y;
-	if (x > 0)
-		new_x = x - 1;
-	else
-		new_x = x + 1;
-	glfwPollEvents();
-	glfwSetCursorPos(rt->window, new_x, y);
-	glfwGetCursorPos(rt->window, &x, &y);
-	if (x == new_x)
-		rt->cursor_is_settable = 1;
-	else
-		rt->cursor_is_settable = 0;
-}
-
 void	create_fbo(t_rt *rt, float render_scale)
 {
 	glGenTextures(1, &rt->tex_fbo_id);
@@ -88,7 +66,6 @@ void	init_mini_rt(char **argv, t_rt *rt)
 	rt->filename = argv[1];
 	load_scene(argv[1], rt);
 	init_glfw(rt);
-	init_cursor_is_settable(rt);
 	init_camera(&rt->camera, rt);
 	init_hooks(rt);
 	init_shader_programs(rt);
