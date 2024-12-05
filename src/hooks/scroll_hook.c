@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:15:35 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/05 16:39:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	scroll_hook(GLFWwindow *window, double xoffset, double yoffset)
 	rt = get_rt();
 	(void)window;
 	(void)xoffset;
-	zoom_factor = pow(1.0 + 1.0f / SCROLL_SENSITIVITY, fabs(yoffset));
+	zoom_factor = pow(1.0 + 1.0f / 50.0f, fabs(yoffset));
 	if (yoffset > 0)
 		rt->move.speed = fmaxf(0, rt->move.speed * zoom_factor);
 	else

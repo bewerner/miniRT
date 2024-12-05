@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/04 00:58:03 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/05 16:41:23 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,6 @@
 # define DEFAULT_WINDOW_WIDTH	1280
 # define DEFAULT_WINDOW_HEIGHT	 720
 
-# define ACC  4.5f
-# define SCROLL_SENSITIVITY 50.0f
-
-# define SWAP_INTERVAL	1
-
-# define MAX_POWER		10000
-# define LIGHT_POWER	0.575f
 # define EPSILON		0.000001f
 
 # define MAX_NAME 1024 
