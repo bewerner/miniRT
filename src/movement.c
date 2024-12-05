@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/14 08:12:08 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/05 16:40:39 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,17 @@ void	handle_movement_input(t_rt *rt)
 {
 	rt->move.acc = (t_vec3){{0, 0, 0}};
 	if (glfwGetKey(rt->window, GLFW_KEY_A))
-		rt->move.acc.x -= ACC * fminf(rt->delta_time, 0.1);
+		rt->move.acc.x -= 4.5f * fminf(rt->delta_time, 0.1);
 	if (glfwGetKey(rt->window, GLFW_KEY_D))
-		rt->move.acc.x += ACC * fminf(rt->delta_time, 0.1);
+		rt->move.acc.x += 4.5f * fminf(rt->delta_time, 0.1);
 	if (glfwGetKey(rt->window, GLFW_KEY_W))
-		rt->move.acc.z += ACC * fminf(rt->delta_time, 0.1);
+		rt->move.acc.z += 4.5f * fminf(rt->delta_time, 0.1);
 	if (glfwGetKey(rt->window, GLFW_KEY_S))
-		rt->move.acc.z -= ACC * fminf(rt->delta_time, 0.1);
+		rt->move.acc.z -= 4.5f * fminf(rt->delta_time, 0.1);
 	if (glfwGetKey(rt->window, GLFW_KEY_E) || glfwGetKey(rt->window, GLFW_KEY_SPACE))
-		rt->move.acc.y += ACC * fminf(rt->delta_time, 0.1);
+		rt->move.acc.y += 4.5f * fminf(rt->delta_time, 0.1);
 	if (glfwGetKey(rt->window, GLFW_KEY_C))
-		rt->move.acc.y -= ACC * fminf(rt->delta_time, 0.1);
+		rt->move.acc.y -= 4.5f * fminf(rt->delta_time, 0.1);
 	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
 	move_camera(rt);
 }

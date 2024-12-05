@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:02:03 by bwerner           #+#    #+#             */
-/*   Updated: 2024/12/04 00:48:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/05 16:32:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ void	init_glfw(t_rt *rt)
 	rt->aspect_ratio = (float)rt->width / (float)rt->height;
 	glfwGetWindowContentScale(rt->window, &rt->dpi_scale, NULL);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	glfwSwapInterval(SWAP_INTERVAL);
+	glfwSwapInterval(1);
 }

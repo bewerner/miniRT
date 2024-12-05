@@ -22,10 +22,6 @@ vec3	reflect(vec3 incoming, vec3 N, vec3 object_normal, float roughness)
 	if (dot(reflection, object_normal) < 0)
 		reflection = mirror(incoming, object_normal);
 
-
-	if (rand() < (1.0 - dot(reflection, N)) * roughness * roughness)
-		return (sample_hemisphere(object_normal) * length(incoming));
-
 	return (reflection);
 }
 
