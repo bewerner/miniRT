@@ -129,7 +129,7 @@ vec3 sample_visible_normal(vec3 V, vec3 N, float roughness)
 	// Sample the GGX VNDF
 	float a = roughness * roughness;
 	float phi = 2.0 * M_PI * r.x;
-	float cosTheta = sqrt((1.0 - r.y) / (1.0 + (a * a - 1.0) * r.y));
+	float cosTheta = sqrt((1.0 - r.y) / (1.0 + (a * a - 1.0) * r.y + 1e-6));
 	float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
 
 	vec3 H = vec3(sinTheta * cos(phi), sinTheta * sin(phi), cosTheta);
