@@ -52,6 +52,7 @@ vec3	sample_environment_map(out float pdf, out vec3 radiance)
 	float solid_angle = texelFetch(environment_map, ivec3(pixel_pos, 1), 0).b;
 
 	radiance = texelFetch(environment_map, ivec3(pixel_pos, 0), 0).rgb / (pdf);
+	radiance = clamp(radiance, 0, 16);
 
 	vec2 uv = (vec2(pixel_pos) + 0.5 + sample_uniform_disc(2.0)) / resolution;
 

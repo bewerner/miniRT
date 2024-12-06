@@ -13,5 +13,5 @@ vec3	get_ambient_color(vec3 dir)
 {
 	if (rt.ambient.r >= 0)
 		return (rt.ambient);
-	return (get_environment_map_color(dir));
+	return (clamp(get_environment_map_color(dir), 0, 16));
 }
