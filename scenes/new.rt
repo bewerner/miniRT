@@ -4,7 +4,8 @@ tex		water_normal	image		assets/materials/Water_001_4K/Water_001_NORM.png
 
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
-mat	water                          85,135,197       0.800000       0.002500       1.450000       0.000000       0.000000            255,255,255        water_normal     0.2
+mat	water                         105,165,197       0.600000       0.000000           1.450000       0.000000       0.000000            255,255,255        water_normal     0.3
+
 mat	RandomMaterial_Sphere         103,197, 74       0.870882       0.703235       1.450000       0.000000       0.000000            255,255,255
 mat	RandomMaterial_Sphere.001     205,223,251       0.843743       0.260214       1.450000       0.000000       0.000000            255,255,255
 mat	RandomMaterial_Sphere.002      31,119,109       0.211030       0.154168       1.450000       0.000000       0.000000            255,255,255
@@ -199,8 +200,9 @@ C	  -49.696514, -216.810852,   88.513458          0.131471,    0.965569,   -0.22
 
 # AMBIENT
 #	strength             color
+# A	0.900000             assets/environments/sunflowers_puresky_2k.hdr
 A	0.500000             assets/environments/evening_road_01_puresky_4k.hdr
 
 # RENDER SETTINGS
 #	max_diffuse_bounces    max_glossy_bounces    max_samples
-R	1                      2
+R	1                      20
