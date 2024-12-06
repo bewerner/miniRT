@@ -1,0 +1,31 @@
+# TEXTURES
+#tex	name			type		path
+tex		stone_color		image		assets/materials/Wall_Stone_017_2K/Wall_Stone_017_BaseColor.png
+tex		stone_normal	image		assets/materials/Wall_Stone_017_2K/Wall_Stone_017_Normal.png
+tex		stone_roughness	image		assets/materials/Wall_Stone_017_2K/Wall_Stone_017_Roughness.png
+tex		water_normal	image		assets/materials/Water_001_4K/Water_001_NORM.png
+
+# MATERIALS
+#	name                          color             metallic       roughness             ior            transmission   emission_strength   emission_color     normal_map       normal_strength
+mat	stone                         stone_color       0.000000       stone_roughness       1.450000       0.000000       0.000000            255,255,255        stone_normal     5.0
+mat	water                         85,135,197        0.800000       0.002500              1.450000       0.000000       0.000000            255,255,255        water_normal     0.15
+
+# SPHERES
+#	origin                                          diameter       material        uv_scale
+sp	    0.000000,    0.000000,    2.000000          3.000000       stone           1.0
+
+# PLANES
+#	origin                                          normal                                         material        uv_scale
+pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000, -770.961487             water           0.1
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	-0.544273, 13.609027, 1.929832                  0.040552, -0.997672, -0.054830                 50.000000
+
+# AMBIENT
+#	strength             color
+A	1.000000             assets/environments/evening_road_01_puresky_4k.hdr
+
+# RENDER SETTINGS
+#	max_diffuse_bounces    max_glossy_bounces    max_samples
+R	1                      1
