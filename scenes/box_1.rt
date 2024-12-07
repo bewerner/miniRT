@@ -1,13 +1,14 @@
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
-mat	mat_green                       0,204,  0       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
-mat	mat_red                       204,  0,  0       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
-mat	mat_white                     204,204,204       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
+mat	mat_green                       0,204,  0       0.000000       1.000000       1.450000       0.000000       0.000000            255,255,255
+mat	mat_red                       204,  0,  0       0.000000       1.000000       1.450000       0.000000       0.000000            255,255,255
+mat	mat_white                     204,204,204       0.000000       1.000000       1.450000       0.000000       0.000000            255,255,255
+mat	mat_sphere                    204,204,204       0.000000       0.000000       1.450000       0.000000       0.000000            255,255,255
 
 # SPHERES
 #	origin                                          diameter       material
-sp	   -2.000000,    5.000000,    1.550000          3.000000       mat_white           
-sp	    2.000000,    5.000000,    1.550000          3.000000       mat_white           
+sp	   -2.000000,    5.000000,    1.550000          3.000000       mat_sphere           
+sp	    2.000000,    5.000000,    1.550000          3.000000       mat_sphere           
 
 # CYLINDERS
 #	origin                                          orientation                                    diameter       height         material
@@ -26,5 +27,5 @@ C	    0.000000,  -13.500000,    5.000000          0.000000,    1.000000,   -0.00
 A	1.000000             assets/environments/brown_photostudio_02_2k_greyscale.hdr
 # A	1.000000             255,255,255
 
-R	2   0
+R	4   0
 W	1024 1024
