@@ -25,7 +25,7 @@ pl	    6.981260,    0.000000,    0.024414         -0.106062,    0.000000,   15.1
 
 
 # CAMERA
-#	origin                                          orientation                                    fiew of view
+#	origin                                          orientation                                    field of view
 C	   -1.552552,  -11.378374,    4.934179          0.089407,    0.966378,   -0.241079             73.739795      
 
 # AMBIENT

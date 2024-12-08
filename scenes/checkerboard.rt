@@ -14,7 +14,7 @@ sp	    0.000000,    0.000000,    1.000000          2.000000       mat_checker_mi
 pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,  -37.745251             mat_checker_mirror            
 
 # CAMERA
-#	origin                                          orientation                                    fiew of view
+#	origin                                          orientation                                    field of view
 C   -3.389201, -7.039691, 4.352799                  0.330406, 0.855917, -0.397790                  39.597755      
 
 # AMBIENT
