@@ -441,7 +441,7 @@ hb	   36.153000,  -22.157450,    0.000000          0.500000,    0.866025,   -0.0
 
 
 # CAMERA
-#	origin                                          orientation                                    fiew of view
+#	origin                                          orientation                                    field of view
 C	    3.059430,   17.053007,  -41.297882         -0.130351,   -0.126585,    0.983354             39.597752  
 
 # AMBIENT

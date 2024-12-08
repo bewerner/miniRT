@@ -11,7 +11,7 @@ sp	    0.000000,    0.000000,    1.000000          2.000000       Material
 pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,  -37.745251             Material            
 
 # CAMERA
-#	origin                                          orientation                                    fiew of view
+#	origin                                          orientation                                    field of view
 C	    5.606759,   -5.258465,    3.510367         -0.689561,    0.663759,   -0.289705             39.597752      
 
 # AMBIENT

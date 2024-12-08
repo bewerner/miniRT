@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/05 16:41:23 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/07 12:30:26 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@
 # define LIGHTCYAN		"\033[96m"
 # define RESET			"\033[0m"
 
-# define DEFAULT_WINDOW_WIDTH	1280
-# define DEFAULT_WINDOW_HEIGHT	 720
+# define DEFAULT_WINDOW_WIDTH	1920
+# define DEFAULT_WINDOW_HEIGHT	1080
 
 # define EPSILON		0.000001f
 

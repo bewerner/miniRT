@@ -19,7 +19,7 @@ sp	    0.000000,    0.000000,    2.000000          3.000000       stone         
 pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000, -770.961487             water           0.1
 
 # CAMERA
-#	origin                                          orientation                                    fiew of view
+#	origin                                          orientation                                    field of view
 C	-0.544273, 13.609027, 1.929832                  0.040552, -0.997672, -0.054830                 50.000000
 
 # AMBIENT
