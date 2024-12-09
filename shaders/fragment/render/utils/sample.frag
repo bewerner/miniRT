@@ -117,20 +117,23 @@ vec2 sample_uniform_disc(float diameter)
 	return (point);
 }
 
-vec3 sample_visible_normal(vec3 V, vec3 N, float roughness)
+vec3 sample_visible_normal(vec3 V, vec3 N, float a)
 {
+	if (a == 0.0)
+		return (N);
+
 	// Transform view vector to tangent space
 	vec3 T1 = normalize(abs(N.z) < 0.999 ? cross(vec3(0.0, 0.0, 1.0), N) : vec3(1.0, 0.0, 0.0));
 	vec3 T2 = cross(N, T1);
+
 	vec3 Vh = normalize(mat3(T1, T2, N) * V);
 
 	// Generate random numbers
-	vec2 r = vec2(rand(), rand());
+	vec2 r = vec2(rand(), rand() * 0.999);
 
 	// Sample the GGX VNDF
-	float a = roughness * roughness;
 	float phi = 2.0 * M_PI * r.x;
-	float cosTheta = sqrt((1.0 - r.y) / (1.0 + (a * a - 1.0) * r.y + 1e-6));
+	float cosTheta = sqrt((1.0 - r.y) / (1.0 + (a * a - 1.0) * r.y));
 	float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
 
 	vec3 H = vec3(sinTheta * cos(phi), sinTheta * sin(phi), cosTheta);

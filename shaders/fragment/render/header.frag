@@ -261,7 +261,7 @@ t_point_light	get_point_light(int offset);
 vec3			sample_environment_map(out float pdf, out vec3 radiance);
 vec3			sample_hemisphere(vec3 N);
 vec2			sample_uniform_disc(float diameter);
-vec3			sample_visible_normal(vec3 V, vec3 N, float roughness);
+vec3			sample_visible_normal(vec3 V, vec3 N, float a);
 
 // utils/normal_map.frag
 vec3			apply_normal_map(t_hitpoint hitpoint);
