@@ -1,0 +1,28 @@
+# TEXTURES
+#tex	name			type		path
+tex		blue			image		assets/materials/poker_chips/poker_chip_4k_blue.png
+tex		chip_normal		image		assets/materials/poker_chips/poker_chip_4k_normal.png
+
+# MATERIALS
+#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
+mat	blue_chip                     blue              0.000000       0.700000       1.450000       0.000000       0.000000            255,255,255        chip_normal      1
+mat	Material                      204,204,204       0.000000       0.500000       1.450000       0.000000       0.000000            255,255,255
+
+# CYLINDERS
+#	origin                                          orientation                                    diameter       height         material
+cy	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,    0.900000             0.999865       0.090000       blue_chip           
+
+# LIGHTS
+#	origin                                          power          color
+l	    4.076245,    1.005454,    5.903862          1000.000000    255,255,255
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	    0.000000,    0.000000,   10.639999          0.000000,    0.000000,   -1.000000             5.570333       
+
+# AMBIENT
+#	strength             color
+A	1.000000             12, 12, 12
+
+R 4 4
+W 1024 1024
