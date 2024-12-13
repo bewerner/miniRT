@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:05:41 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/13 04:28:57 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_error	parse_material(t_material *mat, char *line, t_rt *rt)
 	set_material_col_textureid(mat, &line, rt);
 	set_material_metallic_textureid(mat, &line, rt);
 	set_material_roughness_textureid(mat, &line, rt);
-	mat->ior = vr(gnv(&line, rt), (t_vec2){1.0f, INFINITY}, rt);
+	mat->ior = vr(gnv(&line, rt), (t_vec2){0.0f, INFINITY}, rt);
 	mat->transmission = vr(gnv(&line, rt), (t_vec2){0.0f, 1.0f}, rt);
 	mat->emission_strength
 		= vr(gnv(&line, rt), (t_vec2){-INFINITY, INFINITY}, rt);
