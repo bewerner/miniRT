@@ -7,7 +7,7 @@ tex		paper_normal				image		assets/materials/white-plain-paper-bl/white-plain-pa
 # MATERIALS
 #	name                          color             metallic       roughness            ior            transmission   emission_strength   emission_color      normal_map       normal_strength
 mat	mat_backdrop                  paper_diff        0.000000       paper_roughness      1.450000       0.000000       0.000000            255,255,255         paper_normal     1
-mat	mat_sphere                    204,204,204       1.000000       0.000000             1.450000       0.000000       0.000000            255,255,255
+mat	mat_sphere                    204,204,204       0.000000       0.000000             1.400000       0.000000       0.000000            255,255,255
 
 # SPHERES
 #	origin                                          diameter       material
