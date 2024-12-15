@@ -117,35 +117,6 @@ vec2	get_uv_cylinder(t_cylinder cylinder, vec3 orientation, vec3 normal, vec3 po
 	return (uv * uv_scale);
 }
 
-vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool is_cap1, vec2 uv_scale)
-{
-	vec2	uv;
-
-	pos -= cap_origin;
-
-	if (orientation.z != 1.0)
-	{
-		vec2 orientation_xy = normalize(orientation.xy);
-		if (orientation_xy.y != 1)
-		{
-			float rad = acos(dot(orientation_xy, vec2(0, 1)));
-			if (orientation_xy.x < 0)
-				rad *= -1;
-			orientation = vec3_rotate_z(orientation, rad);
-			pos = vec3_rotate_z(pos, rad);
-		}
-		float rad = acos(dot(normalize(orientation.yz), vec2(0, 1)));
-		pos = vec3_rotate_x(pos, rad);
-	}
-
-	uv = pos.xy / radius;
-	uv *= 0.24;
-	uv += 0.25;
-	if (is_cap1 == true)
-		uv.x += 0.5;
-	return (uv * uv_scale);
-}
-
 vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool is_cap1, vec2 uv_scale, out vec3 tangent, out vec3 bitangent)
 {
 	vec2 uv;

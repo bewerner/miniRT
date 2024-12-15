@@ -3,9 +3,12 @@ bool	is_near_zero(float value)
 	return (value > -EPSILON && value < EPSILON);
 }
 
-vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos, vec2 uv_scale)
+vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos, vec2 uv_scale, out vec3 tangent, out vec3 bitangent)
 {
 	vec2	uv;
+
+	tangent = vec3(1.0, 0.0, 0.0);
+	bitangent = vec3(0.0, 1.0, 0.0);
 
 	if (abs(normal.z) != 1)
 	{
@@ -17,31 +20,21 @@ vec2	get_uv_plane(vec3 normal, vec3 plane_origin, vec3 pos, vec2 uv_scale)
 				rad *= -1;
 			pos = vec3_rotate_z(pos, rad);
 			normal = vec3_rotate_z(normal, rad);
+			tangent = vec3_rotate_z(tangent, -rad);
+			bitangent = vec3_rotate_z(bitangent, -rad);
 		}
 		float rad = acos(dot(normalize(normal.yz), vec2(0, 1)));
 		pos = vec3_rotate_x(pos, -rad);
+		tangent = vec3_rotate_x(tangent, -rad);
+		bitangent = vec3_rotate_x(bitangent, -rad);
 	}
+	tangent = normalize(tangent);
+	bitangent = normalize(bitangent);
 
 	// uv = pos.xy - plane_origin.xy;
 	uv = pos.xy - plane_origin.xy - rt.debug * vec2(0.038, 0.052);
 
 	return (uv * uv_scale / 2);
-}
-
-void	calc_plane_tangent_vectors(inout t_hitpoint hitpoint, bool backface)
-{
-	if (abs(hitpoint.normal.z) > 0.9999)
-	{
-		hitpoint.tangent = vec3(hitpoint.normal.z, 0, 0);
-		hitpoint.bitangent = vec3(0, hitpoint.normal.z, 0);
-	}
-	else
-	{
-		hitpoint.tangent = normalize(cross(vec3(0, 0, 1), hitpoint.normal));
-		hitpoint.bitangent = cross(hitpoint.normal, hitpoint.tangent);
-		if (backface == true)
-			hitpoint.bitangent *= -1;
-	}
 }
 
 t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)
@@ -74,14 +67,11 @@ t_hitpoint	get_hitpoint_plane(t_ray ray, t_plane plane, bool init_all)
 
 	// if we have an image_texture we calculate UVs
 	if (has_image_texture(hitpoint))
-		hitpoint.uv = get_uv_plane(plane.normal, plane.origin, hitpoint.pos, plane.uv_scale);
+		hitpoint.uv = get_uv_plane(plane.normal, plane.origin, hitpoint.pos, plane.uv_scale, hitpoint.tangent, hitpoint.bitangent);
 
-	// We need tangent and bitangent vectors for normal_maps		
 	if (has_normal_map_material(hitpoint))
-	{
-		calc_plane_tangent_vectors(hitpoint, hitpoint.normal != plane.normal);
 		hitpoint.normal = apply_normal_map(hitpoint);
-	}
+
 	return (hitpoint);
 }
 
