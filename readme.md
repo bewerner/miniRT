@@ -1,4 +1,4 @@
-![Title_Image](docs/ocean__16513_samples.png)
+![Title_Image](docs/title.png)
 
 # Description
 
