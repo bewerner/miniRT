@@ -50,6 +50,12 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 `checkerboard.rt`\
 ![checkerboard](docs/checkerboard__192139_samples.png)
 
+`infinity_mirror.rt`\
+![infinity_mirror](docs/infinity_mirror__562_samples.png)
+
+`soft_light.rt`\
+![soft_light](docs/soft_light__7372_samples.png)
+
 `ocean.rt`\
 ![ocean](docs/ocean__16513_samples.png)
 
