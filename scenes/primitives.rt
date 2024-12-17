@@ -1,9 +1,9 @@
 # TEXTURES
 #tex	name			type		path
-tex		metal_diff		image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_Color.png
-tex		metal_metal		image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_Metalness.png
-tex		metal_normal	image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_NormalGL.png
-tex		metal_rough		image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_Roughness.png
+tex		bronze_diff		image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_Color.png
+tex		bronze_metal	image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_Metalness.png
+tex		bronze_normal	image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_NormalGL.png
+tex		bronze_rough	image		assets/materials/Metal047B_2K-PNG/Metal047B_2K-PNG_Roughness.png
 tex		marble_diff		image		assets/materials/Tiles074_2K-PNG/Tiles074_2K-PNG_Color.png
 tex		marble_normal	image		assets/materials/Tiles074_2K-PNG/Tiles074_2K-PNG_NormalGL.png
 tex		marble_rough	image		assets/materials/Tiles074_2K-PNG/Tiles074_2K-PNG_Roughness.png
@@ -12,34 +12,46 @@ tex		marble_rough	image		assets/materials/Tiles074_2K-PNG/Tiles074_2K-PNG_Roughn
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
 mat	marble                        marble_diff       0.000000       marble_rough   1.450000       0.000000       0.000000            255,255,255          marble_normal     1
-mat	metal                         metal_diff        metal_metal    metal_rough    1.450000       0.000000       0.000000            255,255,255          metal_normal      10
+mat	bronze                        bronze_diff       bronze_metal   bronze_rough    1.450000       0.000000       0.000000            255,255,255         bronze_normal     10
 
 # SPHERES
 #	origin                                          diameter       material
-sp	    0.000000,   -4.000000,    1.000000          2.000000       metal                
+# sp	  -48.000000,   -4.000000,    1.000000          2.000000       gold                 
+sp	    0.000000,   -4.000000,    1.000000          2.000000       bronze               
 
 # CYLINDERS
-#	origin                                          orientation                                    diameter       height         material
-cy	    0.000000,    0.000000,    1.000000          0.000000,    0.000000,    1.000000             2.000000       2.000000       metal         2,1
-cy	    0.000000,    4.000000,    1.000000          0.000000,    0.000000,    1.000000             2.000000       2.000000       metal         2,1
-cy	    0.000000,    8.000000,    1.000000          0.000000,    0.000000,    1.000000             2.000000       2.000000       metal         2,1
-cy	    0.000000,   12.000000,    1.000000          0.000000,    0.000000,    1.000000             2.000000       2.000000       metal         2,1
+#	origin                                          orientation                                    diameter       height         material      uv-scale
+
+# cy	  -48.000000,    0.000000,    1.000000          0.000000,    0.000000,    1.000000             2.000000       2.000000       gold          2,1
+cy	    0.000000,    0.000000,    1.000000          0.000000,    0.000000,    1.000000             2.000000       2.000000       bronze        2,1
+
+# HYPERBOLOIDS
+#	origin                                          orientation                              height      a b c       shape      material      uv-scale
+
+# hb	  -48.000000,    4.000000,    1.000000          0.000000,    0.000000,    1.000000       2.000000    1 1 1.1     0.2        gold          2,1
+hb	    0.000000,    4.000000,    1.000000          0.000000,    0.000000,    1.000000       2.000000    1 1 1.1     0.2        bronze        2,1
+
+# hb	  -48.000000,    8.000000,    1.000000          0.000000,    0.000000,    1.000000       2.000000    1 1 1.0     0          gold          2,1
+hb	    0.000000,    8.000000,    1.000000          0.000000,    0.000000,    1.000000       2.000000    1 1 1.0     0          bronze        2,1
+
+# hb	  -48.000000,   12.000000,    1.000000          0.000000,    0.000000,    1.000000       2.000000    1 1 0.9    -0.2        gold          2,1
+hb	    0.000000,   12.000000,    1.000000          0.000000,    0.000000,    1.000000       2.000000    1 1 0.9    -0.2        bronze        2,1
 
 # PLANES
 #	origin                                          normal                                         material
-pl	    1.000000,    1.000000,    0.000000          0.000000,    0.000000,    1.000000             marble         0.5
+pl	    -6.000000,    2.000000,    0.000000          0.000000,    0.000000,    1.000000             marble         0.083333
 
 # LIGHTS
 #	origin                                          power          color
 l	   -5.354928,    1.053975,    3.984897          50.000000      255,255,255      0.1
 
 # CAMERA
-#	origin                                          orientation                                    fiew of view
-C	   25.145184,   -2.642002,    7.891107         -0.943571,    0.220608,   -0.246994             39.597752          0.9    27
+#	origin                                          orientation                                    field of view      f-stop   focus-distance
+C	   27.318216,    4.000000,    4.672922         -1.000000,    0.000000,   -0.133961             39.597752          0.1      27.7
 
 # AMBIENT
 #	strength             color
 A	1.5             assets/environments/brown_photostudio_02_2k_greyscale.hdr
 
 R	1 1
-W	1536 512
+W	1920 640
