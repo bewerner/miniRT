@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/26 16:06:11 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 04:47:58 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		reset_camera(&rt->camera, rt);
 	else if (key == GLFW_KEY_G && action == GLFW_PRESS)
-		rt->hide_gizmo = !rt->hide_gizmo;
+		rt->show_gizmo = !rt->show_gizmo;
 	else if (key == GLFW_KEY_P && action == GLFW_PRESS)
 		print_camera_info(rt);
 	else if (key == GLFW_KEY_O && action == GLFW_PRESS)
