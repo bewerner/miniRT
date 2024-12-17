@@ -7,11 +7,11 @@ tex		road_normal		image		assets/materials/TwoLaneRoadWet01_MR_4K/TwoLaneRoadWet0
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
 mat	mat_car                        15,  1,  2       0.228571       0.057143       1.450000       0.000000       0.000000            255,255,255
-mat	mat_car2                     3,  3, 31       0.228571       0.057143       1.450000       0.000000       0.000000            255,255,255
+mat	mat_car2                        3,  3, 31       0.228571       0.057143       1.450000       0.000000       0.000000            255,255,255
 mat	mat_car3                        0, 31,  8       0.228571       0.057143       1.450000       0.000000       0.000000            255,255,255
 mat	mat_rim                       136,137,145       1.000000       0.483117       1.450000       0.000000       0.000000            255,255,255
 mat	mat_tire                        3,  2,  2       0.000000       0.420779       1.450000       0.000000       0.000000            255,255,255
-mat	mat_window                      0,  0,  0       0.740260       0.716883       1.450000       0.000000       0.000000            255,255,255
+mat	mat_window                      4,  3,  8       0.740260       0.716883       1.450000       0.000000       0.000000            255,255,255
 mat	metal                         106,101,108       0.716883       0.140260       1.450000       0.000000       0.000000            255,255,255
 mat	road                          road_diff         0.000000       road_rough     1.450000       0.000000       0.000000            255,255,255         road_normal    0.4
 
