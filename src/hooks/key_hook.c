@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/12/17 04:47:58 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 05:43:11 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,8 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 		print_camera_info(rt);
 	else if (key == GLFW_KEY_O && action == GLFW_PRESS)
 		write_png(rt);
+	else if (key == GLFW_KEY_M && action == GLFW_PRESS)
+		rt->cursor_is_settable = !rt->cursor_is_settable;
 	key_hook_axial_view(key, action, rt);
 	key_hook_debug(key, action, rt);
 	key_hook_render_scale(key, action, rt);
