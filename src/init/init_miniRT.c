@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/11/14 08:40:51 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 05:38:16 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	create_fbo(t_rt *rt, float render_scale)
 
 void	init_mini_rt(char **argv, t_rt *rt)
 {
+	rt->cursor_is_settable = !WSL;
 	rt->filename = argv[1];
 	load_scene(argv[1], rt);
 	init_glfw(rt);

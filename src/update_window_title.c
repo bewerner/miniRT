@@ -6,33 +6,11 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:53:22 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/11/07 14:52:44 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 04:20:27 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
-
-static void	init_cursor_is_settable(t_rt *rt)
-{
-	double	x;
-	double	y;
-	double	new_x;
-
-	glfwGetCursorPos(rt->window, &x, &y);
-	x = (int)x;
-	y = (int)y;
-	if (x > 0)
-		new_x = x - 1;
-	else
-		new_x = x + 1;
-	glfwPollEvents();
-	glfwSetCursorPos(rt->window, new_x, y);
-	glfwGetCursorPos(rt->window, &x, &y);
-	if (x == new_x)
-		rt->cursor_is_settable = 1;
-	else
-		rt->cursor_is_settable = 0;
-}
 
 static char	*get_fps(t_rt *rt)
 {
@@ -97,15 +75,9 @@ void	update_window_title(t_rt *rt)
 {
 	char		title[1024];
 	char		*fps_str;
-	static bool	cursor_initiated;
 
 	if (!rt->first_update_finished)
 		return ;
-	else if (!cursor_initiated)
-	{
-		init_cursor_is_settable(rt);
-		cursor_initiated = true;
-	}
 	title[0] = '\0';
 	fps_str = get_fps(rt);
 	if (!fps_str)

@@ -1,9 +1,6 @@
-
 NAME				=	miniRT
-LIBFT				=	libft/libft.a
-
+LIBFT				=	include/libft/libft.a
 VPATH				=	include/glad src src/init src/parser src/shader src/primitives src/utils src/hooks
-
 SRC					=	main.c cleanup.c \
 						init_agx_lut_tbo.c init_lights_tbo.c init_texture_ubo.c init_material_ubo.c init_objects_tbo.c init_objects_primitives.c \
 						load_textures.c init_vertex_buffer_objects.c init_glfw.c init_environment_map.c init_environment_map_importance.c \
@@ -29,6 +26,17 @@ COL_YELLOW			= 	\033[38;2;214;189;28m
 COL_PINK			= 	\033[95m
 COL_DEFAULT			= 	\033[0m
 
+IS_WSL				=	$(shell grep -i -q 'Microsoft' /proc/version 2>/dev/null && echo 1 || echo 0)
+IS_MNT				=	$(shell echo $(PWD) | grep -q '^/mnt/' && echo 1 || echo 0)
+ifeq ($(IS_WSL), 1)
+    CFLAGS += -DUSING_WSL
+    ifeq ($(IS_MNT), 1)
+        $(warning WARNING: You are in a /mnt/ directory, which will cause performance issues in WSL! The program might not even load at all. Please move the repository to your internal WSL file system.)
+    endif
+endif
+
+
+
 .SILENT:
 
 all: $(LIBFT) $(NAME)
@@ -40,7 +48,7 @@ $(NAME): $(OBJ)
 
 $(LIBFT):
 	echo "$(COL_YELLOW)Building $(LIBFT)...$(COL_DEFAULT)"
-	$(MAKE) -C libft
+	$(MAKE) -C include/libft
 	echo "$(COL_GREEN)Successfully built $(LIBFT).$(COL_DEFAULT)"
 
 ./obj/%.o: %.c
@@ -48,12 +56,12 @@ $(LIBFT):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	$(MAKE) -C libft clean > /dev/null
+	$(MAKE) -C include/libft clean > /dev/null
 	rm -rf obj
 	echo "$(COL_GREEN)Object files have been removed.$(COL_DEFAULT)"
 
 fclean: clean
-	$(MAKE) -C libft fclean > /dev/null
+	$(MAKE) -C include/libft fclean > /dev/null
 	echo "$(COL_GREEN)$(LIBFT) has been removed.$(COL_DEFAULT)"
 	rm -f $(NAME)
 	echo "$(COL_GREEN)$(NAME) has been removed.$(COL_DEFAULT)"

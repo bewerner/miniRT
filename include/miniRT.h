@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/07 12:30:26 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 05:37:06 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,13 @@
 #  endif
 # endif
 
-# include "../libft/libft.h"
+# ifdef USING_WSL
+#  define WSL 1
+# else
+#  define WSL 0
+# endif
+
+# include "libft/libft.h"
 # include "glad/glad.h"
 # include <GLFW/glfw3.h>
 # include "stb/stb_image.h"
@@ -399,7 +405,7 @@ typedef struct s_rt
 	int				mode;
 	int				fd;
 	bool			cursor_is_settable;
-	bool			hide_gizmo;
+	bool			show_gizmo;
 	float			debug;
 	float			debug2;
 	int				sample_count;
