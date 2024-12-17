@@ -1,18 +1,9 @@
-./miniRT scenes/compare/roughness_000.rt
-./miniRT scenes/compare/roughness_020.rt
-./miniRT scenes/compare/roughness_040.rt
-./miniRT scenes/compare/roughness_060.rt
-./miniRT scenes/compare/roughness_080.rt
-./miniRT scenes/compare/roughness_100.rt
-./miniRT scenes/compare/metallic_000.rt
-./miniRT scenes/compare/metallic_020.rt
-./miniRT scenes/compare/metallic_040.rt
-./miniRT scenes/compare/metallic_060.rt
-./miniRT scenes/compare/metallic_080.rt
-./miniRT scenes/compare/metallic_100.rt
-./miniRT scenes/compare/ior_100.rt
-./miniRT scenes/compare/ior_120.rt
-./miniRT scenes/compare/ior_140.rt
-./miniRT scenes/compare/ior_160.rt
-./miniRT scenes/compare/ior_180.rt
-./miniRT scenes/compare/ior_200.rt
+./miniRT scenes/primitives.rt
+./miniRT scenes/checkerboard.rt
+./miniRT scenes/soft_light.rt
+./miniRT scenes/poker.rt
+./miniRT scenes/poker2.rt
+./miniRT scenes/road3.rt
+
+# infinity mirror
+# caleidoscope
