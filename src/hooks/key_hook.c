@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/12/17 07:20:27 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 12:34:47 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ static void	key_hook_axial_view(int key, int action, t_rt *rt)
 	}
 }
 
-void	key_hook_debug(int key, int action, t_rt *rt)
+static void	key_hook_debug(int key, int action, t_rt *rt)
 {
 	if (key == GLFW_KEY_UP && action)
 	{
@@ -165,7 +165,7 @@ void	key_hook_debug(int key, int action, t_rt *rt)
 	}
 }
 
-void	key_hook_render_scale(int key, int action, t_rt *rt)
+static void	key_hook_render_scale(int key, int action, t_rt *rt)
 {
 	float before = rt->max_render_scale;
 	if (key == GLFW_KEY_I && action)
@@ -182,7 +182,7 @@ void	key_hook_render_scale(int key, int action, t_rt *rt)
 	printf("Render Scale: %3.2f%%\n", 100.0f * rt->render_scale);
 }
 
-void	key_hook_mode(int key, int action, t_rt *rt)
+static void	key_hook_mode(int key, int action, t_rt *rt)
 {
 	if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 	{
@@ -199,6 +199,22 @@ void	key_hook_mode(int key, int action, t_rt *rt)
 	else
 		return ;
 	rt->sample_count = 0;
+}
+
+static void	key_hook_view_transform(int key, int action, t_rt *rt)
+{
+	if (key == GLFW_KEY_V && action == GLFW_PRESS)
+	{
+		rt->view_transform++;
+		if (rt->view_transform > VIEW_RAW)
+			rt->view_transform = VIEW_AGX;
+		if (rt->view_transform == VIEW_AGX)
+			printf("View Transform: AgX\n");
+		if (rt->view_transform == VIEW_STANDARD)
+			printf("View Transform: Standard\n");
+		if (rt->view_transform == VIEW_RAW)
+			printf("View Transform: Raw\n");
+	}
 }
 
 void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -229,4 +245,5 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 	key_hook_debug(key, action, rt);
 	key_hook_render_scale(key, action, rt);
 	key_hook_mode(key, action, rt);
+	key_hook_view_transform(key, action, rt);
 }

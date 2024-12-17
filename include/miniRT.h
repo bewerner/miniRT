@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/17 05:37:06 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 12:36:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,13 @@ typedef enum e_mode
 	MODE_NORMAL,
 	MODE_RENDER
 }	t_mode;
+
+typedef enum e_view
+{
+	VIEW_AGX,
+	VIEW_STANDARD,
+	VIEW_RAW
+}	t_view;
 
 typedef union u_color
 {
@@ -350,6 +357,7 @@ typedef struct s_ubo
 	int				glossy_bounce_count;
 	int				max_glossy_bounces;
 	float			env_weight_adjustment;
+	int				view_transform;
 }	t_ubo;
 
 typedef struct s_rt
@@ -418,6 +426,7 @@ typedef struct s_rt
 	float			max_render_scale;
 	bool			moving;
 	float			env_weight_adjustment;
+	t_view			view_transform;
 }	t_rt;
 
 // main.c

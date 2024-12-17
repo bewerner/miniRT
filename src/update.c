@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:37:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/17 04:48:20 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 12:36:48 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	update_ubo_rt(t_rt *rt)
 	ubo_rt.glossy_bounce_count = rt->glossy_bounce_count;
 	ubo_rt.max_glossy_bounces = rt->max_glossy_bounces;
 	ubo_rt.env_weight_adjustment = rt->env_weight_adjustment;
+	ubo_rt.view_transform = (int)rt->view_transform;
 	glBindBuffer(GL_UNIFORM_BUFFER, rt->ubo_rt_id);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(t_ubo), &ubo_rt);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
