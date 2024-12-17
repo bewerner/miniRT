@@ -3,7 +3,7 @@
 tex		wood_color		image		assets/materials/Wood067_4K-PNG/Wood067_4K-PNG_Color.png
 tex		wood_normal		image		assets/materials/Wood067_4K-PNG/Wood067_2K-PNG_NormalGL.png
 
-tex		fabric_color	image		assets/materials/Fabric032_1K-PNG/Fabric032_1K-PNG_Color.png
+# tex		fabric_color	image		assets/materials/Fabric032_1K-PNG/Fabric032_1K-PNG_Color.png
 tex		fabric_normal	image		assets/materials/Fabric032_1K-PNG/Fabric032_1K-PNG_NormalGL.png
 
 tex		white			image		assets/materials/poker_chips/poker_chip_4k_white.png
@@ -12,17 +12,19 @@ tex		green			image		assets/materials/poker_chips/poker_chip_4k_green.png
 tex		blue			image		assets/materials/poker_chips/poker_chip_4k_blue.png
 tex		black			image		assets/materials/poker_chips/poker_chip_4k_black.png
 tex		chip_normal		image		assets/materials/poker_chips/poker_chip_4k_normal.png
-
+tex		chip_rough		image		assets/materials/poker_chips/poker_chip_4k_roughness.png
 
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color     normal_map       normal_strength
+# mat	wood                          36,18,6           0.000000       0.140813       1.450000       0.000000       0.000000            255,255,255        wood_normal      1
 mat	wood                          wood_color        0.000000       0.140813       1.450000       0.000000       0.000000            255,255,255        wood_normal      1
-mat	fabric                        fabric_color      0.000000       0.767372       1.450000       0.000000       0.000000            255,255,255        fabric_normal    0.6
-mat	white_chip                    white             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
-mat	red_chip                      red               0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
-mat	green_chip                    green             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
-mat	blue_chip                     blue              0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
-mat	black_chip                    black             0.000000       0.400000       1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+# mat	fabric                        fabric_color      0.000000       0.767372       1.450000       0.000000       0.000000            255,255,255        fabric_normal    0.6
+mat	fabric                        181,176,174       0.000000       0.767372       1.450000       0.000000       0.000000            255,255,255        fabric_normal    0.6
+mat	white_chip                    white             0.000000       chip_rough     1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	red_chip                      red               0.000000       chip_rough     1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	green_chip                    green             0.000000       chip_rough     1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	blue_chip                     blue              0.000000       chip_rough     1.450000       0.000000       0.000000            255,255,255        chip_normal      7
+mat	black_chip                    black             0.000000       chip_rough     1.450000       0.000000       0.000000            255,255,255        chip_normal      7
 
 # CYLINDERS
 #	origin                                          orientation                                    diameter       height         material         uv_scale
@@ -153,8 +155,8 @@ C	  -22.344769,   -5.374761,    3.897861          0.941350,    0.266972,   -0.20
 
 # AMBIENT
 #	strength             color
-A	0.65                 assets/environments/empty_play_room_4k.hdr
+A	0.55                 assets/environments/empty_play_room_4k.hdr
 
 # RENDER SETTINGS
 #	max_diffuse_bounces    max_glossy_bounces    max_samples
-R	1                      0
+R	2                      0
