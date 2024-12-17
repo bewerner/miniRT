@@ -15,6 +15,10 @@
 #define MODE_NORMAL		1
 #define MODE_RENDER		2
 
+#define VIEW_AGX		0
+#define VIEW_STANDARD	1
+#define VIEW_RAW		2
+
 #define TEX_NONE		0
 #define TEX_IMAGE		1
 #define TEX_CHECKER		2
@@ -181,6 +185,7 @@ struct t_rt
 	int				glossy_bounce_count;
 	int				max_glossy_bounces;
 	float			env_weight_adjustment;
+	int				view_transform;
 };
 
 // ┌───────────────────────────┐
