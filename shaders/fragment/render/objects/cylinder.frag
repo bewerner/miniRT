@@ -141,8 +141,8 @@ vec2	get_uv_cap(vec3 cap_origin, vec3 orientation, float radius, vec3 pos, bool 
 		}
 		float rad = acos(dot(normalize(orientation.yz), vec2(0, 1)));
 		pos = vec3_rotate_x(pos, rad);
-		tangent = vec3_rotate_x(tangent, -rad);
-		bitangent = vec3_rotate_x(bitangent, -rad);
+		tangent = vec3_rotate_x(tangent, rad);
+		bitangent = vec3_rotate_x(bitangent, rad);
 	}
 	tangent = normalize(tangent);
 	bitangent = normalize(bitangent);

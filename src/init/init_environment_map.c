@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 01:05:17 by bwerner           #+#    #+#             */
-/*   Updated: 2024/12/03 22:43:11 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/17 11:44:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ void	create_environment_map(t_rt *rt)
 		terminate("environment map weights", NULL, 1, rt);
 	}
 	length = (size_t)width * height;
-	apply_strength(rt->ambient_strength, image, length);
+	if (rt->ambient_strength > 1.0f)
+		apply_strength(rt->ambient_strength, image, length);
 	set_importance_weight(image, weights, width, height, length);
 	set_cumulative_distribution(weights, length);
 	compensate_weights(weights, length);
+	if (rt->ambient_strength < 1.0f)
+		apply_strength(rt->ambient_strength, image, length);
 	glGenTextures(1, &rt->environment_map_id);
 	glActiveTexture(GL_TEXTURE0 + 4);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, rt->environment_map_id);
