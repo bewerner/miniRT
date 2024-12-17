@@ -11,37 +11,50 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 - Material properties (Roughness, Metallic, Base Color) can be values or textures
 - Normal Maps
 - Point Lights (with radius)
-- Primitives: Sphere, Cylinder, Plane and Hyperboloid
+- Primitives: Sphere, Cylinder, Plane and Hyperboloid \
 
-  [*primitives.rt image*]
+	[*primitives.rt image*]
 - AgX color view transform (I created my own 3D LUT using Blender)
 
-  [*raw vs agx images*]
+	[*raw vs agx images*]
 - Reflections and Bounce Light (glossy/diffuse bounces)
-  <p float="left">
-	  <img src="docs/box_1__59302_samples.png" width="32%" />
-	  <img src="docs/box_2__84323_samples.png" width="32%" /> 
-	  <img src="docs/box_3__95201_samples.png" width="32%" />
-  </p>
-- Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo showing orientation)
-  <p float="left">
-	  <img src="docs/road__16261_samples.png" width="32%" />
-	  <img src="docs/solid.png" width="32%" /> 
-	  <img src="docs/normal.png" width="32%" />
-  </p>
-- Adaptive renderscale during viewport navigation
-
-  [*gif/video showing viewport navigation*]
+	<p float="left">
+		<img src="docs/box_1__59302_samples.png" width="32%" />
+		<img src="docs/box_2__84323_samples.png" width="32%" /> 
+		<img src="docs/box_3__95201_samples.png" width="32%" />
+	</p>
+- Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo)
+	<p float="left">
+		<img src="docs/road__16261_samples.png" width="32%" />
+		<img src="docs/solid.png" width="32%" /> 
+		<img src="docs/normal.png" width="32%" />
+	</p>
+- Adaptive renderscale during viewport navigation to ensure smooth FPS \
+	![renderscale](docs/renderscale.gif)
 
 
 # Renders
 
+`road.rt`\
 ![road](docs/road__16261_samples.png)
-![random_materials](docs/random_materials__16124_samples.png)
+
+`metal.rt`\
 ![metal](docs/metal__62213_samples.png)
+
+`random_materials.rt`\
+![random_materials](docs/random_materials__16124_samples.png)
+
+`rainbow.rt`\
 ![rainbow](docs/rainbow__13005_samples.png)
+
+`checkerboard.rt`\
 ![checkerboard](docs/checkerboard__192139_samples.png)
+
+`ocean.rt`\
 ![ocean](docs/ocean__16513_samples.png)
+
+`caleidoscope.rt`&nbsp;&nbsp;&nbsp;&nbsp;( *hold <kbd>↑</kbd> to animate* )\
+![caleidoscope](docs/caleidoscope.gif)
 
 
 # Comparing with Blender Cycles
@@ -55,13 +68,13 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 	<img src="docs/compare/blender/roughness_060.png" width="15%" />
 	<img src="docs/compare/blender/roughness_080.png" width="15%" />
 	<img src="docs/compare/blender/roughness_100.png" width="15%" />
-	<span><br>miniRT‎<br></span>
-	<img src="docs/compare/blender/roughness_000.png" width="15%" />
-	<img src="docs/compare/blender/roughness_020.png" width="15%" />
-	<img src="docs/compare/blender/roughness_040.png" width="15%" />
-	<img src="docs/compare/blender/roughness_060.png" width="15%" />
-	<img src="docs/compare/blender/roughness_080.png" width="15%" />
-	<img src="docs/compare/blender/roughness_100.png" width="15%" />
+	<span><br>miniRT<br></span>
+	<img src="docs/compare/miniRT/roughness_000__18518_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/roughness_020__18507_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/roughness_040__18129_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/roughness_060__18413_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/roughness_080__17660_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/roughness_100__17876_samples.png" width="15%" />
 </p>
 
 <span><br></span>
@@ -75,13 +88,13 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 	<img src="docs/compare/blender/metallic_060.png" width="15%" />
 	<img src="docs/compare/blender/metallic_080.png" width="15%" />
 	<img src="docs/compare/blender/metallic_100.png" width="15%" />
-	<span><br>miniRT‎<br></span>
-	<img src="docs/compare/blender/metallic_000.png" width="15%" />
-	<img src="docs/compare/blender/metallic_020.png" width="15%" />
-	<img src="docs/compare/blender/metallic_040.png" width="15%" />
-	<img src="docs/compare/blender/metallic_060.png" width="15%" />
-	<img src="docs/compare/blender/metallic_080.png" width="15%" />
-	<img src="docs/compare/blender/metallic_100.png" width="15%" />
+	<span><br>miniRT<br></span>
+	<img src="docs/compare/miniRT/metallic_000__15348_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/metallic_020__15343_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/metallic_040__15339_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/metallic_060__15147_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/metallic_080__15316_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/metallic_100__18569_samples.png" width="15%" />
 </p>
 
 <span><br></span>
@@ -95,11 +108,11 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 	<img src="docs/compare/blender/ior_160.png" width="15%" />
 	<img src="docs/compare/blender/ior_180.png" width="15%" />
 	<img src="docs/compare/blender/ior_200.png" width="15%" />
-	<span><br>miniRT‎<br></span>
-	<img src="docs/compare/blender/ior_100.png" width="15%" />
-	<img src="docs/compare/blender/ior_120.png" width="15%" />
-	<img src="docs/compare/blender/ior_140.png" width="15%" />
-	<img src="docs/compare/blender/ior_160.png" width="15%" />
-	<img src="docs/compare/blender/ior_180.png" width="15%" />
-	<img src="docs/compare/blender/ior_200.png" width="15%" />
+	<span><br>miniRT<br></span>
+	<img src="docs/compare/miniRT/ior_100__15512_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/ior_120__15519_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/ior_140__15514_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/ior_160__15514_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/ior_180__15536_samples.png" width="15%" />
+	<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15%" />
 </p>
