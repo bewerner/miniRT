@@ -1,7 +1,11 @@
+# TEXTURES
+#tex	name						type		path
+tex		paper_normal				image		assets/materials/white-plain-paper-bl/white-plain-paper_normal-ogl.png
+
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
 mat	mat_cube                      204,204,204       0.300000       0.100000       1.450000       0.000000       0.000000            255,255,255
-mat	mat_floor                     204,204,204       0.000000       0.500000       1.450000       0.000000       0.000000            255,255,255
+mat	mat_floor                     204,204,204       0.000000       0.500000       1.450000       0.000000       0.000000            255,255,255      paper_normal    5
 mat	mat_sphere                    204,204,204       0.300000       0.350000       1.450000       0.000000       0.000000            255,255,255
 
 # SPHERES
@@ -35,7 +39,7 @@ cy	    0.330476,   -0.695120,    0.782103          0.382096,   -0.721890,    0.5
 
 # PLANES
 #	origin                                          normal                                         material
-pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,    1.000000             mat_floor        
+pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,    1.000000             mat_floor    0.16
 
 # LIGHTS
 #	origin                                          power          color
@@ -50,6 +54,6 @@ C	   -6.809302,   37.682842,   15.143965          0.171164,   -0.929489,   -0.32
 
 # AMBIENT
 #	strength        color
-A	0.05			assets/environments/shanghai_bund_2k.hdr
+A	0.06			assets/environments/shanghai_bund_2k.hdr
 
 R	4 4
