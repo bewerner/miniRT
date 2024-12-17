@@ -10,7 +10,8 @@ vec3	apply_normal_map(t_hitpoint hitpoint)
 	tex_normal.z = clamp(tex_normal.z, 0, 1);
 	tex_normal = normalize(tex_normal);
 
-	return	(tex_normal.x * hitpoint.tangent +
-			 tex_normal.y * hitpoint.bitangent + 
-			 tex_normal.z * hitpoint.normal);
+	vec3 normal =	(tex_normal.x * hitpoint.tangent +
+					 tex_normal.y * hitpoint.bitangent + 
+					 tex_normal.z * hitpoint.normal);
+	return (normalize(normal));
 }
