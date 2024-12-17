@@ -30,7 +30,7 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 		<img src="docs/normal.png" width="32%" />
 	</p>
 - Adaptive renderscale during viewport navigation to ensure smooth FPS \
-	![renderscale](docs/renderscale.gif)
+	<img src="docs/renderscale.gif" width="97%" />
 
 
 # Renders
