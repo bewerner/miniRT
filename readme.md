@@ -12,11 +12,14 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 - Normal Maps
 - Point Lights (with radius)
 - Primitives: Sphere, Cylinder, Plane and Hyperboloid \
-
-	[*primitives.rt image*]
-- AgX color view transform (I created my own 3D LUT using Blender)
-
-	[*raw vs agx images*]
+	<img src="docs/primitives__80439_samples.png" width="97%" />
+- AgX color mapping (I created my own 3D LUT using Blender)
+	<p float="left">
+		<img src="docs/wireframe_cube__31029_samples.png" width="32%" />
+		<img src="docs/wireframe_cube__31093_samples__standard.png" width="32%" /> 
+		<img src="docs/wireframe_cube__31160_samples__raw.png" width="32%" /><br>
+		AgX, Standard (gamma corrected), Raw (linear)
+	</p>
 - Reflections and Bounce Light (glossy/diffuse bounces)
 	<p float="left">
 		<img src="docs/box_1__59302_samples.png" width="32%" />

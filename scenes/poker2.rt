@@ -16,7 +16,6 @@ tex		chip_rough		image		assets/materials/poker_chips/poker_chip_4k_roughness.png
 
 # MATERIALS
 #	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color     normal_map       normal_strength
-# mat	wood                          36,18,6           0.000000       0.140813       1.450000       0.000000       0.000000            255,255,255        wood_normal      1
 mat	wood                          wood_color        0.000000       0.140813       1.450000       0.000000       0.000000            255,255,255        wood_normal      1
 # mat	fabric                        fabric_color      0.000000       0.767372       1.450000       0.000000       0.000000            255,255,255        fabric_normal    0.6
 mat	fabric                        181,176,174       0.000000       0.767372       1.450000       0.000000       0.000000            255,255,255        fabric_normal    0.6
