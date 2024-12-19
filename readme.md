@@ -11,7 +11,7 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 - Material properties (Roughness, Metallic, Base Color) can be values or textures
 - Normal Maps
 - Point Lights (with radius)
-- Primitives: Sphere, Cylinder, Plane and Hyperboloid \
+- Primitives: Sphere, Cylinder, Hyperboloid and Plane \
 	<img src="docs/primitives__80439_samples.png" width="97%" />
 - AgX color mapping (I created my own 3D LUT using Blender)
 	<p float="left">
@@ -29,8 +29,8 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 - Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo)
 	<p float="left">
 		<img src="docs/poker2__10753_samples.png" width="32%" />
-		<img src="docs/solid.png" width="32%" /> 
-		<img src="docs/normal.png" width="32%" />
+		<img src="docs/poker2__solid.png" width="32%" /> 
+		<img src="docs/poker2__normal.png" width="32%" />
 	</p>
 - Adaptive renderscale during viewport navigation to ensure smooth FPS \
 	<img src="docs/renderscale.gif" width="97%" />
