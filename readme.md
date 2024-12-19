@@ -9,6 +9,7 @@
 [Installation](#installation) \
 [Usage](#usage) \
 [Controls](#controls) \
+[Scene format](scene-format) \
 [Assets](#assets)
 
 # Introduction
@@ -185,5 +186,28 @@ make
 ```
 
 # Controls
+
+# Scene format
+
+The `.rt` scene format describes the scene with identifiers followed by it's specific parameters.
+Parameters marked with `*` are optional.
+
+Positions and directions are specified as `vec3`.
+Colors can be specified as `u8vec3` (RGB values beween 0-255). Most color parameters can alternatively be mapped to a texture.
+Others are specified as `float`.
+
+### Camera
+
+```
+id    position    view-direction    field of view (horizontal)    f-stop*    focus-distance*
+C     vec3        vec3              float                         float      float
+```
+
+### Ambient
+
+```
+id    strength    color     
+A     float       u8vec3/texture
+```
 
 # Assets
