@@ -17,7 +17,7 @@
 This project started out as a team project at [42 Heilbronn Coding School](https://www.42heilbronn.de/) together with [nmihaile](https://github.com/nmihaile).
 While the original subject asks for a simple CPU Raytracer, we wanted to learn more about graphics programming and try to create something more complex with openGL for the GPU.
 
-After concluding the team project, I continued to work on making it more physically accurate using [Blender](https://www.blender.org) [Cycles](https://www.blender.org/features/rendering/) as a reference, restructure things, add more features and create new scenes. I probably spent the most time on my multiple importance sampling implementation for the HDRi environment maps. It turned out presentable, capable of rendering nice looking scenes, but it's very much a naive and hacky implementation. The same goes for many of the more complex parts of the program, but I'm happy with how it turned out in the end and looking forward to learn more in the future.
+After concluding the team project, I continued to work on making it more physically accurate using [Blender](https://www.blender.org) [Cycles](https://www.blender.org/features/rendering/) as a reference, restructure things, add more features and create new scenes. I probably spent the most time on my multiple importance sampling implementation for the HDRi environment maps. It's capable of rendering nice looking scenes, but it's very much a naive and hacky implementation. The same goes for many of the more complex parts of the program, but I'm happy with how it turned out in the end and looking forward to learn more in the future.
 
 # Features
 
@@ -29,17 +29,17 @@ After concluding the team project, I continued to work on making it more physica
 	<br><br>
 	<img src="docs/primitives__80439_samples.png" width="97%" />
 	<br><br>
-- AgX color mapping (I created my own 3D LUT using Blender)
-	<br><br>
-	<img src="docs/color_agx.png" width="32%" />
-	<img src="docs/color_standard.png" width="32%" /> 
-	<img src="docs/color_raw.png" width="32%" />
-	<br><br>
 - Reflections and Bounce Light (glossy/diffuse bounces)
 	<br><br>
 	<img src="docs/box_1__59302_samples.png" width="32%" />
 	<img src="docs/box_2__84323_samples.png" width="32%" /> 
 	<img src="docs/box_3__95201_samples.png" width="32%" />
+	<br><br>
+- AgX color mapping (I created my own 3D LUT using Blender)
+	<br><br>
+	<img src="docs/color_agx.png" width="32%" />
+	<img src="docs/color_standard.png" width="32%" /> 
+	<img src="docs/color_raw.png" width="32%" />
 	<br><br>
 - Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo)
 	<br><br>
@@ -192,8 +192,9 @@ make
 The `.rt` scene file format describes the scene with identifiers followed by it's specific parameters.
 Parameters and sections marked with `*` are optional.
 
-Positions and directions are specified as `vec3`. (XYZ values as floats) \
-Colors can be specified as `u8vec3` (RGB values beween 0-255). Most color parameters can alternatively be mapped to a texture. \
+Positions and directions are specified as `vec3`. (X/Y/Z values as floats) \
+Colors are generally specified as `u8vec3` (R/G/B values beween 0-255). \
+Some color parameters can alternatively be mapped to a `texture`. \
 Others are specified as `float` or `int`.
 
 ### Camera
@@ -205,9 +206,10 @@ C     vec3        vec3              float                         float      flo
 
 ### Ambient
 
+Single color or HDRi environment map
 ```
-ID    strength    color     
-A     float       u8vec3/texture
+ID    strength    color
+A     float       u8vec3/filepath_to_environment_map.hdr
 ```
 
 ### Point light
