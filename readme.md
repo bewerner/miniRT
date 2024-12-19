@@ -9,7 +9,7 @@
 [Installation](#installation) \
 [Usage](#usage) \
 [Controls](#controls) \
-[Scene format](scene-format) \
+[Scene file format](scene-file-format) \
 [Assets](#assets)
 
 # Introduction
@@ -187,27 +187,48 @@ make
 
 # Controls
 
-# Scene format
+# Scene file format
 
-The `.rt` scene format describes the scene with identifiers followed by it's specific parameters.
-Parameters marked with `*` are optional.
+The `.rt` scene file format describes the scene with identifiers followed by it's specific parameters.
+Parameters and sections marked with `*` are optional.
 
-Positions and directions are specified as `vec3`.
-Colors can be specified as `u8vec3` (RGB values beween 0-255). Most color parameters can alternatively be mapped to a texture.
-Others are specified as `float`.
+Positions and directions are specified as `vec3`. (XYZ values as floats) \
+Colors can be specified as `u8vec3` (RGB values beween 0-255). Most color parameters can alternatively be mapped to a texture. \
+Others are specified as `float` or `int`.
 
 ### Camera
 
 ```
-id    position    view-direction    field of view (horizontal)    f-stop*    focus-distance*
+ID    position    view-direction    field of view (horizontal)    f-stop*    focus-distance*
 C     vec3        vec3              float                         float      float
 ```
 
 ### Ambient
 
 ```
-id    strength    color     
+ID    strength    color     
 A     float       u8vec3/texture
+```
+
+### Point light
+
+```
+ID    position    power (in watts)    color     radius*
+l     vec3        float               u8vec3    float
+```
+
+### Render settings
+
+```
+ID    max. diffuse bounces    max. glossy bounces    max_samples*
+R     int                     int                    int
+```
+
+### Window size
+
+```
+ID    width    height
+W     int      int
 ```
 
 # Assets
