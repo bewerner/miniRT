@@ -23,22 +23,32 @@ After concluding the team project, I continued to work on making it more physica
 - Material properties (Roughness, Metallic, Base Color) can be values or textures
 - Normal Maps
 - Point Lights (with radius)
-- Primitives: Sphere, Cylinder, Hyperboloid and Plane \
+- Primitives: Sphere, Cylinder, Hyperboloid and Plane
+	<br><br>
 	<img src="docs/primitives__80439_samples.png" width="97%" />
-- AgX color mapping (I created my own 3D LUT using Blender) \
+	<br><br>
+- AgX color mapping (I created my own 3D LUT using Blender)
+	<br><br>
 	<img src="docs/color_agx.png" width="32%" />
 	<img src="docs/color_standard.png" width="32%" /> 
 	<img src="docs/color_raw.png" width="32%" />
-- Reflections and Bounce Light (glossy/diffuse bounces) \
+	<br><br>
+- Reflections and Bounce Light (glossy/diffuse bounces)
+	<br><br>
 	<img src="docs/box_1__59302_samples.png" width="32%" />
 	<img src="docs/box_2__84323_samples.png" width="32%" /> 
 	<img src="docs/box_3__95201_samples.png" width="32%" />
-- Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo) \
+	<br><br>
+- Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo)
+	<br><br>
 	<img src="docs/poker2__10753_samples.png" width="32%" />
 	<img src="docs/poker2__solid.png" width="32%" /> 
 	<img src="docs/poker2__normal.png" width="32%" />
-- Adaptive renderscale during viewport navigation to ensure smooth FPS \
+	<br><br>
+- Adaptive renderscale during viewport navigation to ensure smooth FPS
+	<br><br>
 	<img src="docs/renderscale.gif" width="97%" />
+	<br><br>
 
 
 # Rendered Scenes
@@ -76,69 +86,64 @@ After concluding the team project, I continued to work on making it more physica
 `soft_light.rt`\
 ![soft_light](docs/soft_light__7372_samples.png)
 
-`caleidoscope.rt`&nbsp;&nbsp;&nbsp;&nbsp;( *hold <kbd>↑</kbd> to animate* )\
+`caleidoscope.rt`&nbsp;&nbsp;&nbsp;&nbsp;( *hold <kbd>↑</kbd> to animate* ) \
 ![caleidoscope](docs/caleidoscope.gif)
 
 
 # Comparing with Blender Cycles
 
 ### Roughness from `0.0` to `1.0`
-<p float="left">
-	<span>Cycles<br></span>
-	<img src="docs/compare/blender/roughness_000.png" width="15%" />
-	<img src="docs/compare/blender/roughness_020.png" width="15%" />
-	<img src="docs/compare/blender/roughness_040.png" width="15%" />
-	<img src="docs/compare/blender/roughness_060.png" width="15%" />
-	<img src="docs/compare/blender/roughness_080.png" width="15%" />
-	<img src="docs/compare/blender/roughness_100.png" width="15%" />
-	<span><br>miniRT<br></span>
-	<img src="docs/compare/miniRT/roughness_000__18518_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/roughness_020__18507_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/roughness_040__18129_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/roughness_060__18413_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/roughness_080__17660_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/roughness_100__17876_samples.png" width="15%" />
-</p>
 
-<span><br></span>
+Cycles<br>
+<img src="docs/compare/blender/roughness_000.png" width="15%" />
+<img src="docs/compare/blender/roughness_020.png" width="15%" />
+<img src="docs/compare/blender/roughness_040.png" width="15%" />
+<img src="docs/compare/blender/roughness_060.png" width="15%" />
+<img src="docs/compare/blender/roughness_080.png" width="15%" />
+<img src="docs/compare/blender/roughness_100.png" width="15%" /><br>
+miniRT<br>
+<img src="docs/compare/miniRT/roughness_000__18518_samples.png" width="15%" />
+<img src="docs/compare/miniRT/roughness_020__18507_samples.png" width="15%" />
+<img src="docs/compare/miniRT/roughness_040__18129_samples.png" width="15%" />
+<img src="docs/compare/miniRT/roughness_060__18413_samples.png" width="15%" />
+<img src="docs/compare/miniRT/roughness_080__17660_samples.png" width="15%" />
+<img src="docs/compare/miniRT/roughness_100__17876_samples.png" width="15%" /><br>
+<br>
+
 
 ### Metallic from `0.0` to `1.0`
-<p float="left">
-	<span>Cycles<br></span>
-	<img src="docs/compare/blender/metallic_000.png" width="15%" />
-	<img src="docs/compare/blender/metallic_020.png" width="15%" />
-	<img src="docs/compare/blender/metallic_040.png" width="15%" />
-	<img src="docs/compare/blender/metallic_060.png" width="15%" />
-	<img src="docs/compare/blender/metallic_080.png" width="15%" />
-	<img src="docs/compare/blender/metallic_100.png" width="15%" />
-	<span><br>miniRT<br></span>
-	<img src="docs/compare/miniRT/metallic_000__15348_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/metallic_020__15343_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/metallic_040__15339_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/metallic_060__15147_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/metallic_080__15316_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/metallic_100__18569_samples.png" width="15%" />
-</p>
-
+Cycles<br>
+<img src="docs/compare/blender/metallic_000.png" width="15%" />
+<img src="docs/compare/blender/metallic_020.png" width="15%" />
+<img src="docs/compare/blender/metallic_040.png" width="15%" />
+<img src="docs/compare/blender/metallic_060.png" width="15%" />
+<img src="docs/compare/blender/metallic_080.png" width="15%" />
+<img src="docs/compare/blender/metallic_100.png" width="15%" /><br>
+miniRT<br>
+<img src="docs/compare/miniRT/metallic_000__15348_samples.png" width="15%" />
+<img src="docs/compare/miniRT/metallic_020__15343_samples.png" width="15%" />
+<img src="docs/compare/miniRT/metallic_040__15339_samples.png" width="15%" />
+<img src="docs/compare/miniRT/metallic_060__15147_samples.png" width="15%" />
+<img src="docs/compare/miniRT/metallic_080__15316_samples.png" width="15%" />
+<img src="docs/compare/miniRT/metallic_100__18569_samples.png" width="15%" /><br>
 <span><br></span>
 
 ### IOR (Index of Refraction) from `1.0` to `2.0`
-<p float="left">
-	<span>Cycles<br></span>
-	<img src="docs/compare/blender/ior_100.png" width="15%" />
-	<img src="docs/compare/blender/ior_120.png" width="15%" />
-	<img src="docs/compare/blender/ior_140.png" width="15%" />
-	<img src="docs/compare/blender/ior_160.png" width="15%" />
-	<img src="docs/compare/blender/ior_180.png" width="15%" />
-	<img src="docs/compare/blender/ior_200.png" width="15%" />
-	<span><br>miniRT<br></span>
-	<img src="docs/compare/miniRT/ior_100__15512_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/ior_120__15519_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/ior_140__15514_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/ior_160__15514_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/ior_180__15536_samples.png" width="15%" />
-	<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15%" />
-</p>
+Cycles<br>
+<img src="docs/compare/blender/ior_100.png" width="15%" />
+<img src="docs/compare/blender/ior_120.png" width="15%" />
+<img src="docs/compare/blender/ior_140.png" width="15%" />
+<img src="docs/compare/blender/ior_160.png" width="15%" />
+<img src="docs/compare/blender/ior_180.png" width="15%" />
+<img src="docs/compare/blender/ior_200.png" width="15%" /><br>
+miniRT<br>
+<img src="docs/compare/miniRT/ior_100__15512_samples.png" width="15%" />
+<img src="docs/compare/miniRT/ior_120__15519_samples.png" width="15%" />
+<img src="docs/compare/miniRT/ior_140__15514_samples.png" width="15%" />
+<img src="docs/compare/miniRT/ior_160__15514_samples.png" width="15%" />
+<img src="docs/compare/miniRT/ior_180__15536_samples.png" width="15%" />
+<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15%" /><br>
+<br>
 
 # Installation
 
