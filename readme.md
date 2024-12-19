@@ -1,9 +1,21 @@
 ![Title_Image](docs/title.png)
 
-# Description
+# Contents
+
+[Introduction](#introduction) \
+[Features](#features) \
+[Rendered Scenes](#rendered-scenes) \
+[Installation](#installation) \
+[Usage](#usage) \
+[Controls](#controls) \
+[Assets](#assets)
+
+# Introduction
 
 This project started out as a team project at [42 Heilbronn Coding School](https://www.42heilbronn.de/) together with [nmihaile](https://github.com/nmihaile).
 While the original subject asks for a simple CPU Raytracer, we wanted to learn more about graphics programming and try to create something more complex with openGL for the GPU.
+
+After concluding the team project, I continued to work on making it more physically accurate using [Blender](https://www.blender.org) [Cycles](https://www.blender.org/features/rendering/) as a reference, restructure things, add more features and create new scenes. I probably spent the most time on my multiple importance sampling implementation for the HDRi environment maps. It turned out presentable, capable of rendering nice looking scenes, but it's very much a naive and hacky implementation. The same goes for many of the more complex parts of the program, but I'm happy with how it turned out in the end and looking forward to learn more in the future.
 
 # Features
 
@@ -13,30 +25,23 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 - Point Lights (with radius)
 - Primitives: Sphere, Cylinder, Hyperboloid and Plane \
 	<img src="docs/primitives__80439_samples.png" width="97%" />
-- AgX color mapping (I created my own 3D LUT using Blender)
-	<p float="left">
-		<img src="docs/wireframe_cube__31029_samples.png" width="32%" />
-		<img src="docs/wireframe_cube__31093_samples__standard.png" width="32%" /> 
-		<img src="docs/wireframe_cube__31160_samples__raw.png" width="32%" /><br>
-		AgX, Standard (gamma corrected), Raw (linear)
-	</p>
-- Reflections and Bounce Light (glossy/diffuse bounces)
-	<p float="left">
-		<img src="docs/box_1__59302_samples.png" width="32%" />
-		<img src="docs/box_2__84323_samples.png" width="32%" /> 
-		<img src="docs/box_3__95201_samples.png" width="32%" />
-	</p>
-- Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo)
-	<p float="left">
-		<img src="docs/poker2__10753_samples.png" width="32%" />
-		<img src="docs/poker2__solid.png" width="32%" /> 
-		<img src="docs/poker2__normal.png" width="32%" />
-	</p>
+- AgX color mapping (I created my own 3D LUT using Blender) \
+	<img src="docs/color_agx.png" width="32%" />
+	<img src="docs/color_standard.png" width="32%" /> 
+	<img src="docs/color_raw.png" width="32%" />
+- Reflections and Bounce Light (glossy/diffuse bounces) \
+	<img src="docs/box_1__59302_samples.png" width="32%" />
+	<img src="docs/box_2__84323_samples.png" width="32%" /> 
+	<img src="docs/box_3__95201_samples.png" width="32%" />
+- Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo) \
+	<img src="docs/poker2__10753_samples.png" width="32%" />
+	<img src="docs/poker2__solid.png" width="32%" /> 
+	<img src="docs/poker2__normal.png" width="32%" />
 - Adaptive renderscale during viewport navigation to ensure smooth FPS \
 	<img src="docs/renderscale.gif" width="97%" />
 
 
-# Renders
+# Rendered Scenes
 
 `road.rt`\
 ![road](docs/road__2323_samples.png)
@@ -134,3 +139,11 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 	<img src="docs/compare/miniRT/ior_180__15536_samples.png" width="15%" />
 	<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15%" />
 </p>
+
+# Installation
+
+# Usage
+
+# Controls
+
+# Assets
