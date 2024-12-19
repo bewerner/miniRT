@@ -28,7 +28,7 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 	</p>
 - Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo)
 	<p float="left">
-		<img src="docs/road__16261_samples.png" width="32%" />
+		<img src="docs/poker2__10753_samples.png" width="32%" />
 		<img src="docs/solid.png" width="32%" /> 
 		<img src="docs/normal.png" width="32%" />
 	</p>
@@ -39,10 +39,25 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 # Renders
 
 `road.rt`\
-![road](docs/road__16261_samples.png)
+![road](docs/road__2323_samples.png)
 
 `metal.rt`\
 ![metal](docs/metal__62213_samples.png)
+
+`ocean.rt`\
+![ocean](docs/ocean__16513_samples.png)
+
+`poker.rt`\
+![poker](docs/poker__11227_samples.png)
+
+`poker2.rt`\
+![poker2](docs/poker2__10753_samples.png)
+
+`wireframe_cube.rt`\
+![wireframe_cube](docs/wireframe_cube__31029_samples.png)
+
+`infinity_mirror.rt`\
+![infinity_mirror](docs/infinity_mirror__562_samples.png)
 
 `random_materials.rt`\
 ![random_materials](docs/random_materials__16124_samples.png)
@@ -53,14 +68,8 @@ While the original subject asks for a simple CPU Raytracer, we wanted to learn m
 `checkerboard.rt`\
 ![checkerboard](docs/checkerboard__192139_samples.png)
 
-`infinity_mirror.rt`\
-![infinity_mirror](docs/infinity_mirror__562_samples.png)
-
 `soft_light.rt`\
 ![soft_light](docs/soft_light__7372_samples.png)
-
-`ocean.rt`\
-![ocean](docs/ocean__16513_samples.png)
 
 `caleidoscope.rt`&nbsp;&nbsp;&nbsp;&nbsp;( *hold <kbd>↑</kbd> to animate* )\
 ![caleidoscope](docs/caleidoscope.gif)
