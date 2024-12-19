@@ -5,6 +5,7 @@
 [Introduction](#introduction) \
 [Features](#features) \
 [Rendered Scenes](#rendered-scenes) \
+[Dependencies](#dependencies) \
 [Installation](#installation) \
 [Usage](#usage) \
 [Controls](#controls) \
@@ -86,9 +87,10 @@ After concluding the team project, I continued to work on making it more physica
 `soft_light.rt`\
 ![soft_light](docs/soft_light__7372_samples.png)
 
-`caleidoscope.rt`&nbsp;&nbsp;&nbsp;&nbsp;( *hold <kbd>↑</kbd> to animate* ) \
+`caleidoscope.rt` \
 ![caleidoscope](docs/caleidoscope.gif)
-
+&nbsp;&nbsp;&nbsp;( *hold <kbd>↑</kbd> to animate* )
+<br><br>
 
 # Comparing with Blender Cycles
 
@@ -145,9 +147,42 @@ miniRT<br>
 <img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15%" /><br>
 <br>
 
+# Dependencies
+
+#### Debian / Ubuntu
+```
+sudo apt update
+sudo apt install build-essential libx11-dev libglfw3-dev libglfw3 xorg-dev
+```
+
+#### Arch (x11)
+```
+sudo pacman -S glfw-x11
+```
+
+#### Arch (wayland)
+```
+sudo pacman -S glfw-wayland
+```
+
+#### MacOS
+```
+brew install glfw
+```
+
 # Installation
 
+```
+git clone https://github.com/bewerner/FdF.git
+cd FdF
+make
+```
+
 # Usage
+
+```
+./miniRT path_to_scene_file.rt
+```
 
 # Controls
 
