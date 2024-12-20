@@ -83,69 +83,77 @@ After concluding the team project, I continued to work on making it more physica
 ![rainbow](docs/rainbow__13005_samples.png)
 
 `checkerboard.rt`\
-![checkerboard](docs/checkerboard__192139_samples.png)
+![checkerboard](docs/checkerboard__21756_samples.png)
 
 `soft_light.rt`\
 ![soft_light](docs/soft_light__7372_samples.png)
 
 `caleidoscope.rt` \
-![caleidoscope](docs/caleidoscope.gif)
+![caleidoscope](docs/caleidoscope.gif) \
 &nbsp;&nbsp;&nbsp;( *hold <kbd>↑</kbd> to animate* )
 <br><br>
 
 # Comparing with Blender Cycles
 
+<div style="display: flex; justify-content: space-between;">
+  <span>Cycles</span>
+  <span>miniRT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</div>
+<img src="docs/compare/blender/wireframe_cube.png" width="47.8%" />
+<img src="docs/wireframe_cube__31029_samples.png" width="47.8%" />
+<br><br>
+
 ### Roughness from `0.0` to `1.0`
 
 Cycles<br>
-<img src="docs/compare/blender/roughness_000.png" width="15%" />
-<img src="docs/compare/blender/roughness_020.png" width="15%" />
-<img src="docs/compare/blender/roughness_040.png" width="15%" />
-<img src="docs/compare/blender/roughness_060.png" width="15%" />
-<img src="docs/compare/blender/roughness_080.png" width="15%" />
-<img src="docs/compare/blender/roughness_100.png" width="15%" /><br>
+<img src="docs/compare/blender/roughness_000.png" width="15.5%" />
+<img src="docs/compare/blender/roughness_020.png" width="15.5%" />
+<img src="docs/compare/blender/roughness_040.png" width="15.5%" />
+<img src="docs/compare/blender/roughness_060.png" width="15.5%" />
+<img src="docs/compare/blender/roughness_080.png" width="15.5%" />
+<img src="docs/compare/blender/roughness_100.png" width="15.5%" /><br>
 miniRT<br>
-<img src="docs/compare/miniRT/roughness_000__18518_samples.png" width="15%" />
-<img src="docs/compare/miniRT/roughness_020__18507_samples.png" width="15%" />
-<img src="docs/compare/miniRT/roughness_040__18129_samples.png" width="15%" />
-<img src="docs/compare/miniRT/roughness_060__18413_samples.png" width="15%" />
-<img src="docs/compare/miniRT/roughness_080__17660_samples.png" width="15%" />
-<img src="docs/compare/miniRT/roughness_100__17876_samples.png" width="15%" /><br>
+<img src="docs/compare/miniRT/roughness_000__18518_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/roughness_020__18507_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/roughness_040__18129_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/roughness_060__18413_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/roughness_080__17660_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/roughness_100__17876_samples.png" width="15.5%" /><br>
 <br>
 
 
 ### Metallic from `0.0` to `1.0`
 Cycles<br>
-<img src="docs/compare/blender/metallic_000.png" width="15%" />
-<img src="docs/compare/blender/metallic_020.png" width="15%" />
-<img src="docs/compare/blender/metallic_040.png" width="15%" />
-<img src="docs/compare/blender/metallic_060.png" width="15%" />
-<img src="docs/compare/blender/metallic_080.png" width="15%" />
-<img src="docs/compare/blender/metallic_100.png" width="15%" /><br>
+<img src="docs/compare/blender/metallic_000.png" width="15.5%" />
+<img src="docs/compare/blender/metallic_020.png" width="15.5%" />
+<img src="docs/compare/blender/metallic_040.png" width="15.5%" />
+<img src="docs/compare/blender/metallic_060.png" width="15.5%" />
+<img src="docs/compare/blender/metallic_080.png" width="15.5%" />
+<img src="docs/compare/blender/metallic_100.png" width="15.5%" /><br>
 miniRT<br>
-<img src="docs/compare/miniRT/metallic_000__15348_samples.png" width="15%" />
-<img src="docs/compare/miniRT/metallic_020__15343_samples.png" width="15%" />
-<img src="docs/compare/miniRT/metallic_040__15339_samples.png" width="15%" />
-<img src="docs/compare/miniRT/metallic_060__15147_samples.png" width="15%" />
-<img src="docs/compare/miniRT/metallic_080__15316_samples.png" width="15%" />
-<img src="docs/compare/miniRT/metallic_100__18569_samples.png" width="15%" /><br>
+<img src="docs/compare/miniRT/metallic_000__15348_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/metallic_020__15343_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/metallic_040__15339_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/metallic_060__15147_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/metallic_080__15316_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/metallic_100__18569_samples.png" width="15.5%" /><br>
 <span><br></span>
 
 ### IOR (Index of Refraction) from `1.0` to `2.0`
 Cycles<br>
-<img src="docs/compare/blender/ior_100.png" width="15%" />
-<img src="docs/compare/blender/ior_120.png" width="15%" />
-<img src="docs/compare/blender/ior_140.png" width="15%" />
-<img src="docs/compare/blender/ior_160.png" width="15%" />
-<img src="docs/compare/blender/ior_180.png" width="15%" />
-<img src="docs/compare/blender/ior_200.png" width="15%" /><br>
+<img src="docs/compare/blender/ior_100.png" width="15.5%" />
+<img src="docs/compare/blender/ior_120.png" width="15.5%" />
+<img src="docs/compare/blender/ior_140.png" width="15.5%" />
+<img src="docs/compare/blender/ior_160.png" width="15.5%" />
+<img src="docs/compare/blender/ior_180.png" width="15.5%" />
+<img src="docs/compare/blender/ior_200.png" width="15.5%" /><br>
 miniRT<br>
-<img src="docs/compare/miniRT/ior_100__15512_samples.png" width="15%" />
-<img src="docs/compare/miniRT/ior_120__15519_samples.png" width="15%" />
-<img src="docs/compare/miniRT/ior_140__15514_samples.png" width="15%" />
-<img src="docs/compare/miniRT/ior_160__15514_samples.png" width="15%" />
-<img src="docs/compare/miniRT/ior_180__15536_samples.png" width="15%" />
-<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15%" /><br>
+<img src="docs/compare/miniRT/ior_100__15512_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/ior_120__15519_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/ior_140__15514_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/ior_160__15514_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/ior_180__15536_samples.png" width="15.5%" />
+<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15.5%" /><br>
 <br>
 
 # Dependencies

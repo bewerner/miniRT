@@ -1,0 +1,21 @@
+# MATERIALS
+#	name                          color             metallic       roughness      ior            transmission   emission_strength   emission_color
+mat	Material                      204,204,204       0.000000       1.000000       1.450000       0.000000       0.000000            255,255,255
+
+# SPHERES
+#	origin                                          diameter       material
+sp	    0.000000,    0.000000,    1.000000          2.000000       Material            
+
+# PLANES
+#	origin                                          normal                                         material
+pl	    0.000000,    0.000000,    0.000000          0.000000,    0.000000,    1.000000             Material            
+
+# CAMERA
+#	origin                                          orientation                                    fiew of view
+C	   -2.223047,   -9.857886,    4.958309          0.204733,    0.910111,   -0.360252             39.597755      
+
+# AMBIENT
+#	strength             color
+A		1.5				assets/environments/syferfontein_18d_clear_2k.hdr
+
+R 0 0
