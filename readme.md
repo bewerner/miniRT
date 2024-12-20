@@ -95,12 +95,9 @@ After concluding the team project, I continued to work on making it more physica
 
 # Comparing with Blender Cycles
 
-<div style="display: flex; justify-content: space-between;">
-  <span>Cycles</span>
-  <span>miniRT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-</div>
-<img src="docs/compare/blender/wireframe_cube.png" width="47.8%" />
-<img src="docs/wireframe_cube__31029_samples.png" width="47.8%" />
+Cycles ↤↦ miniRT \
+<img src="docs/compare/blender/wireframe_cube.png" width="47%" />
+<img src="docs/wireframe_cube__31029_samples.png" width="47%" />
 <br><br>
 
 ### Roughness from `0.0` to `1.0`
@@ -182,8 +179,8 @@ brew install glfw
 # Installation
 
 ```
-git clone https://github.com/bewerner/FdF.git
-cd FdF
+git clone https://github.com/bewerner/miniRT.git
+cd miniRT
 make
 ```
 
