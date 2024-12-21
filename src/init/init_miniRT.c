@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:55:35 by bwerner           #+#    #+#             */
-/*   Updated: 2024/12/17 05:38:16 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/21 23:40:56 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	init_camera(t_camera *camera, t_rt *rt)
 	dir = camera->direction;
 	camera->pitch = atan2f(sqrtf(dir.x * dir.x + dir.y * dir.y), -dir.z);
 	camera->yaw = atan2f(dir.x, dir.y) * -1;
+	// printf("Camera rotation in blender: X %f, Z %f\n", camera->pitch * (180.0f/M_PI), camera->yaw * (180.0f/M_PI));
 	rad = camera->fov * (M_PI / 180);
 	camera->focal_length = 1.0f / tanf(rad * 0.5f);
 	reset_camera(camera, rt);
