@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:41:08 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/10/31 07:18:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/22 00:17:21 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	set_color_and_material_and_uv_scale(t_object *o, char *line, t_rt *rt)
 {
 	o->uv_scale = (t_vec2){1, 1};
 	ft_skipspace(&line);
-	if (ft_isalpha(*line))
+	if (ft_isalpha(*line) || !has_next_value(line))
 	{
 		o->material = get_next_material(line, o, rt);
 		o->base_color = (t_vec3){{-1.0f, -1.0f, -1.0f}};
