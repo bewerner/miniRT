@@ -59,7 +59,7 @@ After concluding the team project, I continued to work on making it more physica
 ![road](docs/road__2323_samples.png)
 
 `metal.rt`\
-![metal](docs/metal__62213_samples.png)
+![metal](docs/metal__5356_samples.png)
 
 `ocean.rt`\
 ![ocean](docs/ocean__16513_samples.png)
