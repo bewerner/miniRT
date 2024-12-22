@@ -229,7 +229,7 @@ make
 
 # Scene file format
 
-The `.rt` scene file format describes the scene with identifiers followed by it's specific parameters.
+The `.rt` scene file format describes the scene with identifiers followed by their specific parameters.
 Parameters and sections marked with `*` are optional.
 
 Positions and directions are specified as `vec3`. (X/Y/Z values as floats) \
