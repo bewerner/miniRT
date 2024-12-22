@@ -9,7 +9,7 @@
 [Installation](#installation) \
 [Usage](#usage) \
 [Controls](#controls) \
-[Scene file format](scene-file-format) \
+[Scene file format](#scene-file-format) \
 [Assets](#assets)
 
 # Introduction
@@ -43,9 +43,9 @@ After concluding the team project, I continued to work on making it more physica
 	<br><br>
 - Viewport Shading Modes: Render, Solid and Normal (with Blender-like Gizmo)
 	<br><br>
-	<img src="docs/poker2__10753_samples.png" width="32%" />
-	<img src="docs/poker2__solid.png" width="32%" /> 
-	<img src="docs/poker2__normal.png" width="32%" />
+	<img src="docs/mode_render.png" width="32%" />
+	<img src="docs/mode_solid.png" width="32%" /> 
+	<img src="docs/mode_normal.png" width="32%" />
 	<br><br>
 - Adaptive renderscale during viewport navigation to ensure smooth FPS
 	<br><br>
@@ -95,15 +95,20 @@ After concluding the team project, I continued to work on making it more physica
 
 # Comparing with Blender Cycles
 
-left is Cycles, right is miniRT \
+left is Cycles, right is miniRT
+
 <img src="docs/compare/blender/poker.png" width="47%" />
 <img src="docs/poker__11227_samples.png" width="47%" />
+
 <img src="docs/compare/blender/wireframe_cube.png" width="47%" />
 <img src="docs/wireframe_cube__31029_samples.png" width="47%" />
-<br><br>
+
+<img src="docs/compare/blender/random_materials.png" width="47%" />
+<img src="docs/random_materials__16124_samples.png" width="47%" />
+
+<br>
 
 ### Roughness from `0.0` to `1.0`
-
 Cycles<br>
 <img src="docs/compare/blender/roughness_000.png" width="15.5%" />
 <img src="docs/compare/blender/roughness_020.png" width="15.5%" />
@@ -117,9 +122,8 @@ miniRT<br>
 <img src="docs/compare/miniRT/roughness_040__18129_samples.png" width="15.5%" />
 <img src="docs/compare/miniRT/roughness_060__18413_samples.png" width="15.5%" />
 <img src="docs/compare/miniRT/roughness_080__17660_samples.png" width="15.5%" />
-<img src="docs/compare/miniRT/roughness_100__17876_samples.png" width="15.5%" /><br>
-<br>
-
+<img src="docs/compare/miniRT/roughness_100__17876_samples.png" width="15.5%" />
+<br><br>
 
 ### Metallic from `0.0` to `1.0`
 Cycles<br>
@@ -135,8 +139,8 @@ miniRT<br>
 <img src="docs/compare/miniRT/metallic_040__15339_samples.png" width="15.5%" />
 <img src="docs/compare/miniRT/metallic_060__15147_samples.png" width="15.5%" />
 <img src="docs/compare/miniRT/metallic_080__15316_samples.png" width="15.5%" />
-<img src="docs/compare/miniRT/metallic_100__18569_samples.png" width="15.5%" /><br>
-<span><br></span>
+<img src="docs/compare/miniRT/metallic_100__18569_samples.png" width="15.5%" />
+<br><br>
 
 ### IOR (Index of Refraction) from `1.0` to `2.0`
 Cycles<br>
@@ -152,8 +156,8 @@ miniRT<br>
 <img src="docs/compare/miniRT/ior_140__15514_samples.png" width="15.5%" />
 <img src="docs/compare/miniRT/ior_160__15514_samples.png" width="15.5%" />
 <img src="docs/compare/miniRT/ior_180__15536_samples.png" width="15.5%" />
-<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15.5%" /><br>
-<br>
+<img src="docs/compare/miniRT/ior_200__15534_samples.png" width="15.5%" />
+<br><br>
 
 # Dependencies
 
@@ -194,6 +198,40 @@ make
 
 # Controls
 
+### Movement
+
+| ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Key⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                     | ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Description⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           |
+|----------------------------------------------------------------|-----------------------------------------------------------|
+| <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd>         | Move around                                               |
+| <kbd>E</kbd> or <kbd>Space</kbd>                               | Move up                                                   |
+| <kbd>C</kbd> or <kbd>Shift</kbd>                               | Move down                                                 |
+| <kbd>Right Mouse Button</kbd> and drag                         | Look around                                               |
+| <kbd>Scroll Wheel up/down</kbd>                                | Increase/decrease movement speed                          |
+| <kbd>Scroll Wheel up/down</kbd>                                | Increase/decrease movement speed                          |
+| <kbd>M</kbd>                                                   | Toggle mouse input (if there are issues)                  |
+
+### Camera
+
+| ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Key⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                     | ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Description⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           |
+|----------------------------------------------------------------|-----------------------------------------------------------|
+| <kbd>F</kbd>                                                   | Toggle depth of field                                     |
+| <kbd>R</kbd>                                                   | Reset camera view                                         |
+| <kbd>Numpad 1</kbd>, <kbd>Numpad 3</kbd>, <kbd>Numpad 7</kbd>  | Axial view                                                |
+| <kbd>P</kbd>                                                   | Print camera info                                         |
+
+### General
+
+| ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Key⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                     | ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Description⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           |
+|----------------------------------------------------------------|-----------------------------------------------------------|
+| <kbd>Tab</kbd>                                                 | Cycle through shading modes (Render, Solid, Normal)       |
+| <kbd>V</kbd>                                                   | Cycle through color view transforms (AgX, Standard, Raw)  |
+| <kbd>G</kbd>                                                   | Toggle gizmo in render mode                               |
+| <kbd>I</kbd> / <kbd>K</kbd>                                    | Increase/decrease render scale                            |
+| <kbd>O</kbd>                                                   | Save screenshot                                           |
+| <kbd>Esc</kbd>                                                 | Quit                                                      |
+
+
+
 # Scene file format
 
 The `.rt` scene file format describes the scene with identifiers followed by it's specific parameters.
@@ -213,7 +251,7 @@ C     vec3        vec3              float                         float      flo
 
 ### Ambient
 
-Single color or HDRi environment map
+Single color ambient or HDRi environment map
 ```
 ID    strength    color
 A     float       u8vec3/filepath_to_environment_map.hdr
@@ -229,8 +267,8 @@ l     vec3        float               u8vec3    float
 ### Render settings
 
 ```
-ID    max. diffuse bounces    max. glossy bounces    max_samples*
-R     int                     int                    int
+ID    max diffuse bounces    max glossy bounces    max_samples*
+R     int                    int                   int
 ```
 
 ### Window size
@@ -240,4 +278,93 @@ ID    width    height
 W     int      int
 ```
 
+### Textures
+
+There are two types of textures: image texture and 3D checkerboard texture. \
+Images textures are limited to 10 per scene and overall textures are limited to 100 per scene. \
+Textures are defined with the `tex` identifier and can be referenced by their `name` in any `material`.
+
+### Image texture
+```
+ID     name        type     path
+tex    any_name    image    filepath_to_image_file
+```
+
+### Checker texture
+```
+ID     name        type       scale    color_1    color_2
+tex    any_name    checker    float    u8vec3     u8vec3
+```
+
+### Materials
+
+Materials are defined with the `mat` identifier and can be referenced by their `name` in any `object`. \
+Materials are limited to 100 per scene. \
+**Transmission is not implemented**. It does nothing, but a value has to be provided. \
+Emission is not really properly implemented but it has an effect.
+
+### Material
+```
+ID     name        base color        metallic          roughness         IOR      transmission    emission_strength    emission_color
+mat    any_name    u8vec3/texture    u8vec3/texture    u8vec3/texture    float    float           float                u8vec3
+```
+
+### Primitives
+
+If a primitive has no material, a default material will be used.
+If a primitive has no color, it's material color will be used.
+UV-scale takes one float to uniformly scale the UV **or** a vec2 to scale width and height individually.
+
+### Plane
+```
+ID    origin    normal    color*    material*    uv-scale*
+pl    vec3      vec3      u8vec3    material     float/vec2
+```
+
+### Sphere
+```
+ID    origin    diameter    color*    material*    uv-scale*
+sp    vec3      flaot       u8vec3    material     float/vec2
+```
+
+### Cylinder
+```
+ID    origin    orientation    diameter    height    color*    material*    uv-scale*
+cy    vec3      vec3           float       float     u8vec3    material     float/vec2
+```
+
+### Hyperboloid
+```
+ID    origin    orientation    height    a        b        c        shape    color*    material*    uv-scale*
+sp    vec3      vec3           float     float    float    float    float    u8vec3    material     float/vec2
+```
+
 # Assets
+
+### HDRi Environment Maps
+
+from [Poly Haven](https://polyhaven.com/):
+- [Brown Photostudio 02](https://polyhaven.com/a/brown_photostudio_02)
+- [Evening Road 01 (Pure Sky)](https://polyhaven.com/a/evening_road_01_puresky)
+- [Shanghai Bund](https://polyhaven.com/a/shanghai_bund)
+- [Sunflowers (Pure Sky)](https://polyhaven.com/a/sunflowers_puresky)
+- [Syferfontein 18d Clear](https://polyhaven.com/a/syferfontein_18d_clear)
+
+### PBR Material Textures
+
+from [ambientCG](https://ambientcg.com/):
+- [Diamond Plate 003](https://ambientcg.com/view?id=DiamondPlate003)
+- [Fabric 032](https://ambientcg.com/view?id=Fabric032)
+- [Metal 047 B](https://ambientcg.com/view?id=Metal047B)
+- [Tiles 074](https://ambientcg.com/view?id=Tiles074)
+- [Wood 067](https://ambientcg.com/view?id=Wood067)
+
+from [3D Textures](https://3dtextures.me/):
+- [Metal Plate 021](https://3dtextures.me/2019/06/18/metal-plate-021/)
+- [Water 001](https://3dtextures.me/2017/12/28/water-001/)
+
+from [cgbookcase](https://www.cgbookcase.com/)
+- [Two Lane Road Wet 01](https://www.cgbookcase.com/textures/two-lane-road-wet-01)
+
+from [Free PBR](https://freepbr.com/)
+- [White Plain Paper](https://freepbr.com/product/white-plain-paper-pbr/)
