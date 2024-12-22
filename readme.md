@@ -97,14 +97,9 @@ After concluding the team project, I continued to work on making it more physica
 
 left is Cycles, right is miniRT
 
-<img src="docs/compare/blender/poker.png" width="47%" />
-<img src="docs/poker__11227_samples.png" width="47%" />
-
-<img src="docs/compare/blender/wireframe_cube.png" width="47%" />
-<img src="docs/wireframe_cube__31029_samples.png" width="47%" />
-
-<img src="docs/compare/blender/random_materials.png" width="47%" />
-<img src="docs/random_materials__16124_samples.png" width="47%" />
+<img src="docs/compare/blender/poker.png" width="47%" />            <img src="docs/poker__11227_samples.png" width="47%" />
+<img src="docs/compare/blender/wireframe_cube.png" width="47%" />   <img src="docs/wireframe_cube__31029_samples.png" width="47%" />
+<img src="docs/compare/blender/random_materials.png" width="47%" /> <img src="docs/random_materials__16124_samples.png" width="47%" />
 
 <br>
 
