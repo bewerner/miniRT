@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/12/17 12:34:47 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/22 02:11:59 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,9 +222,9 @@ void	key_hook(GLFWwindow *window, int key, int scancode, int action, int mods)
 	t_rt	*rt;
 
 	(void)scancode;
+	(void)mods;
 	rt = get_rt();
-	if (((key == GLFW_KEY_ESCAPE) || (key == GLFW_KEY_Q))
-		&& action == GLFW_PRESS && !mods)
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		reset_camera(&rt->camera, rt);

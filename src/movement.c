@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:32:57 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/05 16:40:39 by bwerner          ###   ########.fr       */
+/*   Updated: 2024/12/22 02:11:35 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	handle_movement_input(t_rt *rt)
 		rt->move.acc.z -= 4.5f * fminf(rt->delta_time, 0.1);
 	if (glfwGetKey(rt->window, GLFW_KEY_E) || glfwGetKey(rt->window, GLFW_KEY_SPACE))
 		rt->move.acc.y += 4.5f * fminf(rt->delta_time, 0.1);
-	if (glfwGetKey(rt->window, GLFW_KEY_C))
+	if (glfwGetKey(rt->window, GLFW_KEY_C) || glfwGetKey(rt->window, GLFW_KEY_LEFT_SHIFT))
 		rt->move.acc.y -= 4.5f * fminf(rt->delta_time, 0.1);
 	rt->move.acc = vec3_scale(rt->move.speed, rt->move.acc);
 	move_camera(rt);
