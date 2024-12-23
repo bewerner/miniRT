@@ -202,7 +202,6 @@ make
 | <kbd>C</kbd> or <kbd>Shift</kbd>                               | Move down                                                 |
 | <kbd>Right Mouse Button</kbd> and drag                         | Look around                                               |
 | <kbd>Scroll Wheel up/down</kbd>                                | Increase/decrease movement speed                          |
-| <kbd>Scroll Wheel up/down</kbd>                                | Increase/decrease movement speed                          |
 | <kbd>M</kbd>                                                   | Toggle mouse input (if there are issues)                  |
 
 ### Camera
