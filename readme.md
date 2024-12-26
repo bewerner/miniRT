@@ -333,6 +333,8 @@ ID    origin    orientation    height    a        b        c        shape    col
 sp    vec3      vec3           float     float    float    float    float    u8vec3    material     float/vec2
 ```
 
+I also included the [Blender Python Script](resources/rt_export_script_v004.py) I used to create these scenes in Blender and export them into the .rt file format. It's incomplete though and still requires some manual edits and additions.
+
 # Assets
 
 ### HDRi Environment Maps
