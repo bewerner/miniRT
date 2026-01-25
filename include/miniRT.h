@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:10:39 by nmihaile          #+#    #+#             */
-/*   Updated: 2024/12/17 12:36:30 by bwerner          ###   ########.fr       */
+/*   Updated: 2026/01/25 20:54:30 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 #  define WSL 0
 # endif
 
+# ifdef _WIN32
+#  include <direct.h>
+# endif
+
 # include "libft/libft.h"
 # include "glad/glad.h"
 # include <GLFW/glfw3.h>
@@ -39,7 +43,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
-# include <sys/errno.h>
+# include <errno.h>
 # include <stdbool.h>
 # include <sys/stat.h>
 

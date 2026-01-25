@@ -6,7 +6,7 @@
 /*   By: bwerner <bwerner@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 19:55:23 by bwerner           #+#    #+#             */
-/*   Updated: 2024/12/22 02:11:59 by bwerner          ###   ########.fr       */
+/*   Updated: 2026/01/25 20:51:11 by bwerner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,12 @@ static void	write_png(t_rt *rt)
 	free (samples);
 	ft_strlcat(path, "_samples.png", 1024);
 
-	mkdir("images", 0755);
+	#if defined(_WIN32)
+		_mkdir("images");
+	#else
+		mkdir("images", 0755);
+	#endif
+
 
 	image = (uint8_t *)malloc(rt->width * rt->height * 3 * sizeof(uint8_t));
 	if (!image)

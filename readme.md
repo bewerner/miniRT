@@ -177,6 +177,11 @@ sudo pacman -S glfw-wayland
 brew install glfw
 ```
 
+### Windows (inside MSYS2 UCRT64 bash)
+```
+pacman -S mingw-w64-ucrt-x86_64-glfw
+```
+
 # Installation
 
 ```

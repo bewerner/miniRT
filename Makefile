@@ -14,7 +14,12 @@ SRC					=	main.c cleanup.c \
 OBJ					=	$(addprefix ./obj/, $(SRC:%.c=%.o))
 
 CFLAGS				=	-Wall -Wextra -Werror -flto -Ofast -march=native
-LDFLAGS				=	-lm -ldl -lglfw -flto
+ifeq ($(OS),Windows_NT)
+	LDFLAGS			=	-lglfw3 -lopengl32 -lgdi32 -luser32 -lkernel32
+else
+	LDFLAGS			=	-lm -ldl -lglfw -flto
+endif
+
 INCLUDES			=	-I./inc/
 FSANITIZE			=	-g -fsanitize=address
 DEBUG				=	-g
